@@ -251,7 +251,7 @@ jobs:
   review:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: CodeRabbit Review
         uses: coderabbit-ai/coderabbit-action@v1
       - name: SonarCloud Scan
