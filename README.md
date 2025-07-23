@@ -49,7 +49,7 @@ docker run -d \
   -e GITHUB_TOKEN=your_token \
   -e OPENAI_API_KEY=your_key \
   -p 8080:8080 \
-  veritasvault/autopr-engine:latest
+  neuralliquid/autopr-engine:latest
 ```
 
 ### **Basic Configuration**
@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: veritasvault/autopr-engine@v1
+      - uses: neuralliquid/autopr-engine@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
@@ -168,7 +168,7 @@ graph TB
 
 ```bash
 # Clone repository
-git clone https://github.com/veritasvault/autopr-engine.git
+git clone https://github.com/neuralliquid/autopr-engine.git
 cd autopr-engine
 
 # Create virtual environment
@@ -262,7 +262,7 @@ SENTRY_DSN=https://...                  # Error tracking
 ```yaml
 # autopr.yml
 repositories:
-  - owner: veritasvault
+  - owner: neuralliquid
     repos: ["vv-landing", "vv-backend"]
     
 workflows:
@@ -378,10 +378,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 **Support**
 
 - **Documentation**: [https://autopr-engine.readthedocs.io](https://autopr-engine.readthedocs.io)
-- **GitHub Issues**: [Report bugs and request features](https://github.com/veritasvault/autopr-engine/issues)
-- **Discussions**: [Community discussions](https://github.com/veritasvault/autopr-engine/discussions)
-- **Email**: [support@veritasvault.net](mailto:support@veritasvault.net)
+- **GitHub Issues**: [Report bugs and request features](https://github.com/neuralliquid/autopr-engine/issues)
+- **Discussions**: [Community discussions](https://github.com/neuralliquid/autopr-engine/discussions)
+- **Email**: [support@neuralliquid.com](mailto:support@neuralliquid.com)
 
 ---
 
-**Made with ❤️ by the VeritasVault team** 
+**Made with ❤️ by the NeuralLiquid team** 
