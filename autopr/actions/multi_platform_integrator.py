@@ -8,6 +8,7 @@ import json
 import requests
 from typing import Dict, Any, Optional, List
 from pydantic import BaseModel
+from .base import Action
 
 class MultiPlatformInputs(BaseModel):
     action_type: str  # "create_issue", "notify_team", "update_status"
@@ -25,6 +26,20 @@ class MultiPlatformOutputs(BaseModel):
     platform_id: Optional[str] = None
     platform_url: Optional[str] = None
     error_message: Optional[str] = None
+
+class MultiPlatformIntegrator(Action[MultiPlatformInputs, MultiPlatformOutputs]):
+    """Action for integrating with multiple platforms."""
+    
+    def __init__(self) -> None:
+        super().__init__(
+            name="multi_platform_integrator",
+            description="Integrates with various platforms for enhanced workflow coordination",
+            version="1.0.0"
+        )
+    
+    async def execute(self, inputs: MultiPlatformInputs, context: Dict[str, Any]) -> MultiPlatformOutputs:
+        """Execute the multi-platform integration."""
+        return integrate_multi_platform(inputs)
 
 def integrate_multi_platform(inputs: MultiPlatformInputs) -> MultiPlatformOutputs:
     """
@@ -96,6 +111,11 @@ def create_linear_issue(inputs: MultiPlatformInputs) -> MultiPlatformOutputs:
                 platform_id=issue_data["identifier"],
                 platform_url=issue_data["url"]
             )
+        else:
+            return MultiPlatformOutputs(
+                success=False,
+                error_message=f"Linear API error: {response.status_code}"
+            )
     except Exception as e:
         return MultiPlatformOutputs(success=False, error_message=str(e))
 
@@ -140,11 +160,17 @@ def send_slack_notification(inputs: MultiPlatformInputs) -> MultiPlatformOutputs
         
         response = requests.post(webhook_url, json=message)
         
-        return MultiPlatformOutputs(
-            success=response.status_code == 200,
-            platform_id="slack_message",
-            error_message=None if response.status_code == 200 else "Failed to send Slack message"
-        )
+        if response.status_code == 200:
+            return MultiPlatformOutputs(
+                success=True,
+                platform_id="slack_message",
+                platform_url=None
+            )
+        else:
+            return MultiPlatformOutputs(
+                success=False,
+                error_message=f"Slack API error: {response.status_code}"
+            )
     except Exception as e:
         return MultiPlatformOutputs(success=False, error_message=str(e))
 
@@ -171,11 +197,17 @@ def send_discord_message(inputs: MultiPlatformInputs) -> MultiPlatformOutputs:
         
         response = requests.post(webhook_url, json=message)
         
-        return MultiPlatformOutputs(
-            success=response.status_code == 204,  # Discord returns 204 for success
-            platform_id="discord_message",
-            error_message=None if response.status_code == 204 else "Failed to send Discord message"
-        )
+        if response.status_code == 204:
+            return MultiPlatformOutputs(
+                success=True,
+                platform_id="discord_message",
+                platform_url=None
+            )
+        else:
+            return MultiPlatformOutputs(
+                success=False,
+                error_message=f"Discord API error: {response.status_code}"
+            )
     except Exception as e:
         return MultiPlatformOutputs(success=False, error_message=str(e))
 
@@ -219,6 +251,11 @@ def create_notion_page(inputs: MultiPlatformInputs) -> MultiPlatformOutputs:
                 success=True,
                 platform_id=data["id"],
                 platform_url=data["url"]
+            )
+        else:
+            return MultiPlatformOutputs(
+                success=False,
+                error_message=f"Notion API error: {response.status_code}"
             )
     except Exception as e:
         return MultiPlatformOutputs(success=False, error_message=str(e))

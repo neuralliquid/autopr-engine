@@ -1,5 +1,6 @@
 import pydantic
 import asyncio
+from typing import Optional
 from autopr.actions.base import Action
 
 class Inputs(pydantic.BaseModel):
@@ -9,7 +10,7 @@ class Inputs(pydantic.BaseModel):
 class Outputs(pydantic.BaseModel):
     success: bool
     log: str
-    new_version: str | None = None
+    new_version: Optional[str] = None
 
 class PublishPackage(Action[Inputs, Outputs]):
     """

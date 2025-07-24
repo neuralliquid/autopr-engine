@@ -1,5 +1,7 @@
 import pydantic
 import asyncio
+import json
+from typing import List, Dict
 from autopr.actions.base import Action
 
 class Inputs(pydantic.BaseModel):
@@ -8,7 +10,7 @@ class Inputs(pydantic.BaseModel):
 class Outputs(pydantic.BaseModel):
     success: bool
     report: str
-    vulnerabilities: list[dict]
+    vulnerabilities: List[Dict]
 
 class RunSecurityAudit(Action[Inputs, Outputs]):
     """

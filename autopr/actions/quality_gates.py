@@ -10,6 +10,7 @@ import ast
 import re
 from typing import Dict, Any, Optional, List, Tuple
 from pydantic import BaseModel
+from autopr.actions.base import Action
 
 class QualityGateInputs(BaseModel):
     file_path: str
@@ -424,7 +425,22 @@ class QualityGateValidator:
         
         return complexity
 
+class QualityGates(Action[QualityGateInputs, QualityGateOutputs]):
+    """Quality Gates Action for validating fixes before committing."""
+    
+    def __init__(self):
+        super().__init__(
+            name="quality_gates",
+            description="Validates fixes before committing, runs tests, checks quality metrics, and ensures compliance.",
+            version="1.0.0"
+        )
+    
+    async def execute(self, inputs: QualityGateInputs, context: Dict[str, Any]) -> QualityGateOutputs:
+        """Execute quality gates validation."""
+        validator = QualityGateValidator()
+        return validator.validate_fix(inputs)
+
 def quality_gates_action(inputs: QualityGateInputs) -> QualityGateOutputs:
     """Main action interface for quality gates validation."""
     validator = QualityGateValidator()
-    return validator.validate_fix(inputs) 
+    return validator.validate_fix(inputs)

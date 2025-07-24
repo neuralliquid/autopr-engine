@@ -1,15 +1,16 @@
 import pydantic
 import os
 import re
+from typing import List, Dict
 from autopr.actions.base import Action
 
 class Inputs(pydantic.BaseModel):
     scan_path: str = "."
-    exclude_paths: list[str] = ["node_modules", ".next", "tests"]
-    exclude_files: list[str] = [".test.ts", ".spec.ts", ".test.tsx", ".spec.tsx"]
+    exclude_paths: List[str] = ["node_modules", ".next", "tests"]
+    exclude_files: List[str] = [".test.ts", ".spec.ts", ".test.tsx", ".spec.tsx"]
 
 class Outputs(pydantic.BaseModel):
-    found_logs: list[dict]
+    found_logs: List[Dict]
 
 class AnalyzeConsoleLogs(Action[Inputs, Outputs]):
     """

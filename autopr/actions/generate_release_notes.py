@@ -1,10 +1,11 @@
 import pydantic
 import subprocess
 import re
+from typing import Optional
 from autopr.actions.base import Action
 
 class Inputs(pydantic.BaseModel):
-    from_tag: str | None = None
+    from_tag: Optional[str] = None
 
 class Outputs(pydantic.BaseModel):
     release_notes: str

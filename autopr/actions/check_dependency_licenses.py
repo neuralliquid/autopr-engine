@@ -1,14 +1,15 @@
 import pydantic
 import asyncio
 import json
+from typing import List, Dict
 from autopr.actions.base import Action
 
 class Inputs(pydantic.BaseModel):
-    allowed_licenses: list[str] = ["MIT", "ISC", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause"]
+    allowed_licenses: List[str] = ["MIT", "ISC", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause"]
 
 class Outputs(pydantic.BaseModel):
     success: bool
-    forbidden_packages: list[dict]
+    forbidden_packages: List[Dict]
     log: str
 
 class CheckDependencyLicenses(Action[Inputs, Outputs]):

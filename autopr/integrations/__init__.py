@@ -3,19 +3,28 @@ AutoPR Engine Integrations
 External service integrations for communication and project management
 """
 
-# Import integration classes
-from .axolo_integration import AxoloIntegration
+from typing import Optional, Type, List, Any
+from .base import Integration
 
-# Integration registry
-AVAILABLE_INTEGRATIONS = {
-    "axolo": AxoloIntegration,
-}
+# Import integration classes with error handling
+AxoloIntegration: Optional[Type[Any]] = None
+_axolo_available = False
+try:
+    from .axolo_integration import AxoloIntegration  # type: ignore
+    _axolo_available = True  # type: ignore
+except ImportError:
+    pass
 
-def get_integration(integration_name: str):
+# Registry of available integrations
+AVAILABLE_INTEGRATIONS = {}
+if _axolo_available and AxoloIntegration is not None:
+    AVAILABLE_INTEGRATIONS['axolo'] = AxoloIntegration
+
+def get_integration(integration_name: str) -> Optional[Type[Integration]]:
     """Get an integration class by name"""
     return AVAILABLE_INTEGRATIONS.get(integration_name)
 
-def list_integrations():
+def list_integrations() -> List[str]:
     """List all available integrations"""
     return list(AVAILABLE_INTEGRATIONS.keys())
 

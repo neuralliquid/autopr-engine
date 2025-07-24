@@ -1,5 +1,6 @@
 import pydantic
 import subprocess
+from typing import List
 from autopr.actions.base import Action
 
 class Inputs(pydantic.BaseModel):
@@ -7,7 +8,7 @@ class Inputs(pydantic.BaseModel):
 
 class Outputs(pydantic.BaseModel):
     dead_code_report: str
-    dead_exports: list[str]
+    dead_exports: List[str]
 
 class FindDeadCode(Action[Inputs, Outputs]):
     """

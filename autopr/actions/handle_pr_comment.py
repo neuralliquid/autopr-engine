@@ -7,6 +7,7 @@ import os
 import re
 from typing import Dict, Any, Optional
 from pydantic import BaseModel
+from .base import Action
 
 class HandlePRCommentInputs(BaseModel):
     comment_body: str
@@ -207,7 +208,7 @@ def create_github_issue(inputs: HandlePRCommentInputs) -> int:
     
     return 0  # Failed to create issue
 
-def react_to_comment(repo_owner: str, repo_name: str, comment_id: int, reaction: str):
+def react_to_comment(repo_owner: str, repo_name: str, comment_id: int, reaction: str) -> None:
     """Add reaction to PR comment."""
     import subprocess
     
@@ -220,13 +221,13 @@ def react_to_comment(repo_owner: str, repo_name: str, comment_id: int, reaction:
     
     subprocess.run(cmd, capture_output=True)
 
-def resolve_comment(repo_owner: str, repo_name: str, comment_id: int):
+def resolve_comment(repo_owner: str, repo_name: str, comment_id: int) -> None:
     """Mark comment as resolved (if part of a review)."""
     # Note: This would require GitHub API to resolve review comments
     # Implementation depends on whether it's a regular comment or review comment
     pass
 
-def git_commit_and_push(branch_name: str, message: str):
+def git_commit_and_push(branch_name: str, message: str) -> None:
     """Commit changes and push to branch."""
     import subprocess
     
@@ -237,4 +238,18 @@ def git_commit_and_push(branch_name: str, message: str):
     subprocess.run(["git", "commit", "-m", message])
     
     # Push to branch
-    subprocess.run(["git", "push", "origin", branch_name]) 
+    subprocess.run(["git", "push", "origin", branch_name])
+
+class PRCommentHandler(Action[HandlePRCommentInputs, HandlePRCommentOutputs]):
+    """Action for handling PR comments."""
+    
+    def __init__(self) -> None:
+        super().__init__(
+            name="pr_comment_handler",
+            description="Processes PR comments, attempts to fix issues, and creates GitHub issues for complex problems",
+            version="1.0.0"
+        )
+    
+    async def execute(self, inputs: HandlePRCommentInputs, context: Dict[str, Any]) -> HandlePRCommentOutputs:
+        """Execute the PR comment handling."""
+        return handle_pr_comment(inputs)

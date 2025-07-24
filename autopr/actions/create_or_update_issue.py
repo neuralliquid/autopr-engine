@@ -1,4 +1,5 @@
 import pydantic
+from typing import Optional
 from autopr.actions.base import Action
 
 class Inputs(pydantic.BaseModel):
@@ -6,7 +7,7 @@ class Inputs(pydantic.BaseModel):
     body: str
     # If an issue with this label and title exists, it will be updated.
     # Otherwise, a new one is created.
-    find_label: str | None = None
+    find_label: Optional[str] = None
 
 class Outputs(pydantic.BaseModel):
     success: bool

@@ -5,6 +5,8 @@ A comprehensive platform for intelligent GitHub pull request analysis,
 automated issue creation, and multi-agent AI collaboration.
 """
 
+from typing import Any, Optional, cast, Dict, List, Union
+
 __version__ = "1.0.0"
 __author__ = "VeritasVault Team"
 __email__ = "dev@veritasvault.net"
@@ -132,22 +134,31 @@ except ImportError:
 
 # Setup logging defaults
 import logging
-import structlog
+from typing import Any, Optional, cast
 
-def configure_logging(level: str = "INFO", format_json: bool = False):
+# Import structlog with error handling
+try:
+    import structlog
+    STRUCTLOG_AVAILABLE = True
+    structlog_module: Optional[Any] = cast(Any, structlog)
+except ImportError:
+    STRUCTLOG_AVAILABLE = False
+    structlog_module: Optional[Any] = None
+
+def configure_logging(level: str = "INFO", format_json: bool = False) -> None:
     """Configure default logging for AutoPR Engine."""
     
-    if format_json:
+    if format_json and STRUCTLOG_AVAILABLE and structlog_module:
         # Structured JSON logging
-        structlog.configure(
+        structlog_module.configure(
             processors=[
-                structlog.processors.TimeStamper(fmt="iso"),
-                structlog.processors.add_log_level,
-                structlog.processors.JSONRenderer()
+                structlog_module.processors.TimeStamper(fmt="iso"),
+                structlog_module.processors.add_log_level,
+                structlog_module.processors.JSONRenderer()
             ],
             context_class=dict,
-            logger_factory=structlog.WriteLoggerFactory(),
-            wrapper_class=structlog.make_filtering_bound_logger(
+            logger_factory=structlog_module.WriteLoggerFactory(),
+            wrapper_class=structlog_module.make_filtering_bound_logger(
                 getattr(logging, level.upper())
             ),
             cache_logger_on_first_use=True,

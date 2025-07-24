@@ -1,15 +1,16 @@
 import pydantic
 import re
+from typing import Optional
 from autopr.actions.base import Action
 
 class Inputs(pydantic.BaseModel):
     step_number: int
     status: str  # e.g., "[x]", "[~]", "[ ]"
-    text: str | None = None  # Optional: new text for the line
+    text: Optional[str] = None  # Optional: new text for the line
 
 class Outputs(pydantic.BaseModel):
     success: bool
-    updated_line: str | None = None
+    updated_line: Optional[str] = None
 
 class UpdateMigrationPlan(Action[Inputs, Outputs]):
     """

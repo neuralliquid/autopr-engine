@@ -1,14 +1,15 @@
 import pydantic
 import os
+from typing import List
 from autopr.actions.base import Action
 
 class Inputs(pydantic.BaseModel):
-    urls: list[str] = ["/"]
+    urls: List[str] = ["/"]
     output_dir: str = "screenshots/gallery"
 
 class Outputs(pydantic.BaseModel):
     success: bool
-    screenshot_paths: list[str]
+    screenshot_paths: List[str]
 
 class TakeScreenshots(Action[Inputs, Outputs]):
     """

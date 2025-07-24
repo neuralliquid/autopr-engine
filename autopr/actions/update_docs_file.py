@@ -1,6 +1,7 @@
 import pydantic
 import os
 import re
+from typing import Optional
 from autopr.actions.base import Action
 
 class Inputs(pydantic.BaseModel):
@@ -12,7 +13,7 @@ class Inputs(pydantic.BaseModel):
 
 class Outputs(pydantic.BaseModel):
     success: bool
-    error: str | None = None
+    error: Optional[str] = None
 
 class UpdateDocsFile(Action[Inputs, Outputs]):
     """

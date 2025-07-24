@@ -1,6 +1,7 @@
 import pydantic
 import asyncio
 import json
+from typing import Optional
 
 from autopr.actions.base import Action
 
@@ -9,7 +10,7 @@ class Inputs(pydantic.BaseModel):
 
 class Outputs(pydantic.BaseModel):
     markdown_table: str
-    error: str | None = None
+    error: Optional[str] = None
 
 class GeneratePropTable(Action[Inputs, Outputs]):
     """

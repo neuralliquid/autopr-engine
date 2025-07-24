@@ -8,6 +8,7 @@ import json
 from typing import Dict, Any, Optional, List
 from pydantic import BaseModel
 import openai
+from .base import Action
 
 class AICommentAnalysisInputs(BaseModel):
     comment_body: str
@@ -76,7 +77,10 @@ def analyze_comment_with_ai(inputs: AICommentAnalysisInputs) -> AICommentAnalysi
         )
         
         # Parse AI response
-        ai_analysis = json.loads(response.choices[0].message.content)
+        content = response.choices[0].message.content
+        if content is None:
+            return fallback_analysis(inputs)
+        ai_analysis = json.loads(content)
         
         return AICommentAnalysisOutputs(**ai_analysis)
         
@@ -108,3 +112,17 @@ def fallback_analysis(inputs: AICommentAnalysisInputs) -> AICommentAnalysisOutpu
         issue_priority="medium",
         tags=["needs-review"]
     ) 
+
+class AICommentAnalyzer(Action[AICommentAnalysisInputs, AICommentAnalysisOutputs]):
+    """Action for analyzing PR comments with AI."""
+    
+    def __init__(self) -> None:
+        super().__init__(
+            name="ai_comment_analyzer",
+            description="Uses LLM to analyze PR comments and generate intelligent responses and fixes",
+            version="1.0.0"
+        )
+    
+    async def execute(self, inputs: AICommentAnalysisInputs, context: Dict[str, Any]) -> AICommentAnalysisOutputs:
+        """Execute the AI comment analysis."""
+        return analyze_comment_with_ai(inputs)

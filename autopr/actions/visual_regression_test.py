@@ -1,16 +1,17 @@
 import pydantic
 import os
+from typing import List
 from autopr.actions.base import Action
 
 class Inputs(pydantic.BaseModel):
-    urls: list[str] = ["/"]
+    urls: List[str] = ["/"]
     # In a real action, this would be a git ref to compare against
     base_branch: str = "main"
 
 class Outputs(pydantic.BaseModel):
     success: bool
     report: str
-    diff_images: list[str]
+    diff_images: List[str]
 
 class VisualRegressionTest(Action[Inputs, Outputs]):
     """

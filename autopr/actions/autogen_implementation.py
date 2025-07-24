@@ -15,6 +15,10 @@ try:
     AUTOGEN_AVAILABLE = True
 except ImportError:
     AUTOGEN_AVAILABLE = False
+    # Create dummy classes for type annotations
+    ConversableAgent = object
+    GroupChat = object
+    GroupChatManager = object
 
 class AutoGenInputs(BaseModel):
     task_description: str

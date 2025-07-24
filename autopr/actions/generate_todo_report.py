@@ -1,11 +1,12 @@
 import pydantic
 import os
 import re
+from typing import List
 from autopr.actions.base import Action
 
 class Inputs(pydantic.BaseModel):
     scan_path: str = "."
-    exclude_paths: list[str] = ["node_modules", ".next", "autopr"]
+    exclude_paths: List[str] = ["node_modules", ".next", "autopr"]
 
 class Outputs(pydantic.BaseModel):
     markdown_report: str
