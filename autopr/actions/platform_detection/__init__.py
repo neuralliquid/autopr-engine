@@ -1,0 +1,23 @@
+"""
+Platform Detection Package
+
+Modular platform detection system for AutoPR.
+"""
+
+from .detector import (
+    EnhancedPlatformDetector,
+    EnhancedPlatformDetectorInputs,
+    EnhancedPlatformDetectorOutputs,
+)
+from .config import PlatformConfig
+from .file_analyzer import FileAnalyzer
+from .scoring import PlatformScoringEngine
+
+__all__ = [
+    "EnhancedPlatformDetector",
+    "EnhancedPlatformDetectorInputs",
+    "EnhancedPlatformDetectorOutputs",
+    "PlatformConfig",
+    "FileAnalyzer",
+    "PlatformScoringEngine",
+]

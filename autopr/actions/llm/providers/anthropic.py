@@ -56,14 +56,14 @@ class AnthropicProvider(BaseLLMProvider):
                     max_tokens=max_tokens,
                     temperature=temperature,
                     system=system_param,
-                    messages=converted_messages,
+                    messages=converted_messages,  # type: ignore[arg-type]
                 )
             else:
                 response = self.client.messages.create(
                     model=str(model),
                     max_tokens=max_tokens,
                     temperature=temperature,
-                    messages=converted_messages,
+                    messages=converted_messages,  # type: ignore[arg-type]
                 )
 
             # Extract content and finish reason

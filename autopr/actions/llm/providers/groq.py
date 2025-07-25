@@ -9,7 +9,8 @@ from ..base import BaseLLMProvider
 from ..types import LLMResponse
 
 if TYPE_CHECKING:
-    import groq
+    from groq import Groq  # type: ignore[import-not-found]
+
 
 class GroqProvider(BaseLLMProvider):
     """Groq provider for fast inference."""
@@ -17,9 +18,9 @@ class GroqProvider(BaseLLMProvider):
     def __init__(self, config: Dict[str, Any]) -> None:
         super().__init__(config)
         try:
-            import groq
+            from groq import Groq  # type: ignore[import-not-found]
 
-            self.client = groq.Groq(api_key=self.api_key)
+            self.client = Groq(api_key=self.api_key)
             self.available = True
         except ImportError:
             self.available = False
