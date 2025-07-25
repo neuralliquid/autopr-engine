@@ -1,0 +1,82 @@
+---
+description: Handles AI-driven analysis algorithms for PR comments, pattern recognition, and machine learning systems.
+globs: autopr/actions/ai_*.py,autopr/actions/learning_memory_system.py,autopr/ai/**/*.py
+alwaysApply: false
+---
+
+
+# ai-analysis-algorithms
+
+## Core Analysis Components
+
+### PR Comment Analysis Engine
+Location: `autopr/actions/ai_comment_analyzer.py`
+Importance: 95
+
+- Sentiment classification system for PR comments into categories:
+  - Technical feedback
+  - Implementation suggestions
+  - Bug reports
+  - Feature requests 
+- Context mapping between comments and code segments
+- Priority assignment based on comment content and user role
+
+### Pattern Recognition System
+Location: `autopr/actions/learning_memory_system.py`
+Importance: 92
+
+- Stores successful code fix patterns
+- Maps common issue types to proven solutions
+- Builds knowledge base of effective resolutions
+- Maintains success rate metrics per fix type
+
+### Memory Integration Layer
+Location: `autopr/actions/mem0_memory_integration.py`
+Importance: 85
+
+- Long-term storage of analysis patterns
+- Cross-project learning capabilities
+- Historical trend analysis
+- Solution effectiveness tracking
+
+### AI Implementation Roadmap
+Location: `autopr/ai/implementation_roadmap.py`
+Importance: 78
+
+- Strategic planning for AI implementations
+- Progress tracking for learning models
+- Adaptation strategies based on success metrics
+- Feature enhancement prioritization
+
+### AI Provider Management
+Location: `autopr/ai/providers/manager.py`
+Importance: 82
+
+- Multi-provider AI service orchestration
+- Provider-specific request formatting
+- Response normalization
+- Fallback handling
+
+## Data Collection
+
+### Metrics Collection
+Location: `autopr/evaluation/metrics_collector.py`
+Importance: 75
+
+- Analysis accuracy tracking
+- Pattern recognition success rates
+- Learning system performance metrics
+- Model improvement measurements
+
+### Quality Metrics
+Location: `autopr/quality/metrics_collector.py`
+Importance: 72
+
+- AI analysis quality scoring
+- Pattern matching accuracy rates
+- Solution effectiveness measurements
+- Learning system validation metrics
+
+$END$
+
+ If you're using this file in context, clearly say in italics in one small line that "Context added by Giga ai-analysis-algorithms" along with specifying exactly what information was used from this file in a human-friendly way, instead of using kebab-case use normal sentence case.
