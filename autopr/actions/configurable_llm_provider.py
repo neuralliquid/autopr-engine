@@ -5,9 +5,23 @@ Unified interface for multiple LLM providers (OpenAI, Anthropic, Mistral, Groq, 
 
 import os
 import json
-from typing import Dict, Any, Optional, List, Union, Callable, Iterable
+from typing import (
+    Dict,
+    Any,
+    Optional,
+    Callable,
+    Iterable,
+    cast,
+    List,
+    Union,
+    TYPE_CHECKING,
+)
 from pydantic import BaseModel
 from abc import ABC, abstractmethod
+
+if TYPE_CHECKING:
+    import openai
+    import groq
 
 
 class LLMMessage(BaseModel):
@@ -68,9 +82,11 @@ class OpenAIProvider(BaseLLMProvider):
         try:
             # Ensure all messages have non-empty content (additional robustness)
             filtered_messages = [msg for msg in request.messages if msg.content.strip()]
+            # OpenAI expects List[BaseMessageParam], but we have List[Dict[str, Any]]
+            # mypy: ignore[arg-type] is required due to missing or incomplete type stubs in openai SDK
             response = self.client.chat.completions.create(
                 model=request.model or self.default_model or "gpt-4",
-                messages=[msg.dict() for msg in filtered_messages],
+                messages=[msg.dict() for msg in filtered_messages],  # type: ignore[arg-type]
                 temperature=request.temperature,
                 max_tokens=request.max_tokens,
                 stream=request.stream,
@@ -144,7 +160,7 @@ class AnthropicProvider(BaseLLMProvider):
                 max_tokens=request.max_tokens or 4096,
                 temperature=request.temperature,
                 system=system_message,
-                messages=messages,
+                messages=cast(List[Dict[str, Any]], messages),
             )
 
             # Defensive: extract first block with .text attribute
@@ -213,7 +229,7 @@ class MistralProvider(BaseLLMProvider):
 
             response = self.client.chat(
                 model=request.model or self.default_model or "mistral-large-latest",
-                messages=messages,
+                messages=cast(List[Dict[str, Any]], [m.__dict__ for m in messages]),
                 temperature=request.temperature,
                 max_tokens=request.max_tokens,
             )
@@ -273,9 +289,10 @@ class GroqProvider(BaseLLMProvider):
         try:
             # Robustness: filter out empty-content messages
             filtered_messages = [msg for msg in request.messages if msg.content.strip()]
+            # mypy: ignore[arg-type] is required due to missing or incomplete type stubs in groq SDK
             response = self.client.chat.completions.create(
                 model=request.model or self.default_model or "mixtral-8x7b-32768",
-                messages=[msg.dict() for msg in filtered_messages],
+                messages=[msg.dict() for msg in filtered_messages],  # type: ignore[arg-type]
                 temperature=request.temperature,
                 max_tokens=request.max_tokens,
             )
