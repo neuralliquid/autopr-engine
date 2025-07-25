@@ -7,6 +7,7 @@ Handles generation of configuration, testing, security, and deployment files for
 import json
 from typing import Dict, List, Any, Optional
 from .platform_configs import PlatformRegistry, PlatformConfig
+from .config_loader import ConfigLoader
 
 
 class FileGenerator:
@@ -28,60 +29,15 @@ class FileGenerator:
     
     def _generate_react_dockerfile(self) -> str:
         """Generate Dockerfile for React applications."""
-        return """
-# Build stage
-FROM node:18-alpine AS builder
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-
-COPY . .
-RUN npm run build
-
-# Production stage
-FROM nginx:alpine
-COPY --from=builder /app/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/nginx.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-        """.strip()
+        return ConfigLoader.load_template("docker", "react.dockerfile")
     
     def _generate_node_dockerfile(self) -> str:
         """Generate Dockerfile for Node.js applications."""
-        return """
-FROM node:18-alpine
-WORKDIR /app
-
-# Copy package files
-COPY package*.json ./
-RUN npm ci --only=production
-
-# Copy application code
-COPY . .
-
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nodejs -u 1001
-USER nodejs
-
-EXPOSE 3000
-CMD ["npm", "start"]
-        """.strip()
+        return ConfigLoader.load_template("docker", "node.dockerfile")
     
     def _generate_generic_dockerfile(self) -> str:
         """Generate generic Dockerfile."""
-        return """
-FROM node:18-alpine
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm ci --only=production
-
-COPY . .
-
-EXPOSE 3000
-CMD ["npm", "start"]
-        """.strip()
+        return ConfigLoader.load_template("docker", "generic.dockerfile")
     
     def generate_typescript_config(self, platform: str) -> str:
         """Generate TypeScript configuration."""
