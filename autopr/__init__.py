@@ -39,30 +39,24 @@ __all__ = [
     # Core
     "AutoPREngine",
     "AutoPRConfig",
-    
     # Exceptions
     "AutoPRException",
-    "ConfigurationError", 
+    "ConfigurationError",
     "IntegrationError",
-    
     # Actions
     "Action",
     "ActionInputs",
     "ActionOutputs",
     "ActionRegistry",
-    
     # Integrations
     "Integration",
     "IntegrationRegistry",
-    
     # AI/LLM
     "LLMProvider",
     "LLMProviderManager",
-    
     # Workflows
     "WorkflowEngine",
     "Workflow",
-    
     # Version info
     "__version__",
     "__author__",
@@ -81,9 +75,21 @@ __package_info__ = {
     "license": __license__,
     "url": __url__,
     "keywords": [
-        "github", "pull-request", "automation", "ai", "code-review",
-        "ci-cd", "workflow", "integration", "slack", "linear",
-        "autogen", "llm", "openai", "anthropic", "issue-management"
+        "github",
+        "pull-request",
+        "automation",
+        "ai",
+        "code-review",
+        "ci-cd",
+        "workflow",
+        "integration",
+        "slack",
+        "linear",
+        "autogen",
+        "llm",
+        "openai",
+        "anthropic",
+        "issue-management",
     ],
     "classifiers": [
         "Development Status :: 4 - Beta",
@@ -97,7 +103,7 @@ __package_info__ = {
         "Programming Language :: Python :: 3.12",
         "Topic :: Software Development",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
-    ]
+    ],
 }
 
 # Compatibility check
@@ -114,22 +120,24 @@ try:
     import autogen
 except ImportError:
     import warnings
+
     warnings.warn(
         "AutoGen is not installed. Multi-agent features will be unavailable. "
         "Install with: pip install 'autopr-engine[ai]'",
         ImportWarning,
-        stacklevel=2
+        stacklevel=2,
     )
 
 try:
     import mem0
 except ImportError:
     import warnings
+
     warnings.warn(
         "Mem0 is not installed. Advanced memory features will be unavailable. "
         "Install with: pip install 'autopr-engine[memory]'",
         ImportWarning,
-        stacklevel=2
+        stacklevel=2,
     )
 
 # Setup logging defaults
@@ -137,24 +145,27 @@ import logging
 from typing import Any, Optional, cast
 
 # Import structlog with error handling
+STRUCTLOG_AVAILABLE: bool
 try:
     import structlog
+
     STRUCTLOG_AVAILABLE = True
-    structlog_module: Optional[Any] = cast(Any, structlog)
+    structlog_module = cast(Any, structlog)
 except ImportError:
     STRUCTLOG_AVAILABLE = False
-    structlog_module: Optional[Any] = None
+    structlog_module = None
+
 
 def configure_logging(level: str = "INFO", format_json: bool = False) -> None:
     """Configure default logging for AutoPR Engine."""
-    
+
     if format_json and STRUCTLOG_AVAILABLE and structlog_module:
         # Structured JSON logging
         structlog_module.configure(
             processors=[
                 structlog_module.processors.TimeStamper(fmt="iso"),
                 structlog_module.processors.add_log_level,
-                structlog_module.processors.JSONRenderer()
+                structlog_module.processors.JSONRenderer(),
             ],
             context_class=dict,
             logger_factory=structlog_module.WriteLoggerFactory(),
@@ -167,12 +178,14 @@ def configure_logging(level: str = "INFO", format_json: bool = False) -> None:
         # Standard logging
         logging.basicConfig(
             level=getattr(logging, level.upper()),
-            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-            datefmt='%Y-%m-%d %H:%M:%S'
+            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S",
         )
+
 
 # Configure default logging
 import os
+
 log_level = os.getenv("AUTOPR_LOG_LEVEL", "INFO")
 json_logging = os.getenv("AUTOPR_JSON_LOGGING", "false").lower() == "true"
-configure_logging(level=log_level, format_json=json_logging) 
+configure_logging(level=log_level, format_json=json_logging)

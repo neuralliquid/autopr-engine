@@ -1,19 +1,24 @@
 import pydantic
 import os
+from typing import List
 from autopr.actions.base import Action
+
 
 class Inputs(pydantic.BaseModel):
     directory: str
-    exclude_patterns: list[str] = ["*.test.ts", "*.spec.ts", "index.ts"]
+    exclude_patterns: List[str] = ["*.test.ts", "*.spec.ts", "index.ts"]
+
 
 class Outputs(pydantic.BaseModel):
     created_file: str
     exports_count: int
 
+
 class GenerateBarrelFile(Action[Inputs, Outputs]):
     """
     Generates an 'index.ts' barrel file for a specified directory, exporting all modules within it.
     """
+
     id = "generate_barrel_file"
 
     async def run(self, inputs: Inputs) -> Outputs:
@@ -26,27 +31,33 @@ class GenerateBarrelFile(Action[Inputs, Outputs]):
             # Skip if it matches any exclude pattern
             if any(item.endswith(p) for p in inputs.exclude_patterns):
                 continue
-            
-            if os.path.isfile(item_path) and (item.endswith('.ts') or item.endswith('.tsx')):
-                module_name = item.rsplit('.', 1)[0]
+
+            if os.path.isfile(item_path) and (
+                item.endswith(".ts") or item.endswith(".tsx")
+            ):
+                module_name = item.rsplit(".", 1)[0]
                 exports.append(f"export * from './{module_name}';")
 
         index_path = os.path.join(inputs.directory, "index.ts")
         with open(index_path, "w", encoding="utf-8") as f:
-            f.write("\\n".join(exports))
-        
+            f.write("\n".join(exports))
+
         return Outputs(created_file=index_path, exports_count=len(exports))
+
 
 if __name__ == "__main__":
     from autopr.tests.utils import run_action_manually
     import asyncio
+
     # Create dummy files for testing
     os.makedirs("components/ui", exist_ok=True)
-    with open("components/ui/button.tsx", "w") as f: f.write("export const Button = () => {};")
-    with open("components/ui/card.tsx", "w") as f: f.write("export const Card = () => {};")
+    with open("components/ui/button.tsx", "w") as f:
+        f.write("export const Button = () => {};")
+    with open("components/ui/card.tsx", "w") as f:
+        f.write("export const Card = () => {};")
     asyncio.run(
         run_action_manually(
             action=GenerateBarrelFile,
             inputs=Inputs(directory="components/ui"),
         )
-    ) 
+    )

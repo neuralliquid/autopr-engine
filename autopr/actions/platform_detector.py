@@ -6,7 +6,7 @@ Detects which rapid prototyping platform was used and routes accordingly
 import json
 import os
 import re
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any, Optional, Tuple
 from pydantic import BaseModel
 from pathlib import Path
 
@@ -25,8 +25,8 @@ class PlatformDetectorOutputs(BaseModel):
     enhancement_opportunities: List[str]
 
 class PlatformDetector:
-    def __init__(self):
-        self.platform_signatures = {
+    def __init__(self) -> None:
+        self.platform_signatures: Dict[str, Dict[str, Any]] = {
             'replit': {
                 'files': ['.replit', 'replit.nix', 'pyproject.toml', '.replit.json'],
                 'package_scripts': ['repl-run', 'replit-dev', 'repl-dev'],
@@ -65,7 +65,7 @@ class PlatformDetector:
         }
         
         # Enhanced detection patterns for better accuracy
-        self.advanced_patterns = {
+        self.advanced_patterns: Dict[str, Dict[str, Any]] = {
             'replit': {
                 'readme_patterns': ['run on replit', 'replit button', 'repl.it'],
                 'env_patterns': ['REPL_ID', 'REPL_OWNER', 'REPL_SLUG'],
@@ -85,11 +85,11 @@ class PlatformDetector:
         """Detect which platform was used for the project"""
         
         # Scan workspace for files and content
-        file_structure = self._scan_workspace(inputs.workspace_path)
-        package_json = self._parse_package_json(inputs.package_json_content, inputs.workspace_path)
+        file_structure: Dict[str, Any] = self._scan_workspace(inputs.workspace_path)
+        package_json: Optional[Dict[str, Any]] = self._parse_package_json(inputs.package_json_content, inputs.workspace_path)
         
-        scores = {}
-        detailed_analysis = {}
+        scores: Dict[str, float] = {}
+        detailed_analysis: Dict[str, Dict[str, List[str]]] = {}
         
         for platform, signatures in self.platform_signatures.items():
             score, analysis = self._calculate_platform_score(
@@ -122,7 +122,7 @@ class PlatformDetector:
 
     def _scan_workspace(self, workspace_path: str) -> Dict[str, Any]:
         """Scan workspace for files and structure"""
-        structure = {
+        structure: Dict[str, Any] = {
             'files': [],
             'folders': [],
             'file_contents': {},
@@ -156,7 +156,7 @@ class PlatformDetector:
         
         return structure
 
-    def _parse_package_json(self, content: Optional[str], workspace_path: str) -> Optional[Dict]:
+    def _parse_package_json(self, content: Optional[str], workspace_path: str) -> Optional[Dict[str, Any]]:
         """Parse package.json content"""
         if content:
             try:
@@ -175,11 +175,11 @@ class PlatformDetector:
         
         return None
 
-    def _calculate_platform_score(self, inputs: PlatformDetectorInputs, signatures: Dict, 
-                                 file_structure: Dict, package_json: Optional[Dict]) -> tuple:
+    def _calculate_platform_score(self, inputs: PlatformDetectorInputs, signatures: Dict[str, Any], 
+                                 file_structure: Dict[str, Any], package_json: Optional[Dict[str, Any]]) -> Tuple[float, Dict[str, List[str]]]:
         """Calculate confidence score for a platform with detailed analysis"""
         score = 0.0
-        analysis = {
+        analysis: Dict[str, List[str]] = {
             'file_matches': [],
             'script_matches': [],
             'dependency_matches': [],
@@ -244,8 +244,8 @@ class PlatformDetector:
         
         return min(score, 1.0), analysis
 
-    def _check_advanced_patterns(self, platform: str, file_structure: Dict, 
-                                package_json: Optional[Dict]) -> float:
+    def _check_advanced_patterns(self, platform: str, file_structure: Dict[str, Any], 
+                                package_json: Optional[Dict[str, Any]]) -> float:
         """Check advanced platform-specific patterns"""
         advanced = self.advanced_patterns.get(platform, {})
         score = 0.0
@@ -269,11 +269,11 @@ class PlatformDetector:
         
         return score
 
-    def _get_platform_config(self, platform: str, file_structure: Dict, 
-                           package_json: Optional[Dict]) -> Dict[str, Any]:
+    def _get_platform_config(self, platform: str, file_structure: Dict[str, Any], 
+                           package_json: Optional[Dict[str, Any]]) -> Dict[str, Any]:
         """Get platform-specific configuration"""
         
-        base_config = {
+        base_config: Dict[str, Any] = {
             'detected_files': [],
             'missing_files': [],
             'recommended_structure': {},
@@ -324,7 +324,7 @@ class PlatformDetector:
         if confidence < 0.5:
             return "phase2_generic_enhancement"
         
-        workflow_map = {
+        workflow_map: Dict[str, str] = {
             'replit': 'phase2_replit_to_production',
             'lovable': 'phase2_lovable_enhancement', 
             'bolt': 'phase2_bolt_fullstack_deploy',
@@ -337,13 +337,13 @@ class PlatformDetector:
 
     def _get_migration_suggestions(self, platform: str, all_scores: Dict[str, float]) -> List[str]:
         """Get suggestions for migrating to other platforms"""
-        suggestions = []
+        suggestions: List[str] = []
         
         # Sort platforms by score (excluding the detected one)
-        other_platforms = {k: v for k, v in all_scores.items() if k != platform and v > 0.1}
-        sorted_platforms = sorted(other_platforms.items(), key=lambda x: x[1], reverse=True)
+        other_platforms: Dict[str, float] = {k: v for k, v in all_scores.items() if k != platform and v > 0.1}
+        sorted_platforms: List[Tuple[str, float]] = sorted(other_platforms.items(), key=lambda x: x[1], reverse=True)
         
-        migration_benefits = {
+        migration_benefits: Dict[str, str] = {
             'replit': 'Better collaboration and instant deployment',
             'lovable': 'Enhanced React/TypeScript development experience',
             'bolt': 'Full-stack development with integrated database',
@@ -358,9 +358,9 @@ class PlatformDetector:
         
         return suggestions
 
-    def _get_enhancement_opportunities(self, platform: str, analysis: Dict) -> List[str]:
+    def _get_enhancement_opportunities(self, platform: str, analysis: Dict[str, List[str]]) -> List[str]:
         """Get opportunities to enhance the current platform setup"""
-        opportunities = []
+        opportunities: List[str] = []
         
         if platform == "replit":
             opportunities.extend([
@@ -395,7 +395,7 @@ class PlatformDetector:
         
         return opportunities
 
-    def _detect_replit_runtime(self, file_structure: Dict) -> str:
+    def _detect_replit_runtime(self, file_structure: Dict[str, Any]) -> str:
         """Detect Replit runtime from file structure"""
         files = file_structure.get('files', [])
         
@@ -410,11 +410,11 @@ class PlatformDetector:
         else:
             return 'unknown'
 
-    def _extract_replit_config(self, file_structure: Dict) -> Dict:
+    def _extract_replit_config(self, file_structure: Dict[str, Any]) -> Dict[str, Any]:
         """Extract Replit configuration from .replit file"""
         replit_content = file_structure.get('file_contents', {}).get('.replit', '')
         
-        config = {}
+        config: Dict[str, Any] = {}
         if replit_content:
             # Parse basic .replit configuration
             lines = replit_content.split('\n')
@@ -425,12 +425,12 @@ class PlatformDetector:
         
         return config
 
-    def _check_typescript_usage(self, file_structure: Dict) -> bool:
+    def _check_typescript_usage(self, file_structure: Dict[str, Any]) -> bool:
         """Check if TypeScript is being used"""
         files = file_structure.get('files', [])
         return any(f.endswith('.ts') or f.endswith('.tsx') for f in files)
 
-    def _detect_database_type(self, file_structure: Dict, package_json: Optional[Dict]) -> str:
+    def _detect_database_type(self, file_structure: Dict[str, Any], package_json: Optional[Dict[str, Any]]) -> str:
         """Detect database type from dependencies and files"""
         if not package_json:
             return 'unknown'

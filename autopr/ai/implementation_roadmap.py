@@ -9,87 +9,90 @@ import sys
 import subprocess
 import json
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any, Callable
 import asyncio
 from datetime import datetime, timedelta
 
+
 class Phase1ExtensionImplementor:
-    def __init__(self):
-        self.project_root = Path.cwd()
-        self.implementation_log = []
-        self.current_phase = None
-        
+    def __init__(self) -> None:
+        self.project_root: Path = Path.cwd()
+        self.implementation_log: List[Dict[str, Any]] = []
+        self.current_phase: Optional[str] = None
+
         # Implementation phases with dependencies
-        self.implementation_phases = {
-            'immediate': {
-                'name': 'Immediate Priority (Week 1-2)',
-                'duration_days': 10,
-                'tasks': [
-                    'setup_sentry_monitoring',
-                    'implement_structured_logging', 
-                    'setup_redis_caching',
-                    'create_health_checks',
-                    'implement_basic_circuit_breakers'
-                ]
+        self.implementation_phases: Dict[str, Dict[str, Any]] = {
+            "immediate": {
+                "name": "Immediate Priority (Week 1-2)",
+                "duration_days": 10,
+                "tasks": [
+                    "setup_sentry_monitoring",
+                    "implement_structured_logging",
+                    "setup_redis_caching",
+                    "create_health_checks",
+                    "implement_basic_circuit_breakers",
+                ],
             },
-            'medium': {
-                'name': 'Medium Priority (Week 3-6)',
-                'duration_days': 25,
-                'depends_on': ['immediate'],
-                'tasks': [
-                    'setup_postgresql_integration',
-                    'implement_prometheus_metrics',
-                    'setup_oauth2_authentication',
-                    'implement_advanced_llm_routing',
-                    'create_comprehensive_testing'
-                ]
+            "medium": {
+                "name": "Medium Priority (Week 3-6)",
+                "duration_days": 25,
+                "depends_on": ["immediate"],
+                "tasks": [
+                    "setup_postgresql_integration",
+                    "implement_prometheus_metrics",
+                    "setup_oauth2_authentication",
+                    "implement_advanced_llm_routing",
+                    "create_comprehensive_testing",
+                ],
             },
-            'strategic': {
-                'name': 'Long-term Strategic (Month 2+)',
-                'duration_days': 45,
-                'depends_on': ['medium'],
-                'tasks': [
-                    'implement_rag_system',
-                    'create_analytics_dashboard',
-                    'setup_fine_tuned_models',
-                    'implement_multi_cloud_deployment'
-                ]
-            }
+            "strategic": {
+                "name": "Long-term Strategic (Month 2+)",
+                "duration_days": 45,
+                "depends_on": ["medium"],
+                "tasks": [
+                    "implement_rag_system",
+                    "create_analytics_dashboard",
+                    "setup_fine_tuned_models",
+                    "implement_multi_cloud_deployment",
+                ],
+            },
         }
-    
-    async def run_implementation(self, phase: str = 'immediate', dry_run: bool = False):
+
+    async def run_implementation(
+        self, phase: str = "immediate", dry_run: bool = False
+    ) -> None:
         """Run implementation for specified phase"""
-        
+
         print(f"🚀 Starting AutoPR Phase 1 Extensions Implementation")
         print(f"📋 Phase: {phase}")
         print(f"🔍 Dry Run: {dry_run}")
         print("=" * 60)
-        
+
         self.current_phase = phase
-        
+
         # Validate phase exists
         if phase not in self.implementation_phases:
             raise ValueError(f"Unknown phase: {phase}")
-        
+
         # Check dependencies
         await self._check_dependencies(phase)
-        
+
         # Get tasks for phase
         phase_config = self.implementation_phases[phase]
-        tasks = phase_config['tasks']
-        
+        tasks = phase_config["tasks"]
+
         print(f"📅 Estimated Duration: {phase_config['duration_days']} days")
         print(f"🎯 Tasks to Complete: {len(tasks)}")
         print()
-        
+
         # Execute tasks
         for i, task in enumerate(tasks, 1):
             print(f"[{i}/{len(tasks)}] Executing: {task}")
-            
+
             if dry_run:
                 print(f"    🔍 DRY RUN: Would execute {task}")
                 continue
-            
+
             try:
                 await self._execute_task(task)
                 self._log_success(task)
@@ -97,61 +100,63 @@ class Phase1ExtensionImplementor:
             except Exception as e:
                 self._log_error(task, str(e))
                 print(f"    ❌ Failed: {task} - {str(e)}")
-                
+
                 # Ask user if they want to continue
                 if not await self._ask_continue_on_error(task):
                     break
-        
+
         # Generate implementation report
         await self._generate_implementation_report()
-        
+
         print("\n🎉 Phase 1 Extensions Implementation Complete!")
         print(f"📊 View detailed report: implementation_report_{phase}.json")
 
-    async def _check_dependencies(self, phase: str):
+    async def _check_dependencies(self, phase: str) -> None:
         """Check if phase dependencies are met"""
-        
+
         phase_config = self.implementation_phases[phase]
-        dependencies = phase_config.get('depends_on', [])
-        
+        dependencies = phase_config.get("depends_on", [])
+
         for dep_phase in dependencies:
             if not await self._is_phase_completed(dep_phase):
-                raise Exception(f"Dependency not met: {dep_phase} must be completed before {phase}")
-        
+                raise Exception(
+                    f"Dependency not met: {dep_phase} must be completed before {phase}"
+                )
+
         print(f"✅ All dependencies satisfied for phase: {phase}")
 
-    async def _execute_task(self, task: str):
+    async def _execute_task(self, task: str) -> None:
         """Execute individual implementation task"""
-        
-        task_methods = {
-            'setup_sentry_monitoring': self._setup_sentry_monitoring,
-            'implement_structured_logging': self._implement_structured_logging,
-            'setup_redis_caching': self._setup_redis_caching,
-            'create_health_checks': self._create_health_checks,
-            'implement_basic_circuit_breakers': self._implement_basic_circuit_breakers,
-            'setup_postgresql_integration': self._setup_postgresql_integration,
-            'implement_prometheus_metrics': self._implement_prometheus_metrics,
-            'setup_oauth2_authentication': self._setup_oauth2_authentication,
-            'implement_advanced_llm_routing': self._implement_advanced_llm_routing,
-            'create_comprehensive_testing': self._create_comprehensive_testing,
-            'implement_rag_system': self._implement_rag_system,
-            'create_analytics_dashboard': self._create_analytics_dashboard,
-            'setup_fine_tuned_models': self._setup_fine_tuned_models,
-            'implement_multi_cloud_deployment': self._implement_multi_cloud_deployment
+
+        task_methods: Dict[str, Callable] = {
+            "setup_sentry_monitoring": self._setup_sentry_monitoring,
+            "implement_structured_logging": self._implement_structured_logging,
+            "setup_redis_caching": self._setup_redis_caching,
+            "create_health_checks": self._create_health_checks,
+            "implement_basic_circuit_breakers": self._implement_basic_circuit_breakers,
+            "setup_postgresql_integration": self._setup_postgresql_integration,
+            "implement_prometheus_metrics": self._implement_prometheus_metrics,
+            "setup_oauth2_authentication": self._setup_oauth2_authentication,
+            "implement_advanced_llm_routing": self._implement_advanced_llm_routing,
+            "create_comprehensive_testing": self._create_comprehensive_testing,
+            "implement_rag_system": self._implement_rag_system,
+            "create_analytics_dashboard": self._create_analytics_dashboard,
+            "setup_fine_tuned_models": self._setup_fine_tuned_models,
+            "implement_multi_cloud_deployment": self._implement_multi_cloud_deployment,
         }
-        
+
         if task not in task_methods:
             raise ValueError(f"Unknown task: {task}")
-        
+
         await task_methods[task]()
 
     # Immediate Priority Tasks
-    async def _setup_sentry_monitoring(self):
+    async def _setup_sentry_monitoring(self) -> None:
         """Setup Sentry for error tracking and performance monitoring"""
-        
+
         # Install Sentry SDK
-        await self._run_command(['pip', 'install', 'sentry-sdk[fastapi]'])
-        
+        await self._run_command(["pip", "install", "sentry-sdk[fastapi]"])
+
         # Create Sentry configuration
         sentry_config = """
 import sentry_sdk
@@ -183,27 +188,27 @@ def filter_sentry_errors(event, hint):
             return None
     return event
         """
-        
-        await self._write_file('tools/autopr/monitoring/sentry_setup.py', sentry_config)
-        
+
+        await self._write_file("tools/autopr/monitoring/sentry_setup.py", sentry_config)
+
         # Add environment variables template
         env_template = """
 # Sentry Configuration
 SENTRY_DSN=your_sentry_dsn_here
 ENVIRONMENT=development
         """
-        
-        await self._append_file('.env.example', env_template)
-        
+
+        await self._append_file(".env.example", env_template)
+
         print("    📝 Created Sentry configuration")
         print("    🔧 Added environment variables template")
 
-    async def _implement_structured_logging(self):
+    async def _implement_structured_logging(self) -> None:
         """Implement structured JSON logging"""
-        
+
         # Install structlog
-        await self._run_command(['pip', 'install', 'structlog'])
-        
+        await self._run_command(["pip", "install", "structlog"])
+
         # Create logging configuration
         logging_config = """
 import structlog
@@ -249,18 +254,20 @@ def log_ai_api_call(model, tokens, cost):
                cost=cost,
                component="llm_manager")
         """
-        
-        await self._write_file('tools/autopr/logging/structured_logging.py', logging_config)
-        
+
+        await self._write_file(
+            "tools/autopr/logging/structured_logging.py", logging_config
+        )
+
         print("    📝 Created structured logging configuration")
         print("    🔍 Added correlation ID tracking")
 
-    async def _setup_redis_caching(self):
+    async def _setup_redis_caching(self) -> None:
         """Setup Redis caching for LLM responses and API calls"""
-        
+
         # Install Redis dependencies
-        await self._run_command(['pip', 'install', 'redis', 'aioredis'])
-        
+        await self._run_command(["pip", "install", "redis", "aioredis"])
+
         # Create cache manager
         cache_manager = """
 import redis.asyncio as redis
@@ -340,22 +347,22 @@ def cache_llm_response(cache_type='llm_response'):
         return wrapper
     return decorator
         """
-        
-        await self._write_file('tools/autopr/caching/cache_manager.py', cache_manager)
-        
+
+        await self._write_file("tools/autopr/caching/cache_manager.py", cache_manager)
+
         # Add Redis to environment template
         redis_env = """
 # Redis Configuration
 REDIS_URL=redis://localhost:6379
         """
-        await self._append_file('.env.example', redis_env)
-        
+        await self._append_file(".env.example", redis_env)
+
         print("    📝 Created Redis cache manager")
         print("    🚀 Added LLM response caching decorators")
 
-    async def _create_health_checks(self):
+    async def _create_health_checks(self) -> None:
         """Create comprehensive health check endpoints"""
-        
+
         health_checks = """
 import asyncio
 import time
@@ -545,18 +552,18 @@ async def quick_health_check():
         'uptime': time.time() - start_time
     }
         """
-        
-        await self._write_file('tools/autopr/health/health_checker.py', health_checks)
-        
+
+        await self._write_file("tools/autopr/health/health_checker.py", health_checks)
+
         print("    📝 Created comprehensive health checks")
         print("    🔍 Added system resource monitoring")
 
-    async def _implement_basic_circuit_breakers(self):
+    async def _implement_basic_circuit_breakers(self) -> None:
         """Implement circuit breaker pattern for external API calls"""
-        
+
         # Install circuit breaker dependencies
-        await self._run_command(['pip', 'install', 'pybreaker', 'tenacity'])
-        
+        await self._run_command(["pip", "install", "pybreaker", "tenacity"])
+
         circuit_breaker = """
 import asyncio
 import time
@@ -658,9 +665,11 @@ async def analyze_code_with_ai(code: str):
     # OpenAI API call with circuit breaker protection
     pass
         """
-        
-        await self._write_file('tools/autopr/resilience/circuit_breaker.py', circuit_breaker)
-        
+
+        await self._write_file(
+            "tools/autopr/resilience/circuit_breaker.py", circuit_breaker
+        )
+
         print("    📝 Created circuit breaker manager")
         print("    🛡️ Added automatic retry logic with exponential backoff")
 
@@ -673,44 +682,48 @@ async def analyze_code_with_ai(code: str):
         except subprocess.CalledProcessError as e:
             raise Exception(f"Command failed: {' '.join(command)}\nError: {e.stderr}")
 
-    async def _write_file(self, file_path: str, content: str):
+    async def _write_file(self, file_path: str, content: str) -> None:
         """Write content to file, creating directories as needed"""
         path = Path(file_path)
         path.parent.mkdir(parents=True, exist_ok=True)
-        
-        with open(path, 'w') as f:
+
+        with open(path, "w") as f:
             f.write(content.strip())
 
-    async def _append_file(self, file_path: str, content: str):
+    async def _append_file(self, file_path: str, content: str) -> None:
         """Append content to file"""
         path = Path(file_path)
-        
-        with open(path, 'a') as f:
-            f.write('\n' + content.strip() + '\n')
 
-    def _log_success(self, task: str):
+        with open(path, "a") as f:
+            f.write("\n" + content.strip() + "\n")
+
+    def _log_success(self, task: str) -> None:
         """Log successful task completion"""
-        self.implementation_log.append({
-            'task': task,
-            'status': 'success',
-            'timestamp': datetime.now().isoformat(),
-            'phase': self.current_phase
-        })
+        self.implementation_log.append(
+            {
+                "task": task,
+                "status": "success",
+                "timestamp": datetime.now().isoformat(),
+                "phase": self.current_phase,
+            }
+        )
 
-    def _log_error(self, task: str, error: str):
+    def _log_error(self, task: str, error: str) -> None:
         """Log task error"""
-        self.implementation_log.append({
-            'task': task,
-            'status': 'error',
-            'error': error,
-            'timestamp': datetime.now().isoformat(),
-            'phase': self.current_phase
-        })
+        self.implementation_log.append(
+            {
+                "task": task,
+                "status": "error",
+                "error": error,
+                "timestamp": datetime.now().isoformat(),
+                "phase": self.current_phase,
+            }
+        )
 
     async def _ask_continue_on_error(self, task: str) -> bool:
         """Ask user if they want to continue after error"""
         response = input(f"\n❌ Task '{task}' failed. Continue with next task? (y/N): ")
-        return response.lower() in ['y', 'yes']
+        return response.lower() in ["y", "yes"]
 
     async def _is_phase_completed(self, phase: str) -> bool:
         """Check if a phase has been completed"""
@@ -718,71 +731,88 @@ async def analyze_code_with_ai(code: str):
         completion_file = self.project_root / f".autopr_phase_{phase}_complete"
         return completion_file.exists()
 
-    async def _generate_implementation_report(self):
+    async def _generate_implementation_report(self) -> None:
         """Generate detailed implementation report"""
-        
+
         report = {
-            'implementation_date': datetime.now().isoformat(),
-            'phase': self.current_phase,
-            'total_tasks': len(self.implementation_log),
-            'successful_tasks': len([log for log in self.implementation_log if log['status'] == 'success']),
-            'failed_tasks': len([log for log in self.implementation_log if log['status'] == 'error']),
-            'task_details': self.implementation_log,
-            'next_steps': self._get_next_steps()
+            "implementation_date": datetime.now().isoformat(),
+            "phase": self.current_phase,
+            "total_tasks": len(self.implementation_log),
+            "successful_tasks": len(
+                [log for log in self.implementation_log if log["status"] == "success"]
+            ),
+            "failed_tasks": len(
+                [log for log in self.implementation_log if log["status"] == "error"]
+            ),
+            "task_details": self.implementation_log,
+            "next_steps": self._get_next_steps(),
         }
-        
+
         report_file = f"implementation_report_{self.current_phase}.json"
-        
-        with open(report_file, 'w') as f:
+
+        with open(report_file, "w") as f:
             json.dump(report, f, indent=2)
-        
+
         # Mark phase as complete
-        completion_file = self.project_root / f".autopr_phase_{self.current_phase}_complete"
+        completion_file = (
+            self.project_root / f".autopr_phase_{self.current_phase}_complete"
+        )
         completion_file.touch()
 
     def _get_next_steps(self) -> List[str]:
         """Get recommended next steps based on current phase"""
-        
+
         next_steps = {
-            'immediate': [
+            "immediate": [
                 "Configure environment variables in .env file",
                 "Test error tracking by triggering a test error",
                 "Verify Redis connection and cache functionality",
                 "Access health check endpoint at /health",
-                "Review circuit breaker logs for API failures"
+                "Review circuit breaker logs for API failures",
             ],
-            'medium': [
+            "medium": [
                 "Set up PostgreSQL database and run migrations",
                 "Configure Prometheus metrics collection",
                 "Implement OAuth 2.0 authentication flow",
                 "Test advanced LLM routing with different models",
-                "Run comprehensive test suite"
+                "Run comprehensive test suite",
             ],
-            'strategic': [
+            "strategic": [
                 "Index codebase for RAG system",
                 "Configure analytics dashboard with real data",
                 "Train fine-tuned models on your codebase",
                 "Deploy to multiple cloud environments",
-                "Set up advanced monitoring and alerting"
-            ]
+                "Set up advanced monitoring and alerting",
+            ],
         }
-        
+
         return next_steps.get(self.current_phase, [])
+
 
 # CLI interface
 async def main():
     import argparse
-    
-    parser = argparse.ArgumentParser(description='AutoPR Phase 1 Extensions Implementation')
-    parser.add_argument('--phase', choices=['immediate', 'medium', 'strategic'], 
-                       default='immediate', help='Implementation phase to run')
-    parser.add_argument('--dry-run', action='store_true', 
-                       help='Show what would be done without executing')
-    
+
+    parser = argparse.ArgumentParser(
+        description="AutoPR Phase 1 Extensions Implementation"
+    )
+    parser.add_argument(
+        "--phase",
+        choices=["immediate", "medium", "strategic"],
+        default="immediate",
+        help="Implementation phase to run",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Show what would be done without executing",
+    )
+
     args = parser.parse_args()
-    
+
     implementor = Phase1ExtensionImplementor()
     await implementor.run_implementation(args.phase, args.dry_run)
 
+
 if __name__ == "__main__":
-    asyncio.run(main()) 
+    asyncio.run(main())
