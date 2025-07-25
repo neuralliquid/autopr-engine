@@ -294,6 +294,64 @@ class PrototypeEnhancer:
 
         return package_json
 
+    def _enhance_package_json_for_lovable(self, package_json: Dict) -> Dict:
+        """Enhance package.json for Lovable.dev projects"""
+
+        # Ensure required scripts exist for React/Next.js
+        scripts: Dict = package_json.setdefault("scripts", {})
+        scripts.update(
+            {
+                "dev": "next dev",
+                "build": "next build",
+                "start": "next start",
+                "lint": "next lint",
+                "test": "jest",
+                "test:watch": "jest --watch",
+                "storybook": "storybook dev -p 6006",
+                "build-storybook": "storybook build",
+                "type-check": "tsc --noEmit",
+            }
+        )
+
+        # Add production dependencies for React/Next.js
+        deps: Dict = package_json.setdefault("dependencies", {})
+        deps.update(
+            {
+                "next": "^14.0.0",
+                "react": "^18.0.0",
+                "react-dom": "^18.0.0",
+                "@next/font": "^14.0.0",
+                "clsx": "^2.0.0",
+            }
+        )
+
+        # Add development dependencies for TypeScript and testing
+        dev_deps: Dict = package_json.setdefault("devDependencies", {})
+        dev_deps.update(
+            {
+                "typescript": "^5.0.0",
+                "@types/react": "^18.0.0",
+                "@types/react-dom": "^18.0.0",
+                "@types/node": "^20.0.0",
+                "eslint": "^8.0.0",
+                "eslint-config-next": "^14.0.0",
+                "@testing-library/react": "^14.0.0",
+                "@testing-library/jest-dom": "^6.0.0",
+                "jest": "^29.0.0",
+                "jest-environment-jsdom": "^29.0.0",
+                "@storybook/react": "^7.0.0",
+                "@storybook/addon-essentials": "^7.0.0",
+                "tailwindcss": "^3.0.0",
+                "autoprefixer": "^10.0.0",
+                "postcss": "^8.0.0",
+            }
+        )
+
+        # Add engines specification
+        package_json["engines"] = {"node": ">=18.0.0", "npm": ">=8.0.0"}
+
+        return package_json
+
     def _generate_replit_production_files(
         self, inputs: PrototypeEnhancerInputs
     ) -> Dict[str, str]:

@@ -38,7 +38,7 @@ class CreateGithubRelease(Action[Inputs, Outputs]):
 
 
 if __name__ == "__main__":
-    from autopr.tests.utils import run_action_manually  # type: ignore
+    from autopr.tests.utils import run_action_manually
     import asyncio
 
     asyncio.run(

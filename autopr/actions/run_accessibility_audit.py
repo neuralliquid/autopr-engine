@@ -59,7 +59,7 @@ class RunAccessibilityAudit(Action[Inputs, Outputs]):
             if inputs.fail_on_critical and violation["impact"] == "critical":
                 success = False
             report_lines.append(
-                f"- [{violation['impact'].upper()}] {violation['id']}: Affects {violation['nodes']} node(s)."
+                f"- [{str(violation['impact']).upper()}] {violation['id']}: Affects {violation['nodes']} node(s)."
             )
 
         return Outputs(

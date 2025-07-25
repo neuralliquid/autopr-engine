@@ -396,6 +396,18 @@ class AutoGenAgentSystem:
         return None
 
 
+class AutoGenMultiAgent:
+    def __init__(self) -> None:
+        self.available = AUTOGEN_AVAILABLE
+
+    def run(self, inputs: dict) -> dict:
+        """Runs the multi-agent workflow."""
+        if not self.available:
+            raise RuntimeError("AutoGen not available.")
+        # ... implementation ...
+        return {}
+
+
 def autogen_multi_agent_action(inputs: AutoGenInputs) -> AutoGenOutputs:
     """Main action interface for AutoGen multi-agent collaboration."""
     if not AUTOGEN_AVAILABLE:

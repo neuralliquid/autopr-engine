@@ -55,7 +55,7 @@ class AnalyzeConsoleLogs(Action[Inputs, Outputs]):
 
 
 if __name__ == "__main__":
-    from autopr.tests.utils import run_action_manually  # type: ignore
+    from autopr.tests.utils import run_action_manually
     import asyncio
 
     # Create a dummy file with a console.log for testing

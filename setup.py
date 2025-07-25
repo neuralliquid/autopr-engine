@@ -8,9 +8,11 @@ import os
 import re
 from pathlib import Path
 from setuptools import setup, find_packages
+from typing import List
+
 
 # Get version from __init__.py
-def get_version():
+def get_version() -> str:
     init_file = Path(__file__).parent / "autopr" / "__init__.py"
     if init_file.exists():
         with open(init_file, "r", encoding="utf-8") as f:
@@ -20,29 +22,37 @@ def get_version():
                 return match.group(1)
     return "1.0.0"
 
+
 # Read long description from README
-def get_long_description():
+def get_long_description() -> str:
     readme_file = Path(__file__).parent / "README.md"
     if readme_file.exists():
         with open(readme_file, "r", encoding="utf-8") as f:
             return f.read()
     return "AI-Powered GitHub PR Automation and Issue Management"
 
+
 # Read requirements from requirements.txt
-def get_requirements():
+def get_requirements() -> List[str]:
     requirements_file = Path(__file__).parent / "requirements.txt"
     if requirements_file.exists():
         with open(requirements_file, "r", encoding="utf-8") as f:
-            return [line.strip() for line in f if line.strip() and not line.startswith("#")]
+            return [
+                line.strip() for line in f if line.strip() and not line.startswith("#")
+            ]
     return []
 
+
 # Read development requirements
-def get_dev_requirements():
+def get_dev_requirements() -> List[str]:
     dev_requirements_file = Path(__file__).parent / "requirements-dev.txt"
     if dev_requirements_file.exists():
         with open(dev_requirements_file, "r", encoding="utf-8") as f:
-            return [line.strip() for line in f if line.strip() and not line.startswith("#")]
+            return [
+                line.strip() for line in f if line.strip() and not line.startswith("#")
+            ]
     return []
+
 
 setup(
     # Basic package information
@@ -51,24 +61,21 @@ setup(
     description="AI-Powered GitHub PR Automation and Issue Management",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
-    
     # Author and maintainer information
-    author="VeritasVault Team",
-    author_email="dev@veritasvault.net",
-    maintainer="VeritasVault Team",
-    maintainer_email="dev@veritasvault.net",
-    
+    author="neuralliquid Team",
+    author_email="dev@neuralliquid.net",
+    maintainer="neuralliquid Team",
+    maintainer_email="dev@neuralliquid.net",
     # URLs and project information
-    url="https://github.com/veritasvault/autopr-engine",
+    url="https://github.com/neuralliquid/autopr-engine",
     project_urls={
-        "Homepage": "https://github.com/veritasvault/autopr-engine",
+        "Homepage": "https://github.com/neuralliquid/autopr-engine",
         "Documentation": "https://autopr-engine.readthedocs.io",
-        "Repository": "https://github.com/veritasvault/autopr-engine",
-        "Bug Tracker": "https://github.com/veritasvault/autopr-engine/issues",
-        "Changelog": "https://github.com/veritasvault/autopr-engine/blob/main/CHANGELOG.md",
-        "Discussions": "https://github.com/veritasvault/autopr-engine/discussions",
+        "Repository": "https://github.com/neuralliquid/autopr-engine",
+        "Bug Tracker": "https://github.com/neuralliquid/autopr-engine/issues",
+        "Changelog": "https://github.com/neuralliquid/autopr-engine/blob/main/CHANGELOG.md",
+        "Discussions": "https://github.com/neuralliquid/autopr-engine/discussions",
     },
-    
     # Package discovery and inclusion
     packages=find_packages(exclude=["tests*", "docs*", "examples*"]),
     package_data={
@@ -83,21 +90,17 @@ setup(
         ],
     },
     include_package_data=True,
-    
     # Python version and classifiers
     python_requires=">=3.8",
     classifiers=[
         # Development Status
         "Development Status :: 4 - Beta",
-        
         # Intended Audience
         "Intended Audience :: Developers",
         "Intended Audience :: Information Technology",
         "Intended Audience :: System Administrators",
-        
         # License
         "License :: OSI Approved :: MIT License",
-        
         # Programming Language
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
@@ -106,13 +109,11 @@ setup(
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: Implementation :: CPython",
-        
         # Operating System
         "Operating System :: OS Independent",
         "Operating System :: POSIX",
         "Operating System :: Microsoft :: Windows",
         "Operating System :: MacOS",
-        
         # Topic Classification
         "Topic :: Software Development",
         "Topic :: Software Development :: Libraries :: Python Modules",
@@ -122,23 +123,33 @@ setup(
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
         "Topic :: System :: Software Distribution",
         "Topic :: Utilities",
-        
         # Natural Language
         "Natural Language :: English",
-        
         # Environment
         "Environment :: Console",
         "Environment :: Web Environment",
     ],
-    
     # Keywords for PyPI search
     keywords=[
-        "github", "pull-request", "automation", "ai", "code-review",
-        "ci-cd", "workflow", "integration", "slack", "linear",
-        "autogen", "llm", "openai", "anthropic", "issue-management",
-        "quality-gates", "platform-detection", "multi-agent"
+        "github",
+        "pull-request",
+        "automation",
+        "ai",
+        "code-review",
+        "ci-cd",
+        "workflow",
+        "integration",
+        "slack",
+        "linear",
+        "autogen",
+        "llm",
+        "openai",
+        "anthropic",
+        "issue-management",
+        "quality-gates",
+        "platform-detection",
+        "multi-agent",
     ],
-    
     # Dependencies
     install_requires=[
         # Core dependencies
@@ -148,29 +159,23 @@ setup(
         "click>=8.0.0,<9.0.0",
         "pyyaml>=6.0.0,<7.0.0",
         "jinja2>=3.1.0,<4.0.0",
-        
         # GitHub integration
         "pygithub>=1.58.0,<2.0.0",
         "GitPython>=3.1.0,<4.0.0",
-        
         # AI and LLM providers
         "openai>=1.0.0,<2.0.0",
         "anthropic>=0.25.0,<1.0.0",
         "mistralai>=1.0.0,<2.0.0",
-        
         # HTTP and networking
         "httpx>=0.24.0,<1.0.0",
         "websockets>=11.0.0,<12.0.0",
-        
         # Data processing
         "python-dateutil>=2.8.0,<3.0.0",
         "pytz>=2023.3",
-        
         # Configuration and environment
         "python-dotenv>=1.0.0,<2.0.0",
         "toml>=0.10.0,<1.0.0",
     ],
-    
     # Optional dependencies for different features
     extras_require={
         # Development dependencies
@@ -187,21 +192,18 @@ setup(
             "sphinx>=7.1.0,<8.0.0",
             "sphinx-rtd-theme>=1.3.0,<2.0.0",
         ],
-        
         # Monitoring and observability
         "monitoring": [
             "prometheus_client>=0.17.0,<1.0.0",
             "sentry-sdk[fastapi]>=1.32.0,<2.0.0",
             "datadog>=0.47.0,<1.0.0",
         ],
-        
         # Memory and learning systems
         "memory": [
             "mem0ai>=0.1.0,<1.0.0",
             "chromadb>=0.4.0,<1.0.0",
             "qdrant-client>=1.5.0,<2.0.0",
         ],
-        
         # Advanced AI features
         "ai": [
             "pyautogen>=0.2.0,<1.0.0",
@@ -209,7 +211,6 @@ setup(
             "langchain-openai>=0.0.5,<1.0.0",
             "langchain-anthropic>=0.1.0,<1.0.0",
         ],
-        
         # Database and caching
         "database": [
             "asyncpg>=0.28.0,<1.0.0",
@@ -218,27 +219,21 @@ setup(
             "redis>=4.6.0,<5.0.0",
             "aioredis>=2.0.0,<3.0.0",
         ],
-        
         # Web server and API
         "server": [
             "fastapi>=0.103.0,<1.0.0",
             "uvicorn[standard]>=0.23.0,<1.0.0",
             "gunicorn>=21.2.0,<22.0.0",
         ],
-        
         # Resilience and reliability
         "resilience": [
             "pybreaker>=1.0.0,<2.0.0",
             "tenacity>=8.2.0,<9.0.0",
             "limits>=3.6.0,<4.0.0",
         ],
-        
         # Full installation with all optional features
-        "full": [
-            "autopr-engine[dev,monitoring,memory,ai,database,server,resilience]"
-        ],
+        "full": ["autopr-engine[dev,monitoring,memory,ai,database,server,resilience]"],
     },
-    
     # Console scripts and entry points
     entry_points={
         "console_scripts": [
@@ -268,13 +263,10 @@ setup(
             "groq=autopr.ai.providers.groq:GroqProvider",
         ],
     },
-    
     # Test suite configuration
     test_suite="tests",
-    
     # Zip safety
     zip_safe=False,
-    
     # Platform compatibility
     platforms=["any"],
-) 
+)
