@@ -316,7 +316,7 @@ class MetricsCollector:
         )
 
     def get_benchmark_results(
-        self, benchmark_name: str = None, timeframe: str = "30d"
+        self, benchmark_name: Optional[str] = None, timeframe: str = "30d"
     ) -> Dict[str, Any]:
         """Get benchmark test results."""
         start_time = self._get_start_time(timeframe)
@@ -332,7 +332,7 @@ class MetricsCollector:
             FROM benchmarks 
             WHERE timestamp >= ?
         """
-        params = [start_time]
+        params: List[Any] = [start_time]
 
         if benchmark_name:
             query += " AND benchmark_name = ?"
@@ -464,7 +464,9 @@ class MetricsCollector:
         else:
             return now - timedelta(days=7)  # Default to 7 days
 
-    def _calculate_fix_success_rate(self, cursor, start_time: datetime) -> float:
+    def _calculate_fix_success_rate(
+        self, cursor: sqlite3.Cursor, start_time: datetime
+    ) -> float:
         """Calculate the rate of successful automated fixes."""
         cursor.execute(
             """
@@ -480,7 +482,9 @@ class MetricsCollector:
         total, successful = result
         return (successful / total) if total > 0 else 0.0
 
-    def _calculate_classification_accuracy(self, cursor, start_time: datetime) -> float:
+    def _calculate_classification_accuracy(
+        self, cursor: sqlite3.Cursor, start_time: datetime
+    ) -> float:
         """Calculate comment classification accuracy."""
         cursor.execute(
             """
@@ -493,7 +497,9 @@ class MetricsCollector:
         result = cursor.fetchone()
         return result[0] if result[0] else 0.0
 
-    def _calculate_false_positive_rate(self, cursor, start_time: datetime) -> float:
+    def _calculate_false_positive_rate(
+        self, cursor: sqlite3.Cursor, start_time: datetime
+    ) -> float:
         """Calculate false positive rate for automated actions."""
         cursor.execute(
             """
@@ -509,7 +515,9 @@ class MetricsCollector:
         total, rejected = result
         return (rejected / total) if total > 0 else 0.0
 
-    def _calculate_user_satisfaction(self, cursor, start_time: datetime) -> float:
+    def _calculate_user_satisfaction(
+        self, cursor: sqlite3.Cursor, start_time: datetime
+    ) -> float:
         """Calculate average user satisfaction score."""
         cursor.execute(
             """
@@ -522,7 +530,9 @@ class MetricsCollector:
         result = cursor.fetchone()
         return result[0] if result[0] else 0.0
 
-    def _calculate_avg_response_time(self, cursor, start_time: datetime) -> float:
+    def _calculate_avg_response_time(
+        self, cursor: sqlite3.Cursor, start_time: datetime
+    ) -> float:
         """Calculate average response time in seconds."""
         cursor.execute(
             """
@@ -536,7 +546,9 @@ class MetricsCollector:
         avg_ms = result[0] if result[0] else 0
         return avg_ms / 1000.0  # Convert to seconds
 
-    def _calculate_avg_resolution_time(self, cursor, start_time: datetime) -> float:
+    def _calculate_avg_resolution_time(
+        self, cursor: sqlite3.Cursor, start_time: datetime
+    ) -> float:
         """Calculate average time to resolve issues."""
         cursor.execute(
             """
@@ -550,7 +562,9 @@ class MetricsCollector:
         avg_ms = result[0] if result[0] else 0
         return avg_ms / 1000.0  # Convert to seconds
 
-    def _calculate_api_cost(self, cursor, start_time: datetime) -> float:
+    def _calculate_api_cost(
+        self, cursor: sqlite3.Cursor, start_time: datetime
+    ) -> float:
         """Calculate average API cost per comment."""
         cursor.execute(
             """
@@ -563,7 +577,9 @@ class MetricsCollector:
         result = cursor.fetchone()
         return result[0] if result[0] else 0.0
 
-    def _calculate_coverage_rate(self, cursor, start_time: datetime) -> float:
+    def _calculate_coverage_rate(
+        self, cursor: sqlite3.Cursor, start_time: datetime
+    ) -> float:
         """Calculate percentage of comments handled automatically."""
         cursor.execute(
             """
@@ -580,7 +596,9 @@ class MetricsCollector:
         total, automated = result
         return (automated / total) if total > 0 else 0.0
 
-    def _calculate_code_quality_score(self, cursor, start_time: datetime) -> float:
+    def _calculate_code_quality_score(
+        self, cursor: sqlite3.Cursor, start_time: datetime
+    ) -> float:
         """Calculate average code quality score."""
         cursor.execute(
             """
@@ -593,7 +611,9 @@ class MetricsCollector:
         result = cursor.fetchone()
         return result[0] if result[0] else 0.0
 
-    def _calculate_test_pass_rate(self, cursor, start_time: datetime) -> float:
+    def _calculate_test_pass_rate(
+        self, cursor: sqlite3.Cursor, start_time: datetime
+    ) -> float:
         """Calculate test pass rate for automated fixes."""
         cursor.execute(
             """
@@ -609,7 +629,9 @@ class MetricsCollector:
         total, passed = result
         return (passed / total) if total > 0 else 0.0
 
-    def _calculate_security_score(self, cursor, start_time: datetime) -> float:
+    def _calculate_security_score(
+        self, cursor: sqlite3.Cursor, start_time: datetime
+    ) -> float:
         """Calculate security score."""
         cursor.execute(
             """
@@ -622,7 +644,9 @@ class MetricsCollector:
         result = cursor.fetchone()
         return result[0] if result[0] else 0.0
 
-    def _calculate_maintainability_index(self, cursor, start_time: datetime) -> float:
+    def _calculate_maintainability_index(
+        self, cursor: sqlite3.Cursor, start_time: datetime
+    ) -> float:
         """Calculate maintainability index."""
         cursor.execute(
             """
@@ -635,7 +659,7 @@ class MetricsCollector:
         result = cursor.fetchone()
         return result[0] if result[0] else 0.0
 
-    def _calculate_uptime(self, cursor, start_time: datetime) -> float:
+    def _calculate_uptime(self, cursor: sqlite3.Cursor, start_time: datetime) -> float:
         """Calculate system uptime percentage."""
         cursor.execute(
             """
@@ -651,7 +675,9 @@ class MetricsCollector:
         total, successful = result
         return (successful / total) if total > 0 else 1.0
 
-    def _calculate_error_rate(self, cursor, start_time: datetime) -> float:
+    def _calculate_error_rate(
+        self, cursor: sqlite3.Cursor, start_time: datetime
+    ) -> float:
         """Calculate system error rate."""
         cursor.execute(
             """
@@ -667,7 +693,9 @@ class MetricsCollector:
         total, errors = result
         return (errors / total) if total > 0 else 0.0
 
-    def _calculate_throughput(self, cursor, start_time: datetime) -> float:
+    def _calculate_throughput(
+        self, cursor: sqlite3.Cursor, start_time: datetime
+    ) -> float:
         """Calculate comments processed per hour."""
         cursor.execute(
             """
@@ -684,7 +712,9 @@ class MetricsCollector:
         hours_elapsed = (datetime.now() - start_time).total_seconds() / 3600
         return total_comments / hours_elapsed if hours_elapsed > 0 else 0.0
 
-    def _calculate_resource_utilization(self, cursor, start_time: datetime) -> float:
+    def _calculate_resource_utilization(
+        self, cursor: sqlite3.Cursor, start_time: datetime
+    ) -> float:
         """Calculate average resource utilization."""
         cursor.execute(
             """

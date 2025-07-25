@@ -32,7 +32,7 @@ class CheckLockfileDrift(Action[Inputs, Outputs]):
 
 
 if __name__ == "__main__":
-    from autopr.tests.utils import run_action_manually  # type: ignore
+    from autopr.tests.utils import run_action_manually
 
     asyncio.run(
         run_action_manually(

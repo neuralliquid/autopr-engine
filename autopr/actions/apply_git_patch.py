@@ -24,11 +24,13 @@ class ApplyGitPatch(Action[Inputs, Outputs]):
         print(inputs.patch_content)
         # In a real implementation, you would write the patch to a file and run 'git apply'
         # For simulation, just print and return success
+        if not inputs.patch_content.strip():
+            return Outputs(success=False, log="Empty patch content")
         return Outputs(success=True, log="Patch applied (simulated)")
 
 
 if __name__ == "__main__":
-    from autopr.tests.utils import run_action_manually  # type: ignore
+    from autopr.tests.utils import run_action_manually
     import asyncio
 
     asyncio.run(

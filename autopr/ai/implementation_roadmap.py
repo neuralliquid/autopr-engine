@@ -673,6 +673,641 @@ async def analyze_code_with_ai(code: str):
         print("    📝 Created circuit breaker manager")
         print("    🛡️ Added automatic retry logic with exponential backoff")
 
+    # Medium Priority Tasks
+    async def _setup_postgresql_integration(self) -> None:
+        """Setup PostgreSQL integration for data persistence"""
+
+        # Install PostgreSQL dependencies
+        await self._run_command(["pip", "install", "asyncpg", "sqlalchemy[asyncio]"])
+
+        # Create database configuration
+        db_config = """
+import asyncpg
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.orm import sessionmaker
+import os
+
+class DatabaseManager:
+    def __init__(self):
+        self.database_url = os.getenv("DATABASE_URL", "postgresql://autopr:password@localhost/autopr")
+        self.engine = create_async_engine(self.database_url, echo=True)
+        self.async_session = sessionmaker(
+            self.engine, class_=AsyncSession, expire_on_commit=False
+        )
+    
+    async def get_session(self):
+        async with self.async_session() as session:
+            yield session
+    
+    async def health_check(self):
+        try:
+            async with self.engine.begin() as conn:
+                await conn.execute("SELECT 1")
+            return {"status": "healthy", "message": "PostgreSQL connection successful"}
+        except Exception as e:
+            return {"status": "unhealthy", "message": f"PostgreSQL error: {e}"}
+"""
+
+        await self._write_file("autopr/database/manager.py", db_config)
+        print("    ✅ PostgreSQL integration configured")
+
+    async def _implement_prometheus_metrics(self) -> None:
+        """Implement Prometheus metrics collection"""
+
+        # Install Prometheus dependencies
+        await self._run_command(
+            ["pip", "install", "prometheus-client", "prometheus-fastapi-instrumentator"]
+        )
+
+        # Create metrics configuration
+        metrics_config = """
+from prometheus_client import Counter, Histogram, Gauge, generate_latest
+from prometheus_fastapi_instrumentator import Instrumentator
+import time
+from typing import Dict, Any
+
+class MetricsCollector:
+    def __init__(self):
+        # Request metrics
+        self.request_count = Counter(
+            "autopr_requests_total", 
+            "Total requests", 
+            ["method", "endpoint", "status"]
+        )
+        
+        self.request_duration = Histogram(
+            "autopr_request_duration_seconds",
+            "Request duration",
+            ["method", "endpoint"]
+        )
+        
+        # LLM metrics
+        self.llm_requests = Counter(
+            "autopr_llm_requests_total",
+            "Total LLM requests",
+            ["provider", "model"]
+        )
+        
+        self.llm_tokens = Counter(
+            "autopr_llm_tokens_total",
+            "Total LLM tokens used",
+            ["provider", "model", "type"]
+        )
+        
+        # System metrics
+        self.active_connections = Gauge(
+            "autopr_active_connections",
+            "Active connections"
+        )
+    
+    def record_request(self, method: str, endpoint: str, status: int, duration: float):
+        self.request_count.labels(method=method, endpoint=endpoint, status=status).inc()
+        self.request_duration.labels(method=method, endpoint=endpoint).observe(duration)
+    
+    def record_llm_usage(self, provider: str, model: str, prompt_tokens: int, completion_tokens: int):
+        self.llm_requests.labels(provider=provider, model=model).inc()
+        self.llm_tokens.labels(provider=provider, model=model, type="prompt").inc(prompt_tokens)
+        self.llm_tokens.labels(provider=provider, model=model, type="completion").inc(completion_tokens)
+    
+    def get_metrics(self) -> str:
+        return generate_latest()
+"""
+
+        await self._write_file("autopr/monitoring/metrics.py", metrics_config)
+        print("    📊 Prometheus metrics implemented")
+
+    async def _setup_oauth2_authentication(self) -> None:
+        """Setup OAuth 2.0 authentication"""
+
+        # Install OAuth dependencies
+        await self._run_command(
+            ["pip", "install", "authlib", "python-jose[cryptography]"]
+        )
+
+        # Create OAuth configuration
+        oauth_config = """
+from authlib.integrations.fastapi_oauth2 import OAuth2Token
+from authlib.oauth2 import OAuth2Error
+from fastapi import HTTPException, Depends, status
+from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError, jwt
+import os
+from typing import Optional, Dict, Any
+
+class OAuth2Manager:
+    def __init__(self):
+        self.secret_key = os.getenv("SECRET_KEY", "your-secret-key-here")
+        self.algorithm = "HS256"
+        self.access_token_expire_minutes = 30
+        
+        # GitHub OAuth settings
+        self.github_client_id = os.getenv("GITHUB_CLIENT_ID")
+        self.github_client_secret = os.getenv("GITHUB_CLIENT_SECRET")
+        
+        self.oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+    
+    def create_access_token(self, data: Dict[str, Any]) -> str:
+        to_encode = data.copy()
+        encoded_jwt = jwt.encode(to_encode, self.secret_key, algorithm=self.algorithm)
+        return encoded_jwt
+    
+    def verify_token(self, token: str) -> Optional[Dict[str, Any]]:
+        try:
+            payload = jwt.decode(token, self.secret_key, algorithms=[self.algorithm])
+            return payload
+        except JWTError:
+            return None
+    
+    async def get_current_user(self, token: str = Depends(oauth2_scheme)) -> Dict[str, Any]:
+        credentials_exception = HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+        
+        payload = self.verify_token(token)
+        if payload is None:
+            raise credentials_exception
+        
+        return payload
+"""
+
+        await self._write_file("autopr/auth/oauth.py", oauth_config)
+        print("    🔐 OAuth 2.0 authentication configured")
+
+    async def _implement_advanced_llm_routing(self) -> None:
+        """Implement advanced LLM routing and load balancing"""
+
+        routing_config = """
+import asyncio
+import random
+from typing import List, Dict, Any, Optional
+from dataclasses import dataclass
+from enum import Enum
+
+class RoutingStrategy(Enum):
+    ROUND_ROBIN = "round_robin"
+    LEAST_LOADED = "least_loaded"
+    COST_OPTIMIZED = "cost_optimized"
+    PERFORMANCE_OPTIMIZED = "performance_optimized"
+
+@dataclass
+class ProviderMetrics:
+    name: str
+    current_load: int
+    average_response_time: float
+    cost_per_token: float
+    success_rate: float
+    max_concurrent: int
+
+class LLMRouter:
+    def __init__(self):
+        self.providers: Dict[str, ProviderMetrics] = {}
+        self.routing_strategy = RoutingStrategy.LEAST_LOADED
+        self.round_robin_index = 0
+    
+    def add_provider(self, metrics: ProviderMetrics):
+        self.providers[metrics.name] = metrics
+    
+    def select_provider(self, strategy: Optional[RoutingStrategy] = None) -> Optional[str]:
+        if not self.providers:
+            return None
+        
+        strategy = strategy or self.routing_strategy
+        available_providers = [
+            name for name, metrics in self.providers.items()
+            if metrics.current_load < metrics.max_concurrent
+        ]
+        
+        if not available_providers:
+            return None
+        
+        if strategy == RoutingStrategy.ROUND_ROBIN:
+            provider = available_providers[self.round_robin_index % len(available_providers)]
+            self.round_robin_index += 1
+            return provider
+        
+        elif strategy == RoutingStrategy.LEAST_LOADED:
+            return min(available_providers, 
+                      key=lambda p: self.providers[p].current_load)
+        
+        elif strategy == RoutingStrategy.COST_OPTIMIZED:
+            return min(available_providers,
+                      key=lambda p: self.providers[p].cost_per_token)
+        
+        elif strategy == RoutingStrategy.PERFORMANCE_OPTIMIZED:
+            return min(available_providers,
+                      key=lambda p: self.providers[p].average_response_time)
+        
+        return random.choice(available_providers)
+    
+    def update_metrics(self, provider_name: str, **kwargs):
+        if provider_name in self.providers:
+            for key, value in kwargs.items():
+                if hasattr(self.providers[provider_name], key):
+                    setattr(self.providers[provider_name], key, value)
+"""
+
+        await self._write_file("autopr/ai/routing.py", routing_config)
+        print("    🔄 Advanced LLM routing implemented")
+
+    async def _create_comprehensive_testing(self) -> None:
+        """Create comprehensive testing framework"""
+
+        # Install testing dependencies
+        await self._run_command(
+            ["pip", "install", "pytest", "pytest-asyncio", "pytest-cov", "httpx"]
+        )
+
+        # Create test configuration
+        test_config = """
+import pytest
+import asyncio
+from httpx import AsyncClient
+from fastapi.testclient import TestClient
+from autopr.main import app
+
+@pytest.fixture
+def client():
+    return TestClient(app)
+
+@pytest.fixture
+async def async_client():
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        yield ac
+
+@pytest.fixture
+def event_loop():
+    loop = asyncio.get_event_loop_policy().new_event_loop()
+    yield loop
+    loop.close()
+
+class TestHealthChecks:
+    def test_health_endpoint(self, client):
+        response = client.get("/health")
+        assert response.status_code == 200
+        assert "status" in response.json()
+    
+    async def test_async_health_check(self, async_client):
+        response = await async_client.get("/health")
+        assert response.status_code == 200
+
+class TestLLMProviders:
+    async def test_openai_provider(self, async_client):
+        # Mock LLM request
+        payload = {
+            "messages": [{"role": "user", "content": "Hello"}],
+            "provider": "openai"
+        }
+        response = await async_client.post("/api/v1/chat/completions", json=payload)
+        assert response.status_code in [200, 401]  # 401 if no API key
+
+class TestAuthentication:
+    def test_protected_endpoint_without_auth(self, client):
+        response = client.get("/api/v1/protected")
+        assert response.status_code == 401
+    
+    def test_token_validation(self, client):
+        # Test with invalid token
+        headers = {"Authorization": "Bearer invalid_token"}
+        response = client.get("/api/v1/protected", headers=headers)
+        assert response.status_code == 401
+"""
+
+        await self._write_file("tests/test_main.py", test_config)
+
+        # Create pytest configuration
+        pytest_config = """
+[tool:pytest]
+testpaths = tests
+python_files = test_*.py
+python_classes = Test*
+python_functions = test_*
+addopts = 
+    --strict-markers
+    --strict-config
+    --cov=autopr
+    --cov-report=html
+    --cov-report=term-missing
+    --cov-fail-under=80
+asyncio_mode = auto
+"""
+
+        await self._write_file("pytest.ini", pytest_config)
+        print("    🧪 Comprehensive testing framework created")
+
+    # Strategic Priority Tasks
+    async def _implement_rag_system(self) -> None:
+        """Implement RAG (Retrieval Augmented Generation) system"""
+
+        # Install RAG dependencies
+        await self._run_command(
+            ["pip", "install", "chromadb", "sentence-transformers", "langchain"]
+        )
+
+        rag_config = """
+import chromadb
+from sentence_transformers import SentenceTransformer
+from typing import List, Dict, Any
+import os
+
+class RAGSystem:
+    def __init__(self):
+        self.client = chromadb.Client()
+        self.collection = self.client.create_collection("autopr_knowledge")
+        self.encoder = SentenceTransformer('all-MiniLM-L6-v2')
+    
+    def add_documents(self, documents: List[str], metadata: List[Dict[str, Any]] = None):
+        embeddings = self.encoder.encode(documents)
+        ids = [f"doc_{i}" for i in range(len(documents))]
+        
+        self.collection.add(
+            embeddings=embeddings.tolist(),
+            documents=documents,
+            metadatas=metadata or [{}] * len(documents),
+            ids=ids
+        )
+    
+    def search(self, query: str, n_results: int = 5) -> List[Dict[str, Any]]:
+        query_embedding = self.encoder.encode([query])
+        
+        results = self.collection.query(
+            query_embeddings=query_embedding.tolist(),
+            n_results=n_results
+        )
+        
+        return results
+    
+    def generate_context(self, query: str) -> str:
+        search_results = self.search(query)
+        context_docs = search_results.get('documents', [[]])[0]
+        return "\\n\\n".join(context_docs)
+"""
+
+        await self._write_file("autopr/rag/system.py", rag_config)
+        print("    🔍 RAG system implemented")
+
+    async def _create_analytics_dashboard(self) -> None:
+        """Create analytics dashboard"""
+
+        # Install dashboard dependencies
+        await self._run_command(["pip", "install", "streamlit", "plotly", "pandas"])
+
+        dashboard_config = """
+import streamlit as st
+import plotly.express as px
+import plotly.graph_objects as go
+import pandas as pd
+from datetime import datetime, timedelta
+import requests
+
+st.set_page_config(page_title="AutoPR Analytics", layout="wide")
+
+def main():
+    st.title("🤖 AutoPR Analytics Dashboard")
+    
+    # Sidebar
+    st.sidebar.header("Filters")
+    date_range = st.sidebar.date_input(
+        "Select Date Range",
+        value=[datetime.now() - timedelta(days=7), datetime.now()],
+        max_value=datetime.now()
+    )
+    
+    # Main metrics
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.metric("Total Requests", "1,234", "12%")
+    
+    with col2:
+        st.metric("LLM Calls", "567", "8%")
+    
+    with col3:
+        st.metric("Success Rate", "98.5%", "0.5%")
+    
+    with col4:
+        st.metric("Avg Response Time", "1.2s", "-0.3s")
+    
+    # Charts
+    st.subheader("Request Volume Over Time")
+    
+    # Sample data
+    dates = pd.date_range(start=date_range[0], end=date_range[1], freq='H')
+    data = pd.DataFrame({
+        'timestamp': dates,
+        'requests': np.random.randint(10, 100, len(dates))
+    })
+    
+    fig = px.line(data, x='timestamp', y='requests', title='Hourly Request Volume')
+    st.plotly_chart(fig, use_container_width=True)
+    
+    # Provider usage
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("LLM Provider Usage")
+        provider_data = pd.DataFrame({
+            'Provider': ['OpenAI', 'Anthropic', 'Groq'],
+            'Usage': [45, 35, 20]
+        })
+        fig = px.pie(provider_data, values='Usage', names='Provider')
+        st.plotly_chart(fig, use_container_width=True)
+    
+    with col2:
+        st.subheader("Response Time Distribution")
+        response_times = np.random.normal(1.2, 0.3, 1000)
+        fig = px.histogram(x=response_times, title='Response Time Distribution (seconds)')
+        st.plotly_chart(fig, use_container_width=True)
+
+if __name__ == "__main__":
+    main()
+"""
+
+        await self._write_file("dashboard/analytics.py", dashboard_config)
+        print("    📊 Analytics dashboard created")
+
+    async def _setup_fine_tuned_models(self) -> None:
+        """Setup fine-tuned model training and deployment"""
+
+        finetuning_config = '''
+import openai
+from typing import List, Dict, Any
+import json
+import os
+
+class FineTuningManager:
+    def __init__(self):
+        self.client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    
+    def prepare_training_data(self, conversations: List[Dict[str, Any]]) -> str:
+        """Prepare training data in OpenAI format"""
+        training_data = []
+        
+        for conv in conversations:
+            training_data.append({
+                "messages": [
+                    {"role": "system", "content": "You are AutoPR, an AI assistant for code review and pull requests."},
+                    {"role": "user", "content": conv["input"]},
+                    {"role": "assistant", "content": conv["output"]}
+                ]
+            })
+        
+        # Save to JSONL file
+        filename = "training_data.jsonl"
+        with open(filename, 'w') as f:
+            for item in training_data:
+                f.write(json.dumps(item) + '\\n')
+        
+        return filename
+    
+    def create_fine_tuning_job(self, training_file: str, model: str = "gpt-3.5-turbo") -> str:
+        """Create a fine-tuning job"""
+        
+        # Upload training file
+        with open(training_file, 'rb') as f:
+            file_response = self.client.files.create(
+                file=f,
+                purpose='fine-tune'
+            )
+        
+        # Create fine-tuning job
+        job = self.client.fine_tuning.jobs.create(
+            training_file=file_response.id,
+            model=model
+        )
+        
+        return job.id
+    
+    def check_job_status(self, job_id: str) -> Dict[str, Any]:
+        """Check fine-tuning job status"""
+        job = self.client.fine_tuning.jobs.retrieve(job_id)
+        return {
+            "id": job.id,
+            "status": job.status,
+            "model": job.fine_tuned_model,
+            "created_at": job.created_at,
+            "finished_at": job.finished_at
+        }
+'''
+
+        await self._write_file("autopr/ai/finetuning.py", finetuning_config)
+        print("    🎯 Fine-tuning system configured")
+
+    async def _implement_multi_cloud_deployment(self) -> None:
+        """Implement multi-cloud deployment configuration"""
+
+        # Create Docker configuration
+        dockerfile = """
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 8000
+
+CMD ["uvicorn", "autopr.main:app", "--host", "0.0.0.0", "--port", "8000"]
+"""
+
+        await self._write_file("Dockerfile", dockerfile)
+
+        # Create Kubernetes deployment
+        k8s_config = """
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autopr-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: autopr
+  template:
+    metadata:
+      labels:
+        app: autopr
+    spec:
+      containers:
+      - name: autopr
+        image: autopr:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: autopr-secrets
+              key: database-url
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: autopr-secrets
+              key: openai-api-key
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: autopr-service
+spec:
+  selector:
+    app: autopr
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8000
+  type: LoadBalancer
+"""
+
+        await self._write_file("k8s/deployment.yaml", k8s_config)
+
+        # Create Terraform configuration
+        terraform_config = """
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 4.0"
+    }
+  }
+}
+
+# AWS EKS Cluster
+resource "aws_eks_cluster" "autopr_aws" {
+  name     = "autopr-cluster-aws"
+  role_arn = aws_iam_role.eks_cluster.arn
+
+  vpc_config {
+    subnet_ids = [aws_subnet.autopr_subnet_1.id, aws_subnet.autopr_subnet_2.id]
+  }
+}
+
+# Google GKE Cluster
+resource "google_container_cluster" "autopr_gcp" {
+  name     = "autopr-cluster-gcp"
+  location = "us-central1"
+
+  initial_node_count = 3
+
+  node_config {
+    machine_type = "e2-medium"
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/cloud-platform"
+    ]
+  }
+}
+"""
+
+        await self._write_file("terraform/main.tf", terraform_config)
+        print("    ☁️ Multi-cloud deployment configured")
+
     # Helper methods
     async def _run_command(self, command: List[str]) -> str:
         """Run shell command and return output"""
@@ -786,11 +1421,12 @@ async def analyze_code_with_ai(code: str):
             ],
         }
 
-        return next_steps.get(self.current_phase, [])
+        return next_steps.get(self.current_phase or "immediate", [])
+
+    # CLI interface
 
 
-# CLI interface
-async def main():
+async def main() -> None:
     import argparse
 
     parser = argparse.ArgumentParser(

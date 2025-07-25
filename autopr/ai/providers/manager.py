@@ -90,7 +90,7 @@ class LLMProviderManager:
         ):
             if self.config.default_llm_provider in self.providers:
                 provider = self.providers[self.config.default_llm_provider]
-                if hasattr(provider, "is_initialized") and provider.is_initialized:  # type: ignore[attr-defined]  # Provider may have this attr
+                if hasattr(provider, "is_initialized") and provider.is_initialized:
                     self.default_provider = self.config.default_llm_provider
 
     async def cleanup(self) -> None:
@@ -130,7 +130,7 @@ class LLMProviderManager:
         if provider_name and provider_name in self.providers:
             provider = self.providers[provider_name]
             # Check if provider is initialized
-            if hasattr(provider, "is_initialized") and provider.is_initialized:  # type: ignore[attr-defined]  # Provider may have this attr
+            if hasattr(provider, "is_initialized") and provider.is_initialized:
                 return provider
 
         return None
@@ -207,13 +207,14 @@ class LLMProviderManager:
             return
 
         try:
-            async for response in provider.generate_stream_completion(
+            stream = await provider.generate_stream_completion(
                 messages=messages,
                 model=model,
                 temperature=temperature,
                 max_tokens=max_tokens,
                 **kwargs,
-            ):
+            )
+            async for response in stream:
                 yield response
 
         except Exception as e:
@@ -232,7 +233,7 @@ class LLMProviderManager:
         return [
             name
             for name, provider in self.providers.items()
-            if hasattr(provider, "is_initialized") and provider.is_initialized  # type: ignore[attr-defined]  # Provider may have this attr
+            if hasattr(provider, "is_initialized") and provider.is_initialized
         ]
 
     def get_all_providers(self) -> List[str]:

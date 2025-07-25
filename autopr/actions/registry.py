@@ -162,9 +162,9 @@ class ActionRegistry:
             from .create_or_update_issue import CreateOrUpdateIssue
 
             # Register basic actions
-            self.register_action(PostComment)  # type: ignore[arg-type,type-abstract]  # Action subclasses are compatible
-            self.register_action(LabelPR)  # type: ignore[arg-type,type-abstract]  # Action subclasses are compatible
-            self.register_action(CreateOrUpdateIssue)  # type: ignore[arg-type,type-abstract]  # Action subclasses are compatible
+            self.register_action(PostComment)
+            self.register_action(LabelPR)
+            self.register_action(CreateOrUpdateIssue)
 
             logger.info("Built-in actions registered successfully")
 
