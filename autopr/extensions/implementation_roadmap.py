@@ -9,19 +9,93 @@ import sys
 import subprocess
 import json
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import (
+    Dict,
+    List,
+    Optional,
+    Any,
+    Union,
+    Sequence,
+    TypeVar,
+    Generic,
+    Type,
+    cast,
+)
+from dataclasses import dataclass, field
+import logging
 import asyncio
 from datetime import datetime, timedelta
 
+logger = logging.getLogger(__name__)
+
+# Define type variables for better type safety
+T = TypeVar("T")
+
+
+@dataclass
+class Task:
+    """Represents a task in the implementation roadmap."""
+
+    id: str
+    description: str
+    status: str = "pending"
+    dependencies: List[str] = field(default_factory=list)
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if self.dependencies is None:
+            self.dependencies = []
+        if self.metadata is None:
+            self.metadata = {}
+
+
+class ImplementationRoadmap:
+    """Manages the implementation roadmap for the project."""
+
+    def __init__(self) -> None:
+        self.tasks: Dict[str, Task] = {}
+        self.task_status: Dict[str, str] = {}
+        self.dependencies: Dict[str, List[str]] = {}
+        self._initialized: bool = False
+
+    def add_task(
+        self,
+        task_id: str,
+        description: str,
+        dependencies: Optional[List[str]] = None,
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> None:
+        """Add a task to the roadmap.
+
+        Args:
+            task_id: Unique identifier for the task
+            description: Description of the task
+            dependencies: List of task IDs this task depends on
+            metadata: Additional metadata for the task
+        """
+        if dependencies is None:
+            dependencies = []
+        if metadata is None:
+            metadata = {}
+
+        task = Task(
+            id=task_id,
+            description=description,
+            dependencies=dependencies,
+            metadata=metadata,
+        )
+        self.tasks[task_id] = task
+        self.task_status[task_id] = "pending"
+        self.dependencies[task_id] = dependencies.copy()
+
 
 class Phase1ExtensionImplementor:
-    def __init__(self):
+    def __init__(self) -> None:
         self.project_root = Path.cwd()
-        self.implementation_log = []
-        self.current_phase = None
-
-        # Implementation phases with dependencies
-        self.implementation_phases = {
+        self.implementation_log: List[Dict[str, Any]] = []
+        self.current_phase: Optional[str] = None
+        self.tasks: Dict[str, Task] = {}
+        self.implementation_phases: Dict[str, Dict[str, Any]] = {
             "immediate": {
                 "name": "Immediate Priority (Week 1-2)",
                 "duration_days": 10,
@@ -58,9 +132,7 @@ class Phase1ExtensionImplementor:
             },
         }
 
-    async def run_implementation(
-        self, phase: str = "immediate", dry_run: bool = False
-    ) -> None:
+    async def run_implementation(self, phase: str = "immediate", dry_run: bool = False) -> None:
         """Run implementation for specified phase"""
 
         print(f"🚀 Starting AutoPR Phase 1 Extensions Implementation")
@@ -111,7 +183,7 @@ class Phase1ExtensionImplementor:
         print("\n🎉 Phase 1 Extensions Implementation Complete!")
         print(f"📊 View detailed report: implementation_report_{phase}.json")
 
-    async def _check_dependencies(self, phase: str):
+    async def _check_dependencies(self, phase: str) -> None:
         """Check if phase dependencies are met"""
 
         phase_config = self.implementation_phases[phase]
@@ -119,16 +191,14 @@ class Phase1ExtensionImplementor:
 
         for dep_phase in dependencies:
             if not await self._is_phase_completed(dep_phase):
-                raise Exception(
-                    f"Dependency not met: {dep_phase} must be completed before {phase}"
-                )
+                raise Exception(f"Dependency not met: {dep_phase} must be completed before {phase}")
 
         print(f"✅ All dependencies satisfied for phase: {phase}")
 
     async def _execute_task(self, task: str) -> None:
         """Execute individual implementation task"""
 
-        task_methods = {
+        task_methods: Dict[str, Any] = {
             "setup_sentry_monitoring": self._setup_sentry_monitoring,
             "implement_structured_logging": self._implement_structured_logging,
             "setup_redis_caching": self._setup_redis_caching,
@@ -151,7 +221,7 @@ class Phase1ExtensionImplementor:
         await task_methods[task]()
 
     # Immediate Priority Tasks
-    async def _setup_sentry_monitoring(self):
+    async def _setup_sentry_monitoring(self) -> None:
         """Setup Sentry for error tracking and performance monitoring"""
 
         # Install Sentry SDK
@@ -203,7 +273,7 @@ ENVIRONMENT=development
         print("    📝 Created Sentry configuration")
         print("    🔧 Added environment variables template")
 
-    async def _implement_structured_logging(self):
+    async def _implement_structured_logging(self) -> None:
         """Implement structured JSON logging"""
 
         # Install structlog
@@ -255,14 +325,12 @@ def log_ai_api_call(model, tokens, cost):
                component="llm_manager")
         """
 
-        await self._write_file(
-            "tools/autopr/logging/structured_logging.py", logging_config
-        )
+        await self._write_file("tools/autopr/logging/structured_logging.py", logging_config)
 
         print("    📝 Created structured logging configuration")
         print("    🔍 Added correlation ID tracking")
 
-    async def _setup_redis_caching(self):
+    async def _setup_redis_caching(self) -> None:
         """Setup Redis caching for LLM responses and API calls"""
 
         # Install Redis dependencies
@@ -360,7 +428,7 @@ REDIS_URL=redis://localhost:6379
         print("    📝 Created Redis cache manager")
         print("    🚀 Added LLM response caching decorators")
 
-    async def _create_health_checks(self):
+    async def _create_health_checks(self) -> None:
         """Create comprehensive health check endpoints"""
 
         health_checks = """
@@ -558,7 +626,7 @@ async def quick_health_check():
         print("    📝 Created comprehensive health checks")
         print("    🔍 Added system resource monitoring")
 
-    async def _implement_basic_circuit_breakers(self):
+    async def _implement_basic_circuit_breakers(self) -> None:
         """Implement circuit breaker pattern for external API calls"""
 
         # Install circuit breaker dependencies
@@ -666,9 +734,7 @@ async def analyze_code_with_ai(code: str):
     pass
         """
 
-        await self._write_file(
-            "tools/autopr/resilience/circuit_breaker.py", circuit_breaker
-        )
+        await self._write_file("tools/autopr/resilience/circuit_breaker.py", circuit_breaker)
 
         print("    📝 Created circuit breaker manager")
         print("    🛡️ Added automatic retry logic with exponential backoff")
@@ -780,9 +846,7 @@ class MetricsCollector:
         """Setup OAuth 2.0 authentication"""
 
         # Install OAuth dependencies
-        await self._run_command(
-            ["pip", "install", "authlib", "python-jose[cryptography]"]
-        )
+        await self._run_command(["pip", "install", "authlib", "python-jose[cryptography]"])
 
         # Create OAuth configuration
         oauth_config = """
@@ -1390,9 +1454,7 @@ resource "google_container_cluster" "autopr_gcp" {
             json.dump(report, f, indent=2)
 
         # Mark phase as complete
-        completion_file = (
-            self.project_root / f".autopr_phase_{self.current_phase}_complete"
-        )
+        completion_file = self.project_root / f".autopr_phase_{self.current_phase}_complete"
         completion_file.touch()
 
     def _get_next_steps(self) -> List[str]:
@@ -1429,9 +1491,7 @@ resource "google_container_cluster" "autopr_gcp" {
 async def main() -> None:
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="AutoPR Phase 1 Extensions Implementation"
-    )
+    parser = argparse.ArgumentParser(description="AutoPR Phase 1 Extensions Implementation")
     parser.add_argument(
         "--phase",
         choices=["immediate", "medium", "strategic"],

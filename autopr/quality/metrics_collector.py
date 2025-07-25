@@ -791,6 +791,6 @@ class MetricsCollector:
 
 
 # Convenience function for easy metrics collection
-def collect_autopr_metrics():
+def collect_autopr_metrics() -> "MetricsCollector":
     """Convenient function to get the global metrics collector."""
     return MetricsCollector()

@@ -5,44 +5,44 @@ Registry for managing and discovering actions.
 """
 
 import logging
-from typing import Dict, List, Optional, Type, Any
-from .base import Action
+from typing import Dict, Type, TypeVar, Generic, Any, Optional, Callable, List
+from typing_extensions import Protocol
+from autopr.actions.base import Action
+
+T = TypeVar("T")
+ActionT = TypeVar("ActionT", bound=Action[Any, Any])  # Define ActionT with proper bounds
+
+
+class ActionProtocol(Protocol):
+    """Protocol for Action classes to handle dynamic registration."""
+
+    def __call__(self, *args: Any, **kwargs: Any) -> Any: ...
+
 
 logger = logging.getLogger(__name__)
 
 
-class ActionRegistry:
+class ActionRegistry(Generic[ActionT]):
     """
-    Registry for managing AutoPR actions.
-
-    Provides registration, discovery, and instantiation of actions.
+    Registry for action classes with type safety.
     """
 
     def __init__(self) -> None:
         """Initialize the action registry."""
-        self._actions: Dict[str, Type[Action[Any, Any]]] = {}
-        self._instances: Dict[str, Action[Any, Any]] = {}
+        self._actions: Dict[str, Type[ActionT]] = {}
+        self._instances: Dict[str, ActionT] = {}
 
         # Auto-register built-in actions
         self._register_builtin_actions()
 
         logger.info("Action registry initialized")
 
-    def register_action(self, action_cls: Type[Action[Any, Any]]) -> None:
-        """
-        Register an action class.
+    def register(self, name: str, action_cls: Type[ActionT]) -> None:
+        """Register an action class with type safety."""
+        self._actions[name] = action_cls
+        logger.info(f"Registered action: {name}")
 
-        Args:
-            action_cls: Action class to register
-        """
-        # Create a temporary instance to get the name
-        temp_instance = action_cls("temp", "temp")
-        action_name = temp_instance.name
-
-        self._actions[action_name] = action_cls
-        logger.info(f"Registered action: {action_name}")
-
-    def unregister_action(self, action_name: str) -> None:
+    def unregister(self, action_name: str) -> None:
         """
         Unregister an action.
 
@@ -57,7 +57,11 @@ class ActionRegistry:
 
         logger.info(f"Unregistered action: {action_name}")
 
-    def get_action(self, action_name: str) -> Optional[Action[Any, Any]]:
+    def get(self, name: str) -> Optional[Type[ActionT]]:
+        """Get an action class by name."""
+        return self._actions.get(name)
+
+    def get_action(self, action_name: str) -> Optional[ActionT]:
         """
         Get an action instance by name.
 
@@ -145,10 +149,7 @@ class ActionRegistry:
         for action_name in self._actions:
             action = self.get_action(action_name)
             if action:
-                if (
-                    query_lower in action.name.lower()
-                    or query_lower in action.description.lower()
-                ):
+                if query_lower in action.name.lower() or query_lower in action.description.lower():
                     matching_actions.append(action_name)
 
         return matching_actions
@@ -161,10 +162,10 @@ class ActionRegistry:
             from .label_pr import LabelPR
             from .create_or_update_issue import CreateOrUpdateIssue
 
-            # Register basic actions
-            self.register_action(PostComment)
-            self.register_action(LabelPR)
-            self.register_action(CreateOrUpdateIssue)
+            # Register actions with proper typing
+            self.register("post_comment", PostComment)  # type: ignore[arg-type]
+            self.register("label_pr", LabelPR)  # type: ignore[arg-type]
+            self.register("create_or_update_issue", CreateOrUpdateIssue)  # type: ignore[arg-type]
 
             logger.info("Built-in actions registered successfully")
 
@@ -208,3 +209,23 @@ class ActionRegistry:
             "github_actions": len(self.get_actions_by_platform("github")),
             "gitlab_actions": len(self.get_actions_by_platform("gitlab")),
         }
+
+    def create(self, name: str, **kwargs: Any) -> Optional[ActionT]:
+        action_cls = self.get(name)
+        if action_cls is None:
+            return None
+        return action_cls(**kwargs)
+
+
+def register_action(name: str) -> Callable:
+    """Decorator to register an action class."""
+
+    def decorator(cls: Type[ActionT]) -> Type[ActionT]:
+        registry.register(name, cls)
+        return cls
+
+    return decorator
+
+
+# Global registry instance with proper type annotation
+registry: ActionRegistry[Action[Any, Any]] = ActionRegistry()

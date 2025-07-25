@@ -15,13 +15,8 @@ if TYPE_CHECKING:
     from .platform_detector import PlatformDetector as _PlatformDetector
     from .autogen_implementation import AutoGenImplementation as _AutoGenImplementation
     from .issue_creator import IssueCreator as _IssueCreator
-    from .configurable_llm_provider import LLMProviderManager as _LLMProviderManager
-    from .autogen_multi_agent import AutoGenAgentSystem as _AutoGenAgentSystem
-    from .mem0_memory_integration import Mem0MemoryManager as _Mem0MemoryManager
-    from .quality_gates import QualityGates as _QualityGates
-    from .learning_memory_system import LearningMemorySystem as _LearningMemorySystem
-    from .multi_platform_integrator import (
-        MultiPlatformIntegrator as _MultiPlatformIntegrator,
+    from .ai_implementation_roadmap import (
+        AIImplementationRoadmap as _AIImplementationRoadmap,
     )
     from .ai_comment_analyzer import AICommentAnalyzer as _AICommentAnalyzer
     from .handle_pr_comment import PRCommentHandler as _PRCommentHandler
@@ -30,8 +25,13 @@ if TYPE_CHECKING:
     from .create_or_update_issue import CreateOrUpdateIssue as _CreateOrUpdateIssue
     from .apply_git_patch import ApplyGitPatch as _ApplyGitPatch
     from .run_security_audit import RunSecurityAudit as _RunSecurityAudit
-    from .check_performance_budget import (
-        CheckPerformanceBudget as _CheckPerformanceBudget,
+    from .llm import LLMProviderManager as _LLMProviderManager
+    from .autogen_multi_agent import AutoGenAgentSystem as _AutoGenAgentSystem
+    from .mem0_memory_integration import Mem0MemoryManager as _Mem0MemoryManager
+    from .quality_gates import QualityGates as _QualityGates
+    from .learning_memory_system import LearningMemorySystem as _LearningMemorySystem
+    from .multi_platform_integrator import (
+        MultiPlatformIntegrator as _MultiPlatformIntegrator,
     )
     from .visual_regression_test import VisualRegressionTest as _VisualRegressionTest
     from .generate_release_notes import GenerateReleaseNotes as _GenerateReleaseNotes
@@ -79,7 +79,7 @@ except ImportError:
 
 LLMProviderManager: Optional[Type[Any]] = None
 try:
-    from .configurable_llm_provider import LLMProviderManager as _RealLLMProviderManager  # type: ignore
+    from .llm import LLMProviderManager as _RealLLMProviderManager  # type: ignore
 
     LLMProviderManager = _RealLLMProviderManager  # type: ignore[assignment]
 except ImportError:

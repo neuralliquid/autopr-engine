@@ -10,7 +10,7 @@ from .base import Integration
 AxoloIntegration: Optional[Type[Any]] = None
 _axolo_available = False
 try:
-    from .axolo_integration import AxoloIntegration
+    from .axolo import AxoloIntegration
 
     _axolo_available = True
 except ImportError:
@@ -33,8 +33,11 @@ def list_integrations() -> List[str]:
 
 
 __all__ = [
-    "AxoloIntegration",
     "get_integration",
     "list_integrations",
     "AVAILABLE_INTEGRATIONS",
 ]
+
+# Conditionally add AxoloIntegration to __all__ if available
+if _axolo_available and AxoloIntegration is not None:
+    __all__.append("AxoloIntegration")
