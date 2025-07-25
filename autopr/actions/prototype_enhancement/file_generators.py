@@ -2,24 +2,94 @@
 File Generation Module
 
 Handles generation of configuration, testing, security, and deployment files for prototype enhancement.
+Now supports hybrid YAML + template approach for enhanced metadata and flexibility.
 """
 
 import json
+import os
 from typing import Dict, List, Any, Optional
+from pathlib import Path
 from .platform_configs import PlatformRegistry, PlatformConfig
 from .config_loader import ConfigLoader
+from .template_metadata import TemplateRegistry, TemplateMetadata
 
 
 class FileGenerator:
-    """Generates various configuration and setup files for different platforms."""
+    """Generates various configuration and setup files for different platforms.
     
-    def __init__(self) -> None:
+    Now supports hybrid YAML + template approach with metadata-driven generation.
+    """
+    
+    def __init__(self, templates_dir: Optional[str] = None) -> None:
         self.platform_registry = PlatformRegistry()
+        
+        # Initialize template registry with hybrid YAML + template support
+        if templates_dir is None:
+            # Default to templates directory relative to this file
+            current_dir = Path(__file__).parent
+            templates_dir = str(current_dir.parent.parent.parent / "templates")
+        
+        self.template_registry = TemplateRegistry(templates_dir)
+        
+        # Backward compatibility flag
+        self.use_hybrid_templates = True
     
-    def generate_dockerfile(self, platform: str) -> str:
-        """Generate Dockerfile for the platform."""
+    # New hybrid template methods
+    def generate_from_template(self, template_key: str, 
+                              variables: Optional[Dict[str, Any]] = None,
+                              variants: Optional[List[str]] = None) -> Optional[str]:
+        """Generate content from a template using the hybrid YAML + template approach.
+        
+        Args:
+            template_key: Template identifier (e.g., 'docker/react.dockerfile')
+            variables: Variables to substitute in the template
+            variants: List of variants to apply
+            
+        Returns:
+            Generated content or None if template not found
+        """
+        if not self.use_hybrid_templates:
+            return None
+            
+        return self.template_registry.generate_template(template_key, variables, variants)
+    
+    def list_available_templates(self, platform: Optional[str] = None, 
+                                category: Optional[str] = None) -> List[str]:
+        """List all available templates, optionally filtered by platform or category."""
+        return self.template_registry.list_templates(platform, category)
+    
+    def get_template_info(self, template_key: str) -> Dict[str, Any]:
+        """Get comprehensive information about a template including metadata."""
+        return self.template_registry.get_template_info(template_key)
+    
+    def generate_dockerfile(self, platform: str, 
+                           variables: Optional[Dict[str, Any]] = None,
+                           variants: Optional[List[str]] = None) -> str:
+        """Generate Dockerfile for the platform using hybrid templates when available."""
         config = self.platform_registry.get_platform_config(platform)
         
+        # Try hybrid template approach first
+        if self.use_hybrid_templates:
+            template_key = None
+            if config.framework == "react":
+                template_key = "docker/react.dockerfile"
+            elif config.framework == "express" or config.framework == "node":
+                template_key = "docker/node.dockerfile"
+            else:
+                template_key = "docker/generic.dockerfile"
+            
+            # Attempt to generate using hybrid template
+            if template_key:
+                # Merge platform-specific variables with user variables
+                template_vars = variables or {}
+                if 'node_version' not in template_vars:
+                    template_vars['node_version'] = '18'  # Default
+                
+                hybrid_content = self.generate_from_template(template_key, template_vars, variants)
+                if hybrid_content:
+                    return hybrid_content
+        
+        # Fallback to original approach
         if config.framework == "react":
             return self._generate_react_dockerfile()
         elif config.framework == "express" or config.framework == "node":
@@ -39,10 +109,34 @@ class FileGenerator:
         """Generate generic Dockerfile."""
         return ConfigLoader.load_template("docker", "generic.dockerfile")
     
-    def generate_typescript_config(self, platform: str) -> str:
-        """Generate TypeScript configuration."""
+    def generate_typescript_config(self, platform: str, 
+                                  variables: Optional[Dict[str, Any]] = None,
+                                  variants: Optional[List[str]] = None) -> str:
+        """Generate TypeScript configuration using hybrid templates when available."""
         config = self.platform_registry.get_platform_config(platform)
         
+        # Try hybrid template approach first
+        if self.use_hybrid_templates:
+            template_key = None
+            if config.framework == "react":
+                template_key = "typescript/react-tsconfig.json"
+            elif config.name == "bolt":
+                template_key = "typescript/vite-tsconfig.json"
+            else:
+                template_key = "typescript/basic-tsconfig.json"
+            
+            # Attempt to generate using hybrid template
+            if template_key:
+                # Merge platform-specific variables with user variables
+                template_vars = variables or {}
+                if 'target' not in template_vars:
+                    template_vars['target'] = 'ES2020' if config.name == 'bolt' else 'es5'
+                
+                hybrid_content = self.generate_from_template(template_key, template_vars, variants)
+                if hybrid_content:
+                    return hybrid_content
+        
+        # Fallback to original approach
         if config.framework == "react":
             return self._generate_react_tsconfig()
         elif config.name == "bolt":
@@ -138,16 +232,57 @@ const nextConfig = {
 module.exports = nextConfig
         """.strip()
     
-    def generate_testing_files(self, platform: str) -> Dict[str, str]:
-        """Generate testing configuration files."""
+    def generate_testing_files(self, platform: str, 
+                              variables: Optional[Dict[str, Any]] = None,
+                              variants: Optional[List[str]] = None) -> Dict[str, str]:
+        """Generate testing configuration files using hybrid templates when available."""
         config = self.platform_registry.get_platform_config(platform)
-        files: Dict[str, str] = {}
         
+        # Try hybrid template approach first
+        if self.use_hybrid_templates:
+            testing_files = {}
+            
+            # Generate Jest config for most platforms
+            if config.name != "bolt":
+                jest_vars = variables or {}
+                if 'coverage_threshold' not in jest_vars:
+                    jest_vars['coverage_threshold'] = 80
+                
+                jest_content = self.generate_from_template(
+                    "testing/jest.config.js", jest_vars, variants
+                )
+                if jest_content:
+                    testing_files["jest.config.js"] = jest_content
+            
+            # Generate Vitest config for Bolt platform
+            if config.name == "bolt":
+                vitest_vars = variables or {}
+                if 'coverage_threshold' not in vitest_vars:
+                    vitest_vars['coverage_threshold'] = 80
+                
+                vitest_content = self.generate_from_template(
+                    "build/vitest.config.js", vitest_vars, variants
+                )
+                if vitest_content:
+                    testing_files["vitest.config.js"] = vitest_content
+            
+            # If we got hybrid content, return it
+            if testing_files:
+                # Add additional testing files from original approach
+                if config.framework == "react":
+                    react_files = self._generate_react_testing_files()
+                    testing_files.update(react_files)
+                else:
+                    common_files = self._generate_common_testing_files()
+                    testing_files.update(common_files)
+                
+                return testing_files
+        
+        # Fallback to original approach
         if config.framework == "react":
-            files.update(self._generate_react_testing_files())
-        
-        files.update(self._generate_common_testing_files())
-        return files
+            return self._generate_react_testing_files()
+        else:
+            return self._generate_common_testing_files()
     
     def _generate_react_testing_files(self) -> Dict[str, str]:
         """Generate React testing setup."""

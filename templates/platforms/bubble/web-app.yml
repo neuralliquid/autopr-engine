@@ -1,0 +1,189 @@
+name: "Bubble Web App Template"
+description: "Visual drag-and-drop web app template for Bubble platform with workflows and database"
+category: "no_code_platform"
+platforms: ["bubble"]
+file_extension: "md"
+
+platform_info:
+  name: "Bubble"
+  type: "visual_builder"
+  pricing:
+    free: "Learning and basic projects"
+    starter: "$29/month - Testing ideas"
+    growth: "$119/month - Complex apps"
+    team_enterprise: "Custom pricing"
+  key_features:
+    - "Drag-and-drop interface"
+    - "Built-in database management"
+    - "Visual automation workflows"
+    - "Extensive plugin marketplace"
+    - "API integrations"
+
+variables:
+  app_name:
+    type: "string"
+    required: true
+    description: "Name of your Bubble application"
+  
+  app_type:
+    type: "string"
+    default: "web_app"
+    description: "Type of application to build"
+    examples: ["web_app", "marketplace", "social_platform", "business_tool", "saas_product"]
+  
+  data_structure:
+    type: "array"
+    required: true
+    description: "Main data types your app will manage"
+    examples: 
+      - ["User", "Product", "Order", "Review"]
+      - ["Project", "Task", "Team", "Comment"]
+  
+  user_roles:
+    type: "array"
+    default: ["User"]
+    description: "Different user types in your application"
+    examples: ["Admin", "User", "Moderator", "Seller", "Buyer"]
+  
+  core_workflows:
+    type: "array"
+    required: true
+    description: "Main user workflows and actions"
+    examples:
+      - ["user_registration", "product_listing", "order_processing"]
+      - ["project_creation", "task_assignment", "progress_tracking"]
+
+variants:
+  with_payments:
+    name: "With Payment Processing"
+    description: "Includes Stripe integration for payments and subscriptions"
+    modifications:
+      - line: 20
+        action: "add_after"
+        content: "- Stripe payment gateway\n- Subscription management\n- Payment history tracking"
+  
+  with_marketplace:
+    name: "Marketplace Features"
+    description: "Multi-vendor marketplace with seller management"
+    modifications:
+      - line: 25
+        action: "add_after"
+        content: "- Seller registration and verification\n- Product approval workflow\n- Commission tracking\n- Seller dashboard"
+  
+  with_social:
+    name: "Social Features"
+    description: "Social platform features like messaging and feeds"
+    modifications:
+      - line: 30
+        action: "add_after"
+        content: "- User messaging system\n- Activity feeds\n- Friend/follower system\n- Content sharing"
+
+usage:
+  - "MVP development for startups"
+  - "Complex web applications with custom logic"
+  - "Marketplace and e-commerce platforms"
+  - "Internal business tools and dashboards"
+  - "Social platforms and community apps"
+
+development_approach:
+  method: "visual_design"
+  description: "Drag-and-drop interface with visual workflow design"
+  steps:
+    - "Design your database structure and data types"
+    - "Create pages and user interface elements"
+    - "Build workflows for user interactions"
+    - "Set up user authentication and permissions"
+    - "Test and iterate on functionality"
+    - "Deploy to Bubble hosting"
+
+database_design:
+  best_practices:
+    - "Plan your data structure before building"
+    - "Use appropriate field types for data"
+    - "Set up proper privacy rules"
+    - "Consider data relationships and constraints"
+  
+  common_data_types:
+    user:
+      fields: ["email", "name", "profile_picture", "created_date", "user_type"]
+    product:
+      fields: ["name", "description", "price", "images", "category", "seller"]
+    order:
+      fields: ["buyer", "products", "total_amount", "status", "order_date"]
+
+workflow_patterns:
+  user_registration:
+    trigger: "Sign up button clicked"
+    actions:
+      - "Create new User account"
+      - "Send welcome email"
+      - "Log user in"
+      - "Navigate to dashboard"
+  
+  product_purchase:
+    trigger: "Buy now button clicked"
+    actions:
+      - "Check user authentication"
+      - "Process payment via Stripe"
+      - "Create order record"
+      - "Update inventory"
+      - "Send confirmation email"
+
+dependencies:
+  required:
+    - "Bubble account and subscription"
+    - "Clear app requirements and user flows"
+  
+  optional:
+    - "Custom domain name"
+    - "Third-party API integrations"
+    - "Custom plugins from marketplace"
+
+best_practices:
+  design:
+    - "Start with responsive design principles"
+    - "Use reusable elements and groups"
+    - "Maintain consistent styling and branding"
+    - "Optimize for mobile devices"
+  
+  development:
+    - "Build workflows incrementally"
+    - "Test each feature thoroughly"
+    - "Use conditional logic for complex scenarios"
+    - "Implement proper error handling"
+  
+  performance:
+    - "Optimize database queries"
+    - "Use appropriate privacy rules"
+    - "Minimize plugin dependencies"
+    - "Consider page loading times"
+
+limitations:
+  - "Steeper learning curve than simpler platforms"
+  - "Limited mobile app capabilities"
+  - "Cannot export source code (platform lock-in)"
+  - "Performance can degrade with complex logic"
+  - "Pricing scales with usage and features"
+
+examples:
+  marketplace:
+    name: "Online Marketplace"
+    description: "Multi-vendor e-commerce marketplace"
+    variables:
+      app_name: "LocalMarket"
+      app_type: "marketplace"
+      data_structure: ["User", "Seller", "Product", "Order", "Review", "Category"]
+      user_roles: ["Buyer", "Seller", "Admin"]
+      core_workflows: ["seller_registration", "product_listing", "order_processing", "review_system"]
+    variants: ["with_payments", "with_marketplace"]
+  
+  project_manager:
+    name: "Project Management Tool"
+    description: "Team collaboration and project tracking"
+    variables:
+      app_name: "ProjectHub"
+      app_type: "business_tool"
+      data_structure: ["User", "Project", "Task", "Team", "Comment", "File"]
+      user_roles: ["Admin", "Project Manager", "Team Member", "Client"]
+      core_workflows: ["project_creation", "task_assignment", "progress_tracking", "team_collaboration"]
+    variants: ["with_social"]
