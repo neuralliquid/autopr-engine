@@ -70,8 +70,17 @@ class AxoloCommandHandler:
             logger.info(f"Analysis completed for PR #{pr_data['pr_number']}")
 
         except Exception as e:
-            logger.error(f"Analysis command failed: {str(e)}")
-            await self.messaging.post_error_response(channel_id, f"Analysis failed: {str(e)}")
+            try:
+                from slack_sdk.errors import SlackApiError  # type: ignore[import-not-found]
+
+                if isinstance(e, SlackApiError):
+                    logger.error(f"Slack API error: {str(e)}")
+                    await self.messaging.post_error_response(
+                        channel_id, f"Slack API error: {str(e)}"
+                    )
+            except ImportError:
+                logger.error(f"Analysis command failed: {str(e)}")
+                await self.messaging.post_error_response(channel_id, f"Analysis failed: {str(e)}")
 
     async def handle_status_command(self, command_data: Dict[str, Any]) -> None:
         """Handle /autopr-status command"""

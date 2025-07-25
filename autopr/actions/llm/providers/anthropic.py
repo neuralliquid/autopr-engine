@@ -17,7 +17,7 @@ class AnthropicProvider(BaseLLMProvider):
     def __init__(self, config: Dict[str, Any]) -> None:
         super().__init__(config)
         try:
-            import anthropic  # type: ignore[import]
+            import anthropic
 
             self.client = anthropic.Anthropic(api_key=self.api_key, base_url=self.base_url)
             self.available = True
@@ -52,18 +52,18 @@ class AnthropicProvider(BaseLLMProvider):
             # Call the API
             if system_param:
                 response = self.client.messages.create(
-                    model=str(model),  # Ensure model is a string
+                    model=str(model),
                     max_tokens=max_tokens,
                     temperature=temperature,
                     system=system_param,
-                    messages=converted_messages,  # type: ignore[arg-type]
+                    messages=converted_messages,
                 )
             else:
                 response = self.client.messages.create(
-                    model=str(model),  # Ensure model is a string
+                    model=str(model),
                     max_tokens=max_tokens,
                     temperature=temperature,
-                    messages=converted_messages,  # type: ignore[arg-type]
+                    messages=converted_messages,
                 )
 
             # Extract content and finish reason
@@ -83,7 +83,7 @@ class AnthropicProvider(BaseLLMProvider):
 
             return LLMResponse(
                 content=content,
-                model=str(model),  # Ensure model is a string
+                model=str(model),
                 finish_reason=finish_reason,
                 usage=usage,
             )

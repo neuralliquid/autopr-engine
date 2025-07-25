@@ -8,7 +8,7 @@ from ..base import BaseLLMProvider
 from ..types import LLMResponse
 
 if TYPE_CHECKING:
-    from mistralai.models.chat_completion import ChatMessage  # type: ignore[import]
+    from mistralai.models.chat_completion import ChatMessage  # type: ignore[import-not-found]
 
 
 class MistralProvider(BaseLLMProvider):
@@ -17,7 +17,7 @@ class MistralProvider(BaseLLMProvider):
     def __init__(self, config: Dict[str, Any]) -> None:
         super().__init__(config)
         try:
-            from mistralai.client import MistralClient  # type: ignore[import]
+            from mistralai.client import MistralClient
 
             self.client = MistralClient(api_key=self.api_key)
             self.available = True
@@ -26,7 +26,7 @@ class MistralProvider(BaseLLMProvider):
 
     def complete(self, request: Dict[str, Any]) -> LLMResponse:
         try:
-            from mistralai.models.chat_completion import (  # type: ignore[import]
+            from mistralai.models.chat_completion import (
                 ChatMessage,
             )
 
@@ -52,7 +52,7 @@ class MistralProvider(BaseLLMProvider):
 
             response = chat_method(
                 model=str(model),
-                messages=mistral_messages,  # type: ignore[arg-type]
+                messages=mistral_messages,
                 temperature=temperature,
                 max_tokens=max_tokens,
             )

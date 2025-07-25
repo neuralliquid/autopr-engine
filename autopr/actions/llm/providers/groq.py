@@ -9,8 +9,7 @@ from ..base import BaseLLMProvider
 from ..types import LLMResponse
 
 if TYPE_CHECKING:
-    import groq  # type: ignore[import]
-
+    import groq
 
 class GroqProvider(BaseLLMProvider):
     """Groq provider for fast inference."""
@@ -18,7 +17,7 @@ class GroqProvider(BaseLLMProvider):
     def __init__(self, config: Dict[str, Any]) -> None:
         super().__init__(config)
         try:
-            import groq  # type: ignore[import]
+            import groq
 
             self.client = groq.Groq(api_key=self.api_key)
             self.available = True
@@ -42,7 +41,7 @@ class GroqProvider(BaseLLMProvider):
     async def _call_groq_api(self, messages: List[Dict[str, Any]], **kwargs: Any) -> Any:
         """Call Groq API with proper type handling."""
         groq_messages = self._convert_to_provider_messages(messages, "groq")
-        response = self.client.chat.completions.create(messages=groq_messages, **kwargs)  # type: ignore[arg-type]
+        response = self.client.chat.completions.create(messages=groq_messages, **kwargs)
         return response
 
     def complete(self, request: Dict[str, Any]) -> LLMResponse:
@@ -62,7 +61,7 @@ class GroqProvider(BaseLLMProvider):
             # Call the API synchronously
             response = self.client.chat.completions.create(
                 model=str(model),
-                messages=filtered_messages,  # type: ignore[arg-type]
+                messages=filtered_messages,
                 max_tokens=max_tokens,
                 temperature=temperature,
             )

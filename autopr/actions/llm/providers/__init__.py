@@ -47,7 +47,7 @@ class PerplexityProvider(BaseLLMProvider):
             # Call the API
             response = self.client.chat.completions.create(
                 model=str(model),
-                messages=filtered_messages,
+                messages=filtered_messages,  # type: ignore[arg-type]
                 max_tokens=max_tokens,
                 temperature=temperature,
             )
@@ -119,7 +119,7 @@ class TogetherAIProvider(BaseLLMProvider):
             # Call the API
             response = self.client.chat.completions.create(
                 model=str(model),
-                messages=filtered_messages,
+                messages=filtered_messages,  # type: ignore[arg-type]
                 max_tokens=max_tokens,
                 temperature=temperature,
             )

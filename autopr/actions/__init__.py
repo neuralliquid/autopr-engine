@@ -206,6 +206,14 @@ try:
 except ImportError:
     pass
 
+AIImplementationRoadmap: Optional[Type[Any]] = None
+try:
+    from .ai_implementation_roadmap import *  # type: ignore[import-untyped]
+
+    AIImplementationRoadmap = _AIImplementationRoadmap  # type: ignore[assignment]
+except ImportError:
+    pass
+
 # All available actions
 __all__ = [
     # Core AI-powered actions
@@ -222,6 +230,7 @@ __all__ = [
     "MultiPlatformIntegrator",
     "AICommentAnalyzer",
     "PRCommentHandler",
+    "AIImplementationRoadmap",
     # Utility actions
     "LabelPR",
     "PostComment",

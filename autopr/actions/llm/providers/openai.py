@@ -17,7 +17,7 @@ class OpenAIProvider(BaseLLMProvider):
     def __init__(self, config: Dict[str, Any]) -> None:
         super().__init__(config)
         try:
-            import openai  # type: ignore[import]
+            import openai
 
             self.client = openai.OpenAI(api_key=self.api_key, base_url=self.base_url)
             self.available = True

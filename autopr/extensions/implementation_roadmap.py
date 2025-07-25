@@ -43,10 +43,8 @@ class Task:
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        if self.dependencies is None:
-            self.dependencies = []
-        if self.metadata is None:
-            self.metadata = {}
+        # These checks are unnecessary since default_factory handles None values
+        pass
 
 
 class ImplementationRoadmap:
@@ -1484,7 +1482,7 @@ resource "google_container_cluster" "autopr_gcp" {
             ],
         }
 
-        return next_steps.get(self.current_phase, [])
+        return next_steps.get(self.current_phase or "immediate", [])
 
 
 # CLI interface
