@@ -1,6 +1,6 @@
-name: "Glide Mobile App Template"
-description: "Transform spreadsheets into mobile apps with Glide's no-code platform"
-category: "no_code_platform"
+name: "Glide Vibe Coding Template"
+description: "#3 Best vibe coding tool for data-driven apps - Smart coding with spreadsheet-to-app conversions"
+category: "vibe_coding_platform"
 platforms: ["glide"]
 file_extension: "md"
 

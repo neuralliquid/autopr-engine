@@ -1,23 +1,37 @@
-name: "Bubble Web App Template"
-description: "Visual drag-and-drop web app template for Bubble platform with workflows and database"
-category: "no_code_platform"
+name: "Bubble Vibe Coding Template"
+description: "#2 Best vibe coding tool for complex web apps - Advanced AI-assisted coding with enterprise-grade features"
+category: "vibe_coding_platform"
 platforms: ["bubble"]
 file_extension: "md"
 
 platform_info:
   name: "Bubble"
-  type: "visual_builder"
+  type: "vibe_coding_platform"
+  ranking: "#2 Best Vibe Coding Tool for Complex Web Apps (Cybernews 2025)"
+  vibe_coding_approach: "Visual vibe coding with advanced customization and enterprise-level capabilities"
   pricing:
-    free: "Learning and basic projects"
-    starter: "$29/month - Testing ideas"
-    growth: "$119/month - Complex apps"
-    team_enterprise: "Custom pricing"
+    free: "Learning and basic projects with 14-day trial"
+    starter: "$29/month - Testing ideas and simple apps"
+    growth: "$119/month - Complex apps with advanced features"
+    team_enterprise: "Custom pricing for organizations"
   key_features:
-    - "Drag-and-drop interface"
-    - "Built-in database management"
-    - "Visual automation workflows"
-    - "Extensive plugin marketplace"
-    - "API integrations"
+    - "Visual drag-and-drop vibe coding interface"
+    - "Advanced backend logic without traditional coding"
+    - "Enterprise-grade security and privacy controls"
+    - "Customizable workflows and automation"
+    - "Built-in database with complex data relationships"
+    - "Extensive plugin marketplace (1000+ plugins)"
+    - "API integrations and custom endpoints"
+    - "DDoS protection and built-in scaling"
+    - "Admin-level controls and user permissions"
+  
+  vibe_coding_specialization:
+    - "Best for developers, startups, and enterprises"
+    - "Handles complex business logic and workflows"
+    - "Advanced customization beyond basic vibe coding"
+    - "Requires some development skills for advanced features"
+    - "Excellent for SaaS products and marketplaces"
+    - "Strong third-party app ecosystem integration"
 
 variables:
   app_name:

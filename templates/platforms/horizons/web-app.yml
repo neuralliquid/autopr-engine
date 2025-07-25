@@ -1,23 +1,37 @@
-name: "Hostinger Horizons Web App Template"
-description: "AI-powered web app template for Hostinger Horizons platform using vibe coding approach"
-category: "no_code_platform"
+name: "Hostinger Horizons Vibe Coding Template"
+description: "Best overall vibe coding platform - AI-powered web app development using conversational prompts and natural language"
+category: "vibe_coding_platform"
 platforms: ["horizons"]
 file_extension: "md"
 
 platform_info:
   name: "Hostinger Horizons"
-  type: "ai_powered"
+  type: "vibe_coding_platform"
+  ranking: "#1 Best Overall Vibe Coding Tool (Cybernews 2025)"
+  vibe_coding_approach: "Conversational AI with natural language to functioning web app conversion"
   pricing:
     free_trial: "7 days"
+    starter: "$6.29/month - Most affordable vibe coding solution"
     explorer: "$9.99/month - 50 AI messages"
-    starter: "$19.99/month - 100 AI messages"
+    professional: "$19.99/month - 100 AI messages"
     hobbyist: "$49.99/month - 250 AI messages"
   key_features:
-    - "Text, voice, and image prompts"
-    - "Integrated hosting and domains"
-    - "24/7 support in 80+ languages"
-    - "One-click publishing"
+    - "Conversational AI with natural language prompts"
+    - "Voice and image command support"
+    - "Automatic error detection and fixing"
+    - "One-click hosting and publishing"
+    - "Integrated domain management"
     - "Supabase database integration"
+    - "24/7 multilingual support (80+ languages)"
+    - "Human-AI collaboration workflow"
+  
+  vibe_coding_benefits:
+    - "Focus on intent rather than implementation"
+    - "Hours vs weeks for prototyping"
+    - "No syntax or structure complexity"
+    - "Empowers non-dev teams"
+    - "Intelligent gap filling and suggestions"
+    - "Single platform workflow (no context switching)"
 
 variables:
   app_name:
@@ -87,12 +101,30 @@ usage:
 
 development_approach:
   method: "vibe_coding"
-  description: "Describe what you want using natural language prompts"
-  steps:
-    - "Define your app concept and core features"
-    - "Use text, voice, or image prompts to describe functionality"
-    - "Iterate with AI feedback and refinements"
-    - "Test and publish with one-click deployment"
+  philosophy: "Human-AI collaboration where you control architecture and quality while AI handles repetitive coding tasks"
+  description: "Transform ideas into functioning web apps using conversational prompts instead of manual coding"
+  core_principles:
+    - "Natural language to code conversion"
+    - "Intent-focused development over syntax mastery"
+    - "Conversational refinement and iteration"
+    - "AI-assisted gap filling and error correction"
+    - "Single-platform workflow integration"
+  
+  vibe_coding_workflow:
+    - "Conceptualize: Define your app vision and core functionality"
+    - "Prompt: Use natural language, voice, or image commands"
+    - "Collaborate: Guide and refine AI suggestions through conversation"
+    - "Iterate: Send feedback prompts for improvements and bug fixes"
+    - "Validate: Test functionality and user experience"
+    - "Deploy: One-click publishing with integrated hosting"
+  
+  prompt_engineering_tips:
+    - "Be specific about functionality and user experience"
+    - "Describe the 'why' behind features, not just the 'what'"
+    - "Use conversational language - explain like talking to a developer"
+    - "Iterate incrementally - build and refine step by step"
+    - "Leverage voice commands for faster input"
+    - "Use image references for design inspiration"
 
 prompt_examples:
   basic_app:

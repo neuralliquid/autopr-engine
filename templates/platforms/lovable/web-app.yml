@@ -1,23 +1,37 @@
-name: "Lovable AI Web App Template"
-description: "AI-powered web app development with code ownership and GitHub integration"
-category: "no_code_platform"
+name: "Lovable Vibe Coding Template"
+description: "#5 Best vibe coding tool for fast, prompt-based programming - Single-prompt development with AI error suggestions"
+category: "vibe_coding_platform"
 platforms: ["lovable"]
 file_extension: "md"
 
 platform_info:
   name: "Lovable"
-  type: "ai_powered"
+  type: "vibe_coding_platform"
+  ranking: "#5 Best Vibe Coding Tool for Fast Development (Cybernews 2025)"
+  vibe_coding_approach: "Single-prompt development with chat interface and AI error suggestions"
   pricing:
     free: "5 messages per day for public projects"
     pro: "$25/month - 100 additional monthly messages and private projects"
     teams: "$30/month - Team collaboration features"
     enterprise: "Custom pricing for organizations"
   key_features:
-    - "Natural language prompts for app creation"
+    - "Single-prompt web app development"
+    - "Chat interface for conversational coding"
+    - "AI error suggestions and automatic fixes"
+    - "Pre-configured services (forms, logins, CMS)"
+    - "Real-time editing and collaboration"
     - "Figma design import capabilities"
     - "Built-in Supabase database integration"
     - "GitHub sync with full code ownership"
     - "Frontend and backend management"
+  
+  vibe_coding_specialization:
+    - "Fastest development cycle in vibe coding"
+    - "Minimal manual input required"
+    - "Well-trained on common web app patterns"
+    - "Optimized for dashboards, CRMs, and landing pages"
+    - "Reduces setup and development friction"
+    - "Built-in services eliminate configuration overhead"
 
 variables:
   app_name:
