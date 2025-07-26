@@ -59,7 +59,7 @@ class QualityMetrics:
 class TemplateValidator:
     """Validates templates against quality standards."""
     
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the validator with quality rules."""
         self.validation_rules = self._load_validation_rules()
     
@@ -486,13 +486,15 @@ class TemplateValidator:
 class QualityAssuranceFramework:
     """Main QA framework for template validation and testing."""
     
-    def __init__(self, templates_root: str = None):
+    def __init__(self, templates_root: Optional[str] = None) -> None:
         """Initialize the QA framework."""
         if templates_root is None:
             current_dir = Path(__file__).parent
-            templates_root = current_dir.parent
+            templates_root_path = current_dir.parent
+        else:
+            templates_root_path = Path(templates_root)
         
-        self.templates_root = Path(templates_root)
+        self.templates_root = templates_root_path
         self.validator = TemplateValidator()
         self.output_dir = self.templates_root / "qa_reports"
         self.output_dir.mkdir(exist_ok=True)
@@ -514,7 +516,7 @@ class QualityAssuranceFramework:
         }
         
         # Find all template files
-        template_files = []
+        template_files: List[Path] = []
         for pattern in ['platforms/**/*.yml', 'use-cases/*.yml', 'integrations/*.yml']:
             template_files.extend(self.templates_root.glob(pattern))
         
@@ -524,7 +526,7 @@ class QualityAssuranceFramework:
         results['summary']['total_templates'] = len(template_files)
         
         total_score = 0.0
-        category_scores = {}
+        category_scores: Dict[str, float] = {}
         
         # Validate each template
         for template_file in template_files:
@@ -624,7 +626,7 @@ class QualityAssuranceFramework:
             all_issues.extend(template_result['issues'])
         
         # Count issue types
-        issue_counts = {}
+        issue_counts: Dict[str, int] = {}
         for issue in all_issues:
             category = issue['category']
             issue_counts[category] = issue_counts.get(category, 0) + 1
@@ -702,7 +704,7 @@ class QualityAssuranceFramework:
             f.write(content)
 
 
-def main():
+def main() -> None:
     """Run QA framework demonstration."""
     qa_framework = QualityAssuranceFramework()
     

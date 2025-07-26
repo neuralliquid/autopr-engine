@@ -34,36 +34,29 @@ class TemplateInfo:
     file_path: str
     complexity: str = "medium"
     estimated_time: str = "unknown"
-    use_cases: List[str] = None
-    key_features: List[str] = None
-    variables: Dict[str, Any] = None
-    variants: Dict[str, Any] = None
-    dependencies: List[str] = None
+    use_cases: List[str] = field(default_factory=list)
+    key_features: List[str] = field(default_factory=list)
+    variables: Dict[str, Any] = field(default_factory=dict)
+    variants: Dict[str, Any] = field(default_factory=dict)
+    dependencies: List[str] = field(default_factory=list)
     
-    def __post_init__(self):
-        if self.use_cases is None:
-            self.use_cases = []
-        if self.key_features is None:
-            self.key_features = []
-        if self.variables is None:
-            self.variables = {}
-        if self.variants is None:
-            self.variants = {}
-        if self.dependencies is None:
-            self.dependencies = []
+    def __post_init__(self) -> None:
+        # Fields are now initialized with default_factory, no need for None checks
+        pass
 
 
 class TemplateBrowser:
     """Main template discovery and browsing system."""
     
-    def __init__(self, templates_root: str = None):
+    def __init__(self, templates_root: Optional[str] = None) -> None:
         """Initialize the template browser with the templates directory."""
         if templates_root is None:
-            # Default to templates directory relative to this file
             current_dir = Path(__file__).parent
-            templates_root = current_dir.parent
+            templates_root_path = current_dir.parent
+        else:
+            templates_root_path = Path(templates_root)
         
-        self.templates_root = Path(templates_root)
+        self.templates_root = templates_root_path
         self.templates: List[TemplateInfo] = []
         self.platform_categories: Dict[str, Any] = {}
         self._load_all_templates()

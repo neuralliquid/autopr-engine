@@ -15,7 +15,7 @@ try:
     from autopr.models.artifacts import PrototypeEnhancerInputs, PrototypeEnhancerOutputs  # type: ignore[import-untyped]
 except ImportError:
     # Fallback for when models are not available during development
-    from typing import Any as PrototypeEnhancerInputs, Any as PrototypeEnhancerOutputs  # type: ignore
+    from typing import Any as PrototypeEnhancerInputs, Any as PrototypeEnhancerOutputs
 
 from .platform_configs import PlatformRegistry, PlatformConfig
 from .file_generators import FileGenerator

@@ -119,11 +119,11 @@ class FileGenerator:
         if self.use_hybrid_templates:
             template_key = None
             if config.framework == "react":
-                template_key = "typescript/react-tsconfig.json"
+                template_key = "typescript/react-tsconfig.yml"
             elif config.name == "bolt":
-                template_key = "typescript/vite-tsconfig.json"
+                template_key = "typescript/vite-tsconfig.yml"
             else:
-                template_key = "typescript/basic-tsconfig.json"
+                template_key = "typescript/basic-tsconfig.yml"
             
             # Attempt to generate using hybrid template
             if template_key:
@@ -211,8 +211,35 @@ class FileGenerator:
             "exclude": ["node_modules", "dist"]
         }, indent=2)
     
-    def generate_next_config(self, platform: str) -> str:
-        """Generate Next.js configuration."""
+    def generate_next_config(self, platform: str, 
+                            variables: Optional[Dict[str, Any]] = None,
+                            variants: Optional[List[str]] = None) -> str:
+        """Generate Next.js configuration using hybrid templates when available."""
+        config = self.platform_registry.get_platform_config(platform)
+        
+        # Try hybrid template approach first
+        if self.use_hybrid_templates:
+            template_vars = variables or {}
+            
+            # Set default variables based on platform
+            if 'react_strict_mode' not in template_vars:
+                template_vars['react_strict_mode'] = True
+            if 'swc_minify' not in template_vars:
+                template_vars['swc_minify'] = True
+            if 'app_dir' not in template_vars:
+                template_vars['app_dir'] = True
+            if 'image_domains' not in template_vars:
+                template_vars['image_domains'] = ['localhost']
+            if 'custom_env_vars' not in template_vars:
+                template_vars['custom_env_vars'] = ['CUSTOM_KEY']
+            
+            hybrid_content = self.generate_from_template(
+                "build/next.config.yml", template_vars, variants
+            )
+            if hybrid_content:
+                return hybrid_content
+        
+        # Fallback to original hardcoded approach
         return """
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -591,12 +618,56 @@ describe('Accessibility tests', () => {
             """.strip()
         }
     
-    def generate_azure_configs(self, platform: str) -> Dict[str, str]:
-        """Generate Azure-specific configuration files."""
+    def generate_azure_configs(self, platform: str, 
+                              variables: Optional[Dict[str, Any]] = None,
+                              variants: Optional[List[str]] = None) -> Dict[str, str]:
+        """Generate Azure-specific configuration files using hybrid templates when available."""
         config = self.platform_registry.get_platform_config(platform)
         files: Dict[str, str] = {}
         
-        # Azure App Service configuration
+        # Try hybrid template approach first
+        if self.use_hybrid_templates:
+            # Azure DevOps Pipeline
+            pipeline_vars = variables or {}
+            if 'node_version' not in pipeline_vars:
+                pipeline_vars['node_version'] = '18.x'
+            if 'build_command' not in pipeline_vars:
+                pipeline_vars['build_command'] = config.build_command
+            
+            pipeline_content = self.generate_from_template(
+                "deployment/azure-pipeline.yml", pipeline_vars, variants
+            )
+            if pipeline_content:
+                files["azure-pipelines.yml"] = pipeline_content
+            
+            # Web.config for Azure App Service
+            web_config_vars = variables or {}
+            if 'framework' not in web_config_vars:
+                web_config_vars['framework'] = config.framework
+            
+            web_config_content = self.generate_from_template(
+                "deployment/web.config.yml", web_config_vars, variants
+            )
+            if web_config_content:
+                files["web.config"] = web_config_content
+            
+            # Static Web App config for React
+            if config.framework == "react":
+                swa_vars = variables or {}
+                if 'api_authentication' not in swa_vars:
+                    swa_vars['api_authentication'] = True
+                
+                swa_content = self.generate_from_template(
+                    "deployment/azure-static-web-app.config.yml", swa_vars, variants
+                )
+                if swa_content:
+                    files["staticwebapp.config.json"] = swa_content
+            
+            # If we got hybrid content, return it
+            if files:
+                return files
+        
+        # Fallback to original hardcoded approach
         files["azure-pipelines.yml"] = self._generate_azure_pipeline(config)
         files["web.config"] = self._generate_web_config(config)
         
@@ -735,12 +806,63 @@ stages:
             }
         }, indent=2)
     
-    def generate_deployment_automation(self, platform: str) -> Dict[str, str]:
-        """Generate deployment automation scripts."""
+    def generate_deployment_automation(self, platform: str, 
+                                      variables: Optional[Dict[str, Any]] = None,
+                                      variants: Optional[List[str]] = None) -> Dict[str, str]:
+        """Generate deployment automation scripts using hybrid templates when available."""
         config = self.platform_registry.get_platform_config(platform)
         files: Dict[str, str] = {}
         
-        # GitHub Actions workflow
+        # Try hybrid template approach first
+        if self.use_hybrid_templates:
+            # GitHub Actions workflow
+            github_vars = variables or {}
+            if 'node_version' not in github_vars:
+                github_vars['node_version'] = '18'
+            if 'build_command' not in github_vars:
+                github_vars['build_command'] = config.build_command
+            
+            github_content = self.generate_from_template(
+                "deployment/github-actions.yml", github_vars, variants
+            )
+            if github_content:
+                files[".github/workflows/deploy.yml"] = github_content
+            
+            # Platform-specific deployment configs
+            for target in config.deployment_targets:
+                if target == "vercel":
+                    vercel_vars = variables or {}
+                    if 'framework' not in vercel_vars:
+                        vercel_vars['framework'] = config.framework
+                    if 'spa_routing' not in vercel_vars:
+                        vercel_vars['spa_routing'] = config.framework == "react"
+                    
+                    vercel_content = self.generate_from_template(
+                        "deployment/vercel.config.yml", vercel_vars, variants
+                    )
+                    if vercel_content:
+                        files["vercel.json"] = vercel_content
+                
+                elif target == "netlify":
+                    netlify_vars = variables or {}
+                    if 'build_command' not in netlify_vars:
+                        netlify_vars['build_command'] = config.build_command
+                    if 'publish_directory' not in netlify_vars:
+                        netlify_vars['publish_directory'] = "build" if config.framework == "react" else "dist"
+                    if 'spa_routing' not in netlify_vars:
+                        netlify_vars['spa_routing'] = config.framework == "react"
+                    
+                    netlify_content = self.generate_from_template(
+                        "deployment/netlify.config.yml", netlify_vars, variants
+                    )
+                    if netlify_content:
+                        files["netlify.toml"] = netlify_content
+            
+            # If we got hybrid content, return it
+            if files:
+                return files
+        
+        # Fallback to original hardcoded approach
         files[".github/workflows/deploy.yml"] = self._generate_github_actions_deploy(config)
         
         # Platform-specific deployment configs

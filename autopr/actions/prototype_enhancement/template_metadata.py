@@ -76,7 +76,7 @@ class TemplateRegistry:
         self.metadata_cache: Dict[str, TemplateMetadata] = {}
         self._load_all_metadata()
     
-    def _load_all_metadata(self):
+    def _load_all_metadata(self) -> None:
         """Load all template metadata from YAML files."""
         if not self.templates_dir.exists():
             return
@@ -203,6 +203,27 @@ class TemplateRegistry:
                     lines[line_idx] = mod_content
         
         return '\n'.join(lines)
+    
+    def validate_template_structure(self, template_data: Dict[str, Any]) -> None:
+        """Validate template structure."""
+        required_keys = ['name', 'description', 'category', 'platforms', 'file_extension']
+        for key in required_keys:
+            if key not in template_data:
+                raise ValueError(f"Missing required key: {key}")
+        
+        if 'variables' in template_data:
+            for var_name, var_config in template_data['variables'].items():
+                if not isinstance(var_config, dict):
+                    raise ValueError(f"Invalid variable configuration: {var_name}")
+                if 'type' not in var_config:
+                    raise ValueError(f"Missing variable type: {var_name}")
+        
+        if 'variants' in template_data:
+            for variant_name, variant_config in template_data['variants'].items():
+                if not isinstance(variant_config, dict):
+                    raise ValueError(f"Invalid variant configuration: {variant_name}")
+                if 'modifications' not in variant_config:
+                    raise ValueError(f"Missing variant modifications: {variant_name}")
     
     def get_template_info(self, template_key: str) -> Dict[str, Any]:
         """Get comprehensive information about a template."""

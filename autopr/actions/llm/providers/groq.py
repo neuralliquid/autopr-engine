@@ -18,7 +18,7 @@ class GroqProvider(BaseLLMProvider):
     def __init__(self, config: Dict[str, Any]) -> None:
         super().__init__(config)
         try:
-            from groq import Groq  # type: ignore[import-not-found]
+            from groq import Groq
 
             self.client = Groq(api_key=self.api_key)
             self.available = True

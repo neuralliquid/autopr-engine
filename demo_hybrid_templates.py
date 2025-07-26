@@ -14,7 +14,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from autopr.actions.prototype_enhancement.file_generators import FileGenerator
 
-def demo_hybrid_templates():
+def demo_hybrid_templates() -> None:
     """Demonstrate the hybrid YAML + template approach."""
     print("🚀 Hybrid YAML + Template Approach Demo")
     print("=" * 50)
@@ -156,7 +156,7 @@ def demo_hybrid_templates():
     print("  • Backward compatibility")
     print("  • IDE support for template files")
 
-def demo_template_creation():
+def demo_template_creation() -> None:
     """Demonstrate how to create new templates."""
     print("\n📝 Creating New Templates:")
     print("-" * 30)
