@@ -197,50 +197,71 @@ class PlatformScoringEngine:
         return opportunities
 
     def _calculate_single_platform_score(
-        self, platform: str, config: Dict[str, Any], results: Dict[str, Any]
+        self, platform: str, platform_config: Dict[str, Any], detection_results: Dict[str, Any]
     ) -> float:
-        """Calculate confidence score for a single platform."""
+        """Calculate confidence score for a single platform.
+
+        Args:
+            platform: The platform ID to calculate score for
+            platform_config: The platform configuration dictionary
+            detection_results: Results from the detection analysis
+
+        Returns:
+            A confidence score between 0.0 and 1.0
+        """
         score = 0.0
+        max_possible = 0.0
 
         # File-based scoring
-        found_files = results.get("found_files", {}).get(platform, [])
-        if found_files:
-            file_score = min(len(found_files) / len(config.get("files", [])), 1.0)
-            score += file_score * self.scoring_weights["files"]
-
-        # Dependency-based scoring
-        dependencies = results.get("dependencies", [])
-        platform_deps = config.get("dependencies", [])
-        if platform_deps:
-            dep_matches = sum(1 for dep in platform_deps if any(dep in d for d in dependencies))
-            dep_score = min(dep_matches / len(platform_deps), 1.0)
-            score += dep_score * self.scoring_weights["dependencies"]
-
-        # Script-based scoring
-        scripts = results.get("scripts", {})
-        platform_scripts = config.get("package_scripts", [])
-        if platform_scripts:
-            script_matches = sum(1 for script in platform_scripts if script in scripts)
-            script_score = min(script_matches / len(platform_scripts), 1.0)
-            score += script_score * self.scoring_weights["scripts"]
+        if platform in detection_results.get("found_files", {}):
+            file_matches = len(detection_results["found_files"][platform])
+            score += self.scoring_weights["files"] * min(file_matches, 3)  # Cap at 3 files
+            max_possible += self.scoring_weights["files"] * 3
 
         # Folder-based scoring
-        found_folders = results.get("found_folders", {}).get(platform, [])
-        if found_folders:
-            folder_score = min(len(found_folders) / len(config.get("folder_patterns", [])), 1.0)
-            score += folder_score * self.scoring_weights["folders"]
+        if platform in detection_results.get("found_folders", {}):
+            folder_matches = len(detection_results["found_folders"][platform])
+            score += self.scoring_weights["folders"] * min(folder_matches, 2)  # Cap at 2 folders
+            max_possible += self.scoring_weights["folders"] * 2
 
-        # Content pattern scoring
-        content_matches = results.get("content_matches", {}).get(platform, 0)
-        if content_matches > 0:
-            content_score = min(content_matches / 10.0, 1.0)  # Normalize to max 1.0
-            score += content_score * self.scoring_weights["content"]
+        # Dependency-based scoring
+        platform_deps = set(
+            platform_config.get("dependencies", []) + platform_config.get("devDependencies", [])
+        )
+        found_deps = set(detection_results.get("dependencies", []))
+        matching_deps = platform_deps.intersection(found_deps)
+        score += self.scoring_weights["dependencies"] * min(len(matching_deps), 3)  # Cap at 3 deps
+        max_possible += self.scoring_weights["dependencies"] * 3
+
+        # Script-based scoring
+        platform_scripts = set(platform_config.get("package_scripts", []))
+        found_scripts = set(detection_results.get("scripts", {}).values())
+        matching_scripts = sum(
+            1 for script in platform_scripts if any(script in s for s in found_scripts)
+        )
+        score += self.scoring_weights["scripts"] * min(matching_scripts, 2)  # Cap at 2 scripts
+        max_possible += self.scoring_weights["scripts"] * 2
+
+        # Content-based scoring
+        if platform in detection_results.get("content_matches", {}):
+            content_matches = len(detection_results["content_matches"][platform])
+            score += self.scoring_weights["content"] * min(content_matches, 5)  # Cap at 5 matches
+            max_possible += self.scoring_weights["content"] * 5
 
         # Commit message scoring
-        commit_matches = results.get("commit_matches", {}).get(platform, 0)
-        if commit_matches > 0:
-            commit_score = min(commit_matches / 5.0, 1.0)  # Normalize to max 1.0
-            score += commit_score * self.scoring_weights["commits"]
+        if platform in detection_results.get("commit_matches", {}):
+            commit_matches = detection_results["commit_matches"][platform]
+            score += self.scoring_weights["commits"] * min(commit_matches, 5)  # Cap at 5 commits
+            max_possible += self.scoring_weights["commits"] * 5
+
+        # Apply any custom scoring rules from the platform config
+        custom_score = float(platform_config.get("scoring", {}).get("base_score", 0.0))
+        if custom_score > 0:
+            score = max(score, custom_score * max_possible)
+
+        # Normalize the score to 0-1 range based on max possible
+        if max_possible > 0:
+            score = min(score / max_possible, 1.0)
 
         return score
 

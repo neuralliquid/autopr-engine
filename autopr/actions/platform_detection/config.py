@@ -43,11 +43,17 @@ class PlatformConfigManager:
         return cls._instance
 
     def _initialize(self) -> None:
-        """Initialize the configuration manager."""
+        """Initialize the configuration manager.
+
+        This method sets up the initial state of the configuration manager
+        and loads all platform configurations.
+        """
         self._platforms = {}
         self._platforms_by_category = {}
         self._platforms_by_type = {}
+        self._platforms_by_id = {}
         self._load_config_files()
+        self._index_platforms()
         self._configs_loaded = True
 
     @classmethod
@@ -101,109 +107,160 @@ class PlatformConfigManager:
                 platforms[platform.id] = platform
 
                 # Update indexes
-                self._platforms_by_category.setdefault(category, []).append(platform.id)
-                self._platforms_by_type.setdefault(platform.type, []).append(platform.id)
-
-        return platforms
 
     def _load_config_files(self) -> None:
+        """Load platform configuration files from the configured directories.
+
+        This method loads platform configurations from JSON files in the
+        configured category directories and registers them with the manager.
         """
-        Load all platform configurations from the config directory.
-
-        Raises:
-            Exception: If an error occurs while loading configurations
-        """
-        # Ensure config directory exists
-        self._BASE_CONFIG_DIR.mkdir(parents=True, exist_ok=True)
-
-        # Load each category
-        for category in self._CATEGORY_FILES.keys():
-            platforms = self._load_platforms_from_category(category)
-            self._platforms.update(platforms)
-
-        logger.info("Loaded %d platform configurations", len(self._platforms))
-
-        # Load category index files for backward compatibility
-        self._load_category_index_files()
-
-    def _load_category_index_files(self) -> None:
-        """Load category index files for backward compatibility."""
+        # Load platform configurations from each category
         for category, filename in self._CATEGORY_FILES.items():
-            category_file = self._BASE_CONFIG_DIR / filename
-            if not category_file.exists():
+            try:
+                config_path = self._BASE_CONFIG_DIR / filename
+                if not config_path.exists():
+                    logger.warning(f"Config file not found: {config_path}")
+                    continue
+
+                with open(config_path, "r", encoding="utf-8") as f:
+                    config_data = json.load(f)
+
+                # Validate the config file structure
+                if not isinstance(config_data, dict) or "platforms" not in config_data:
+                    logger.error(f"Invalid config file format in {config_path}")
+                    continue
+
+                # Process each platform in the config file
+                for platform_ref in config_data["platforms"]:
+                    try:
+                        platform_id = platform_ref.get("id")
+                        config_file = platform_ref.get("config_file")
+
+                        if not platform_id or not config_file:
+                            logger.warning(
+                                f"Missing required fields in platform reference: {platform_ref}"
+                            )
+                            continue
+
+                        # Load the platform configuration
+                        platform_config_path = self._BASE_CONFIG_DIR / config_file
+                        if not platform_config_path.exists():
+                            logger.warning(f"Platform config not found: {platform_config_path}")
+                            continue
+
+                        with open(platform_config_path, "r", encoding="utf-8") as pf:
+                            platform_data = json.load(pf)
+
+                        # Create and store the platform config
+                        platform_config = PlatformConfig.from_dict(platform_id, platform_data)
+                        self._platforms[platform_id] = platform_config
+
+                        # Update indexes
+                        if category not in self._platforms_by_category:
+                            self._platforms_by_category[category] = []
+                        self._platforms_by_category[category].append(platform_id)
+
+                        platform_type = platform_config.type
+                        if platform_type not in self._platforms_by_type:
+                            self._platforms_by_type[platform_type] = []
+                        self._platforms_by_type[platform_type].append(platform_id)
+
+                    except Exception as e:
+                        logger.error(f"Error loading platform config {platform_id}: {str(e)}")
+                        continue
+
+            except Exception as e:
+                logger.error(f"Error loading config file {filename}: {str(e)}")
                 continue
 
-            try:
-                with open(category_file, "r", encoding="utf-8") as f:
-                    data = json.load(f)
+    def _index_platforms(self) -> None:
+        """Index platforms for faster lookups.
 
-                if isinstance(data, dict):
-                    # Old format: {platform_id: path}
-                    for platform_id, path in data.items():
-                        if platform_id not in self._platforms:
-                            logger.warning(f"Referenced platform not found: {platform_id}")
-
-            except (json.JSONDecodeError, IOError) as e:
-                logger.error(f"Error loading category file {category_file}: {e}")
-
-    def get_platform(self, platform_id: str) -> Optional[PlatformConfig]:
+        This method creates additional indexes to optimize platform lookups
+        by various criteria.
         """
-        Get a platform configuration by ID.
+        self._platforms_by_id = {p.id: p for p in self._platforms.values()}
+
+        # Ensure all categories and types have lists, even if empty
+        for platform in self._platforms.values():
+            if platform.category not in self._platforms_by_category:
+                self._platforms_by_category[platform.category] = []
+            if platform.type not in self._platforms_by_type:
+                self._platforms_by_type[platform.type] = []
+
+        # Sort platforms by priority within each category/type
+        for category in self._platforms_by_category:
+            self._platforms_by_category[category].sort(
+                key=lambda x: self._platforms[x].priority, reverse=True
+            )
+
+        for platform_type in self._platforms_by_type:
+            self._platforms_by_type[platform_type].sort(
+                key=lambda x: self._platforms[x].priority, reverse=True
+            )
+
+    def get_platform(self, platform_id: str) -> Optional[Dict[str, Any]]:
+        """Get a platform configuration by ID.
 
         Args:
-            platform_id: The platform ID to look up
+            platform_id: The ID of the platform to retrieve
 
         Returns:
-            PlatformConfig if found, None otherwise
+            The platform configuration as a dictionary, or None if not found
         """
-        if not self._configs_loaded:
-            self._load_config_files()
-        return self._platforms.get(platform_id)
+        platform = self._platforms_by_id.get(platform_id)
+        return platform.to_dict() if platform else None
 
-    def get_platforms_by_category(self, category: str) -> Dict[str, PlatformConfig]:
-        """
-        Get all platforms in a category.
+    def get_platforms_by_category(self, category: str) -> List[Dict[str, Any]]:
+        """Get all platforms in a specific category.
 
         Args:
-            category: The category name (core, ai, cloud, etc.)
+            category: The category to filter platforms by
 
         Returns:
-            Dictionary of platform_id -> PlatformConfig
+            A list of platform configurations in the specified category
         """
-        if not self._configs_loaded:
-            self._load_config_files()
+        return [
+            self._platforms[pid].to_dict() for pid in self._platforms_by_category.get(category, [])
+        ]
 
-        platform_ids = self._platforms_by_category.get(category, [])
-        return {pid: self._platforms[pid] for pid in platform_ids if pid in self._platforms}
-
-    def get_platforms_by_type(self, platform_type: PlatformType) -> Dict[str, PlatformConfig]:
-        """
-        Get all platforms of a specific type.
+    def get_platforms_by_type(self, platform_type: str) -> List[Dict[str, Any]]:
+        """Get all platforms of a specific type.
 
         Args:
             platform_type: The platform type to filter by
 
         Returns:
-            Dictionary of platform_id -> PlatformConfig
+            A list of platform configurations of the specified type
         """
-        if not self._configs_loaded:
-            self._load_config_files()
+        return [
+            self._platforms[pid].to_dict() for pid in self._platforms_by_type.get(platform_type, [])
+        ]
 
-        platform_ids = self._platforms_by_type.get(platform_type, [])
-        return {pid: self._platforms[pid] for pid in platform_ids if pid in self._platforms}
-
-    def get_all_platforms(self) -> Dict[str, PlatformConfig]:
-        """
-        Get all platform configurations.
+    def get_all_platforms(self) -> Dict[str, Dict[str, Any]]:
+        """Get all platform configurations.
 
         Returns:
-            Dictionary of platform_id -> PlatformConfig
+            A dictionary mapping platform IDs to their configurations
         """
-        if not self._configs_loaded:
-            self._load_config_files()
-        return self._platforms.copy()
+        return {pid: platform.to_dict() for pid, platform in self._platforms.items()}
 
-    def get_active_platforms(self) -> Dict[str, PlatformConfig]:
+    def get_platforms_with_detection_rules(self) -> Dict[str, Dict[str, Any]]:
+        """Get platforms that have detection rules configured.
+
+        This is useful for the detector to only process platforms
+        that actually have detection rules defined.
+
+        Returns:
+            A dictionary of platform configurations with detection rules
+        """
+        return {
+            pid: platform.to_dict()
+            for pid, platform in self._platforms.items()
+            if hasattr(platform, "detection") and platform.detection
+        }
+
+    def get_active_platforms(self) -> Dict[str, Dict[str, Any]]:
         """
         Get all active platform configurations.
 
@@ -258,6 +315,7 @@ class PlatformConfigManager:
             category: platform_ids.copy()
             for category, platform_ids in self._platforms_by_category.items()
         }
+
 
 # For backward compatibility
 PlatformConfig = PlatformConfigManager

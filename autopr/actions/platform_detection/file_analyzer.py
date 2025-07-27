@@ -1,57 +1,175 @@
 """
-File Analysis Module
+Legacy File Analyzer Module
 
-Handles file system scanning and content analysis for platform detection.
+This module provides backward compatibility for the old FileAnalyzer interface.
+New code should use the modular analyzer in autopr.actions.platform_detection.analysis
 """
 
-import json
-import os
-import re
+import warnings
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
+
+from autopr.actions.platform_detection.analysis import FileAnalyzer as ModularFileAnalyzer
+from autopr.actions.platform_detection.analysis import create_file_analyzer
+from autopr.actions.platform_detection.analysis.patterns import ContentPattern, FilePattern
 
 
 class FileAnalyzer:
-    """Analyzes file system for platform-specific indicators."""
+    """
+    Legacy wrapper for the modular FileAnalyzer.
+
+    This class provides backward compatibility with the old interface while
+    delegating to the new modular implementation under the hood.
+
+    .. deprecated:: 1.0.0
+       Use :class:`autopr.actions.platform_detection.analysis.FileAnalyzer` instead.
+    """
 
     def __init__(self, workspace_path: str = "."):
+        """Initialize the legacy file analyzer.
+
+        Args:
+            workspace_path: Path to the workspace to analyze (default: ".")
+        """
+        warnings.warn(
+            "FileAnalyzer is deprecated. "
+            "Use autopr.actions.platform_detection.analysis.create_file_analyzer() instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.workspace_path = Path(workspace_path)
+        self._analyzer = create_file_analyzer(workspace_path)
 
     def scan_for_platform_files(
         self, platform_configs: Dict[str, Dict[str, Any]]
     ) -> Dict[str, List[str]]:
         """Scan workspace for platform-specific files."""
-        found_files = {}
+        results = {}
 
+        # Convert platform configs to the new format
         for platform, config in platform_configs.items():
-            platform_files = []
-
+            file_matches = []
             for file_pattern in config.get("files", []):
-                matches = self._find_files_by_pattern(file_pattern)
-                platform_files.extend(matches)
+                # Convert glob patterns to the new format
+                pattern = FilePattern(platform, file_pattern, confidence=0.7)
+                for match in self._analyzer.analyze_directory():
+                    if pattern.matches(match.path):
+                        file_matches.append(str(match.path.relative_to(self.workspace_path)))
 
-            if platform_files:
-                found_files[platform] = platform_files
+            if file_matches:
+                results[platform] = list(set(file_matches))  # Remove duplicates
 
-        return found_files
+        return results
 
     def scan_for_folder_patterns(
         self, platform_configs: Dict[str, Dict[str, Any]]
     ) -> Dict[str, List[str]]:
         """Scan workspace for platform-specific folder patterns."""
-        found_folders = {}
+        results = {}
 
         for platform, config in platform_configs.items():
-            platform_folders = []
-
+            folder_matches = []
             for folder_pattern in config.get("folder_patterns", []):
-                matches = self._find_folders_by_pattern(folder_pattern)
-                platform_folders.extend(matches)
+                # Look for directories matching the pattern
+                for dir_path in self.workspace_path.glob(f"**/{folder_pattern}"):
+                    if dir_path.is_dir():
+                        folder_matches.append(str(dir_path.relative_to(self.workspace_path)))
 
-            if platform_folders:
-                found_folders[platform] = platform_folders
+            if folder_matches:
+                results[platform] = list(set(folder_matches))  # Remove duplicates
 
-        return found_folders
+        return results
+
+    def _find_files_by_pattern(self, pattern: str) -> List[str]:
+        """Find files matching the given glob pattern."""
+        matches = []
+        for file_path in self.workspace_path.glob("**/" + pattern):
+            if file_path.is_file():
+                matches.append(str(file_path.relative_to(self.workspace_path)))
+        return matches
+
+    def _find_folders_by_pattern(self, pattern: str) -> List[str]:
+        """Find folders matching the given glob pattern."""
+        matches = []
+        for dir_path in self.workspace_path.glob("**/" + pattern):
+            if dir_path.is_dir():
+                matches.append(str(dir_path.relative_to(self.workspace_path)))
+        return matches
+
+    def analyze_file_content(
+        self, file_path: str, platform_configs: Dict[str, Dict[str, Any]]
+    ) -> Dict[str, float]:
+        """Analyze file content for platform indicators."""
+        file_path_obj = Path(file_path)
+        if not file_path_obj.exists() or not file_path_obj.is_file():
+            return {}
+
+        try:
+            content = file_path_obj.read_text(encoding="utf-8", errors="ignore")
+            return self._analyze_content(content, platform_configs)
+        except (IOError, UnicodeDecodeError):
+            return {}
+
+    def _analyze_content(
+        self, content: str, platform_configs: Dict[str, Dict[str, Any]]
+    ) -> Dict[str, float]:
+        """Analyze content for platform indicators."""
+        results = {}
+        for platform, config in platform_configs.items():
+            confidence = 0.0
+            for pattern in config.get("content_patterns", []):
+                # Convert to ContentPattern for consistency
+                content_pattern = ContentPattern(platform, pattern, confidence=0.3)
+                if content_pattern.matches(content):
+                    confidence += content_pattern.confidence
+
+            if confidence > 0:
+                results[platform] = min(confidence, 1.0)  # Cap at 1.0
+
+        return results
+
+    def scan_for_platform_indicators(
+        self, platform_configs: Dict[str, Dict[str, Any]]
+    ) -> Dict[str, Dict[str, Any]]:
+        """
+        Scan the workspace for platform indicators.
+
+        Returns:
+            Dict mapping platform names to their detection results
+        """
+        # Convert platform configs to the new format
+        results = {}
+
+        # Get file and folder matches using the new analyzer
+        file_matches = self.scan_for_platform_files(platform_configs)
+        folder_matches = self.scan_for_folder_patterns(platform_configs)
+
+        # Combine results in the legacy format
+        for platform in set(file_matches.keys()) | set(folder_matches.keys()):
+            results[platform] = {
+                "files": file_matches.get(platform, []),
+                "folders": folder_matches.get(platform, []),
+                "confidence": 0.0,
+            }
+
+            # Calculate confidence based on number of matches
+            file_count = len(results[platform]["files"])
+            folder_count = len(results[platform]["folders"])
+
+            # More matches = higher confidence, but cap at 0.7
+            confidence = min(0.7, 0.1 * (file_count + folder_count))
+
+            # Analyze file contents for additional confidence
+            for file_path in results[platform]["files"]:
+                content_results = self.analyze_file_content(
+                    str(self.workspace_path / file_path), {platform: platform_configs[platform]}
+                )
+                if platform in content_results:
+                    confidence = min(1.0, confidence + content_results[platform])
+
+            results[platform]["confidence"] = confidence
+
+        return results
 
     def analyze_package_json(self) -> Dict[str, Any]:
         """Analyze package.json for platform indicators."""
