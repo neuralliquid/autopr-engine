@@ -4,10 +4,10 @@ AutoPR AI/LLM Base Classes
 Base classes and interfaces for AI/LLM provider implementation.
 """
 
-from abc import ABC, abstractmethod
-from typing import Dict, Any, List, Optional
-from dataclasses import dataclass
 import logging
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
+from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -48,9 +48,7 @@ class LLMProvider(ABC):
     Provides a unified interface for different AI/LLM services.
     """
 
-    def __init__(
-        self, name: str, description: str = "", version: str = "1.0.0"
-    ) -> None:
+    def __init__(self, name: str, description: str = "", version: str = "1.0.0") -> None:
         """
         Initialize the LLM provider.
 
@@ -179,9 +177,7 @@ class OpenAIProvider(LLMProvider):
     """OpenAI LLM provider implementation."""
 
     def __init__(self) -> None:
-        super().__init__(
-            name="openai", description="OpenAI GPT models provider", version="1.0.0"
-        )
+        super().__init__(name="openai", description="OpenAI GPT models provider", version="1.0.0")
         self.supported_models: List[str] = [
             "gpt-4",
             "gpt-4-turbo",

@@ -3,11 +3,13 @@ AutoPR Action: AI Comment Analyzer
 Uses LLM to analyze PR comments and generate intelligent responses and fixes.
 """
 
-import os
 import json
-from typing import Dict, Any, Optional, List
-from pydantic import BaseModel, Field
+import os
+from typing import Any, Dict, List, Optional
+
 import openai
+from pydantic import BaseModel, Field
+
 from .base import Action
 
 
@@ -47,19 +49,19 @@ def analyze_comment_with_ai(
     3. What actions should be taken
     4. Priority level
     5. Appropriate tags
-    
+
     Return JSON with analysis results.
     """
 
     user_prompt = f"""
     Analyze this PR comment:
-    
+
     Comment: "{inputs.comment_body}"
     File: {inputs.file_path or "N/A"}
-    
+
     Context:
     {inputs.file_content[:500] if inputs.file_content else "No file content available"}
-    
+
     Determine:
     - Intent (fix_request, question, suggestion, praise, complex_issue)
     - Confidence (0.0-1.0)

@@ -6,10 +6,10 @@ Detects which rapid prototyping platform was used and routes accordingly
 import json
 import os
 import re
-from typing import Dict, List, Any, Optional, Tuple
-from pydantic import BaseModel
 from pathlib import Path
-from typing import cast
+from typing import Any, Dict, List, Optional, Tuple, cast
+
+from pydantic import BaseModel
 
 
 class PlatformDetectorInputs(BaseModel):
@@ -99,9 +99,7 @@ class PlatformDetector:
             },
         }
 
-    def detect_platform(
-        self, inputs: PlatformDetectorInputs
-    ) -> PlatformDetectorOutputs:
+    def detect_platform(self, inputs: PlatformDetectorInputs) -> PlatformDetectorOutputs:
         """Detect which platform was used for the project"""
 
         # Scan workspace for files and content
@@ -173,9 +171,7 @@ class PlatformDetector:
                     ]:
                         try:
                             with open(item, "r", encoding="utf-8") as f:
-                                structure["file_contents"][
-                                    str(relative_path)
-                                ] = f.read()
+                                structure["file_contents"][str(relative_path)] = f.read()
                         except:
                             pass
 
@@ -272,18 +268,12 @@ class PlatformDetector:
                     analysis["content_matches"].append(f"{pattern} in {file_path}")
 
         # Advanced pattern detection
-        platform = [p for p, s in self.platform_signatures.items() if s == signatures][
-            0
-        ]
+        platform = [p for p, s in self.platform_signatures.items() if s == signatures][0]
         if platform in self.advanced_patterns:
-            advanced_score = self._check_advanced_patterns(
-                platform, file_structure, package_json
-            )
+            advanced_score = self._check_advanced_patterns(platform, file_structure, package_json)
             score += advanced_score
             if advanced_score > 0:
-                analysis["advanced_matches"].append(
-                    f"Advanced patterns: +{advanced_score:.2f}"
-                )
+                analysis["advanced_matches"].append(f"Advanced patterns: +{advanced_score:.2f}")
 
         return min(score, 1.0), analysis
 
@@ -379,9 +369,7 @@ class PlatformDetector:
             base_config.update(
                 {
                     "fullstack_detected": True,
-                    "database_type": self._detect_database_type(
-                        file_structure, package_json
-                    ),
+                    "database_type": self._detect_database_type(file_structure, package_json),
                     "deployment_options": [
                         "vercel",
                         "railway",
@@ -389,14 +377,10 @@ class PlatformDetector:
                     ],
                     "recommended_structure": {
                         "api_dir": (
-                            "api"
-                            if "api" in file_structure.get("folders", [])
-                            else "server"
+                            "api" if "api" in file_structure.get("folders", []) else "server"
                         ),
                         "client_dir": (
-                            "client"
-                            if "client" in file_structure.get("folders", [])
-                            else "src"
+                            "client" if "client" in file_structure.get("folders", []) else "src"
                         ),
                         "config_file": "bolt.config.json",
                     },
@@ -422,9 +406,7 @@ class PlatformDetector:
 
         return workflow_map.get(platform, "phase2_generic_enhancement")
 
-    def _get_migration_suggestions(
-        self, platform: str, all_scores: Dict[str, float]
-    ) -> List[str]:
+    def _get_migration_suggestions(self, platform: str, all_scores: Dict[str, float]) -> List[str]:
         """Get suggestions for migrating to other platforms"""
         suggestions: List[str] = []
 
@@ -446,9 +428,7 @@ class PlatformDetector:
 
         for alt_platform, score in sorted_platforms[:3]:
             if score > 0.2:
-                benefit = migration_benefits.get(
-                    alt_platform, "Platform-specific benefits"
-                )
+                benefit = migration_benefits.get(alt_platform, "Platform-specific benefits")
                 suggestions.append(
                     f"Consider migrating to {alt_platform}: {benefit} (compatibility: {score:.1%})"
                 )
@@ -496,9 +476,7 @@ class PlatformDetector:
             opportunities.append("Add platform-specific configuration files")
 
         if not analysis.get("dependency_matches"):
-            opportunities.append(
-                "Update dependencies to use platform-specific packages"
-            )
+            opportunities.append("Update dependencies to use platform-specific packages")
 
         return opportunities
 

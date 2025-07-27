@@ -1,7 +1,9 @@
-import pydantic
 import os
 import re
-from typing import List, Dict, Any
+from typing import Any, Dict, List
+
+import pydantic
+
 from autopr.actions.base import Action
 
 
@@ -55,8 +57,9 @@ class AnalyzeConsoleLogs(Action[Inputs, Outputs]):
 
 
 if __name__ == "__main__":
-    from autopr.tests.utils import run_action_manually
     import asyncio
+
+    from autopr.tests.utils import run_action_manually
 
     # Create a dummy file with a console.log for testing
     with open("dummy_log_file.ts", "w") as f:

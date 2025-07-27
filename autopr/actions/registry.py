@@ -5,8 +5,10 @@ Registry for managing and discovering actions.
 """
 
 import logging
-from typing import Dict, Type, TypeVar, Generic, Any, Optional, Callable, List
+from typing import Any, Callable, Dict, Generic, List, Optional, Type, TypeVar
+
 from typing_extensions import Protocol
+
 from autopr.actions.base import Action
 
 T = TypeVar("T")
@@ -158,9 +160,9 @@ class ActionRegistry(Generic[ActionT]):
         """Register built-in actions."""
         try:
             # Import and register built-in actions
-            from .post_comment import PostComment
-            from .label_pr import LabelPR
             from .create_or_update_issue import CreateOrUpdateIssue
+            from .label_pr import LabelPR
+            from .post_comment import PostComment
 
             # Register actions with proper typing
             self.register("post_comment", PostComment)  # type: ignore[arg-type]

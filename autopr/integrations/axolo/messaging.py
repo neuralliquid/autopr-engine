@@ -1,7 +1,8 @@
 """Message formatting and posting utilities for Axolo integration."""
 
 import logging
-from typing import Dict, List, Any, Optional
+from typing import Any, Dict, List, Optional
+
 import aiohttp
 
 from .config import AxoloConfig

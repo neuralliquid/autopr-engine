@@ -5,27 +5,28 @@ Handles platform-specific enhancement logic and package management for prototype
 """
 
 import json
-from typing import Dict, List, Any, Optional, Tuple
 from pathlib import Path
-from .platform_configs import PlatformRegistry, PlatformConfig
+from typing import Any, Dict, List, Optional, Tuple
+
 from .file_generators import FileGenerator
+from .platform_configs import PlatformConfig, PlatformRegistry
 
 
 class EnhancementStrategy:
     """Base class for platform-specific enhancement strategies."""
-    
+
     def __init__(self, platform_config: PlatformConfig, file_generator: FileGenerator):
         self.config = platform_config
         self.file_generator = file_generator
-    
+
     def enhance_project(self, project_path: Path, enhancement_type: str) -> Dict[str, Any]:
         """Enhance a project based on the enhancement type."""
         raise NotImplementedError("Subclasses must implement enhance_project")
-    
+
     def get_package_updates(self, enhancement_type: str) -> Dict[str, List[str]]:
         """Get package updates for the enhancement type."""
         raise NotImplementedError("Subclasses must implement get_package_updates")
-    
+
     def generate_files(self, enhancement_type: str) -> Dict[str, str]:
         """Generate files for the enhancement type."""
         raise NotImplementedError("Subclasses must implement generate_files")
@@ -33,7 +34,7 @@ class EnhancementStrategy:
 
 class ReplitEnhancementStrategy(EnhancementStrategy):
     """Enhancement strategy for Replit projects."""
-    
+
     def enhance_project(self, project_path: Path, enhancement_type: str) -> Dict[str, Any]:
         """Enhance a Replit project."""
         result = {
@@ -42,73 +43,67 @@ class ReplitEnhancementStrategy(EnhancementStrategy):
             "files_created": [],
             "packages_added": [],
             "configuration_updates": [],
-            "next_steps": []
+            "next_steps": [],
         }
-        
+
         if enhancement_type == "production_ready":
             result.update(self._enhance_for_production(project_path))
         elif enhancement_type == "testing":
             result.update(self._enhance_for_testing(project_path))
         elif enhancement_type == "security":
             result.update(self._enhance_for_security(project_path))
-        
+
         return result
-    
+
     def _enhance_for_production(self, project_path: Path) -> Dict[str, Any]:
         """Enhance Replit project for production."""
         files_created: List[str] = []
         packages_added: List[str] = []
         config_updates: List[str] = []
-        
+
         # Generate production files
         files = {
             "Dockerfile": self.file_generator.generate_dockerfile("replit"),
             ".env.example": self.file_generator.generate_security_files("replit")[".env.example"],
             "ecosystem.config.js": self._generate_pm2_config(),
         }
-        
+
         files_created.extend(files.keys())
-        
+
         # Production packages
         packages = ["helmet", "cors", "express-rate-limit", "compression", "morgan", "pm2"]
         packages_added.extend(packages)
-        
-        config_updates.extend([
-            "Added security middleware configuration",
-            "Configured process manager (PM2)",
-            "Set up production logging",
-            "Added health check endpoint"
-        ])
-        
+
+        config_updates.extend(
+            [
+                "Added security middleware configuration",
+                "Configured process manager (PM2)",
+                "Set up production logging",
+                "Added health check endpoint",
+            ]
+        )
+
         return {
             "files_created": files_created,
             "packages_added": packages_added,
             "configuration_updates": config_updates,
-            "files": files
+            "files": files,
         }
-    
+
     def _enhance_for_testing(self, project_path: Path) -> Dict[str, Any]:
         """Enhance Replit project for testing."""
         files = self.file_generator.generate_testing_files("replit")
         packages = ["jest", "supertest", "mocha", "chai", "sinon"]
-        
-        return {
-            "files_created": list(files.keys()),
-            "packages_added": packages,
-            "files": files
-        }
-    
+
+        return {"files_created": list(files.keys()), "packages_added": packages, "files": files}
+
     def _enhance_for_security(self, project_path: Path) -> Dict[str, Any]:
         """Enhance Replit project for security."""
         files = self.file_generator.generate_security_files("replit")
         packages = ["helmet", "cors", "express-rate-limit", "bcryptjs", "jsonwebtoken"]
-        
-        return {
-            "files_created": list(files.keys()),
-            "packages_added": packages,
-            "files": files
-        }
-    
+
+        return {"files_created": list(files.keys()), "packages_added": packages, "files": files}
+
     def _generate_pm2_config(self) -> str:
         """Generate PM2 ecosystem configuration."""
         return """
@@ -133,48 +128,44 @@ module.exports = {
   }]
 };
         """.strip()
-    
+
     def get_package_updates(self, enhancement_type: str) -> Dict[str, List[str]]:
         """Get package updates for Replit enhancement."""
         packages = PlatformRegistry.get_enhancement_packages()
-        
+
         if enhancement_type == "production_ready":
             return {
                 "dependencies": packages["security"]["common"] + packages["performance"]["common"],
-                "devDependencies": []
+                "devDependencies": [],
             }
         elif enhancement_type == "testing":
-            return {
-                "dependencies": [],
-                "devDependencies": packages["testing"]["common"]
-            }
+            return {"dependencies": [], "devDependencies": packages["testing"]["common"]}
         elif enhancement_type == "security":
-            return {
-                "dependencies": packages["security"]["common"],
-                "devDependencies": []
-            }
-        
+            return {"dependencies": packages["security"]["common"], "devDependencies": []}
+
         return {"dependencies": [], "devDependencies": []}
-    
+
     def generate_files(self, enhancement_type: str) -> Dict[str, str]:
         """Generate files for Replit enhancement."""
         if enhancement_type == "production_ready":
             return {
                 "Dockerfile": self.file_generator.generate_dockerfile("replit"),
-                ".env.example": self.file_generator.generate_security_files("replit")[".env.example"],
-                "ecosystem.config.js": self._generate_pm2_config()
+                ".env.example": self.file_generator.generate_security_files("replit")[
+                    ".env.example"
+                ],
+                "ecosystem.config.js": self._generate_pm2_config(),
             }
         elif enhancement_type == "testing":
             return self.file_generator.generate_testing_files("replit")
         elif enhancement_type == "security":
             return self.file_generator.generate_security_files("replit")
-        
+
         return {}
 
 
 class LovableEnhancementStrategy(EnhancementStrategy):
     """Enhancement strategy for Lovable.dev projects."""
-    
+
     def enhance_project(self, project_path: Path, enhancement_type: str) -> Dict[str, Any]:
         """Enhance a Lovable.dev project."""
         result = {
@@ -183,18 +174,18 @@ class LovableEnhancementStrategy(EnhancementStrategy):
             "files_created": [],
             "packages_added": [],
             "configuration_updates": [],
-            "next_steps": []
+            "next_steps": [],
         }
-        
+
         if enhancement_type == "production_ready":
             result.update(self._enhance_for_production(project_path))
         elif enhancement_type == "testing":
             result.update(self._enhance_for_testing(project_path))
         elif enhancement_type == "security":
             result.update(self._enhance_for_security(project_path))
-        
+
         return result
-    
+
     def _enhance_for_production(self, project_path: Path) -> Dict[str, Any]:
         """Enhance Lovable project for production."""
         files = {
@@ -202,44 +193,36 @@ class LovableEnhancementStrategy(EnhancementStrategy):
             "tsconfig.json": self.file_generator.generate_typescript_config("lovable"),
             "src/utils/errorBoundary.tsx": self._generate_error_boundary(),
         }
-        
+
         packages = ["@loadable/component", "react-window", "@sentry/react", "web-vitals"]
-        
+
         return {
             "files_created": list(files.keys()),
             "packages_added": packages,
             "configuration_updates": [
                 "Added TypeScript strict configuration",
                 "Implemented error boundaries",
-                "Added performance monitoring"
+                "Added performance monitoring",
             ],
-            "files": files
+            "files": files,
         }
-    
+
     def _enhance_for_testing(self, project_path: Path) -> Dict[str, Any]:
         """Enhance Lovable project for testing."""
         files = self.file_generator.generate_testing_files("lovable")
         files.update(self.file_generator.generate_accessibility_testing())
-        
+
         packages = ["@testing-library/react", "@testing-library/jest-dom", "playwright", "jest-axe"]
-        
-        return {
-            "files_created": list(files.keys()),
-            "packages_added": packages,
-            "files": files
-        }
-    
+
+        return {"files_created": list(files.keys()), "packages_added": packages, "files": files}
+
     def _enhance_for_security(self, project_path: Path) -> Dict[str, Any]:
         """Enhance Lovable project for security."""
         files = self.file_generator.generate_security_files("lovable")
         packages = ["@types/bcryptjs", "@types/jsonwebtoken"]
-        
-        return {
-            "files_created": list(files.keys()),
-            "packages_added": packages,
-            "files": files
-        }
-    
+
+        return {"files_created": list(files.keys()), "packages_added": packages, "files": files}
+
     def _generate_error_boundary(self) -> str:
         """Generate React error boundary component."""
         return """
@@ -286,36 +269,30 @@ class ErrorBoundary extends Component<Props, State> {
 
 export default ErrorBoundary;
         """.strip()
-    
+
     def get_package_updates(self, enhancement_type: str) -> Dict[str, List[str]]:
         """Get package updates for Lovable enhancement."""
         packages = PlatformRegistry.get_enhancement_packages()
-        
+
         if enhancement_type == "production_ready":
             return {
                 "dependencies": packages["performance"]["react"] + packages["monitoring"]["react"],
-                "devDependencies": packages["development"]["typescript"]
+                "devDependencies": packages["development"]["typescript"],
             }
         elif enhancement_type == "testing":
-            return {
-                "dependencies": [],
-                "devDependencies": packages["testing"]["react"]
-            }
+            return {"dependencies": [], "devDependencies": packages["testing"]["react"]}
         elif enhancement_type == "security":
-            return {
-                "dependencies": [],
-                "devDependencies": packages["security"]["react"]
-            }
-        
+            return {"dependencies": [], "devDependencies": packages["security"]["react"]}
+
         return {"dependencies": [], "devDependencies": []}
-    
+
     def generate_files(self, enhancement_type: str) -> Dict[str, str]:
         """Generate files for Lovable enhancement."""
         if enhancement_type == "production_ready":
             return {
                 "Dockerfile": self.file_generator.generate_dockerfile("lovable"),
                 "tsconfig.json": self.file_generator.generate_typescript_config("lovable"),
-                "src/utils/errorBoundary.tsx": self._generate_error_boundary()
+                "src/utils/errorBoundary.tsx": self._generate_error_boundary(),
             }
         elif enhancement_type == "testing":
             files = self.file_generator.generate_testing_files("lovable")
@@ -323,13 +300,13 @@ export default ErrorBoundary;
             return files
         elif enhancement_type == "security":
             return self.file_generator.generate_security_files("lovable")
-        
+
         return {}
 
 
 class BoltEnhancementStrategy(EnhancementStrategy):
     """Enhancement strategy for Bolt.new projects."""
-    
+
     def enhance_project(self, project_path: Path, enhancement_type: str) -> Dict[str, Any]:
         """Enhance a Bolt.new project."""
         result = {
@@ -338,18 +315,18 @@ class BoltEnhancementStrategy(EnhancementStrategy):
             "files_created": [],
             "packages_added": [],
             "configuration_updates": [],
-            "next_steps": []
+            "next_steps": [],
         }
-        
+
         if enhancement_type == "production_ready":
             result.update(self._enhance_for_production(project_path))
         elif enhancement_type == "testing":
             result.update(self._enhance_for_testing(project_path))
         elif enhancement_type == "security":
             result.update(self._enhance_for_security(project_path))
-        
+
         return result
-    
+
     def _enhance_for_production(self, project_path: Path) -> Dict[str, Any]:
         """Enhance Bolt project for production."""
         files = {
@@ -357,46 +334,38 @@ class BoltEnhancementStrategy(EnhancementStrategy):
             "tsconfig.json": self.file_generator.generate_typescript_config("bolt"),
             "Dockerfile": self.file_generator.generate_dockerfile("bolt"),
         }
-        
+
         packages = ["@vitejs/plugin-react", "vite-plugin-pwa", "@sentry/react"]
-        
+
         return {
             "files_created": list(files.keys()),
             "packages_added": packages,
             "configuration_updates": [
                 "Optimized Vite configuration for production",
                 "Added Progressive Web App features",
-                "Set up error monitoring with Sentry"
+                "Set up error monitoring with Sentry",
             ],
-            "files": files
+            "files": files,
         }
-    
+
     def _enhance_for_testing(self, project_path: Path) -> Dict[str, Any]:
         """Enhance Bolt project for testing."""
         files = {
             "vitest.config.ts": self._generate_vitest_config(),
             "src/test/setup.ts": self._generate_test_setup(),
         }
-        
+
         packages = ["vitest", "@vitest/ui", "jsdom", "@testing-library/react"]
-        
-        return {
-            "files_created": list(files.keys()),
-            "packages_added": packages,
-            "files": files
-        }
-    
+
+        return {"files_created": list(files.keys()), "packages_added": packages, "files": files}
+
     def _enhance_for_security(self, project_path: Path) -> Dict[str, Any]:
         """Enhance Bolt project for security."""
         files = self.file_generator.generate_security_files("bolt")
         packages = ["@types/bcryptjs", "@types/jsonwebtoken"]
-        
-        return {
-            "files_created": list(files.keys()),
-            "packages_added": packages,
-            "files": files
-        }
-    
+
+        return {"files_created": list(files.keys()), "packages_added": packages, "files": files}
+
     def _generate_vite_config(self) -> str:
         """Generate optimized Vite configuration."""
         return """
@@ -430,7 +399,7 @@ export default defineConfig({
   }
 });
         """.strip()
-    
+
     def _generate_vitest_config(self) -> str:
         """Generate Vitest configuration."""
         return """
@@ -450,7 +419,7 @@ export default defineConfig({
   }
 });
         """.strip()
-    
+
     def _generate_test_setup(self) -> str:
         """Generate test setup file."""
         return """
@@ -468,57 +437,54 @@ global.IntersectionObserver = vi.fn(() => ({
   unobserve: vi.fn()
 }));
         """.strip()
-    
+
     def get_package_updates(self, enhancement_type: str) -> Dict[str, List[str]]:
         """Get package updates for Bolt enhancement."""
         packages = PlatformRegistry.get_enhancement_packages()
-        
+
         if enhancement_type == "production_ready":
             return {
                 "dependencies": ["@vitejs/plugin-react", "vite-plugin-pwa", "@sentry/react"],
-                "devDependencies": packages["development"]["typescript"]
+                "devDependencies": packages["development"]["typescript"],
             }
         elif enhancement_type == "testing":
             return {
                 "dependencies": [],
-                "devDependencies": ["vitest", "@vitest/ui", "jsdom"] + packages["testing"]["react"]
+                "devDependencies": ["vitest", "@vitest/ui", "jsdom"] + packages["testing"]["react"],
             }
         elif enhancement_type == "security":
-            return {
-                "dependencies": [],
-                "devDependencies": packages["security"]["react"]
-            }
-        
+            return {"dependencies": [], "devDependencies": packages["security"]["react"]}
+
         return {"dependencies": [], "devDependencies": []}
-    
+
     def generate_files(self, enhancement_type: str) -> Dict[str, str]:
         """Generate files for Bolt enhancement."""
         if enhancement_type == "production_ready":
             return {
                 "vite.config.ts": self._generate_vite_config(),
                 "tsconfig.json": self.file_generator.generate_typescript_config("bolt"),
-                "Dockerfile": self.file_generator.generate_dockerfile("bolt")
+                "Dockerfile": self.file_generator.generate_dockerfile("bolt"),
             }
         elif enhancement_type == "testing":
             return {
                 "vitest.config.ts": self._generate_vitest_config(),
-                "src/test/setup.ts": self._generate_test_setup()
+                "src/test/setup.ts": self._generate_test_setup(),
             }
         elif enhancement_type == "security":
             return self.file_generator.generate_security_files("bolt")
-        
+
         return {}
 
 
 class EnhancementStrategyFactory:
     """Factory for creating platform-specific enhancement strategies."""
-    
+
     @staticmethod
     def create_strategy(platform: str) -> EnhancementStrategy:
         """Create an enhancement strategy for the given platform."""
         platform_config = PlatformRegistry.get_platform_config(platform)
         file_generator = FileGenerator()
-        
+
         if platform == "replit":
             return ReplitEnhancementStrategy(platform_config, file_generator)
         elif platform == "lovable":
@@ -528,20 +494,22 @@ class EnhancementStrategyFactory:
         else:
             # Generic strategy for other platforms - create a basic implementation
             class GenericEnhancementStrategy(EnhancementStrategy):
-                def enhance_project(self, project_path: Path, enhancement_type: str) -> Dict[str, Any]:
+                def enhance_project(
+                    self, project_path: Path, enhancement_type: str
+                ) -> Dict[str, Any]:
                     return {
                         "platform": platform,
                         "enhancement_type": enhancement_type,
                         "files_created": [],
                         "packages_added": [],
                         "configuration_updates": [],
-                        "next_steps": []
+                        "next_steps": [],
                     }
-                
+
                 def get_package_updates(self, enhancement_type: str) -> Dict[str, List[str]]:
                     return {"dependencies": [], "devDependencies": []}
-                
+
                 def generate_files(self, enhancement_type: str) -> Dict[str, str]:
                     return {}
-            
+
             return GenericEnhancementStrategy(platform_config, file_generator)

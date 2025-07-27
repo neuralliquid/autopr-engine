@@ -7,8 +7,9 @@ Setup configuration for Python packaging and distribution
 import os
 import re
 from pathlib import Path
-from setuptools import setup, find_packages
 from typing import List
+
+from setuptools import find_packages, setup
 
 
 # Get version from __init__.py
@@ -37,9 +38,7 @@ def get_requirements() -> List[str]:
     requirements_file = Path(__file__).parent / "requirements.txt"
     if requirements_file.exists():
         with open(requirements_file, "r", encoding="utf-8") as f:
-            return [
-                line.strip() for line in f if line.strip() and not line.startswith("#")
-            ]
+            return [line.strip() for line in f if line.strip() and not line.startswith("#")]
     return []
 
 
@@ -48,9 +47,7 @@ def get_dev_requirements() -> List[str]:
     dev_requirements_file = Path(__file__).parent / "requirements-dev.txt"
     if dev_requirements_file.exists():
         with open(dev_requirements_file, "r", encoding="utf-8") as f:
-            return [
-                line.strip() for line in f if line.strip() and not line.startswith("#")
-            ]
+            return [line.strip() for line in f if line.strip() and not line.startswith("#")]
     return []
 
 
@@ -91,7 +88,7 @@ setup(
     },
     include_package_data=True,
     # Python version and classifiers
-    python_requires=">=3.8",
+    python_requires=">=3.9",
     classifiers=[
         # Development Status
         "Development Status :: 4 - Beta",

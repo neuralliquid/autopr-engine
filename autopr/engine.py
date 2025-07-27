@@ -5,15 +5,15 @@ The main AutoPR engine that orchestrates AI-powered GitHub automation.
 """
 
 import logging
-from typing import Dict, Any, Optional, List
 from pathlib import Path
+from typing import Any, Dict, List, Optional
 
+from .actions.registry import ActionRegistry
+from .ai.providers.manager import LLMProviderManager
 from .config import AutoPRConfig
 from .exceptions import AutoPRException
-from .workflows.engine import WorkflowEngine
-from .actions.registry import ActionRegistry
 from .integrations.registry import IntegrationRegistry
-from .ai.providers.manager import LLMProviderManager
+from .workflows.engine import WorkflowEngine
 
 logger = logging.getLogger(__name__)
 

@@ -5,7 +5,8 @@ Registry for managing and discovering integrations.
 """
 
 import logging
-from typing import Dict, List, Optional, Type, Any
+from typing import Any, Dict, List, Optional, Type
+
 from .base import Integration
 
 logger = logging.getLogger(__name__)
@@ -89,9 +90,7 @@ class IntegrationRegistry:
         # Create new instance
         try:
             integration_class = self._integrations[integration_name]
-            instance = integration_class(
-                integration_name, f"Instance of {integration_name}"
-            )
+            instance = integration_class(integration_name, f"Instance of {integration_name}")
 
             # Initialize if config provided
             if config:
@@ -101,14 +100,10 @@ class IntegrationRegistry:
             return instance
 
         except Exception as e:
-            logger.error(
-                f"Failed to create integration instance '{integration_name}': {e}"
-            )
+            logger.error(f"Failed to create integration instance '{integration_name}': {e}")
             return None
 
-    async def initialize(
-        self, configs: Optional[Dict[str, Dict[str, Any]]] = None
-    ) -> None:
+    async def initialize(self, configs: Optional[Dict[str, Dict[str, Any]]] = None) -> None:
         """
         Initialize all registered integrations.
 
@@ -121,14 +116,10 @@ class IntegrationRegistry:
         for integration_name in self._integrations:
             if integration_name in configs:
                 try:
-                    await self.get_integration(
-                        integration_name, configs[integration_name]
-                    )
+                    await self.get_integration(integration_name, configs[integration_name])
                     logger.info(f"Initialized integration: {integration_name}")
                 except Exception as e:
-                    logger.error(
-                        f"Failed to initialize integration '{integration_name}': {e}"
-                    )
+                    logger.error(f"Failed to initialize integration '{integration_name}': {e}")
 
     async def cleanup(self) -> None:
         """Clean up all integration instances."""
@@ -157,11 +148,7 @@ class IntegrationRegistry:
         Returns:
             List of initialized integration names
         """
-        return [
-            name
-            for name, instance in self._instances.items()
-            if instance.is_initialized
-        ]
+        return [name for name, instance in self._instances.items() if instance.is_initialized]
 
     def get_integrations_metadata(self) -> Dict[str, Dict]:
         """
@@ -183,9 +170,7 @@ class IntegrationRegistry:
                     temp_instance = integration_class(integration_name, "Temporary")
                     metadata[integration_name] = temp_instance.get_metadata()
                 except Exception as e:
-                    logger.error(
-                        f"Failed to get metadata for '{integration_name}': {e}"
-                    )
+                    logger.error(f"Failed to get metadata for '{integration_name}': {e}")
                     metadata[integration_name] = {"error": str(e)}
 
         return metadata
@@ -249,11 +234,7 @@ class IntegrationRegistry:
         return {
             "total_integrations": len(self._integrations),
             "initialized_integrations": len(
-                [
-                    instance
-                    for instance in self._instances.values()
-                    if instance.is_initialized
-                ]
+                [instance for instance in self._instances.values() if instance.is_initialized]
             ),
             "total_instances": len(self._instances),
         }

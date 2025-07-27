@@ -4,9 +4,10 @@ Pre-built workflow definitions for common automation scenarios
 """
 
 import os
-import yaml
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Any, Dict, List
+
+import yaml
 
 # Workflow registry
 WORKFLOW_REGISTRY: Dict[str, Any] = {}

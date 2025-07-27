@@ -1,6 +1,8 @@
+from typing import Any, Dict, List
+
 import pydantic
+
 from autopr.actions.base import Action
-from typing import List, Dict, Any
 
 
 class Inputs(pydantic.BaseModel):
@@ -21,9 +23,7 @@ class FindStaleIssuesOrPRs(Action[Inputs, Outputs]):
     id = "find_stale_issues_or_prs"
 
     async def run(self, inputs: Inputs) -> Outputs:
-        print(
-            f"--- Finding stale {inputs.type}s older than {inputs.days_stale} days ---"
-        )
+        print(f"--- Finding stale {inputs.type}s older than {inputs.days_stale} days ---")
         # In a real implementation, you would use the GitHub API
         # For simulation, return a fake list
         stale = [
@@ -43,8 +43,9 @@ class FindStaleIssuesOrPRs(Action[Inputs, Outputs]):
 
 
 if __name__ == "__main__":
-    from autopr.tests.utils import run_action_manually
     import asyncio
+
+    from autopr.tests.utils import run_action_manually
 
     asyncio.run(
         run_action_manually(

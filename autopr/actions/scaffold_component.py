@@ -1,13 +1,18 @@
-import pydantic
 import os
+
+import pydantic
+
 from autopr.actions.base import Action
+
 
 class Inputs(pydantic.BaseModel):
     component_name: str
     directory: str = "components"
 
+
 class Outputs(pydantic.BaseModel):
     created_file: str
+
 
 COMPONENT_TEMPLATE = """import React from 'react';
 
@@ -16,10 +21,12 @@ export function {name}() {{
 }}
 """
 
+
 class ScaffoldComponent(Action[Inputs, Outputs]):
     """
     Scaffolds a new React component file in the specified directory.
     """
+
     id = "scaffold_component"
 
     async def run(self, inputs: Inputs) -> Outputs:
@@ -29,12 +36,15 @@ class ScaffoldComponent(Action[Inputs, Outputs]):
             f.write(COMPONENT_TEMPLATE.format(name=inputs.component_name))
         return Outputs(created_file=filename)
 
+
 if __name__ == "__main__":
-    from autopr.tests.utils import run_action_manually
     import asyncio
+
+    from autopr.tests.utils import run_action_manually
+
     asyncio.run(
         run_action_manually(
             action=ScaffoldComponent,
             inputs=Inputs(component_name="MyNewComponent"),
         )
-    ) 
+    )

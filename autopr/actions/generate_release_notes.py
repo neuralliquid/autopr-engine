@@ -1,7 +1,9 @@
-import pydantic
-import subprocess
 import re
-from typing import Optional, Dict, List
+import subprocess
+from typing import Dict, List, Optional
+
+import pydantic
+
 from autopr.actions.base import Action
 
 
@@ -74,8 +76,9 @@ class GenerateReleaseNotes(Action[Inputs, Outputs]):
 
 
 if __name__ == "__main__":
-    from autopr.tests.utils import run_action_manually
     import asyncio
+
+    from autopr.tests.utils import run_action_manually
 
     asyncio.run(
         run_action_manually(

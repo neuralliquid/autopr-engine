@@ -4,9 +4,9 @@ AutoPR Integration Base Classes
 Base classes and interfaces for integration implementation.
 """
 
-from abc import ABC, abstractmethod
-from typing import Dict, Any, Optional, List
 import logging
+from abc import ABC, abstractmethod
+from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -18,9 +18,7 @@ class Integration(ABC):
     Integrations provide connectivity to external services and platforms.
     """
 
-    def __init__(
-        self, name: str, description: str = "", version: str = "1.0.0"
-    ) -> None:
+    def __init__(self, name: str, description: str = "", version: str = "1.0.0") -> None:
         """
         Initialize the integration.
 
@@ -73,9 +71,7 @@ class Integration(ABC):
         """
         for key in self.required_config_keys:
             if key not in config:
-                logger.error(
-                    f"Missing required config key '{key}' for integration '{self.name}'"
-                )
+                logger.error(f"Missing required config key '{key}' for integration '{self.name}'")
                 return False
         return True
 
@@ -108,9 +104,7 @@ class GitHubIntegration(Integration):
     Provides common functionality for GitHub API interactions.
     """
 
-    def __init__(
-        self, name: str, description: str = "", version: str = "1.0.0"
-    ) -> None:
+    def __init__(self, name: str, description: str = "", version: str = "1.0.0") -> None:
         super().__init__(name, description, version)
         self.required_config_keys.extend(["github_token"])
         self.github_client: Optional[Dict[str, Any]] = None
@@ -118,9 +112,7 @@ class GitHubIntegration(Integration):
     async def initialize(self, config: Dict[str, Any]) -> None:
         """Initialize GitHub integration."""
         if not self.validate_config(config):
-            raise ValueError(
-                f"Invalid configuration for GitHub integration '{self.name}'"
-            )
+            raise ValueError(f"Invalid configuration for GitHub integration '{self.name}'")
 
         self.config = config
 
@@ -166,9 +158,7 @@ class LLMIntegration(Integration):
     Provides common functionality for AI/LLM service interactions.
     """
 
-    def __init__(
-        self, name: str, description: str = "", version: str = "1.0.0"
-    ) -> None:
+    def __init__(self, name: str, description: str = "", version: str = "1.0.0") -> None:
         super().__init__(name, description, version)
         self.required_config_keys.extend(["api_key"])
         self.client: Optional[Dict[str, Any]] = None

@@ -4,14 +4,14 @@ Task Definitions Module
 Centralized task definitions and phase configurations for implementation roadmap.
 """
 
-from typing import Dict, List, Any
 from dataclasses import dataclass, field
+from typing import Any, Dict, List
 
 
 @dataclass
 class Task:
     """Represents a task in the implementation roadmap."""
-    
+
     id: str
     description: str
     status: str = "pending"
@@ -25,7 +25,7 @@ class Task:
 
 class TaskRegistry:
     """Registry for all available implementation tasks."""
-    
+
     @staticmethod
     def get_task_definitions() -> Dict[str, Dict[str, Any]]:
         """Get all task definitions with their metadata."""
@@ -38,16 +38,9 @@ class TaskRegistry:
                 "complexity": "medium",
                 "estimated_time": "2-3 hours",
                 "dependencies": [],
-                "files_created": [
-                    "sentry_config.py",
-                    "requirements-sentry.txt"
-                ],
-                "env_vars": [
-                    "SENTRY_DSN",
-                    "SENTRY_ENVIRONMENT"
-                ]
+                "files_created": ["sentry_config.py", "requirements-sentry.txt"],
+                "env_vars": ["SENTRY_DSN", "SENTRY_ENVIRONMENT"],
             },
-            
             "implement_structured_logging": {
                 "name": "Implement Structured Logging",
                 "description": "Set up JSON-based structured logging with proper formatters",
@@ -55,16 +48,9 @@ class TaskRegistry:
                 "complexity": "low",
                 "estimated_time": "1-2 hours",
                 "dependencies": [],
-                "files_created": [
-                    "logging_config.py",
-                    "log_formatters.py"
-                ],
-                "env_vars": [
-                    "LOG_LEVEL",
-                    "LOG_FORMAT"
-                ]
+                "files_created": ["logging_config.py", "log_formatters.py"],
+                "env_vars": ["LOG_LEVEL", "LOG_FORMAT"],
             },
-            
             "setup_redis_caching": {
                 "name": "Setup Redis Caching",
                 "description": "Configure Redis for LLM response and API call caching",
@@ -72,18 +58,9 @@ class TaskRegistry:
                 "complexity": "medium",
                 "estimated_time": "3-4 hours",
                 "dependencies": [],
-                "files_created": [
-                    "redis_config.py",
-                    "cache_manager.py",
-                    "cache_decorators.py"
-                ],
-                "env_vars": [
-                    "REDIS_URL",
-                    "REDIS_PASSWORD",
-                    "CACHE_TTL"
-                ]
+                "files_created": ["redis_config.py", "cache_manager.py", "cache_decorators.py"],
+                "env_vars": ["REDIS_URL", "REDIS_PASSWORD", "CACHE_TTL"],
             },
-            
             "create_health_checks": {
                 "name": "Create Health Checks",
                 "description": "Implement comprehensive health check endpoints",
@@ -91,13 +68,9 @@ class TaskRegistry:
                 "complexity": "medium",
                 "estimated_time": "2-3 hours",
                 "dependencies": [],
-                "files_created": [
-                    "health_checks.py",
-                    "health_endpoints.py"
-                ],
-                "env_vars": []
+                "files_created": ["health_checks.py", "health_endpoints.py"],
+                "env_vars": [],
             },
-            
             "implement_basic_circuit_breakers": {
                 "name": "Implement Circuit Breakers",
                 "description": "Add circuit breaker pattern for external API calls",
@@ -105,16 +78,9 @@ class TaskRegistry:
                 "complexity": "high",
                 "estimated_time": "4-5 hours",
                 "dependencies": [],
-                "files_created": [
-                    "circuit_breaker.py",
-                    "api_resilience.py"
-                ],
-                "env_vars": [
-                    "CIRCUIT_BREAKER_THRESHOLD",
-                    "CIRCUIT_BREAKER_TIMEOUT"
-                ]
+                "files_created": ["circuit_breaker.py", "api_resilience.py"],
+                "env_vars": ["CIRCUIT_BREAKER_THRESHOLD", "CIRCUIT_BREAKER_TIMEOUT"],
             },
-            
             # Medium Priority Tasks
             "setup_postgresql_integration": {
                 "name": "Setup PostgreSQL Integration",
@@ -123,17 +89,9 @@ class TaskRegistry:
                 "complexity": "high",
                 "estimated_time": "4-6 hours",
                 "dependencies": ["setup_sentry_monitoring"],
-                "files_created": [
-                    "database_config.py",
-                    "models.py",
-                    "migrations/"
-                ],
-                "env_vars": [
-                    "DATABASE_URL",
-                    "DB_POOL_SIZE"
-                ]
+                "files_created": ["database_config.py", "models.py", "migrations/"],
+                "env_vars": ["DATABASE_URL", "DB_POOL_SIZE"],
             },
-            
             "implement_prometheus_metrics": {
                 "name": "Implement Prometheus Metrics",
                 "description": "Set up Prometheus metrics collection",
@@ -141,16 +99,9 @@ class TaskRegistry:
                 "complexity": "medium",
                 "estimated_time": "3-4 hours",
                 "dependencies": ["create_health_checks"],
-                "files_created": [
-                    "metrics_config.py",
-                    "custom_metrics.py"
-                ],
-                "env_vars": [
-                    "METRICS_PORT",
-                    "METRICS_PATH"
-                ]
+                "files_created": ["metrics_config.py", "custom_metrics.py"],
+                "env_vars": ["METRICS_PORT", "METRICS_PATH"],
             },
-            
             "setup_oauth2_authentication": {
                 "name": "Setup OAuth2 Authentication",
                 "description": "Implement OAuth 2.0 authentication flow",
@@ -158,18 +109,9 @@ class TaskRegistry:
                 "complexity": "high",
                 "estimated_time": "5-6 hours",
                 "dependencies": ["setup_postgresql_integration"],
-                "files_created": [
-                    "auth_config.py",
-                    "oauth_handlers.py",
-                    "token_manager.py"
-                ],
-                "env_vars": [
-                    "OAUTH_CLIENT_ID",
-                    "OAUTH_CLIENT_SECRET",
-                    "JWT_SECRET_KEY"
-                ]
+                "files_created": ["auth_config.py", "oauth_handlers.py", "token_manager.py"],
+                "env_vars": ["OAUTH_CLIENT_ID", "OAUTH_CLIENT_SECRET", "JWT_SECRET_KEY"],
             },
-            
             "implement_advanced_llm_routing": {
                 "name": "Advanced LLM Routing",
                 "description": "Implement intelligent LLM routing and load balancing",
@@ -177,17 +119,9 @@ class TaskRegistry:
                 "complexity": "high",
                 "estimated_time": "6-8 hours",
                 "dependencies": ["setup_redis_caching", "implement_prometheus_metrics"],
-                "files_created": [
-                    "llm_router.py",
-                    "load_balancer.py",
-                    "model_selector.py"
-                ],
-                "env_vars": [
-                    "LLM_ROUTING_STRATEGY",
-                    "LOAD_BALANCER_ALGORITHM"
-                ]
+                "files_created": ["llm_router.py", "load_balancer.py", "model_selector.py"],
+                "env_vars": ["LLM_ROUTING_STRATEGY", "LOAD_BALANCER_ALGORITHM"],
             },
-            
             "create_comprehensive_testing": {
                 "name": "Comprehensive Testing Framework",
                 "description": "Set up unit, integration, and performance testing",
@@ -199,14 +133,10 @@ class TaskRegistry:
                     "test_config.py",
                     "test_fixtures.py",
                     "performance_tests.py",
-                    "integration_tests.py"
+                    "integration_tests.py",
                 ],
-                "env_vars": [
-                    "TEST_DATABASE_URL",
-                    "TEST_REDIS_URL"
-                ]
+                "env_vars": ["TEST_DATABASE_URL", "TEST_REDIS_URL"],
             },
-            
             # Strategic Priority Tasks
             "implement_rag_system": {
                 "name": "RAG System Implementation",
@@ -219,15 +149,10 @@ class TaskRegistry:
                     "rag_system.py",
                     "vector_store.py",
                     "retrieval_engine.py",
-                    "embedding_manager.py"
+                    "embedding_manager.py",
                 ],
-                "env_vars": [
-                    "VECTOR_DB_URL",
-                    "EMBEDDING_MODEL",
-                    "RAG_CHUNK_SIZE"
-                ]
+                "env_vars": ["VECTOR_DB_URL", "EMBEDDING_MODEL", "RAG_CHUNK_SIZE"],
             },
-            
             "create_analytics_dashboard": {
                 "name": "Analytics Dashboard",
                 "description": "Build comprehensive analytics and monitoring dashboard",
@@ -239,14 +164,10 @@ class TaskRegistry:
                     "dashboard_app.py",
                     "analytics_queries.py",
                     "dashboard_templates/",
-                    "static/dashboard/"
+                    "static/dashboard/",
                 ],
-                "env_vars": [
-                    "DASHBOARD_SECRET_KEY",
-                    "ANALYTICS_DB_URL"
-                ]
+                "env_vars": ["DASHBOARD_SECRET_KEY", "ANALYTICS_DB_URL"],
             },
-            
             "setup_fine_tuned_models": {
                 "name": "Fine-tuned Models Setup",
                 "description": "Configure fine-tuned model training and deployment",
@@ -258,15 +179,10 @@ class TaskRegistry:
                     "model_training.py",
                     "fine_tuning_pipeline.py",
                     "model_deployment.py",
-                    "training_data_processor.py"
+                    "training_data_processor.py",
                 ],
-                "env_vars": [
-                    "TRAINING_DATA_PATH",
-                    "MODEL_REGISTRY_URL",
-                    "FINE_TUNING_API_KEY"
-                ]
+                "env_vars": ["TRAINING_DATA_PATH", "MODEL_REGISTRY_URL", "FINE_TUNING_API_KEY"],
             },
-            
             "implement_multi_cloud_deployment": {
                 "name": "Multi-cloud Deployment",
                 "description": "Set up deployment across multiple cloud providers",
@@ -278,16 +194,12 @@ class TaskRegistry:
                     "cloud_config.py",
                     "deployment_scripts/",
                     "terraform/",
-                    "kubernetes/"
+                    "kubernetes/",
                 ],
-                "env_vars": [
-                    "AWS_ACCESS_KEY_ID",
-                    "GCP_PROJECT_ID",
-                    "AZURE_SUBSCRIPTION_ID"
-                ]
-            }
+                "env_vars": ["AWS_ACCESS_KEY_ID", "GCP_PROJECT_ID", "AZURE_SUBSCRIPTION_ID"],
+            },
         }
-    
+
     @staticmethod
     def get_phase_definitions() -> Dict[str, Dict[str, Any]]:
         """Get phase definitions with their task assignments."""
@@ -309,10 +221,9 @@ class TaskRegistry:
                     "Structured logs are being generated",
                     "Redis caching is working",
                     "Health endpoints return 200",
-                    "Circuit breakers prevent cascading failures"
-                ]
+                    "Circuit breakers prevent cascading failures",
+                ],
             },
-            
             "medium": {
                 "name": "Medium Priority (Week 3-6)",
                 "description": "Enhanced functionality and integrations",
@@ -331,10 +242,9 @@ class TaskRegistry:
                     "Metrics are being collected",
                     "Authentication is working",
                     "LLM routing is optimized",
-                    "Test coverage > 80%"
-                ]
+                    "Test coverage > 80%",
+                ],
             },
-            
             "strategic": {
                 "name": "Long-term Strategic (Month 2+)",
                 "description": "Advanced AI features and scalability",
@@ -351,30 +261,27 @@ class TaskRegistry:
                     "RAG system improves response quality",
                     "Dashboard provides actionable insights",
                     "Fine-tuned models are deployed",
-                    "Multi-cloud deployment is stable"
-                ]
-            }
+                    "Multi-cloud deployment is stable",
+                ],
+            },
         }
-    
+
     @staticmethod
     def get_task_categories() -> Dict[str, List[str]]:
         """Get tasks organized by category."""
         tasks = TaskRegistry.get_task_definitions()
         categories: Dict[str, List[str]] = {}
-        
+
         for task_id, task_info in tasks.items():
             category = task_info.get("category", "uncategorized")
             if category not in categories:
                 categories[category] = []
             categories[category].append(task_id)
-        
+
         return categories
-    
+
     @staticmethod
     def get_dependency_graph() -> Dict[str, List[str]]:
         """Get the complete dependency graph for all tasks."""
         tasks = TaskRegistry.get_task_definitions()
-        return {
-            task_id: task_info.get("dependencies", [])
-            for task_id, task_info in tasks.items()
-        }
+        return {task_id: task_info.get("dependencies", []) for task_id, task_info in tasks.items()}

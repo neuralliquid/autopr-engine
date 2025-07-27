@@ -1,6 +1,8 @@
-import pydantic
 import asyncio
 import json
+
+import pydantic
+
 from autopr.actions.base import Action
 
 
@@ -60,9 +62,7 @@ class CheckPerformanceBudget(Action[Inputs, Outputs]):
 
             report_lines.append(f"- {metric.upper()}: {status} {details}")
 
-        return Outputs(
-            success=success, report="\\n".join(report_lines), metrics=simulated_metrics
-        )
+        return Outputs(success=success, report="\\n".join(report_lines), metrics=simulated_metrics)
 
 
 if __name__ == "__main__":

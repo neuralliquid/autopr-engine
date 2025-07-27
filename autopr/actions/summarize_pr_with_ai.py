@@ -1,26 +1,31 @@
-import pydantic
 import subprocess
+
+import pydantic
+
 from autopr.actions.base import Action
+
 
 class Inputs(pydantic.BaseModel):
     pass
 
+
 class Outputs(pydantic.BaseModel):
     summary: str
+
 
 class SummarizePrWithAI(Action[Inputs, Outputs]):
     """
     Reads the git diff of a pull request and generates a human-readable summary.
     This is a SIMULATION and does not make a real AI API call.
     """
+
     id = "summarize_pr_with_ai"
 
     async def run(self, inputs: Inputs) -> Outputs:
         # Get the git diff
         try:
             diff_process = subprocess.run(
-                ["git", "diff", "HEAD~1"],
-                capture_output=True, text=True, check=True
+                ["git", "diff", "HEAD~1"], capture_output=True, text=True, check=True
             )
             diff = diff_process.stdout
         except subprocess.CalledProcessError as e:
@@ -35,18 +40,21 @@ class SummarizePrWithAI(Action[Inputs, Outputs]):
             summary += "- Added or updated a workflow action.\\n"
         if "hook" in diff.lower():
             summary += "- Implemented changes to a React hook.\\n"
-        
-        if len(summary) < 50: # if no keywords were found
+
+        if len(summary) < 50:  # if no keywords were found
             summary += "- General code improvements and refactoring."
 
         return Outputs(summary=summary)
 
+
 if __name__ == "__main__":
-    from autopr.tests.utils import run_action_manually
     import asyncio
+
+    from autopr.tests.utils import run_action_manually
+
     asyncio.run(
         run_action_manually(
             action=SummarizePrWithAI,
             inputs=Inputs(),
         )
-    ) 
+    )

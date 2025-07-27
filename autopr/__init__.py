@@ -5,7 +5,7 @@ A comprehensive platform for intelligent GitHub pull request analysis,
 automated issue creation, and multi-agent AI collaboration.
 """
 
-from typing import Any, Optional, cast, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union, cast
 
 __version__ = "1.0.0"
 __author__ = "VeritasVault Team"
@@ -13,26 +13,26 @@ __email__ = "dev@veritasvault.net"
 __license__ = "MIT"
 __url__ = "https://github.com/veritasvault/autopr-engine"
 
-# Core components
-from .engine import AutoPREngine
-from .config import AutoPRConfig
-from .exceptions import AutoPRException, ConfigurationError, IntegrationError
-
 # Action framework
 from .actions.base import Action, ActionInputs, ActionOutputs
 from .actions.registry import ActionRegistry
 
-# Integration framework
-from .integrations.base import Integration
-from .integrations.registry import IntegrationRegistry
-
 # AI and LLM providers
 from .ai.base import LLMProvider
 from .ai.providers.manager import LLMProviderManager
+from .config import AutoPRConfig
+
+# Core components
+from .engine import AutoPREngine
+from .exceptions import AutoPRException, ConfigurationError, IntegrationError
+
+# Integration framework
+from .integrations.base import Integration
+from .integrations.registry import IntegrationRegistry
+from .workflows.base import Workflow
 
 # Workflow system
 from .workflows.engine import WorkflowEngine
-from .workflows.base import Workflow
 
 # Public API exports
 __all__ = [

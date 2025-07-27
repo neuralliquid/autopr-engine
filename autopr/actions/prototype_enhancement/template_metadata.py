@@ -1,108 +1,119 @@
 """
 Template Metadata Management for Hybrid YAML + Template Approach
 """
-import os
-import yaml
+
 import json
-from typing import Dict, Any, List, Optional, Union
-from pathlib import Path
+import os
 from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Union
+
+import yaml
+
 
 @dataclass
 class TemplateVariable:
     """Represents a template variable configuration."""
+
     name: str
     type: str
     default: Optional[Union[str, int, bool]] = None
     required: bool = False
     description: str = ""
 
+
 @dataclass
 class TemplateVariant:
     """Represents a template variant with modifications."""
+
     name: str
     description: str
     modifications: List[Dict[str, Any]]
 
+
 @dataclass
 class TemplateMetadata:
     """Comprehensive template metadata from YAML files."""
-    
+
     def __init__(self, metadata: Dict[str, Any], yaml_path: Path):
         self.yaml_path = yaml_path
-        self.name = metadata.get('name', '')
-        self.description = metadata.get('description', '')
-        self.category = metadata.get('category', '')
-        self.platforms = metadata.get('platforms', [])
-        self.file_extension = metadata.get('file_extension', '')
-        self.usage = metadata.get('usage', [])
-        self.dependencies = metadata.get('dependencies', {})
-        self.notes = metadata.get('notes', [])
-        self.examples = metadata.get('examples', {})
-        
+        self.name = metadata.get("name", "")
+        self.description = metadata.get("description", "")
+        self.category = metadata.get("category", "")
+        self.platforms = metadata.get("platforms", [])
+        self.file_extension = metadata.get("file_extension", "")
+        self.usage = metadata.get("usage", [])
+        self.dependencies = metadata.get("dependencies", {})
+        self.notes = metadata.get("notes", [])
+        self.examples = metadata.get("examples", {})
+
         # Parse variables
         self.variables = {}
-        for var_name, var_config in metadata.get('variables', {}).items():
+        for var_name, var_config in metadata.get("variables", {}).items():
             if isinstance(var_config, dict):
                 self.variables[var_name] = TemplateVariable(
                     name=var_name,
-                    type=var_config.get('type', 'string'),
-                    default=var_config.get('default'),
-                    required=var_config.get('required', False),
-                    description=var_config.get('description', '')
+                    type=var_config.get("type", "string"),
+                    default=var_config.get("default"),
+                    required=var_config.get("required", False),
+                    description=var_config.get("description", ""),
                 )
-        
+
         # Parse variants
         self.variants = {}
-        for variant_name, variant_config in metadata.get('variants', {}).items():
+        for variant_name, variant_config in metadata.get("variants", {}).items():
             if isinstance(variant_config, dict):
                 self.variants[variant_name] = TemplateVariant(
-                    name=variant_config.get('name', variant_name),
-                    description=variant_config.get('description', ''),
-                    modifications=variant_config.get('modifications', [])
+                    name=variant_config.get("name", variant_name),
+                    description=variant_config.get("description", ""),
+                    modifications=variant_config.get("modifications", []),
                 )
-    
+
     @property
     def template_file_path(self) -> Path:
         """Get the corresponding template file path."""
         # Remove .yml extension to get template file
-        return self.yaml_path.with_suffix('')
+        return self.yaml_path.with_suffix("")
+
 
 class TemplateRegistry:
     """Registry for managing template metadata and files."""
-    
+
     def __init__(self, templates_dir: str = "templates"):
         self.templates_dir = Path(templates_dir)
         self.metadata_cache: Dict[str, TemplateMetadata] = {}
         self._load_all_metadata()
-    
+
     def _load_all_metadata(self) -> None:
         """Load all template metadata from YAML files."""
         if not self.templates_dir.exists():
             return
-        
+
         for yaml_file in self.templates_dir.rglob("*.yml"):
             try:
                 template_key = self._get_template_key(yaml_file)
-                with open(yaml_file, 'r', encoding='utf-8') as f:
+                with open(yaml_file, "r", encoding="utf-8") as f:
                     metadata_dict = yaml.safe_load(f)
                     if metadata_dict:
-                        self.metadata_cache[template_key] = TemplateMetadata(metadata_dict, yaml_file)
+                        self.metadata_cache[template_key] = TemplateMetadata(
+                            metadata_dict, yaml_file
+                        )
             except Exception as e:
                 print(f"Warning: Failed to load template metadata from {yaml_file}: {e}")
-    
+
     def _get_template_key(self, yaml_path: Path) -> str:
         """Generate template key from YAML file path."""
         relative_path = yaml_path.relative_to(self.templates_dir)
         # Remove .yml extension and convert to key
-        return str(relative_path.with_suffix(''))
-    
+        return str(relative_path.with_suffix(""))
+
     def get_metadata(self, template_key: str) -> Optional[TemplateMetadata]:
         """Get metadata for a specific template."""
         return self.metadata_cache.get(template_key)
-    
-    def list_templates(self, platform: Optional[str] = None, 
-                      category: Optional[str] = None) -> List[str]:
+
+    def list_templates(
+        self, platform: Optional[str] = None, category: Optional[str] = None
+    ) -> List[str]:
         """List available templates, optionally filtered."""
         templates = []
         for key, metadata in self.metadata_cache.items():
@@ -112,51 +123,55 @@ class TemplateRegistry:
                 continue
             templates.append(key)
         return templates
-    
+
     def get_template_content(self, template_key: str) -> Optional[str]:
         """Get the raw content of a template file."""
         metadata = self.get_metadata(template_key)
         if not metadata:
             return None
-        
+
         template_path = metadata.template_file_path
         if not template_path.exists():
             return None
-        
+
         try:
-            with open(template_path, 'r', encoding='utf-8') as f:
+            with open(template_path, "r", encoding="utf-8") as f:
                 return f.read()
         except Exception:
             return None
-    
-    def generate_template(self, template_key: str, 
-                         variables: Optional[Dict[str, Any]] = None,
-                         variants: Optional[List[str]] = None) -> Optional[str]:
+
+    def generate_template(
+        self,
+        template_key: str,
+        variables: Optional[Dict[str, Any]] = None,
+        variants: Optional[List[str]] = None,
+    ) -> Optional[str]:
         """Generate template content with variables and variants applied."""
         metadata = self.get_metadata(template_key)
         if not metadata:
             return None
-        
+
         content = self.get_template_content(template_key)
         if not content:
             return None
-        
+
         # Apply variables
         if variables:
             content = self._apply_variables(content, metadata, variables)
-        
+
         # Apply variants
         if variants:
             content = self._apply_variants(content, metadata, variants)
-        
+
         return content
-    
-    def _apply_variables(self, content: str, metadata: TemplateMetadata, 
-                        variables: Dict[str, Any]) -> str:
+
+    def _apply_variables(
+        self, content: str, metadata: TemplateMetadata, variables: Dict[str, Any]
+    ) -> str:
         """Apply variable substitutions to template content."""
         # Merge with defaults and validate
         final_vars = {}
-        
+
         for var_name, var_config in metadata.variables.items():
             if var_name in variables:
                 final_vars[var_name] = variables[var_name]
@@ -164,95 +179,100 @@ class TemplateRegistry:
                 final_vars[var_name] = var_config.default
             elif var_config.required:
                 raise ValueError(f"Required variable missing: {var_name}")
-        
+
         # Apply substitutions using {{variable_name}} format
         for var_name, value in final_vars.items():
             placeholder = f"{{{{{var_name}}}}}"
             content = content.replace(placeholder, str(value))
-        
+
         return content
-    
-    def _apply_variants(self, content: str, metadata: TemplateMetadata, 
-                       variants: List[str]) -> str:
+
+    def _apply_variants(self, content: str, metadata: TemplateMetadata, variants: List[str]) -> str:
         """Apply variant modifications to template content."""
-        lines = content.split('\n')
-        
+        lines = content.split("\n")
+
         for variant_name in variants:
             if variant_name not in metadata.variants:
                 continue
-            
+
             variant = metadata.variants[variant_name]
-            
+
             for mod in variant.modifications:
-                action = mod.get('action')
-                line_num = mod.get('line', 1)
-                mod_content = mod.get('content', '')
-                
+                action = mod.get("action")
+                line_num = mod.get("line", 1)
+                mod_content = mod.get("content", "")
+
                 # Handle negative line numbers (from end)
                 if line_num < 0:
                     line_num = len(lines) + line_num + 1
-                
+
                 # Convert to 0-based index
                 line_idx = line_num - 1
-                
-                if action == 'add_after' and 0 <= line_idx < len(lines):
+
+                if action == "add_after" and 0 <= line_idx < len(lines):
                     lines.insert(line_idx + 1, mod_content)
-                elif action == 'add_before' and 0 <= line_idx < len(lines):
+                elif action == "add_before" and 0 <= line_idx < len(lines):
                     lines.insert(line_idx, mod_content)
-                elif action == 'replace' and 0 <= line_idx < len(lines):
+                elif action == "replace" and 0 <= line_idx < len(lines):
                     lines[line_idx] = mod_content
-        
-        return '\n'.join(lines)
-    
+
+        return "\n".join(lines)
+
     def validate_template_structure(self, template_data: Dict[str, Any]) -> None:
         """Validate template structure."""
-        required_keys = ['name', 'description', 'category', 'platforms', 'file_extension']
+        required_keys = ["name", "description", "category", "platforms", "file_extension"]
         for key in required_keys:
             if key not in template_data:
                 raise ValueError(f"Missing required key: {key}")
-        
-        if 'variables' in template_data:
-            for var_name, var_config in template_data['variables'].items():
+
+        if "variables" in template_data:
+            for var_name, var_config in template_data["variables"].items():
                 if not isinstance(var_config, dict):
                     raise ValueError(f"Invalid variable configuration: {var_name}")
-                if 'type' not in var_config:
+                if "type" not in var_config:
                     raise ValueError(f"Missing variable type: {var_name}")
-        
-        if 'variants' in template_data:
-            for variant_name, variant_config in template_data['variants'].items():
+
+        if "variants" in template_data:
+            for variant_name, variant_config in template_data["variants"].items():
                 if not isinstance(variant_config, dict):
                     raise ValueError(f"Invalid variant configuration: {variant_name}")
-                if 'modifications' not in variant_config:
+                if "modifications" not in variant_config:
                     raise ValueError(f"Missing variant modifications: {variant_name}")
-    
+
     def get_template_info(self, template_key: str) -> Dict[str, Any]:
         """Get comprehensive information about a template."""
         metadata = self.get_metadata(template_key)
         if not metadata:
             return {}
-        
+
         return {
-            'name': metadata.name,
-            'description': metadata.description,
-            'category': metadata.category,
-            'platforms': metadata.platforms,
-            'file_extension': metadata.file_extension,
-            'variables': {name: {
-                'type': var.type,
-                'default': var.default,
-                'required': var.required,
-                'description': var.description
-            } for name, var in metadata.variables.items()},
-            'variants': {name: {
-                'name': variant.name,
-                'description': variant.description,
-                'modifications_count': len(variant.modifications)
-            } for name, variant in metadata.variants.items()},
-            'usage': metadata.usage,
-            'dependencies': metadata.dependencies,
-            'notes': metadata.notes,
-            'examples': metadata.examples,
-            'template_file': str(metadata.template_file_path),
-            'metadata_file': str(metadata.yaml_path),
-            'exists': metadata.template_file_path.exists()
+            "name": metadata.name,
+            "description": metadata.description,
+            "category": metadata.category,
+            "platforms": metadata.platforms,
+            "file_extension": metadata.file_extension,
+            "variables": {
+                name: {
+                    "type": var.type,
+                    "default": var.default,
+                    "required": var.required,
+                    "description": var.description,
+                }
+                for name, var in metadata.variables.items()
+            },
+            "variants": {
+                name: {
+                    "name": variant.name,
+                    "description": variant.description,
+                    "modifications_count": len(variant.modifications),
+                }
+                for name, variant in metadata.variants.items()
+            },
+            "usage": metadata.usage,
+            "dependencies": metadata.dependencies,
+            "notes": metadata.notes,
+            "examples": metadata.examples,
+            "template_file": str(metadata.template_file_path),
+            "metadata_file": str(metadata.yaml_path),
+            "exists": metadata.template_file_path.exists(),
         }

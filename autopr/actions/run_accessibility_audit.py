@@ -1,8 +1,10 @@
-import pydantic
 import asyncio
 import json
-from autopr.actions.base import Action
 from typing import List
+
+import pydantic
+
+from autopr.actions.base import Action
 
 
 class Inputs(pydantic.BaseModel):

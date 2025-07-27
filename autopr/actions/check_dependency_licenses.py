@@ -1,7 +1,9 @@
-import pydantic
 import asyncio
 import json
-from typing import List, Dict
+from typing import Dict, List
+
+import pydantic
+
 from autopr.actions.base import Action
 
 
@@ -40,9 +42,7 @@ class CheckDependencyLicenses(Action[Inputs, Outputs]):
         stdout, stderr = await process.communicate()
 
         if process.returncode != 0:
-            return Outputs(
-                success=False, forbidden_packages=[], log=stderr.decode("utf-8")
-            )
+            return Outputs(success=False, forbidden_packages=[], log=stderr.decode("utf-8"))
 
         try:
             licenses = json.loads(stdout)
@@ -81,9 +81,9 @@ class CheckDependencyLicenses(Action[Inputs, Outputs]):
 
 
 if __name__ == "__main__":
-    from autopr.tests.utils import run_action_manually
-
     import re
+
+    from autopr.tests.utils import run_action_manually
 
     asyncio.run(
         run_action_manually(

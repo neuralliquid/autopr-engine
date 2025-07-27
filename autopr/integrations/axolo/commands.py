@@ -2,8 +2,8 @@
 
 import logging
 import re
-from typing import Dict, Any, Optional, List, TYPE_CHECKING
 from datetime import datetime
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +47,9 @@ class AxoloCommandHandler:
             return
 
         # Trigger AutoPR analysis
-        from tools.autopr.actions.pr_review_analyzer import PRReviewAnalyzer  # type: ignore[import-not-found]
+        from tools.autopr.actions.pr_review_analyzer import (
+            PRReviewAnalyzer,  # type: ignore[import-not-found]
+        )
 
         analyzer = PRReviewAnalyzer()
 

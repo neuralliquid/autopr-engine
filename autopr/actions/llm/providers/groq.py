@@ -2,8 +2,8 @@
 Groq provider implementation for fast inference.
 """
 
-from typing import Dict, Any, List, TYPE_CHECKING
 import asyncio
+from typing import TYPE_CHECKING, Any, Dict, List
 
 from ..base import BaseLLMProvider
 from ..types import LLMResponse

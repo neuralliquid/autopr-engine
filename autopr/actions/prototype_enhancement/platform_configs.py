@@ -4,14 +4,14 @@ Platform Configuration Module
 Centralized platform definitions and enhancement configurations for prototype enhancement.
 """
 
-from typing import Dict, List, Any
 from dataclasses import dataclass, field
+from typing import Any, Dict, List
 
 
 @dataclass
 class PlatformConfig:
     """Configuration for a specific platform."""
-    
+
     name: str
     display_name: str
     description: str
@@ -27,7 +27,7 @@ class PlatformConfig:
 
 class PlatformRegistry:
     """Registry for all supported platforms and their configurations."""
-    
+
     @staticmethod
     def get_platform_configs() -> Dict[str, PlatformConfig]:
         """Get all platform configurations."""
@@ -45,14 +45,13 @@ class PlatformRegistry:
                     "server.js",
                     "public/index.html",
                     "public/style.css",
-                    "public/script.js"
+                    "public/script.js",
                 ],
                 package_manager="npm",
                 build_command="npm run build",
                 start_command="npm start",
-                test_command="npm test"
+                test_command="npm test",
             ),
-            
             "lovable": PlatformConfig(
                 name="lovable",
                 display_name="Lovable.dev",
@@ -66,14 +65,13 @@ class PlatformRegistry:
                     "src/index.tsx",
                     "src/components/",
                     "public/index.html",
-                    "tsconfig.json"
+                    "tsconfig.json",
                 ],
                 package_manager="npm",
                 build_command="npm run build",
                 start_command="npm start",
-                test_command="npm test"
+                test_command="npm test",
             ),
-            
             "bolt": PlatformConfig(
                 name="bolt",
                 display_name="Bolt.new",
@@ -88,14 +86,13 @@ class PlatformRegistry:
                     "src/components/",
                     "src/lib/",
                     "index.html",
-                    "vite.config.ts"
+                    "vite.config.ts",
                 ],
                 package_manager="npm",
                 build_command="npm run build",
                 start_command="npm run dev",
-                test_command="npm test"
+                test_command="npm test",
             ),
-            
             "same": PlatformConfig(
                 name="same",
                 display_name="Same.new",
@@ -103,18 +100,12 @@ class PlatformRegistry:
                 primary_language="javascript",
                 framework="various",
                 deployment_targets=["vercel", "netlify", "github-pages"],
-                common_files=[
-                    "package.json",
-                    "README.md",
-                    "src/",
-                    "public/"
-                ],
+                common_files=["package.json", "README.md", "src/", "public/"],
                 package_manager="npm",
                 build_command="npm run build",
                 start_command="npm start",
-                test_command="npm test"
+                test_command="npm test",
             ),
-            
             "emergent": PlatformConfig(
                 name="emergent",
                 display_name="Emergent.sh",
@@ -122,20 +113,14 @@ class PlatformRegistry:
                 primary_language="javascript",
                 framework="node",
                 deployment_targets=["railway", "render", "azure"],
-                common_files=[
-                    "package.json",
-                    "index.js",
-                    "lib/",
-                    "config/",
-                    "scripts/"
-                ],
+                common_files=["package.json", "index.js", "lib/", "config/", "scripts/"],
                 package_manager="npm",
                 build_command="npm run build",
                 start_command="npm start",
-                test_command="npm test"
-            )
+                test_command="npm test",
+            ),
         }
-    
+
     @staticmethod
     def get_enhancement_packages() -> Dict[str, Dict[str, List[str]]]:
         """Get enhancement packages by category and platform."""
@@ -147,80 +132,42 @@ class PlatformRegistry:
                     "express-rate-limit",
                     "bcryptjs",
                     "jsonwebtoken",
-                    "express-validator"
+                    "express-validator",
                 ],
-                "react": [
-                    "@types/bcryptjs",
-                    "@types/jsonwebtoken"
-                ],
-                "node": [
-                    "dotenv",
-                    "express-session"
-                ]
+                "react": ["@types/bcryptjs", "@types/jsonwebtoken"],
+                "node": ["dotenv", "express-session"],
             },
-            
             "performance": {
-                "common": [
-                    "compression",
-                    "morgan",
-                    "cluster",
-                    "pm2"
-                ],
-                "react": [
-                    "@loadable/component",
-                    "react-window",
-                    "react-virtualized"
-                ],
-                "node": [
-                    "node-cache",
-                    "redis"
-                ]
+                "common": ["compression", "morgan", "cluster", "pm2"],
+                "react": ["@loadable/component", "react-window", "react-virtualized"],
+                "node": ["node-cache", "redis"],
             },
-            
             "monitoring": {
                 "common": [
                     "@azure/monitor-opentelemetry-exporter",
                     "winston",
-                    "express-prometheus-middleware"
+                    "express-prometheus-middleware",
                 ],
-                "react": [
-                    "@sentry/react",
-                    "web-vitals"
-                ],
-                "node": [
-                    "@sentry/node",
-                    "pino"
-                ]
+                "react": ["@sentry/react", "web-vitals"],
+                "node": ["@sentry/node", "pino"],
             },
-            
             "testing": {
-                "common": [
-                    "jest",
-                    "supertest"
-                ],
+                "common": ["jest", "supertest"],
                 "react": [
                     "@testing-library/react",
                     "@testing-library/jest-dom",
                     "@testing-library/user-event",
-                    "playwright"
+                    "playwright",
                 ],
-                "node": [
-                    "mocha",
-                    "chai",
-                    "sinon"
-                ]
+                "node": ["mocha", "chai", "sinon"],
             },
-            
             "development": {
-                "common": [
-                    "nodemon",
-                    "concurrently"
-                ],
+                "common": ["nodemon", "concurrently"],
                 "react": [
                     "@storybook/react",
                     "@storybook/addon-essentials",
                     "eslint-plugin-react",
-                    "prettier"
+                    "prettier",
                 ],
                 "typescript": [
                     "typescript",
@@ -228,11 +175,11 @@ class PlatformRegistry:
                     "ts-node",
                     "eslint",
                     "@typescript-eslint/parser",
-                    "@typescript-eslint/eslint-plugin"
-                ]
-            }
+                    "@typescript-eslint/eslint-plugin",
+                ],
+            },
         }
-    
+
     @staticmethod
     def get_production_checklists() -> Dict[str, List[str]]:
         """Get production readiness checklists by platform."""
@@ -247,9 +194,8 @@ class PlatformRegistry:
                 "✅ Security headers added",
                 "✅ Health check endpoint created",
                 "✅ Process manager configured (PM2)",
-                "✅ Monitoring and alerting setup"
+                "✅ Monitoring and alerting setup",
             ],
-            
             "lovable": [
                 "✅ TypeScript configuration optimized",
                 "✅ Build process configured",
@@ -260,9 +206,8 @@ class PlatformRegistry:
                 "✅ SEO optimization implemented",
                 "✅ Progressive Web App features",
                 "✅ Code splitting configured",
-                "✅ Bundle size optimization"
+                "✅ Bundle size optimization",
             ],
-            
             "bolt": [
                 "✅ Vite configuration optimized",
                 "✅ TypeScript strict mode enabled",
@@ -273,9 +218,8 @@ class PlatformRegistry:
                 "✅ Performance optimization",
                 "✅ Build optimization",
                 "✅ Deployment configuration",
-                "✅ Monitoring setup"
+                "✅ Monitoring setup",
             ],
-            
             "same": [
                 "✅ Dependencies updated",
                 "✅ Security vulnerabilities fixed",
@@ -286,9 +230,8 @@ class PlatformRegistry:
                 "✅ Performance baseline established",
                 "✅ Deployment strategy defined",
                 "✅ Monitoring configured",
-                "✅ Backup strategy implemented"
+                "✅ Backup strategy implemented",
             ],
-            
             "emergent": [
                 "✅ Automation scripts tested",
                 "✅ Error handling robust",
@@ -299,10 +242,10 @@ class PlatformRegistry:
                 "✅ Health checks configured",
                 "✅ Monitoring and alerting",
                 "✅ Backup and recovery",
-                "✅ Documentation complete"
-            ]
+                "✅ Documentation complete",
+            ],
         }
-    
+
     @staticmethod
     def get_deployment_configs() -> Dict[str, Dict[str, Any]]:
         """Get deployment configurations by platform."""
@@ -313,100 +256,90 @@ class PlatformRegistry:
                     "runtime": "node",
                     "version": "18",
                     "startup_command": "npm start",
-                    "environment_variables": [
-                        "NODE_ENV=production",
-                        "PORT=8080"
-                    ]
+                    "environment_variables": ["NODE_ENV=production", "PORT=8080"],
                 },
                 "vercel": {
                     "framework": "other",
                     "build_command": "npm run build",
                     "output_directory": "dist",
-                    "install_command": "npm install"
+                    "install_command": "npm install",
                 },
                 "railway": {
                     "start_command": "npm start",
                     "build_command": "npm run build",
-                    "healthcheck_path": "/health"
-                }
+                    "healthcheck_path": "/health",
+                },
             },
-            
             "lovable": {
                 "vercel": {
                     "framework": "create-react-app",
                     "build_command": "npm run build",
                     "output_directory": "build",
-                    "install_command": "npm install"
+                    "install_command": "npm install",
                 },
                 "netlify": {
                     "build_command": "npm run build",
                     "publish_directory": "build",
-                    "node_version": "18"
+                    "node_version": "18",
                 },
                 "azure": {
                     "app_service": True,
                     "runtime": "node",
                     "version": "18",
-                    "build_command": "npm run build"
-                }
+                    "build_command": "npm run build",
+                },
             },
-            
             "bolt": {
                 "vercel": {
                     "framework": "vite",
                     "build_command": "npm run build",
                     "output_directory": "dist",
-                    "install_command": "npm install"
+                    "install_command": "npm install",
                 },
                 "railway": {
                     "start_command": "npm run preview",
                     "build_command": "npm run build",
-                    "healthcheck_path": "/"
+                    "healthcheck_path": "/",
                 },
                 "render": {
                     "build_command": "npm run build",
                     "start_command": "npm run preview",
-                    "environment": "node"
-                }
+                    "environment": "node",
+                },
             },
-            
             "same": {
                 "vercel": {
                     "framework": "other",
                     "build_command": "npm run build",
-                    "output_directory": "dist"
+                    "output_directory": "dist",
                 },
-                "netlify": {
-                    "build_command": "npm run build",
-                    "publish_directory": "dist"
-                },
+                "netlify": {"build_command": "npm run build", "publish_directory": "dist"},
                 "github-pages": {
                     "build_command": "npm run build",
                     "output_directory": "dist",
-                    "base_path": "/"
-                }
+                    "base_path": "/",
+                },
             },
-            
             "emergent": {
                 "railway": {
                     "start_command": "npm start",
                     "build_command": "npm run build",
-                    "healthcheck_path": "/health"
+                    "healthcheck_path": "/health",
                 },
                 "render": {
                     "build_command": "npm run build",
                     "start_command": "npm start",
-                    "environment": "node"
+                    "environment": "node",
                 },
                 "azure": {
                     "app_service": True,
                     "runtime": "node",
                     "version": "18",
-                    "startup_command": "npm start"
-                }
-            }
+                    "startup_command": "npm start",
+                },
+            },
         }
-    
+
     @staticmethod
     def get_next_steps() -> Dict[str, Dict[str, List[str]]]:
         """Get next steps by platform and enhancement type."""
@@ -422,24 +355,23 @@ class PlatformRegistry:
                     "Configure load balancing if needed",
                     "Set up log aggregation",
                     "Implement security scanning",
-                    "Create runbook for operations"
+                    "Create runbook for operations",
                 ],
                 "testing": [
                     "Write unit tests for core functionality",
                     "Set up integration testing",
                     "Configure test database",
                     "Implement API testing",
-                    "Set up automated testing pipeline"
+                    "Set up automated testing pipeline",
                 ],
                 "security": [
                     "Implement authentication system",
                     "Set up authorization rules",
                     "Configure security headers",
                     "Implement input validation",
-                    "Set up security monitoring"
-                ]
+                    "Set up security monitoring",
+                ],
             },
-            
             "lovable": {
                 "production_ready": [
                     "Optimize bundle size",
@@ -451,24 +383,23 @@ class PlatformRegistry:
                     "Configure PWA features",
                     "Implement accessibility features",
                     "Set up A/B testing framework",
-                    "Configure CDN for assets"
+                    "Configure CDN for assets",
                 ],
                 "testing": [
                     "Write component tests",
                     "Set up visual regression testing",
                     "Implement accessibility testing",
                     "Configure performance testing",
-                    "Set up end-to-end testing"
+                    "Set up end-to-end testing",
                 ],
                 "security": [
                     "Implement CSP headers",
                     "Set up dependency scanning",
                     "Configure secure API communication",
                     "Implement XSS protection",
-                    "Set up security monitoring"
-                ]
+                    "Set up security monitoring",
+                ],
             },
-            
             "bolt": {
                 "production_ready": [
                     "Optimize Vite configuration",
@@ -480,24 +411,23 @@ class PlatformRegistry:
                     "Configure environment management",
                     "Implement logging strategy",
                     "Set up monitoring dashboard",
-                    "Create deployment documentation"
+                    "Create deployment documentation",
                 ],
                 "testing": [
                     "Set up Vitest configuration",
                     "Write component tests",
                     "Implement API testing",
                     "Configure visual testing",
-                    "Set up performance testing"
+                    "Set up performance testing",
                 ],
                 "security": [
                     "Implement secure API calls",
                     "Set up authentication flow",
                     "Configure CORS properly",
                     "Implement input sanitization",
-                    "Set up security headers"
-                ]
+                    "Set up security headers",
+                ],
             },
-            
             "same": {
                 "production_ready": [
                     "Update all dependencies",
@@ -509,24 +439,23 @@ class PlatformRegistry:
                     "Set up performance monitoring",
                     "Create documentation",
                     "Implement testing strategy",
-                    "Set up CI/CD pipeline"
+                    "Set up CI/CD pipeline",
                 ],
                 "testing": [
                     "Add comprehensive test suite",
                     "Set up automated testing",
                     "Implement integration tests",
                     "Configure test coverage",
-                    "Set up quality gates"
+                    "Set up quality gates",
                 ],
                 "security": [
                     "Audit dependencies",
                     "Implement security headers",
                     "Set up vulnerability scanning",
                     "Configure secure deployment",
-                    "Implement security monitoring"
-                ]
+                    "Implement security monitoring",
+                ],
             },
-            
             "emergent": {
                 "production_ready": [
                     "Implement robust error handling",
@@ -538,30 +467,30 @@ class PlatformRegistry:
                     "Implement security measures",
                     "Set up deployment automation",
                     "Create operational documentation",
-                    "Implement performance optimization"
+                    "Implement performance optimization",
                 ],
                 "testing": [
                     "Write automation tests",
                     "Set up integration testing",
                     "Implement load testing",
                     "Configure test environments",
-                    "Set up automated validation"
+                    "Set up automated validation",
                 ],
                 "security": [
                     "Secure API endpoints",
                     "Implement authentication",
                     "Set up authorization",
                     "Configure secure communication",
-                    "Implement audit logging"
-                ]
-            }
+                    "Implement audit logging",
+                ],
+            },
         }
-    
+
     @staticmethod
     def is_supported_platform(platform: str) -> bool:
         """Check if a platform is supported."""
         return platform in PlatformRegistry.get_platform_configs()
-    
+
     @staticmethod
     def get_platform_config(platform: str) -> PlatformConfig:
         """Get configuration for a specific platform."""

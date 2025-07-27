@@ -4,8 +4,8 @@ Scoring Engine Module
 Handles confidence calculation and platform ranking for detection results.
 """
 
-from typing import Dict, List, Any, Tuple
 import re
+from typing import Any, Dict, List, Tuple
 
 
 class PlatformScoringEngine:

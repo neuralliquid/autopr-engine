@@ -1,7 +1,9 @@
-import pydantic
 import os
-from autopr.actions.base import Action
 from typing import List
+
+import pydantic
+
+from autopr.actions.base import Action
 
 
 class Inputs(pydantic.BaseModel):
@@ -41,9 +43,7 @@ class ScaffoldApiRoute(Action[Inputs, Outputs]):
         os.makedirs(route_dir, exist_ok=True)
 
         method_handlers = "\\n".join(
-            METHOD_HANDLER_TEMPLATE.format(
-                method=method.upper(), route_name=inputs.route_name
-            )
+            METHOD_HANDLER_TEMPLATE.format(method=method.upper(), route_name=inputs.route_name)
             for method in inputs.http_methods
         )
 
@@ -64,8 +64,9 @@ class ScaffoldApiRoute(Action[Inputs, Outputs]):
 
 
 if __name__ == "__main__":
-    from autopr.tests.utils import run_action_manually
     import asyncio
+
+    from autopr.tests.utils import run_action_manually
 
     asyncio.run(
         run_action_manually(

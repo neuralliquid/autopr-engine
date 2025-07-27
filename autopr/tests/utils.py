@@ -19,13 +19,9 @@ async def run_action_manually(action: Type[Any], inputs: Any) -> None:
     """
     action_instance = action()
     # Prefer 'run', fallback to 'execute'
-    runner = getattr(action_instance, "run", None) or getattr(
-        action_instance, "execute", None
-    )
+    runner = getattr(action_instance, "run", None) or getattr(action_instance, "execute", None)
     if runner is None:
-        raise AttributeError(
-            f"Action {action.__name__} has no 'run' or 'execute' method."
-        )
+        raise AttributeError(f"Action {action.__name__} has no 'run' or 'execute' method.")
 
     # If the runner is async, await it; otherwise, call it directly
     if asyncio.iscoroutinefunction(runner):

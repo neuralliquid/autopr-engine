@@ -19,9 +19,9 @@ Usage:
     from autopr.quality.template_metrics import get_quality_scorer, get_quality_analyzer
 """
 
+from .quality_analyzer import QualityAnalyzer
 from .quality_models import QualityMetrics
 from .quality_scorer import QualityScorer
-from .quality_analyzer import QualityAnalyzer
 
 # Factory functions for global instances
 _scorer_instance = None
@@ -46,11 +46,11 @@ def get_quality_analyzer() -> QualityAnalyzer:
 
 # Public API
 __all__ = [
-    'QualityMetrics',
-    'QualityScorer', 
-    'QualityAnalyzer',
-    'get_quality_scorer',
-    'get_quality_analyzer'
+    "QualityMetrics",
+    "QualityScorer",
+    "QualityAnalyzer",
+    "get_quality_scorer",
+    "get_quality_analyzer",
 ]
 
-__version__ = '1.0.0'
+__version__ = "1.0.0"

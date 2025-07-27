@@ -5,7 +5,8 @@ Orchestrates platform detection using modular components for better maintainabil
 """
 
 import re
-from typing import Dict, List, Any, Optional
+from typing import Any, Dict, List, Optional
+
 from pydantic import BaseModel, Field
 
 from .config import PlatformConfig

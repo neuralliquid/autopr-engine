@@ -6,14 +6,13 @@ Generates comprehensive reports and analytics for implementation roadmap executi
 
 import json
 import logging
-from typing import Dict, List, Any, Optional, Tuple
 from datetime import datetime, timedelta
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
 
-from .task_definitions import TaskRegistry
-from .task_executor import TaskExecutor, TaskExecution
 from .phase_manager import PhaseManager
-
+from .task_definitions import TaskRegistry
+from .task_executor import TaskExecution, TaskExecutor
 
 logger = logging.getLogger(__name__)
 
@@ -384,19 +383,19 @@ class ReportGenerator:
                 <p>Generated: {generated_at}</p>
                 <p class="status-{status_color}">Health Score: {health_score}%</p>
             </div>
-            
+
             <h2>Executive Summary</h2>
             <div class="metric">Progress: {progress}%</div>
             <div class="metric">Phases: {phases_completed}</div>
             <div class="metric">Tasks: {tasks_completed}</div>
             <div class="metric">Success Rate: {success_rate}%</div>
-            
+
             <h2>Recommendations</h2>
             {recommendations_html}
-            
+
             <h2>Phase Status</h2>
             {phases_html}
-            
+
         </body>
         </html>
         """

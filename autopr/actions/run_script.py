@@ -1,4 +1,5 @@
 import asyncio
+
 import pydantic
 
 from autopr.actions.base import Action
@@ -50,11 +51,10 @@ class RunScript(Action[Inputs, Outputs]):
 # This allows you to test the action manually by running `python -m autopr.actions.run_script`
 if __name__ == "__main__":
     from autopr.tests.utils import run_action_manually
+
     asyncio.run(
         run_action_manually(
             action=RunScript,
-            inputs=Inputs(
-                command="pnpm --version"  # Example command
-            ),
+            inputs=Inputs(command="pnpm --version"),  # Example command
         )
-    ) 
+    )

@@ -4,11 +4,11 @@ Implementation Roadmap Package
 Modular implementation system for AutoPR extension roadmap.
 """
 
-from .task_definitions import Task, TaskRegistry
-from .task_executor import TaskExecutor, TaskExecution
-from .phase_manager import PhaseManager, PhaseExecution
-from .report_generator import ReportGenerator
 from .implementor import Phase1ExtensionImplementor
+from .phase_manager import PhaseExecution, PhaseManager
+from .report_generator import ReportGenerator
+from .task_definitions import Task, TaskRegistry
+from .task_executor import TaskExecution, TaskExecutor
 
 __all__ = [
     "Task",

@@ -8,16 +8,16 @@ This package replaces the monolithic PrototypeEnhancer class with a modular arch
 while maintaining backward compatibility.
 """
 
-from .enhancer import PrototypeEnhancer
-from .platform_configs import PlatformRegistry, PlatformConfig
-from .file_generators import FileGenerator
 from .enhancement_strategies import (
-    EnhancementStrategy,
-    ReplitEnhancementStrategy,
-    LovableEnhancementStrategy,
     BoltEnhancementStrategy,
+    EnhancementStrategy,
     EnhancementStrategyFactory,
+    LovableEnhancementStrategy,
+    ReplitEnhancementStrategy,
 )
+from .enhancer import PrototypeEnhancer
+from .file_generators import FileGenerator
+from .platform_configs import PlatformConfig, PlatformRegistry
 
 __version__ = "2.0.0"
 __author__ = "AutoPR Team"

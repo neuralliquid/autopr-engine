@@ -7,67 +7,75 @@ Now supports hybrid YAML + template approach for enhanced metadata and flexibili
 
 import json
 import os
-from typing import Dict, List, Any, Optional
 from pathlib import Path
-from .platform_configs import PlatformRegistry, PlatformConfig
+from typing import Any, Dict, List, Optional
+
 from .config_loader import ConfigLoader
-from .template_metadata import TemplateRegistry, TemplateMetadata
+from .platform_configs import PlatformConfig, PlatformRegistry
+from .template_metadata import TemplateMetadata, TemplateRegistry
 
 
 class FileGenerator:
     """Generates various configuration and setup files for different platforms.
-    
+
     Now supports hybrid YAML + template approach with metadata-driven generation.
     """
-    
+
     def __init__(self, templates_dir: Optional[str] = None) -> None:
         self.platform_registry = PlatformRegistry()
-        
+
         # Initialize template registry with hybrid YAML + template support
         if templates_dir is None:
             # Default to templates directory relative to this file
             current_dir = Path(__file__).parent
             templates_dir = str(current_dir.parent.parent.parent / "templates")
-        
+
         self.template_registry = TemplateRegistry(templates_dir)
-        
+
         # Backward compatibility flag
         self.use_hybrid_templates = True
-    
+
     # New hybrid template methods
-    def generate_from_template(self, template_key: str, 
-                              variables: Optional[Dict[str, Any]] = None,
-                              variants: Optional[List[str]] = None) -> Optional[str]:
+    def generate_from_template(
+        self,
+        template_key: str,
+        variables: Optional[Dict[str, Any]] = None,
+        variants: Optional[List[str]] = None,
+    ) -> Optional[str]:
         """Generate content from a template using the hybrid YAML + template approach.
-        
+
         Args:
             template_key: Template identifier (e.g., 'docker/react.dockerfile')
             variables: Variables to substitute in the template
             variants: List of variants to apply
-            
+
         Returns:
             Generated content or None if template not found
         """
         if not self.use_hybrid_templates:
             return None
-            
+
         return self.template_registry.generate_template(template_key, variables, variants)
-    
-    def list_available_templates(self, platform: Optional[str] = None, 
-                                category: Optional[str] = None) -> List[str]:
+
+    def list_available_templates(
+        self, platform: Optional[str] = None, category: Optional[str] = None
+    ) -> List[str]:
         """List all available templates, optionally filtered by platform or category."""
         return self.template_registry.list_templates(platform, category)
-    
+
     def get_template_info(self, template_key: str) -> Dict[str, Any]:
         """Get comprehensive information about a template including metadata."""
         return self.template_registry.get_template_info(template_key)
-    
-    def generate_dockerfile(self, platform: str, 
-                           variables: Optional[Dict[str, Any]] = None,
-                           variants: Optional[List[str]] = None) -> str:
+
+    def generate_dockerfile(
+        self,
+        platform: str,
+        variables: Optional[Dict[str, Any]] = None,
+        variants: Optional[List[str]] = None,
+    ) -> str:
         """Generate Dockerfile for the platform using hybrid templates when available."""
         config = self.platform_registry.get_platform_config(platform)
-        
+
         # Try hybrid template approach first
         if self.use_hybrid_templates:
             template_key = None
@@ -77,18 +85,18 @@ class FileGenerator:
                 template_key = "docker/node.dockerfile"
             else:
                 template_key = "docker/generic.dockerfile"
-            
+
             # Attempt to generate using hybrid template
             if template_key:
                 # Merge platform-specific variables with user variables
                 template_vars = variables or {}
-                if 'node_version' not in template_vars:
-                    template_vars['node_version'] = '18'  # Default
-                
+                if "node_version" not in template_vars:
+                    template_vars["node_version"] = "18"  # Default
+
                 hybrid_content = self.generate_from_template(template_key, template_vars, variants)
                 if hybrid_content:
                     return hybrid_content
-        
+
         # Fallback to original approach
         if config.framework == "react":
             return self._generate_react_dockerfile()
@@ -96,25 +104,28 @@ class FileGenerator:
             return self._generate_node_dockerfile()
         else:
             return self._generate_generic_dockerfile()
-    
+
     def _generate_react_dockerfile(self) -> str:
         """Generate Dockerfile for React applications."""
         return ConfigLoader.load_template("docker", "react.dockerfile")
-    
+
     def _generate_node_dockerfile(self) -> str:
         """Generate Dockerfile for Node.js applications."""
         return ConfigLoader.load_template("docker", "node.dockerfile")
-    
+
     def _generate_generic_dockerfile(self) -> str:
         """Generate generic Dockerfile."""
         return ConfigLoader.load_template("docker", "generic.dockerfile")
-    
-    def generate_typescript_config(self, platform: str, 
-                                  variables: Optional[Dict[str, Any]] = None,
-                                  variants: Optional[List[str]] = None) -> str:
+
+    def generate_typescript_config(
+        self,
+        platform: str,
+        variables: Optional[Dict[str, Any]] = None,
+        variants: Optional[List[str]] = None,
+    ) -> str:
         """Generate TypeScript configuration using hybrid templates when available."""
         config = self.platform_registry.get_platform_config(platform)
-        
+
         # Try hybrid template approach first
         if self.use_hybrid_templates:
             template_key = None
@@ -124,18 +135,18 @@ class FileGenerator:
                 template_key = "typescript/vite-tsconfig.yml"
             else:
                 template_key = "typescript/basic-tsconfig.yml"
-            
+
             # Attempt to generate using hybrid template
             if template_key:
                 # Merge platform-specific variables with user variables
                 template_vars = variables or {}
-                if 'target' not in template_vars:
-                    template_vars['target'] = 'ES2020' if config.name == 'bolt' else 'es5'
-                
+                if "target" not in template_vars:
+                    template_vars["target"] = "ES2020" if config.name == "bolt" else "es5"
+
                 hybrid_content = self.generate_from_template(template_key, template_vars, variants)
                 if hybrid_content:
                     return hybrid_content
-        
+
         # Fallback to original approach
         if config.framework == "react":
             return self._generate_react_tsconfig()
@@ -143,102 +154,114 @@ class FileGenerator:
             return self._generate_vite_tsconfig()
         else:
             return self._generate_basic_tsconfig()
-    
+
     def _generate_react_tsconfig(self) -> str:
         """Generate tsconfig.json for React projects."""
-        return json.dumps({
-            "compilerOptions": {
-                "target": "es5",
-                "lib": ["dom", "dom.iterable", "es6"],
-                "allowJs": True,
-                "skipLibCheck": True,
-                "esModuleInterop": True,
-                "allowSyntheticDefaultImports": True,
-                "strict": True,
-                "forceConsistentCasingInFileNames": True,
-                "noFallthroughCasesInSwitch": True,
-                "module": "esnext",
-                "moduleResolution": "node",
-                "resolveJsonModule": True,
-                "isolatedModules": True,
-                "noEmit": True,
-                "jsx": "react-jsx"
+        return json.dumps(
+            {
+                "compilerOptions": {
+                    "target": "es5",
+                    "lib": ["dom", "dom.iterable", "es6"],
+                    "allowJs": True,
+                    "skipLibCheck": True,
+                    "esModuleInterop": True,
+                    "allowSyntheticDefaultImports": True,
+                    "strict": True,
+                    "forceConsistentCasingInFileNames": True,
+                    "noFallthroughCasesInSwitch": True,
+                    "module": "esnext",
+                    "moduleResolution": "node",
+                    "resolveJsonModule": True,
+                    "isolatedModules": True,
+                    "noEmit": True,
+                    "jsx": "react-jsx",
+                },
+                "include": ["src"],
+                "exclude": ["node_modules"],
             },
-            "include": ["src"],
-            "exclude": ["node_modules"]
-        }, indent=2)
-    
+            indent=2,
+        )
+
     def _generate_vite_tsconfig(self) -> str:
         """Generate tsconfig.json for Vite projects."""
-        return json.dumps({
-            "compilerOptions": {
-                "target": "ES2020",
-                "useDefineForClassFields": True,
-                "lib": ["ES2020", "DOM", "DOM.Iterable"],
-                "module": "ESNext",
-                "skipLibCheck": True,
-                "moduleResolution": "bundler",
-                "allowImportingTsExtensions": True,
-                "resolveJsonModule": True,
-                "isolatedModules": True,
-                "noEmit": True,
-                "jsx": "react-jsx",
-                "strict": True,
-                "noUnusedLocals": True,
-                "noUnusedParameters": True,
-                "noFallthroughCasesInSwitch": True
+        return json.dumps(
+            {
+                "compilerOptions": {
+                    "target": "ES2020",
+                    "useDefineForClassFields": True,
+                    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+                    "module": "ESNext",
+                    "skipLibCheck": True,
+                    "moduleResolution": "bundler",
+                    "allowImportingTsExtensions": True,
+                    "resolveJsonModule": True,
+                    "isolatedModules": True,
+                    "noEmit": True,
+                    "jsx": "react-jsx",
+                    "strict": True,
+                    "noUnusedLocals": True,
+                    "noUnusedParameters": True,
+                    "noFallthroughCasesInSwitch": True,
+                },
+                "include": ["src"],
+                "references": [{"path": "./tsconfig.node.json"}],
             },
-            "include": ["src"],
-            "references": [{"path": "./tsconfig.node.json"}]
-        }, indent=2)
-    
+            indent=2,
+        )
+
     def _generate_basic_tsconfig(self) -> str:
         """Generate basic tsconfig.json."""
-        return json.dumps({
-            "compilerOptions": {
-                "target": "es2020",
-                "module": "commonjs",
-                "lib": ["es2020"],
-                "outDir": "./dist",
-                "rootDir": "./src",
-                "strict": True,
-                "esModuleInterop": True,
-                "skipLibCheck": True,
-                "forceConsistentCasingInFileNames": True,
-                "resolveJsonModule": True
+        return json.dumps(
+            {
+                "compilerOptions": {
+                    "target": "es2020",
+                    "module": "commonjs",
+                    "lib": ["es2020"],
+                    "outDir": "./dist",
+                    "rootDir": "./src",
+                    "strict": True,
+                    "esModuleInterop": True,
+                    "skipLibCheck": True,
+                    "forceConsistentCasingInFileNames": True,
+                    "resolveJsonModule": True,
+                },
+                "include": ["src/**/*"],
+                "exclude": ["node_modules", "dist"],
             },
-            "include": ["src/**/*"],
-            "exclude": ["node_modules", "dist"]
-        }, indent=2)
-    
-    def generate_next_config(self, platform: str, 
-                            variables: Optional[Dict[str, Any]] = None,
-                            variants: Optional[List[str]] = None) -> str:
+            indent=2,
+        )
+
+    def generate_next_config(
+        self,
+        platform: str,
+        variables: Optional[Dict[str, Any]] = None,
+        variants: Optional[List[str]] = None,
+    ) -> str:
         """Generate Next.js configuration using hybrid templates when available."""
         config = self.platform_registry.get_platform_config(platform)
-        
+
         # Try hybrid template approach first
         if self.use_hybrid_templates:
             template_vars = variables or {}
-            
+
             # Set default variables based on platform
-            if 'react_strict_mode' not in template_vars:
-                template_vars['react_strict_mode'] = True
-            if 'swc_minify' not in template_vars:
-                template_vars['swc_minify'] = True
-            if 'app_dir' not in template_vars:
-                template_vars['app_dir'] = True
-            if 'image_domains' not in template_vars:
-                template_vars['image_domains'] = ['localhost']
-            if 'custom_env_vars' not in template_vars:
-                template_vars['custom_env_vars'] = ['CUSTOM_KEY']
-            
+            if "react_strict_mode" not in template_vars:
+                template_vars["react_strict_mode"] = True
+            if "swc_minify" not in template_vars:
+                template_vars["swc_minify"] = True
+            if "app_dir" not in template_vars:
+                template_vars["app_dir"] = True
+            if "image_domains" not in template_vars:
+                template_vars["image_domains"] = ["localhost"]
+            if "custom_env_vars" not in template_vars:
+                template_vars["custom_env_vars"] = ["CUSTOM_KEY"]
+
             hybrid_content = self.generate_from_template(
                 "build/next.config.yml", template_vars, variants
             )
             if hybrid_content:
                 return hybrid_content
-        
+
         # Fallback to original hardcoded approach
         return """
 /** @type {import('next').NextConfig} */
@@ -258,41 +281,44 @@ const nextConfig = {
 
 module.exports = nextConfig
         """.strip()
-    
-    def generate_testing_files(self, platform: str, 
-                              variables: Optional[Dict[str, Any]] = None,
-                              variants: Optional[List[str]] = None) -> Dict[str, str]:
+
+    def generate_testing_files(
+        self,
+        platform: str,
+        variables: Optional[Dict[str, Any]] = None,
+        variants: Optional[List[str]] = None,
+    ) -> Dict[str, str]:
         """Generate testing configuration files using hybrid templates when available."""
         config = self.platform_registry.get_platform_config(platform)
-        
+
         # Try hybrid template approach first
         if self.use_hybrid_templates:
             testing_files = {}
-            
+
             # Generate Jest config for most platforms
             if config.name != "bolt":
                 jest_vars = variables or {}
-                if 'coverage_threshold' not in jest_vars:
-                    jest_vars['coverage_threshold'] = 80
-                
+                if "coverage_threshold" not in jest_vars:
+                    jest_vars["coverage_threshold"] = 80
+
                 jest_content = self.generate_from_template(
                     "testing/jest.config.js", jest_vars, variants
                 )
                 if jest_content:
                     testing_files["jest.config.js"] = jest_content
-            
+
             # Generate Vitest config for Bolt platform
             if config.name == "bolt":
                 vitest_vars = variables or {}
-                if 'coverage_threshold' not in vitest_vars:
-                    vitest_vars['coverage_threshold'] = 80
-                
+                if "coverage_threshold" not in vitest_vars:
+                    vitest_vars["coverage_threshold"] = 80
+
                 vitest_content = self.generate_from_template(
                     "build/vitest.config.js", vitest_vars, variants
                 )
                 if vitest_content:
                     testing_files["vitest.config.js"] = vitest_content
-            
+
             # If we got hybrid content, return it
             if testing_files:
                 # Add additional testing files from original approach
@@ -302,22 +328,21 @@ module.exports = nextConfig
                 else:
                     common_files = self._generate_common_testing_files()
                     testing_files.update(common_files)
-                
+
                 return testing_files
-        
+
         # Fallback to original approach
         if config.framework == "react":
             return self._generate_react_testing_files()
         else:
             return self._generate_common_testing_files()
-    
+
     def _generate_react_testing_files(self) -> Dict[str, str]:
         """Generate React testing setup."""
         return {
             "src/setupTests.ts": """
 import '@testing-library/jest-dom';
             """.strip(),
-            
             "src/__tests__/App.test.tsx": """
 import { render, screen } from '@testing-library/react';
 import App from '../App';
@@ -328,7 +353,6 @@ test('renders learn react link', () => {
   expect(linkElement).toBeInTheDocument();
 });
             """.strip(),
-            
             "jest.config.js": """
 module.exports = {
   testEnvironment: 'jsdom',
@@ -350,9 +374,9 @@ module.exports = {
     },
   },
 };
-            """.strip()
+            """.strip(),
         }
-    
+
     def _generate_common_testing_files(self) -> Dict[str, str]:
         """Generate common testing files."""
         return {
@@ -381,7 +405,6 @@ jobs:
       - name: Upload coverage
         uses: codecov/codecov-action@v3
             """.strip(),
-            
             "playwright.config.ts": """
 import { defineConfig, devices } from '@playwright/test';
 
@@ -412,23 +435,23 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
   },
 });
-            """.strip()
+            """.strip(),
         }
-    
+
     def generate_security_files(self, platform: str) -> Dict[str, str]:
         """Generate security configuration files."""
         config = self.platform_registry.get_platform_config(platform)
         files: Dict[str, str] = {}
-        
+
         files[".env.example"] = self._generate_env_example(config)
         files["security/helmet.config.js"] = self._generate_helmet_config()
         files["security/cors.config.js"] = self._generate_cors_config()
-        
+
         if config.framework == "react":
             files["public/.htaccess"] = self._generate_htaccess()
-        
+
         return files
-    
+
     def _generate_env_example(self, config: PlatformConfig) -> str:
         """Generate environment variables example."""
         env_vars = [
@@ -450,19 +473,21 @@ export default defineConfig({
             "SENTRY_DSN=your-sentry-dsn",
             "",
             "# Feature Flags",
-            "ENABLE_FEATURE_X=false"
+            "ENABLE_FEATURE_X=false",
         ]
-        
+
         if config.framework == "react":
-            env_vars.extend([
-                "",
-                "# React App Variables (must start with REACT_APP_)",
-                "REACT_APP_API_URL=http://localhost:3001",
-                "REACT_APP_ENVIRONMENT=development"
-            ])
-        
+            env_vars.extend(
+                [
+                    "",
+                    "# React App Variables (must start with REACT_APP_)",
+                    "REACT_APP_API_URL=http://localhost:3001",
+                    "REACT_APP_ENVIRONMENT=development",
+                ]
+            )
+
         return "\n".join(env_vars)
-    
+
     def _generate_helmet_config(self) -> str:
         """Generate Helmet security configuration."""
         return """
@@ -488,13 +513,13 @@ const helmetConfig = {
 
 module.exports = helmetConfig;
         """.strip()
-    
+
     def _generate_cors_config(self) -> str:
         """Generate CORS configuration."""
         return """
 const corsConfig = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://yourdomain.com'] 
+  origin: process.env.NODE_ENV === 'production'
+    ? ['https://yourdomain.com']
     : ['http://localhost:3000', 'http://localhost:3001'],
   credentials: true,
   optionsSuccessStatus: 200,
@@ -504,7 +529,7 @@ const corsConfig = {
 
 module.exports = corsConfig;
         """.strip()
-    
+
     def _generate_htaccess(self) -> str:
         """Generate .htaccess for React apps."""
         return """
@@ -519,7 +544,7 @@ Header always set X-Frame-Options DENY
 Header always set X-XSS-Protection "1; mode=block"
 Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
         """.strip()
-    
+
     def generate_storybook_config(self) -> Dict[str, str]:
         """Generate Storybook configuration."""
         return {
@@ -540,7 +565,6 @@ module.exports = {
   },
 };
             """.strip(),
-            
             ".storybook/preview.js": """
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -552,7 +576,6 @@ export const parameters = {
   },
 };
             """.strip(),
-            
             "src/components/Button/Button.stories.tsx": """
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from './Button';
@@ -584,9 +607,9 @@ export const Secondary: Story = {
     label: 'Button',
   },
 };
-            """.strip()
+            """.strip(),
         }
-    
+
     def generate_accessibility_testing(self) -> Dict[str, str]:
         """Generate accessibility testing setup."""
         return {
@@ -602,7 +625,6 @@ const axe = configureAxe({
 
 export default axe;
             """.strip(),
-            
             "src/__tests__/accessibility.test.tsx": """
 import { render } from '@testing-library/react';
 import axe from '../utils/axe-config';
@@ -615,67 +637,70 @@ describe('Accessibility tests', () => {
     expect(results).toHaveNoViolations();
   });
 });
-            """.strip()
+            """.strip(),
         }
-    
-    def generate_azure_configs(self, platform: str, 
-                              variables: Optional[Dict[str, Any]] = None,
-                              variants: Optional[List[str]] = None) -> Dict[str, str]:
+
+    def generate_azure_configs(
+        self,
+        platform: str,
+        variables: Optional[Dict[str, Any]] = None,
+        variants: Optional[List[str]] = None,
+    ) -> Dict[str, str]:
         """Generate Azure-specific configuration files using hybrid templates when available."""
         config = self.platform_registry.get_platform_config(platform)
         files: Dict[str, str] = {}
-        
+
         # Try hybrid template approach first
         if self.use_hybrid_templates:
             # Azure DevOps Pipeline
             pipeline_vars = variables or {}
-            if 'node_version' not in pipeline_vars:
-                pipeline_vars['node_version'] = '18.x'
-            if 'build_command' not in pipeline_vars:
-                pipeline_vars['build_command'] = config.build_command
-            
+            if "node_version" not in pipeline_vars:
+                pipeline_vars["node_version"] = "18.x"
+            if "build_command" not in pipeline_vars:
+                pipeline_vars["build_command"] = config.build_command
+
             pipeline_content = self.generate_from_template(
                 "deployment/azure-pipeline.yml", pipeline_vars, variants
             )
             if pipeline_content:
                 files["azure-pipelines.yml"] = pipeline_content
-            
+
             # Web.config for Azure App Service
             web_config_vars = variables or {}
-            if 'framework' not in web_config_vars:
-                web_config_vars['framework'] = config.framework
-            
+            if "framework" not in web_config_vars:
+                web_config_vars["framework"] = config.framework
+
             web_config_content = self.generate_from_template(
                 "deployment/web.config.yml", web_config_vars, variants
             )
             if web_config_content:
                 files["web.config"] = web_config_content
-            
+
             # Static Web App config for React
             if config.framework == "react":
                 swa_vars = variables or {}
-                if 'api_authentication' not in swa_vars:
-                    swa_vars['api_authentication'] = True
-                
+                if "api_authentication" not in swa_vars:
+                    swa_vars["api_authentication"] = True
+
                 swa_content = self.generate_from_template(
                     "deployment/azure-static-web-app.config.yml", swa_vars, variants
                 )
                 if swa_content:
                     files["staticwebapp.config.json"] = swa_content
-            
+
             # If we got hybrid content, return it
             if files:
                 return files
-        
+
         # Fallback to original hardcoded approach
         files["azure-pipelines.yml"] = self._generate_azure_pipeline(config)
         files["web.config"] = self._generate_web_config(config)
-        
+
         if config.framework == "react":
             files["staticwebapp.config.json"] = self._generate_static_web_app_config()
-        
+
         return files
-    
+
     def _generate_azure_pipeline(self, config: PlatformConfig) -> str:
         """Generate Azure DevOps pipeline."""
         return f"""
@@ -699,19 +724,19 @@ stages:
       inputs:
         versionSpec: '$(nodeVersion)'
       displayName: 'Install Node.js'
-    
+
     - script: |
         npm ci
       displayName: 'Install dependencies'
-    
+
     - script: |
         npm run test -- --coverage --watchAll=false
       displayName: 'Run tests'
-    
+
     - script: |
         {config.build_command}
       displayName: 'Build application'
-    
+
     - task: ArchiveFiles@2
       inputs:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
@@ -719,14 +744,14 @@ stages:
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
         replaceExistingArchive: true
-    
+
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
         """.strip()
-    
+
     def _generate_web_config(self, config: PlatformConfig) -> str:
         """Generate web.config for Azure App Service."""
         if config.framework == "react":
@@ -778,102 +803,98 @@ stages:
   </system.webServer>
 </configuration>
             """.strip()
-    
+
     def _generate_static_web_app_config(self) -> str:
         """Generate Azure Static Web Apps configuration."""
-        return json.dumps({
-            "routes": [
-                {
-                    "route": "/api/*",
-                    "allowedRoles": ["authenticated"]
+        return json.dumps(
+            {
+                "routes": [
+                    {"route": "/api/*", "allowedRoles": ["authenticated"]},
+                    {"route": "/*", "serve": "/index.html", "statusCode": 200},
+                ],
+                "responseOverrides": {"401": {"redirect": "/login", "statusCode": 302}},
+                "globalHeaders": {
+                    "X-Content-Type-Options": "nosniff",
+                    "X-Frame-Options": "DENY",
+                    "X-XSS-Protection": "1; mode=block",
                 },
-                {
-                    "route": "/*",
-                    "serve": "/index.html",
-                    "statusCode": 200
-                }
-            ],
-            "responseOverrides": {
-                "401": {
-                    "redirect": "/login",
-                    "statusCode": 302
-                }
             },
-            "globalHeaders": {
-                "X-Content-Type-Options": "nosniff",
-                "X-Frame-Options": "DENY",
-                "X-XSS-Protection": "1; mode=block"
-            }
-        }, indent=2)
-    
-    def generate_deployment_automation(self, platform: str, 
-                                      variables: Optional[Dict[str, Any]] = None,
-                                      variants: Optional[List[str]] = None) -> Dict[str, str]:
+            indent=2,
+        )
+
+    def generate_deployment_automation(
+        self,
+        platform: str,
+        variables: Optional[Dict[str, Any]] = None,
+        variants: Optional[List[str]] = None,
+    ) -> Dict[str, str]:
         """Generate deployment automation scripts using hybrid templates when available."""
         config = self.platform_registry.get_platform_config(platform)
         files: Dict[str, str] = {}
-        
+
         # Try hybrid template approach first
         if self.use_hybrid_templates:
             # GitHub Actions workflow
             github_vars = variables or {}
-            if 'node_version' not in github_vars:
-                github_vars['node_version'] = '18'
-            if 'build_command' not in github_vars:
-                github_vars['build_command'] = config.build_command
-            
+            if "node_version" not in github_vars:
+                github_vars["node_version"] = "18"
+            if "build_command" not in github_vars:
+                github_vars["build_command"] = config.build_command
+
             github_content = self.generate_from_template(
                 "deployment/github-actions.yml", github_vars, variants
             )
             if github_content:
                 files[".github/workflows/deploy.yml"] = github_content
-            
+
             # Platform-specific deployment configs
             for target in config.deployment_targets:
                 if target == "vercel":
                     vercel_vars = variables or {}
-                    if 'framework' not in vercel_vars:
-                        vercel_vars['framework'] = config.framework
-                    if 'spa_routing' not in vercel_vars:
-                        vercel_vars['spa_routing'] = config.framework == "react"
-                    
+                    if "framework" not in vercel_vars:
+                        vercel_vars["framework"] = config.framework
+                    if "spa_routing" not in vercel_vars:
+                        vercel_vars["spa_routing"] = config.framework == "react"
+
                     vercel_content = self.generate_from_template(
                         "deployment/vercel.config.yml", vercel_vars, variants
                     )
                     if vercel_content:
                         files["vercel.json"] = vercel_content
-                
+
                 elif target == "netlify":
                     netlify_vars = variables or {}
-                    if 'build_command' not in netlify_vars:
-                        netlify_vars['build_command'] = config.build_command
-                    if 'publish_directory' not in netlify_vars:
-                        netlify_vars['publish_directory'] = "build" if config.framework == "react" else "dist"
-                    if 'spa_routing' not in netlify_vars:
-                        netlify_vars['spa_routing'] = config.framework == "react"
-                    
+                    if "build_command" not in netlify_vars:
+                        netlify_vars["build_command"] = config.build_command
+                    if "publish_directory" not in netlify_vars:
+                        netlify_vars["publish_directory"] = (
+                            "build" if config.framework == "react" else "dist"
+                        )
+                    if "spa_routing" not in netlify_vars:
+                        netlify_vars["spa_routing"] = config.framework == "react"
+
                     netlify_content = self.generate_from_template(
                         "deployment/netlify.config.yml", netlify_vars, variants
                     )
                     if netlify_content:
                         files["netlify.toml"] = netlify_content
-            
+
             # If we got hybrid content, return it
             if files:
                 return files
-        
+
         # Fallback to original hardcoded approach
         files[".github/workflows/deploy.yml"] = self._generate_github_actions_deploy(config)
-        
+
         # Platform-specific deployment configs
         for target in config.deployment_targets:
             if target == "vercel":
                 files["vercel.json"] = self._generate_vercel_config(config)
             elif target == "netlify":
                 files["netlify.toml"] = self._generate_netlify_config(config)
-        
+
         return files
-    
+
     def _generate_github_actions_deploy(self, config: PlatformConfig) -> str:
         """Generate GitHub Actions deployment workflow."""
         return f"""
@@ -917,7 +938,7 @@ jobs:
       - name: Deploy
         run: echo "Add deployment step here"
         """.strip()
-    
+
     def _generate_vercel_config(self, config: PlatformConfig) -> str:
         """Generate Vercel configuration."""
         vercel_config = {
@@ -925,19 +946,23 @@ jobs:
             "builds": [
                 {
                     "src": "package.json",
-                    "use": "@vercel/node" if config.framework in ["express", "node"] else "@vercel/static-build"
+                    "use": (
+                        "@vercel/node"
+                        if config.framework in ["express", "node"]
+                        else "@vercel/static-build"
+                    ),
                 }
-            ]
+            ],
         }
-        
+
         if config.framework == "react":
             vercel_config["routes"] = [
                 {"handle": "filesystem"},
-                {"src": "/.*", "dest": "/index.html"}
+                {"src": "/.*", "dest": "/index.html"},
             ]
-        
+
         return json.dumps(vercel_config, indent=2)
-    
+
     def _generate_netlify_config(self, config: PlatformConfig) -> str:
         """Generate Netlify configuration."""
         return f"""
@@ -960,7 +985,7 @@ jobs:
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
         """.strip()
-    
+
     def generate_monitoring_scripts(self, platform: str) -> Dict[str, str]:
         """Generate monitoring scripts."""
         return {
@@ -980,7 +1005,6 @@ else
     exit 1
 fi
             """.strip(),
-            
             "scripts/monitor.sh": """
 #!/bin/bash
 # Monitoring script
@@ -994,7 +1018,6 @@ while true; do
     sleep 30
 done
             """.strip(),
-            
             "scripts/alert_on_failure.sh": """
 #!/bin/bash
 # Alert script for failures
@@ -1016,9 +1039,9 @@ echo "ALERT: $SERVICE_NAME failed - $ERROR_MESSAGE"
 # curl -X POST -H 'Content-type: application/json' \\
 #   --data '{"text":"ALERT: '$SERVICE_NAME' failed - '$ERROR_MESSAGE'"}' \\
 #   $SLACK_WEBHOOK_URL
-            """.strip()
+            """.strip(),
         }
-    
+
     def generate_backup_scripts(self, platform: str) -> Dict[str, str]:
         """Generate backup scripts."""
         return {
@@ -1053,7 +1076,6 @@ cp .env $BACKUP_DIR/env_backup_$TIMESTAMP
 
 echo "✅ Backup completed: $BACKUP_DIR"
             """.strip(),
-            
             "scripts/restore.sh": """
 #!/bin/bash
 # Restore script
@@ -1081,5 +1103,5 @@ if [[ $BACKUP_FILE == *.tar.gz ]]; then
 fi
 
 echo "✅ Restore completed"
-            """.strip()
+            """.strip(),
         }

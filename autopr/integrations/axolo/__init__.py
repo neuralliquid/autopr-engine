@@ -5,6 +5,7 @@ Seamless GitHub ↔ Slack integration with ephemeral PR channels
 """
 
 import os
+
 from .client import AxoloIntegration
 from .config import AxoloConfig
 from .models import AxoloPRChannel

@@ -1,7 +1,9 @@
-import pydantic
 import subprocess
-from autopr.actions.base import Action
 from typing import List
+
+import pydantic
+
+from autopr.actions.base import Action
 
 
 class Inputs(pydantic.BaseModel):
@@ -59,8 +61,9 @@ class LabelPR(Action[Inputs, Outputs]):
 
 
 if __name__ == "__main__":
-    from autopr.tests.utils import run_action_manually
     import asyncio
+
+    from autopr.tests.utils import run_action_manually
 
     asyncio.run(
         run_action_manually(

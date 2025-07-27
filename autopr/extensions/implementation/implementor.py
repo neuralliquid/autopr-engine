@@ -5,14 +5,13 @@ Provides the same interface as the original Phase1ExtensionImplementor while usi
 """
 
 import logging
-from typing import Dict, List, Any, Optional
 from pathlib import Path
+from typing import Any, Dict, List, Optional
 
-from .task_definitions import Task, TaskRegistry
-from .task_executor import TaskExecutor
 from .phase_manager import PhaseManager
 from .report_generator import ReportGenerator
-
+from .task_definitions import Task, TaskRegistry
+from .task_executor import TaskExecutor
 
 logger = logging.getLogger(__name__)
 

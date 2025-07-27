@@ -6,13 +6,12 @@ Handles task execution, monitoring, and state management for implementation road
 
 import asyncio
 import logging
-from typing import Dict, List, Any, Optional, Callable, Set, Union
-from pathlib import Path
-from datetime import datetime, timedelta
 from dataclasses import dataclass, field
+from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Any, Callable, Dict, List, Optional, Set, Union
 
 from .task_definitions import Task, TaskRegistry
-
 
 logger = logging.getLogger(__name__)
 
@@ -218,7 +217,7 @@ def configure_sentry():
         level=logging.INFO,
         event_level=logging.ERROR
     )
-    
+
     sentry_sdk.init(
         dsn=os.getenv("SENTRY_DSN"),
         environment=os.getenv("SENTRY_ENVIRONMENT", "production"),
@@ -249,7 +248,7 @@ from datetime import datetime
 
 class StructuredFormatter(logging.Formatter):
     """JSON formatter for structured logging."""
-    
+
     def format(self, record):
         log_entry = {
             "timestamp": datetime.utcnow().isoformat(),
@@ -260,17 +259,17 @@ class StructuredFormatter(logging.Formatter):
             "function": record.funcName,
             "line": record.lineno,
         }
-        
+
         if hasattr(record, "extra_data"):
             log_entry.update(record.extra_data)
-        
+
         return json.dumps(log_entry)
 
 def setup_structured_logging():
     """Set up structured logging."""
     handler = logging.StreamHandler()
     handler.setFormatter(StructuredFormatter())
-    
+
     root_logger = logging.getLogger()
     root_logger.addHandler(handler)
     root_logger.setLevel(logging.INFO)
@@ -298,14 +297,14 @@ from typing import Any, Optional
 
 class CacheManager:
     """Redis-based cache manager."""
-    
+
     def __init__(self):
         self.redis_client = redis.from_url(
             os.getenv("REDIS_URL", "redis://localhost:6379"),
             decode_responses=True
         )
         self.default_ttl = int(os.getenv("CACHE_TTL", "3600"))
-    
+
     async def get(self, key: str) -> Optional[Any]:
         """Get value from cache."""
         try:
@@ -313,7 +312,7 @@ class CacheManager:
             return json.loads(value) if value else None
         except Exception:
             return None
-    
+
     async def set(self, key: str, value: Any, ttl: Optional[int] = None) -> bool:
         """Set value in cache."""
         try:
@@ -343,22 +342,22 @@ import asyncio
 
 class HealthChecker:
     """Health check manager."""
-    
+
     async def check_database(self) -> Dict[str, Any]:
         """Check database connectivity."""
         # Placeholder implementation
         return {"status": "healthy", "response_time_ms": 10}
-    
+
     async def check_redis(self) -> Dict[str, Any]:
         """Check Redis connectivity."""
         # Placeholder implementation
         return {"status": "healthy", "response_time_ms": 5}
-    
+
     async def check_external_apis(self) -> Dict[str, Any]:
         """Check external API connectivity."""
         # Placeholder implementation
         return {"status": "healthy", "apis_checked": ["openai", "anthropic"]}
-    
+
     async def get_health_status(self) -> Dict[str, Any]:
         """Get overall health status."""
         checks = await asyncio.gather(
@@ -367,7 +366,7 @@ class HealthChecker:
             self.check_external_apis(),
             return_exceptions=True
         )
-        
+
         return {
             "status": "healthy",
             "timestamp": "2024-01-01T00:00:00Z",
@@ -402,14 +401,14 @@ class CircuitState(Enum):
 
 class CircuitBreaker:
     """Circuit breaker for external API calls."""
-    
+
     def __init__(self, failure_threshold: int = 5, timeout: int = 60):
         self.failure_threshold = failure_threshold
         self.timeout = timeout
         self.failure_count = 0
         self.last_failure_time = None
         self.state = CircuitState.CLOSED
-    
+
     async def call(self, func: Callable, *args, **kwargs) -> Any:
         """Execute function with circuit breaker protection."""
         if self.state == CircuitState.OPEN:
@@ -417,7 +416,7 @@ class CircuitBreaker:
                 self.state = CircuitState.HALF_OPEN
             else:
                 raise Exception("Circuit breaker is OPEN")
-        
+
         try:
             result = await func(*args, **kwargs)
             self._on_success()
@@ -425,23 +424,23 @@ class CircuitBreaker:
         except Exception as e:
             self._on_failure()
             raise e
-    
+
     def _should_attempt_reset(self) -> bool:
         """Check if circuit breaker should attempt reset."""
         if self.last_failure_time:
             return datetime.now() - self.last_failure_time > timedelta(seconds=self.timeout)
         return False
-    
+
     def _on_success(self) -> None:
         """Handle successful call."""
         self.failure_count = 0
         self.state = CircuitState.CLOSED
-    
+
     def _on_failure(self) -> None:
         """Handle failed call."""
         self.failure_count += 1
         self.last_failure_time = datetime.now()
-        
+
         if self.failure_count >= self.failure_threshold:
             self.state = CircuitState.OPEN
 '''

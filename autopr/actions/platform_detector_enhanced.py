@@ -7,9 +7,10 @@ import json
 import os
 import re
 import subprocess
-from typing import Dict, List, Any, Optional, Tuple, Callable, Collection
-from pydantic import BaseModel, Field
 from pathlib import Path
+from typing import Any, Callable, Collection, Dict, List, Optional, Tuple
+
+from pydantic import BaseModel, Field
 
 
 class EnhancedPlatformDetectorInputs(BaseModel):
@@ -573,9 +574,7 @@ class EnhancedPlatformDetector:
         """Enhanced platform detection with multi-platform support"""
 
         # Scan workspace and collect data
-        file_structure: Dict[str, Any] = self._scan_workspace_enhanced(
-            inputs.workspace_path
-        )
+        file_structure: Dict[str, Any] = self._scan_workspace_enhanced(inputs.workspace_path)
         package_json: Optional[Dict[str, Any]] = self._parse_package_json(
             inputs.package_json_content, inputs.workspace_path
         )
@@ -596,9 +595,7 @@ class EnhancedPlatformDetector:
                 detailed_analysis[platform] = analysis
 
         # Determine primary and secondary platforms
-        primary_platform, secondary_platforms = self._determine_platform_hierarchy(
-            all_scores
-        )
+        primary_platform, secondary_platforms = self._determine_platform_hierarchy(all_scores)
 
         # Analyze workflow type
         workflow_type, hybrid_analysis = self._analyze_workflow_type(
@@ -614,9 +611,7 @@ class EnhancedPlatformDetector:
         enhancements = self._generate_enhancement_recommendations(
             primary_platform, secondary_platforms, detailed_analysis
         )
-        migrations = self._generate_migration_opportunities(
-            all_scores, primary_platform
-        )
+        migrations = self._generate_migration_opportunities(all_scores, primary_platform)
 
         return EnhancedPlatformDetectorOutputs(
             primary_platform=primary_platform,
@@ -654,16 +649,12 @@ class EnhancedPlatformDetector:
 
                     # Track file extensions
                     ext = item.suffix.lower()
-                    structure["file_extensions"][ext] = (
-                        structure["file_extensions"].get(ext, 0) + 1
-                    )
+                    structure["file_extensions"][ext] = structure["file_extensions"].get(ext, 0) + 1
 
                     # Read content of key configuration files
                     if self._is_key_file(item.name):
                         try:
-                            with open(
-                                item, "r", encoding="utf-8", errors="ignore"
-                            ) as f:
+                            with open(item, "r", encoding="utf-8", errors="ignore") as f:
                                 content = f.read()
                                 structure["file_contents"][relative_path] = content
                         except:
@@ -722,8 +713,7 @@ class EnhancedPlatformDetector:
         }
 
         return filename.lower() in {f.lower() for f in key_files} or any(
-            pattern in filename.lower()
-            for pattern in [".config", ".yml", ".yaml", ".json"]
+            pattern in filename.lower() for pattern in [".config", ".yml", ".yaml", ".json"]
         )
 
     def _analyze_git_history(self, workspace_path: str, depth: int) -> Dict[str, Any]:
@@ -756,15 +746,11 @@ class EnhancedPlatformDetector:
 
                         # Track platform patterns in commits
                         for platform in self.all_platforms:
-                            for pattern in self.all_platforms[platform].get(
-                                "commit_patterns", []
-                            ):
+                            for pattern in self.all_platforms[platform].get("commit_patterns", []):
                                 if pattern.lower() in message.lower():
                                     if platform not in git_data["commit_patterns"]:
                                         git_data["commit_patterns"][platform] = []
-                                    git_data["commit_patterns"][platform].append(
-                                        message
-                                    )
+                                    git_data["commit_patterns"][platform].append(message)
 
         except Exception as e:
             print(f"Error analyzing git history: {e}")
@@ -807,9 +793,7 @@ class EnhancedPlatformDetector:
 
         # 2. Folder pattern detection
         for folder_pattern in signatures.get("folder_patterns", []):
-            matches = [
-                f for f in file_structure.get("folders", []) if folder_pattern in f
-            ]
+            matches = [f for f in file_structure.get("folders", []) if folder_pattern in f]
             if matches:
                 score += 0.2
                 analysis["file_matches"].extend([f"folder: {m}" for m in matches])
@@ -885,9 +869,7 @@ class EnhancedPlatformDetector:
         )
         score += advanced_score
         if advanced_score > 0:
-            analysis["confidence_factors"].append(
-                f"Advanced detection: +{advanced_score:.2f}"
-            )
+            analysis["confidence_factors"].append(f"Advanced detection: +{advanced_score:.2f}")
 
         return min(score, 1.0), analysis
 
@@ -934,9 +916,7 @@ class EnhancedPlatformDetector:
         }
 
         if platform in advanced_detectors:
-            return advanced_detectors[platform](
-                file_structure, package_json, git_history
-            )
+            return advanced_detectors[platform](file_structure, package_json, git_history)
 
         return 0.0
 
@@ -961,10 +941,7 @@ class EnhancedPlatformDetector:
         # Check for Cursor-style comments
         for file_path, content in file_structure.get("file_contents", {}).items():
             if file_path.endswith((".ts", ".tsx", ".js", ".jsx", ".py")):
-                if (
-                    "// Generated by Cursor" in content
-                    or "# Generated by Cursor" in content
-                ):
+                if "// Generated by Cursor" in content or "# Generated by Cursor" in content:
                     score += 0.15
 
         return score
@@ -992,9 +969,7 @@ class EnhancedPlatformDetector:
             ]
 
             shadcn_count = sum(
-                1
-                for dep in deps.keys()
-                if any(indicator in dep for indicator in shadcn_indicators)
+                1 for dep in deps.keys() if any(indicator in dep for indicator in shadcn_indicators)
             )
 
             if shadcn_count >= 3:
@@ -1094,9 +1069,7 @@ class EnhancedPlatformDetector:
 
         return score
 
-    def _determine_platform_hierarchy(
-        self, all_scores: Dict[str, float]
-    ) -> Tuple[str, List[str]]:
+    def _determine_platform_hierarchy(self, all_scores: Dict[str, float]) -> Tuple[str, List[str]]:
         """Determine primary platform and secondary platforms"""
 
         if not all_scores:
@@ -1210,21 +1183,15 @@ class EnhancedPlatformDetector:
             # Platform-specific configuration generation
             if platform in self.core_platforms:
                 config.update(
-                    self._generate_core_platform_config(
-                        platform, file_structure, package_json
-                    )
+                    self._generate_core_platform_config(platform, file_structure, package_json)
                 )
             elif platform in self.ai_code_platforms:
                 config.update(
-                    self._generate_ai_platform_config(
-                        platform, file_structure, package_json
-                    )
+                    self._generate_ai_platform_config(platform, file_structure, package_json)
                 )
             elif platform in self.web_ai_platforms:
                 config.update(
-                    self._generate_web_platform_config(
-                        platform, file_structure, package_json
-                    )
+                    self._generate_web_platform_config(platform, file_structure, package_json)
                 )
 
             configs[platform] = config
@@ -1263,9 +1230,7 @@ class EnhancedPlatformDetector:
             base_config.update(
                 {
                     "framework": "react",
-                    "typescript_detected": bool(
-                        self._detect_typescript(file_structure)
-                    ),
+                    "typescript_detected": bool(self._detect_typescript(file_structure)),
                     "deployment_options": [
                         "vercel",
                         "netlify",
@@ -1340,9 +1305,7 @@ class EnhancedPlatformDetector:
 
         # Secondary platform recommendations
         for platform in secondary_platforms:
-            recommendations.extend(
-                self._get_platform_recommendations(platform, secondary=True)
-            )
+            recommendations.extend(self._get_platform_recommendations(platform, secondary=True))
 
         # Multi-platform recommendations
         if secondary_platforms:
@@ -1356,9 +1319,7 @@ class EnhancedPlatformDetector:
 
         return list(set(recommendations))  # Remove duplicates
 
-    def _get_platform_recommendations(
-        self, platform: str, secondary: bool = False
-    ) -> List[str]:
+    def _get_platform_recommendations(self, platform: str, secondary: bool = False) -> List[str]:
         """Get specific recommendations for a platform"""
 
         prefix = "Secondary: " if secondary else ""
@@ -1397,9 +1358,7 @@ class EnhancedPlatformDetector:
         other_platforms: Dict[str, float] = {
             k: v for k, v in all_scores.items() if k != primary_platform and v > 0.1
         }
-        sorted_others = sorted(
-            other_platforms.items(), key=lambda x: x[1], reverse=True
-        )
+        sorted_others = sorted(other_platforms.items(), key=lambda x: x[1], reverse=True)
 
         migration_benefits: Dict[str, str] = {
             "cursor": "Enhanced AI-driven development with advanced IDE features",
@@ -1412,9 +1371,7 @@ class EnhancedPlatformDetector:
 
         for platform, score in sorted_others[:3]:  # Top 3 alternatives
             if score > 0.15:
-                benefit = migration_benefits.get(
-                    platform, "Platform-specific development benefits"
-                )
+                benefit = migration_benefits.get(platform, "Platform-specific development benefits")
                 compatibility = f"{score:.1%}"
                 opportunities.append(
                     f"Consider {platform}: {benefit} (compatibility: {compatibility})"

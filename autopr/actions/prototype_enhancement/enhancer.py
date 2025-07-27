@@ -7,20 +7,22 @@ for backward compatibility while improving maintainability and testability.
 
 import json
 import logging
-from typing import Dict, List, Any, Optional
-from pathlib import Path
 from dataclasses import asdict
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 try:
-    from autopr.models.artifacts import PrototypeEnhancerInputs, PrototypeEnhancerOutputs  # type: ignore[import-untyped]
+    from autopr.models.artifacts import (  # type: ignore[import-untyped]
+        PrototypeEnhancerInputs,
+        PrototypeEnhancerOutputs,
+    )
 except ImportError:
     # Fallback for when models are not available during development
     from typing import Any as PrototypeEnhancerInputs, Any as PrototypeEnhancerOutputs
 
-from .platform_configs import PlatformRegistry, PlatformConfig
+from .enhancement_strategies import EnhancementStrategy, EnhancementStrategyFactory
 from .file_generators import FileGenerator
-from .enhancement_strategies import EnhancementStrategyFactory, EnhancementStrategy
-
+from .platform_configs import PlatformConfig, PlatformRegistry
 
 logger = logging.getLogger(__name__)
 

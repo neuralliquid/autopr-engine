@@ -1,16 +1,17 @@
 """Main Axolo integration client."""
 
-import os
 import asyncio
-import aiohttp
 import logging
-from typing import Dict, List, Any, Optional, Union
+import os
 from datetime import datetime
+from typing import Any, Dict, List, Optional, Union
 
-from .config import AxoloConfig
-from .models import AxoloPRChannel
-from .messaging import AxoloMessaging
+import aiohttp
+
 from .commands import AxoloCommandHandler
+from .config import AxoloConfig
+from .messaging import AxoloMessaging
+from .models import AxoloPRChannel
 from .reminders import AxoloReminderService
 
 logger = logging.getLogger(__name__)
@@ -90,7 +91,9 @@ class AxoloIntegration:
 
         try:
             # GitHub client
-            from tools.autopr.clients.github_client import GitHubClient  # type: ignore[import-not-found]
+            from tools.autopr.clients.github_client import (
+                GitHubClient,  # type: ignore[import-not-found]
+            )
 
             self.github_client = GitHubClient(os.getenv("GITHUB_TOKEN"))
 
@@ -100,7 +103,9 @@ class AxoloIntegration:
             self.slack_client = AsyncWebClient(token=os.getenv("SLACK_BOT_TOKEN"))
 
             # Linear client
-            from tools.autopr.clients.linear_client import LinearClient  # type: ignore[import-not-found]
+            from tools.autopr.clients.linear_client import (
+                LinearClient,  # type: ignore[import-not-found]
+            )
 
             self.linear_client = LinearClient(os.getenv("LINEAR_API_KEY"))
 

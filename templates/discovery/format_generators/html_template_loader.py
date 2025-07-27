@@ -6,10 +6,11 @@ that follow the YAML template format structure, similar to the existing
 YAML templates but for HTML generation.
 """
 
-import yaml
-from pathlib import Path
-from typing import Dict, Any, Optional, List, Match
 import re
+from pathlib import Path
+from typing import Any, Dict, List, Match, Optional
+
+import yaml
 
 
 class YAMLHTMLTemplateLoader:

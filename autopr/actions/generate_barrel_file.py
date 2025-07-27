@@ -1,6 +1,8 @@
-import pydantic
 import os
 from typing import List
+
+import pydantic
+
 from autopr.actions.base import Action
 
 
@@ -32,9 +34,7 @@ class GenerateBarrelFile(Action[Inputs, Outputs]):
             if any(item.endswith(p) for p in inputs.exclude_patterns):
                 continue
 
-            if os.path.isfile(item_path) and (
-                item.endswith(".ts") or item.endswith(".tsx")
-            ):
+            if os.path.isfile(item_path) and (item.endswith(".ts") or item.endswith(".tsx")):
                 module_name = item.rsplit(".", 1)[0]
                 exports.append(f"export * from './{module_name}';")
 
@@ -46,8 +46,9 @@ class GenerateBarrelFile(Action[Inputs, Outputs]):
 
 
 if __name__ == "__main__":
-    from autopr.tests.utils import run_action_manually
     import asyncio
+
+    from autopr.tests.utils import run_action_manually
 
     # Create dummy files for testing
     os.makedirs("components/ui", exist_ok=True)

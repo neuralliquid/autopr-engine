@@ -1,6 +1,7 @@
 """Configuration classes for Axolo integration."""
 
 from typing import Dict, List, Optional
+
 from pydantic import BaseModel, Field
 
 

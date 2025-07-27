@@ -2,6 +2,7 @@
 """Test script for Axolo integration."""
 
 import asyncio
+
 from . import create_axolo_integration, is_axolo_available
 
 

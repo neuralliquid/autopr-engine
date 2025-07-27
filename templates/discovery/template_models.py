@@ -6,13 +6,14 @@ Template Models Module
 Data models and structures for template discovery and browsing system.
 """
 
-from typing import Dict, List, Any
 from dataclasses import dataclass, field
+from typing import Any, Dict, List
 
 
 @dataclass
 class TemplateInfo:
     """Structured template information for discovery and comparison."""
+
     name: str
     description: str
     category: str
@@ -25,7 +26,7 @@ class TemplateInfo:
     variables: Dict[str, Any] = field(default_factory=dict)
     variants: Dict[str, Any] = field(default_factory=dict)
     dependencies: List[str] = field(default_factory=list)
-    
+
     def __post_init__(self) -> None:
         """Post-initialization processing."""
         # Ensure all fields are properly initialized
@@ -44,13 +45,14 @@ class TemplateInfo:
 @dataclass
 class PlatformRequirements:
     """Requirements for platform recommendation."""
+
     project_type: str
     team_size: str
     technical_expertise: str
     budget: str
     timeline: str
     features: List[str] = field(default_factory=list)
-    
+
     def __post_init__(self) -> None:
         """Post-initialization processing."""
         if not isinstance(self.features, list):
@@ -60,11 +62,12 @@ class PlatformRequirements:
 @dataclass
 class PlatformRecommendation:
     """Platform recommendation with score and reasoning."""
+
     platform: str
     score: float
     reasoning: str
     confidence: float = 0.0
-    
+
     def __post_init__(self) -> None:
         """Post-initialization processing."""
         # Ensure score is within valid range
@@ -75,12 +78,13 @@ class PlatformRecommendation:
 @dataclass
 class TemplateCombination:
     """Recommended template combination for a use case."""
+
     platform: str
     main_template: str
     recommended_integrations: List[str] = field(default_factory=list)
     estimated_total_time: str = "unknown"
     complexity_score: int = 1
-    
+
     def __post_init__(self) -> None:
         """Post-initialization processing."""
         if not isinstance(self.recommended_integrations, list):
@@ -92,11 +96,12 @@ class TemplateCombination:
 @dataclass
 class TemplateReport:
     """Comprehensive template report structure."""
+
     summary: Dict[str, Any] = field(default_factory=dict)
     templates_by_category: Dict[str, List[Dict[str, Any]]] = field(default_factory=dict)
     platform_coverage: Dict[str, Dict[str, Any]] = field(default_factory=dict)
     recommendations: Dict[str, Any] = field(default_factory=dict)
-    
+
     def __post_init__(self) -> None:
         """Post-initialization processing."""
         if not isinstance(self.summary, dict):

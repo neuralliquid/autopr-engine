@@ -3,9 +3,10 @@ AutoPR Action: AutoGen Multi-Agent Integration
 Collaborative PR comment handling using specialized AutoGen agents.
 """
 
-import os
 import json
-from typing import Dict, Any, Optional, List
+import os
+from typing import Any, Dict, List, Optional
+
 from pydantic import BaseModel
 
 try:
@@ -26,9 +27,7 @@ class AutoGenInputs(BaseModel):
     file_path: Optional[str] = None
     file_content: Optional[str] = None
     pr_context: Dict[str, Any] = {}
-    task_type: str = (
-        "analyze_and_fix"  # "analyze_and_fix", "code_review", "security_audit"
-    )
+    task_type: str = "analyze_and_fix"  # "analyze_and_fix", "code_review", "security_audit"
     agents_config: Dict[str, Any] = {}
 
 
@@ -45,9 +44,7 @@ class AutoGenOutputs(BaseModel):
 class AutoGenAgentSystem:
     def __init__(self, llm_config: Dict[str, Any]) -> None:
         if not AUTOGEN_AVAILABLE:
-            raise ImportError(
-                "AutoGen not installed. Install with: pip install pyautogen"
-            )
+            raise ImportError("AutoGen not installed. Install with: pip install pyautogen")
 
         self.llm_config: Dict[str, Any] = llm_config
         self.agents: Dict[str, ConversableAgent] = {}
@@ -64,7 +61,7 @@ class AutoGenAgentSystem:
             2. Understand the context and scope of the problem
             3. Classify the type of fix needed (syntax, logic, style, security, performance)
             4. Provide detailed analysis with confidence scores
-            
+
             Always provide structured analysis with clear reasoning.""",
             llm_config=self.llm_config,
             human_input_mode="NEVER",
@@ -79,7 +76,7 @@ class AutoGenAgentSystem:
             3. Ensure fixes follow best practices and project conventions
             4. Provide multiple solution options when appropriate
             5. Include explanations for all changes
-            
+
             Always write clean, tested, and well-documented code.""",
             llm_config=self.llm_config,
             human_input_mode="NEVER",
@@ -94,7 +91,7 @@ class AutoGenAgentSystem:
             3. Ensure fixes maintain code quality and consistency
             4. Validate security and performance implications
             5. Approve or suggest improvements to fixes
-            
+
             Be thorough but constructive in your reviews.""",
             llm_config=self.llm_config,
             human_input_mode="NEVER",
@@ -109,7 +106,7 @@ class AutoGenAgentSystem:
             3. Suggest security best practices
             4. Flag any security-sensitive changes
             5. Ensure compliance with security standards
-            
+
             Prioritize security without compromising functionality.""",
             llm_config=self.llm_config,
             human_input_mode="NEVER",
@@ -124,7 +121,7 @@ class AutoGenAgentSystem:
             3. Ensure solutions align with project goals
             4. Manage conflicting opinions between agents
             5. Provide clear, actionable summaries
-            
+
             Focus on practical solutions that deliver value.""",
             llm_config=self.llm_config,
             human_input_mode="NEVER",
@@ -136,15 +133,15 @@ class AutoGenAgentSystem:
             # Prepare the context message
             context_message = f"""
             PR Comment Analysis Task:
-            
+
             Comment: {inputs.comment_body}
             File: {inputs.file_path or 'N/A'}
-            
+
             File Content Preview:
             {inputs.file_content[:500] if inputs.file_content else 'No content provided'}
-            
+
             PR Context: {json.dumps(inputs.pr_context, indent=2)}
-            
+
             Please collaborate to:
             1. Analyze the comment and identify what needs to be done
             2. Propose a fix if applicable
@@ -181,9 +178,9 @@ class AutoGenAgentSystem:
             manager = GroupChatManager(groupchat=groupchat, llm_config=self.llm_config)
 
             # Start the conversation
-            chat_result: List[Dict[str, Any]] = self.agents[
-                "code_analyzer"
-            ].initiate_chat(manager, message=context_message)
+            chat_result: List[Dict[str, Any]] = self.agents["code_analyzer"].initiate_chat(
+                manager, message=context_message
+            )
 
             # Extract results from conversation
             return self._extract_results_from_chat(chat_result, inputs)
@@ -198,10 +195,10 @@ class AutoGenAgentSystem:
         try:
             context_message = f"""
             Security Audit Task:
-            
+
             Comment: {inputs.comment_body}
             File: {inputs.file_path or 'N/A'}
-            
+
             Please perform a comprehensive security audit focusing on:
             1. Identifying potential vulnerabilities
             2. Assessing security implications of changes
@@ -220,26 +217,24 @@ class AutoGenAgentSystem:
 
             manager = GroupChatManager(groupchat=groupchat, llm_config=self.llm_config)
 
-            chat_result: List[Dict[str, Any]] = self.agents[
-                "security_auditor"
-            ].initiate_chat(manager, message=context_message)
+            chat_result: List[Dict[str, Any]] = self.agents["security_auditor"].initiate_chat(
+                manager, message=context_message
+            )
 
             return self._extract_results_from_chat(chat_result, inputs)
 
         except Exception as e:
-            return AutoGenOutputs(
-                success=False, error_message=f"Security audit failed: {str(e)}"
-            )
+            return AutoGenOutputs(success=False, error_message=f"Security audit failed: {str(e)}")
 
     def code_review_workflow(self, inputs: AutoGenInputs) -> AutoGenOutputs:
         """Comprehensive code review workflow."""
         try:
             context_message = f"""
             Code Review Task:
-            
+
             Comment: {inputs.comment_body}
             File: {inputs.file_path or 'N/A'}
-            
+
             Please conduct a thorough code review covering:
             1. Code quality and maintainability
             2. Performance implications
@@ -259,16 +254,14 @@ class AutoGenAgentSystem:
 
             manager = GroupChatManager(groupchat=groupchat, llm_config=self.llm_config)
 
-            chat_result: List[Dict[str, Any]] = self.agents[
-                "quality_reviewer"
-            ].initiate_chat(manager, message=context_message)
+            chat_result: List[Dict[str, Any]] = self.agents["quality_reviewer"].initiate_chat(
+                manager, message=context_message
+            )
 
             return self._extract_results_from_chat(chat_result, inputs)
 
         except Exception as e:
-            return AutoGenOutputs(
-                success=False, error_message=f"Code review failed: {str(e)}"
-            )
+            return AutoGenOutputs(success=False, error_message=f"Code review failed: {str(e)}")
 
     def _extract_results_from_chat(
         self, chat_result: List[Dict[str, Any]], inputs: AutoGenInputs
@@ -285,15 +278,11 @@ class AutoGenAgentSystem:
             agent_conversations: List[Dict[str, str]] = []
             for msg in messages:
                 if isinstance(msg, dict) and "name" in msg and "content" in msg:
-                    agent_conversations.append(
-                        {"agent": msg["name"], "message": msg["content"]}
-                    )
+                    agent_conversations.append({"agent": msg["name"], "message": msg["content"]})
 
             # Analyze conversations for key insights
             analysis: Dict[str, Any] = self._analyze_conversations(agent_conversations)
-            recommendations: List[str] = self._extract_recommendations(
-                agent_conversations
-            )
+            recommendations: List[str] = self._extract_recommendations(agent_conversations)
             fix_code: Optional[str] = self._extract_fix_code(agent_conversations)
             consensus: Optional[str] = self._extract_consensus(agent_conversations)
 
@@ -311,9 +300,7 @@ class AutoGenAgentSystem:
                 success=False, error_message=f"Failed to extract results: {str(e)}"
             )
 
-    def _analyze_conversations(
-        self, conversations: List[Dict[str, str]]
-    ) -> Dict[str, Any]:
+    def _analyze_conversations(self, conversations: List[Dict[str, str]]) -> Dict[str, Any]:
         """Analyze agent conversations for key insights."""
         analysis: Dict[str, Any] = {
             "total_messages": len(conversations),
@@ -347,9 +334,7 @@ class AutoGenAgentSystem:
 
         return analysis
 
-    def _extract_recommendations(
-        self, conversations: List[Dict[str, str]]
-    ) -> List[str]:
+    def _extract_recommendations(self, conversations: List[Dict[str, str]]) -> List[str]:
         """Extract actionable recommendations from conversations."""
         recommendations: List[str] = []
 
@@ -357,10 +342,7 @@ class AutoGenAgentSystem:
             content: str = conv["message"].lower()
 
             # Look for recommendation patterns
-            if any(
-                phrase in content
-                for phrase in ["recommend", "suggest", "should", "consider"]
-            ):
+            if any(phrase in content for phrase in ["recommend", "suggest", "should", "consider"]):
                 # Extract the sentence containing the recommendation
                 sentences: List[str] = conv["message"].split(".")
                 for sentence in sentences:
@@ -442,6 +424,4 @@ def autogen_multi_agent_action(inputs: AutoGenInputs) -> AutoGenOutputs:
             return agent_system.analyze_and_fix_comment(inputs)
 
     except Exception as e:
-        return AutoGenOutputs(
-            success=False, error_message=f"AutoGen system failed: {str(e)}"
-        )
+        return AutoGenOutputs(success=False, error_message=f"AutoGen system failed: {str(e)}")

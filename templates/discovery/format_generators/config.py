@@ -13,6 +13,7 @@ from typing import Optional
 @dataclass
 class DocumentationConfig:
     """Configuration for documentation generation."""
+
     output_format: str = "markdown"  # markdown, html, json
     include_examples: bool = True
     include_code_snippets: bool = True

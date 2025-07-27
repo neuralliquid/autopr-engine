@@ -3,11 +3,13 @@ AutoPR Action: Multi-Platform Integrator
 Integrates with various platforms for enhanced workflow coordination.
 """
 
-import os
 import json
+import os
+from typing import Any, Dict, List, Optional, Union
+
 import requests
-from typing import Dict, Any, Optional, List, Union
 from pydantic import BaseModel
+
 from .base import Action
 
 
@@ -241,18 +243,14 @@ def create_notion_page(inputs: MultiPlatformInputs) -> MultiPlatformOutputs:
                 "Title": {"title": [{"text": {"content": inputs.title}}]},
                 "Priority": {"select": {"name": inputs.priority}},
                 "Status": {"select": {"name": "Todo"}},
-                "Labels": {
-                    "multi_select": [{"name": label} for label in inputs.labels]
-                },
+                "Labels": {"multi_select": [{"name": label} for label in inputs.labels]},
             },
             "children": [
                 {
                     "object": "block",
                     "type": "paragraph",
                     "paragraph": {
-                        "rich_text": [
-                            {"type": "text", "text": {"content": inputs.description}}
-                        ]
+                        "rich_text": [{"type": "text", "text": {"content": inputs.description}}]
                     },
                 }
             ],

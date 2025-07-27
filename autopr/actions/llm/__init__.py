@@ -22,10 +22,7 @@ Usage:
 """
 
 import os
-from typing import Dict, Any, Optional, List
-
-# Export types
-from .types import MessageRole, Message, LLMProviderType, LLMConfig, LLMResponse
+from typing import Any, Dict, List, Optional
 
 # Export base classes
 from .base import BaseLLMProvider
@@ -35,13 +32,16 @@ from .manager import LLMProviderManager
 
 # Export providers
 from .providers import (
-    OpenAIProvider,
     AnthropicProvider,
     GroqProvider,
     MistralProvider,
+    OpenAIProvider,
     PerplexityProvider,
     TogetherAIProvider,
 )
+
+# Export types
+from .types import LLMConfig, LLMProviderType, LLMResponse, Message, MessageRole
 
 # Global provider manager instance
 _provider_manager: Optional[LLMProviderManager] = None

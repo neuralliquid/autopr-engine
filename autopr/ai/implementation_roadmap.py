@@ -4,14 +4,14 @@ AutoPR Phase 1 Extensions Implementation Roadmap
 Automated setup script for production-grade enhancements
 """
 
-import os
-import sys
-import subprocess
-import json
-from pathlib import Path
-from typing import Dict, List, Optional, Any, Callable
 import asyncio
+import json
+import os
+import subprocess
+import sys
 from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Any, Callable, Dict, List, Optional
 
 
 class Phase1ExtensionImplementor:
@@ -58,9 +58,7 @@ class Phase1ExtensionImplementor:
             },
         }
 
-    async def run_implementation(
-        self, phase: str = "immediate", dry_run: bool = False
-    ) -> None:
+    async def run_implementation(self, phase: str = "immediate", dry_run: bool = False) -> None:
         """Run implementation for specified phase"""
 
         print(f"🚀 Starting AutoPR Phase 1 Extensions Implementation")
@@ -119,9 +117,7 @@ class Phase1ExtensionImplementor:
 
         for dep_phase in dependencies:
             if not await self._is_phase_completed(dep_phase):
-                raise Exception(
-                    f"Dependency not met: {dep_phase} must be completed before {phase}"
-                )
+                raise Exception(f"Dependency not met: {dep_phase} must be completed before {phase}")
 
         print(f"✅ All dependencies satisfied for phase: {phase}")
 
@@ -168,7 +164,7 @@ def setup_sentry():
         level=logging.INFO,
         event_level=logging.ERROR
     )
-    
+
     sentry_sdk.init(
         dsn=os.getenv("SENTRY_DSN"),
         integrations=[
@@ -255,9 +251,7 @@ def log_ai_api_call(model, tokens, cost):
                component="llm_manager")
         """
 
-        await self._write_file(
-            "tools/autopr/logging/structured_logging.py", logging_config
-        )
+        await self._write_file("tools/autopr/logging/structured_logging.py", logging_config)
 
         print("    📝 Created structured logging configuration")
         print("    🔍 Added correlation ID tracking")
@@ -280,7 +274,7 @@ class AutoPRCacheManager:
     def __init__(self):
         self.redis_url = os.getenv('REDIS_URL', 'redis://localhost:6379')
         self.redis_client = None
-        
+
         # Cache TTL configurations
         self.cache_ttl = {
             'github_api': 300,      # 5 minutes
@@ -288,14 +282,14 @@ class AutoPRCacheManager:
             'pr_analysis': 1800,    # 30 minutes
             'platform_detection': 7200  # 2 hours
         }
-    
+
     async def connect(self):
         self.redis_client = redis.from_url(self.redis_url, decode_responses=True)
-        
+
     async def get(self, cache_type: str, key: str) -> Optional[Any]:
         if not self.redis_client:
             await self.connect()
-        
+
         cache_key = self._make_cache_key(cache_type, key)
         try:
             cached_data = await self.redis_client.get(cache_key)
@@ -304,14 +298,14 @@ class AutoPRCacheManager:
         except Exception as e:
             print(f"Cache get error: {e}")
         return None
-    
+
     async def set(self, cache_type: str, key: str, value: Any) -> bool:
         if not self.redis_client:
             await self.connect()
-        
+
         cache_key = self._make_cache_key(cache_type, key)
         ttl = self.cache_ttl.get(cache_type, 3600)
-        
+
         try:
             await self.redis_client.setex(
                 cache_key, ttl, json.dumps(value, default=str)
@@ -320,7 +314,7 @@ class AutoPRCacheManager:
         except Exception as e:
             print(f"Cache set error: {e}")
             return False
-    
+
     def _make_cache_key(self, cache_type: str, key: str) -> str:
         hash_key = hashlib.md5(key.encode()).hexdigest()
         return f"autopr:{cache_type}:{hash_key}"
@@ -330,19 +324,19 @@ def cache_llm_response(cache_type='llm_response'):
     def decorator(func):
         async def wrapper(*args, **kwargs):
             cache_manager = AutoPRCacheManager()
-            
+
             # Create cache key from function arguments
             cache_key = f"{func.__name__}:{hash(str(args) + str(kwargs))}"
-            
+
             # Try to get from cache first
             cached_result = await cache_manager.get(cache_type, cache_key)
             if cached_result:
                 return cached_result
-            
+
             # Execute function and cache result
             result = await func(*args, **kwargs)
             await cache_manager.set(cache_type, cache_key, result)
-            
+
             return result
         return wrapper
     return decorator
@@ -382,24 +376,24 @@ class HealthChecker:
             'memory_usage': self._check_memory_usage,
             'system_load': self._check_system_load
         }
-    
+
     async def run_all_checks(self) -> Dict[str, Any]:
         start_time = time.time()
         results = {}
         overall_status = "healthy"
-        
+
         # Run all checks concurrently
         tasks = []
         for check_name, check_func in self.checks.items():
             task = asyncio.create_task(self._run_single_check(check_name, check_func))
             tasks.append(task)
-        
+
         check_results = await asyncio.gather(*tasks, return_exceptions=True)
-        
+
         # Process results
         for i, (check_name, _) in enumerate(self.checks.items()):
             result = check_results[i]
-            
+
             if isinstance(result, Exception):
                 results[check_name] = {
                     'status': 'error',
@@ -413,14 +407,14 @@ class HealthChecker:
                     overall_status = "unhealthy"
                 elif result['status'] == 'degraded' and overall_status == "healthy":
                     overall_status = "degraded"
-        
+
         return {
             'overall_status': overall_status,
             'checks': results,
             'check_duration': time.time() - start_time,
             'timestamp': time.time()
         }
-    
+
     async def _run_single_check(self, name: str, check_func):
         try:
             return await check_func()
@@ -430,7 +424,7 @@ class HealthChecker:
                 'message': str(e),
                 'timestamp': time.time()
             }
-    
+
     async def _check_database(self) -> Dict[str, Any]:
         # Check PostgreSQL connection
         try:
@@ -438,7 +432,7 @@ class HealthChecker:
             conn = await asyncpg.connect(os.getenv('DATABASE_URL'))
             await conn.execute('SELECT 1')
             await conn.close()
-            
+
             return {
                 'status': 'healthy',
                 'message': 'Database connection successful'
@@ -448,13 +442,13 @@ class HealthChecker:
                 'status': 'unhealthy',
                 'message': f'Database connection failed: {str(e)}'
             }
-    
+
     async def _check_redis(self) -> Dict[str, Any]:
         try:
             redis_client = redis.from_url(os.getenv('REDIS_URL'))
             await redis_client.ping()
             await redis_client.close()
-            
+
             return {
                 'status': 'healthy',
                 'message': 'Redis connection successful'
@@ -464,7 +458,7 @@ class HealthChecker:
                 'status': 'unhealthy',
                 'message': f'Redis connection failed: {str(e)}'
             }
-    
+
     async def _check_github_api(self) -> Dict[str, Any]:
         try:
             async with aiohttp.ClientSession() as session:
@@ -475,14 +469,14 @@ class HealthChecker:
                     if response.status == 200:
                         data = await response.json()
                         remaining = data['rate']['remaining']
-                        
+
                         if remaining > 1000:
                             status = 'healthy'
                         elif remaining > 100:
                             status = 'degraded'
                         else:
                             status = 'unhealthy'
-                        
+
                         return {
                             'status': status,
                             'remaining_calls': remaining,
@@ -498,35 +492,35 @@ class HealthChecker:
                 'status': 'unhealthy',
                 'message': f'GitHub API check failed: {str(e)}'
             }
-    
+
     async def _check_disk_space(self) -> Dict[str, Any]:
         disk_usage = psutil.disk_usage('/')
         free_percent = (disk_usage.free / disk_usage.total) * 100
-        
+
         if free_percent > 20:
             status = 'healthy'
         elif free_percent > 10:
             status = 'degraded'
         else:
             status = 'unhealthy'
-        
+
         return {
             'status': status,
             'free_space_percent': round(free_percent, 2),
             'free_space_gb': round(disk_usage.free / (1024**3), 2)
         }
-    
+
     async def _check_memory_usage(self) -> Dict[str, Any]:
         memory = psutil.virtual_memory()
         used_percent = memory.percent
-        
+
         if used_percent < 80:
             status = 'healthy'
         elif used_percent < 90:
             status = 'degraded'
         else:
             status = 'unhealthy'
-        
+
         return {
             'status': status,
             'memory_used_percent': used_percent,
@@ -590,14 +584,14 @@ class CircuitBreakerManager:
                 reset_timeout=45
             )
         }
-        
+
         # Fallback strategies
         self.fallback_strategies = {
             'github': self._github_fallback,
             'openai': self._openai_fallback,
             'linear': self._linear_fallback
         }
-    
+
     @retry(
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=4, max=10)
@@ -607,7 +601,7 @@ class CircuitBreakerManager:
         if not breaker:
             # No circuit breaker configured, make direct call
             return await api_func(*args, **kwargs)
-        
+
         try:
             return await breaker(api_func)(*args, **kwargs)
         except pybreaker.CircuitBreakerError:
@@ -617,18 +611,18 @@ class CircuitBreakerManager:
                 return await fallback_func(*args, **kwargs)
             else:
                 raise Exception(f"{service} service is currently unavailable")
-    
+
     async def _github_fallback(self, *args, **kwargs):
         # Use cached GitHub data when API is unavailable
         from tools.autopr.caching.cache_manager import AutoPRCacheManager
         cache = AutoPRCacheManager()
-        
+
         return {
             'status': 'degraded',
             'message': 'GitHub API temporarily unavailable, using cached data',
             'source': 'cache'
         }
-    
+
     async def _openai_fallback(self, *args, **kwargs):
         # Use simpler model or cached responses when OpenAI is down
         return {
@@ -636,11 +630,11 @@ class CircuitBreakerManager:
             'message': 'OpenAI API unavailable, using fallback analysis',
             'response': 'Automated analysis temporarily unavailable. Manual review recommended.'
         }
-    
+
     async def _linear_fallback(self, *args, **kwargs):
         # Queue Linear operations for later retry
         return {
-            'status': 'degraded', 
+            'status': 'degraded',
             'message': 'Linear API unavailable, operation queued for retry',
             'queued': True
         }
@@ -666,9 +660,7 @@ async def analyze_code_with_ai(code: str):
     pass
         """
 
-        await self._write_file(
-            "tools/autopr/resilience/circuit_breaker.py", circuit_breaker
-        )
+        await self._write_file("tools/autopr/resilience/circuit_breaker.py", circuit_breaker)
 
         print("    📝 Created circuit breaker manager")
         print("    🛡️ Added automatic retry logic with exponential backoff")
@@ -694,11 +686,11 @@ class DatabaseManager:
         self.async_session = sessionmaker(
             self.engine, class_=AsyncSession, expire_on_commit=False
         )
-    
+
     async def get_session(self):
         async with self.async_session() as session:
             yield session
-    
+
     async def health_check(self):
         try:
             async with self.engine.begin() as conn:
@@ -730,45 +722,45 @@ class MetricsCollector:
     def __init__(self):
         # Request metrics
         self.request_count = Counter(
-            "autopr_requests_total", 
-            "Total requests", 
+            "autopr_requests_total",
+            "Total requests",
             ["method", "endpoint", "status"]
         )
-        
+
         self.request_duration = Histogram(
             "autopr_request_duration_seconds",
             "Request duration",
             ["method", "endpoint"]
         )
-        
+
         # LLM metrics
         self.llm_requests = Counter(
             "autopr_llm_requests_total",
             "Total LLM requests",
             ["provider", "model"]
         )
-        
+
         self.llm_tokens = Counter(
             "autopr_llm_tokens_total",
             "Total LLM tokens used",
             ["provider", "model", "type"]
         )
-        
+
         # System metrics
         self.active_connections = Gauge(
             "autopr_active_connections",
             "Active connections"
         )
-    
+
     def record_request(self, method: str, endpoint: str, status: int, duration: float):
         self.request_count.labels(method=method, endpoint=endpoint, status=status).inc()
         self.request_duration.labels(method=method, endpoint=endpoint).observe(duration)
-    
+
     def record_llm_usage(self, provider: str, model: str, prompt_tokens: int, completion_tokens: int):
         self.llm_requests.labels(provider=provider, model=model).inc()
         self.llm_tokens.labels(provider=provider, model=model, type="prompt").inc(prompt_tokens)
         self.llm_tokens.labels(provider=provider, model=model, type="completion").inc(completion_tokens)
-    
+
     def get_metrics(self) -> str:
         return generate_latest()
 """
@@ -780,9 +772,7 @@ class MetricsCollector:
         """Setup OAuth 2.0 authentication"""
 
         # Install OAuth dependencies
-        await self._run_command(
-            ["pip", "install", "authlib", "python-jose[cryptography]"]
-        )
+        await self._run_command(["pip", "install", "authlib", "python-jose[cryptography]"])
 
         # Create OAuth configuration
         oauth_config = """
@@ -799,36 +789,36 @@ class OAuth2Manager:
         self.secret_key = os.getenv("SECRET_KEY", "your-secret-key-here")
         self.algorithm = "HS256"
         self.access_token_expire_minutes = 30
-        
+
         # GitHub OAuth settings
         self.github_client_id = os.getenv("GITHUB_CLIENT_ID")
         self.github_client_secret = os.getenv("GITHUB_CLIENT_SECRET")
-        
+
         self.oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-    
+
     def create_access_token(self, data: Dict[str, Any]) -> str:
         to_encode = data.copy()
         encoded_jwt = jwt.encode(to_encode, self.secret_key, algorithm=self.algorithm)
         return encoded_jwt
-    
+
     def verify_token(self, token: str) -> Optional[Dict[str, Any]]:
         try:
             payload = jwt.decode(token, self.secret_key, algorithms=[self.algorithm])
             return payload
         except JWTError:
             return None
-    
+
     async def get_current_user(self, token: str = Depends(oauth2_scheme)) -> Dict[str, Any]:
         credentials_exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
-        
+
         payload = self.verify_token(token)
         if payload is None:
             raise credentials_exception
-        
+
         return payload
 """
 
@@ -865,42 +855,42 @@ class LLMRouter:
         self.providers: Dict[str, ProviderMetrics] = {}
         self.routing_strategy = RoutingStrategy.LEAST_LOADED
         self.round_robin_index = 0
-    
+
     def add_provider(self, metrics: ProviderMetrics):
         self.providers[metrics.name] = metrics
-    
+
     def select_provider(self, strategy: Optional[RoutingStrategy] = None) -> Optional[str]:
         if not self.providers:
             return None
-        
+
         strategy = strategy or self.routing_strategy
         available_providers = [
             name for name, metrics in self.providers.items()
             if metrics.current_load < metrics.max_concurrent
         ]
-        
+
         if not available_providers:
             return None
-        
+
         if strategy == RoutingStrategy.ROUND_ROBIN:
             provider = available_providers[self.round_robin_index % len(available_providers)]
             self.round_robin_index += 1
             return provider
-        
+
         elif strategy == RoutingStrategy.LEAST_LOADED:
-            return min(available_providers, 
+            return min(available_providers,
                       key=lambda p: self.providers[p].current_load)
-        
+
         elif strategy == RoutingStrategy.COST_OPTIMIZED:
             return min(available_providers,
                       key=lambda p: self.providers[p].cost_per_token)
-        
+
         elif strategy == RoutingStrategy.PERFORMANCE_OPTIMIZED:
             return min(available_providers,
                       key=lambda p: self.providers[p].average_response_time)
-        
+
         return random.choice(available_providers)
-    
+
     def update_metrics(self, provider_name: str, **kwargs):
         if provider_name in self.providers:
             for key, value in kwargs.items():
@@ -947,7 +937,7 @@ class TestHealthChecks:
         response = client.get("/health")
         assert response.status_code == 200
         assert "status" in response.json()
-    
+
     async def test_async_health_check(self, async_client):
         response = await async_client.get("/health")
         assert response.status_code == 200
@@ -966,7 +956,7 @@ class TestAuthentication:
     def test_protected_endpoint_without_auth(self, client):
         response = client.get("/api/v1/protected")
         assert response.status_code == 401
-    
+
     def test_token_validation(self, client):
         # Test with invalid token
         headers = {"Authorization": "Bearer invalid_token"}
@@ -983,7 +973,7 @@ testpaths = tests
 python_files = test_*.py
 python_classes = Test*
 python_functions = test_*
-addopts = 
+addopts =
     --strict-markers
     --strict-config
     --cov=autopr
@@ -1016,28 +1006,28 @@ class RAGSystem:
         self.client = chromadb.Client()
         self.collection = self.client.create_collection("autopr_knowledge")
         self.encoder = SentenceTransformer('all-MiniLM-L6-v2')
-    
+
     def add_documents(self, documents: List[str], metadata: List[Dict[str, Any]] = None):
         embeddings = self.encoder.encode(documents)
         ids = [f"doc_{i}" for i in range(len(documents))]
-        
+
         self.collection.add(
             embeddings=embeddings.tolist(),
             documents=documents,
             metadatas=metadata or [{}] * len(documents),
             ids=ids
         )
-    
+
     def search(self, query: str, n_results: int = 5) -> List[Dict[str, Any]]:
         query_embedding = self.encoder.encode([query])
-        
+
         results = self.collection.query(
             query_embeddings=query_embedding.tolist(),
             n_results=n_results
         )
-        
+
         return results
-    
+
     def generate_context(self, query: str) -> str:
         search_results = self.search(query)
         context_docs = search_results.get('documents', [[]])[0]
@@ -1065,7 +1055,7 @@ st.set_page_config(page_title="AutoPR Analytics", layout="wide")
 
 def main():
     st.title("🤖 AutoPR Analytics Dashboard")
-    
+
     # Sidebar
     st.sidebar.header("Filters")
     date_range = st.sidebar.date_input(
@@ -1073,38 +1063,38 @@ def main():
         value=[datetime.now() - timedelta(days=7), datetime.now()],
         max_value=datetime.now()
     )
-    
+
     # Main metrics
     col1, col2, col3, col4 = st.columns(4)
-    
+
     with col1:
         st.metric("Total Requests", "1,234", "12%")
-    
+
     with col2:
         st.metric("LLM Calls", "567", "8%")
-    
+
     with col3:
         st.metric("Success Rate", "98.5%", "0.5%")
-    
+
     with col4:
         st.metric("Avg Response Time", "1.2s", "-0.3s")
-    
+
     # Charts
     st.subheader("Request Volume Over Time")
-    
+
     # Sample data
     dates = pd.date_range(start=date_range[0], end=date_range[1], freq='H')
     data = pd.DataFrame({
         'timestamp': dates,
         'requests': np.random.randint(10, 100, len(dates))
     })
-    
+
     fig = px.line(data, x='timestamp', y='requests', title='Hourly Request Volume')
     st.plotly_chart(fig, use_container_width=True)
-    
+
     # Provider usage
     col1, col2 = st.columns(2)
-    
+
     with col1:
         st.subheader("LLM Provider Usage")
         provider_data = pd.DataFrame({
@@ -1113,7 +1103,7 @@ def main():
         })
         fig = px.pie(provider_data, values='Usage', names='Provider')
         st.plotly_chart(fig, use_container_width=True)
-    
+
     with col2:
         st.subheader("Response Time Distribution")
         response_times = np.random.normal(1.2, 0.3, 1000)
@@ -1139,11 +1129,11 @@ import os
 class FineTuningManager:
     def __init__(self):
         self.client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-    
+
     def prepare_training_data(self, conversations: List[Dict[str, Any]]) -> str:
         """Prepare training data in OpenAI format"""
         training_data = []
-        
+
         for conv in conversations:
             training_data.append({
                 "messages": [
@@ -1152,33 +1142,33 @@ class FineTuningManager:
                     {"role": "assistant", "content": conv["output"]}
                 ]
             })
-        
+
         # Save to JSONL file
         filename = "training_data.jsonl"
         with open(filename, 'w') as f:
             for item in training_data:
                 f.write(json.dumps(item) + '\\n')
-        
+
         return filename
-    
+
     def create_fine_tuning_job(self, training_file: str, model: str = "gpt-3.5-turbo") -> str:
         """Create a fine-tuning job"""
-        
+
         # Upload training file
         with open(training_file, 'rb') as f:
             file_response = self.client.files.create(
                 file=f,
                 purpose='fine-tune'
             )
-        
+
         # Create fine-tuning job
         job = self.client.fine_tuning.jobs.create(
             training_file=file_response.id,
             model=model
         )
-        
+
         return job.id
-    
+
     def check_job_status(self, job_id: str) -> Dict[str, Any]:
         """Check fine-tuning job status"""
         job = self.client.fine_tuning.jobs.retrieve(job_id)
@@ -1389,9 +1379,7 @@ resource "google_container_cluster" "autopr_gcp" {
             json.dump(report, f, indent=2)
 
         # Mark phase as complete
-        completion_file = (
-            self.project_root / f".autopr_phase_{self.current_phase}_complete"
-        )
+        completion_file = self.project_root / f".autopr_phase_{self.current_phase}_complete"
         completion_file.touch()
 
     def _get_next_steps(self) -> List[str]:
@@ -1429,9 +1417,7 @@ resource "google_container_cluster" "autopr_gcp" {
 async def main() -> None:
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="AutoPR Phase 1 Extensions Implementation"
-    )
+    parser = argparse.ArgumentParser(description="AutoPR Phase 1 Extensions Implementation")
     parser.add_argument(
         "--phase",
         choices=["immediate", "medium", "strategic"],

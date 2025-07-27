@@ -2,7 +2,7 @@
 Anthropic Claude provider implementation.
 """
 
-from typing import Dict, Any, List, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, List
 
 from ..base import BaseLLMProvider
 from ..types import LLMResponse

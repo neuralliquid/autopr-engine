@@ -17,65 +17,53 @@ Main Components:
 - template_browser: Template discovery and browsing
 """
 
-from .template_loader import TemplateLoader
 from .content_analyzer import ContentAnalyzer
+from .docs_generator import TemplateDocumentationGenerator
 from .format_generators import (
     BaseFormatGenerator,
-    MarkdownGenerator,
+    FormatGeneratorFactory,
     HTMLGenerator,
     JSONGenerator,
-    FormatGeneratorFactory
+    MarkdownGenerator,
 )
-from .template_validators import (
-    ValidationIssue,
-    ValidationSeverity,
-    ValidatorRegistry
-)
+from .qa_framework import QualityAssuranceFramework
+
 # Quality metrics have been moved to autopr.quality.template_metrics
 # Import them directly from there when needed
-from .report_generators import (
-    JSONReportGenerator,
-    MarkdownReportGenerator,
-    HTMLReportGenerator,
-    ReportGeneratorFactory as QAReportGeneratorFactory
-)
-from .validation_rules import ValidationRuleLoader
-from .qa_framework import QualityAssuranceFramework
-from .docs_generator import TemplateDocumentationGenerator
+from .report_generators import HTMLReportGenerator, JSONReportGenerator, MarkdownReportGenerator
+from .report_generators import ReportGeneratorFactory as QAReportGeneratorFactory
 from .template_browser import TemplateBrowser, TemplateInfo
+from .template_loader import TemplateLoader
+from .template_validators import ValidationIssue, ValidationSeverity, ValidatorRegistry
+from .validation_rules import ValidationRuleLoader
 
 __all__ = [
     # Template loading and analysis
-    'TemplateLoader',
-    'ContentAnalyzer',
-    
+    "TemplateLoader",
+    "ContentAnalyzer",
     # Format generators
-    'BaseFormatGenerator',
-    'MarkdownGenerator', 
-    'HTMLGenerator',
-    'JSONGenerator',
-    'FormatGeneratorFactory',
-    
+    "BaseFormatGenerator",
+    "MarkdownGenerator",
+    "HTMLGenerator",
+    "JSONGenerator",
+    "FormatGeneratorFactory",
     # Validation system
-    'ValidationIssue',
-    'ValidationSeverity',
-    'ValidatorRegistry',
-    'ValidationRuleLoader',
-    
+    "ValidationIssue",
+    "ValidationSeverity",
+    "ValidatorRegistry",
+    "ValidationRuleLoader",
     # Quality metrics
-    'QualityMetrics',
-    'QualityAnalyzer',
-    'QualityScorer',
-    
+    "QualityMetrics",
+    "QualityAnalyzer",
+    "QualityScorer",
     # Report generators
-    'JSONReportGenerator',
-    'MarkdownReportGenerator', 
-    'HTMLReportGenerator',
-    'QAReportGeneratorFactory',
-    
+    "JSONReportGenerator",
+    "MarkdownReportGenerator",
+    "HTMLReportGenerator",
+    "QAReportGeneratorFactory",
     # Main systems
-    'QualityAssuranceFramework',
-    'TemplateDocumentationGenerator',
-    'TemplateBrowser',
-    'TemplateInfo'
+    "QualityAssuranceFramework",
+    "TemplateDocumentationGenerator",
+    "TemplateBrowser",
+    "TemplateInfo",
 ]

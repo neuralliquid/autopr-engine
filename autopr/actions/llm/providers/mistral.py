@@ -2,7 +2,7 @@
 Mistral AI provider implementation.
 """
 
-from typing import Dict, Any, List, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, List
 
 from ..base import BaseLLMProvider
 from ..types import LLMResponse
@@ -26,9 +26,7 @@ class MistralProvider(BaseLLMProvider):
 
     def complete(self, request: Dict[str, Any]) -> LLMResponse:
         try:
-            from mistralai.models.chat_completion import (
-                ChatMessage,
-            )
+            from mistralai.models.chat_completion import ChatMessage
 
             messages = request.get("messages", [])
             model = request.get("model", self.default_model) or "mistral-large-latest"

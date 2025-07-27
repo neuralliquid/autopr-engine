@@ -12,17 +12,19 @@ Features:
 - Rule management and organization
 """
 
-from typing import Dict, List, Any, Optional
-from dataclasses import dataclass
-from pathlib import Path
-import yaml
 import json
+from dataclasses import dataclass
 from functools import lru_cache
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+import yaml
 
 
 @dataclass
 class ValidationRule:
     """Represents a single validation rule."""
+
     rule_id: str
     category: str
     severity: str
@@ -31,7 +33,7 @@ class ValidationRule:
     weight: float = 1.0
     enabled: bool = True
     parameters: Optional[Dict[str, Any]] = None
-    
+
     def __post_init__(self) -> None:
         if self.parameters is None:
             self.parameters = {}
@@ -40,6 +42,7 @@ class ValidationRule:
 @dataclass
 class ValidationRuleSet:
     """Collection of validation rules organized by category."""
+
     structure_rules: List[ValidationRule]
     metadata_rules: List[ValidationRule]
     variables_rules: List[ValidationRule]
@@ -47,46 +50,46 @@ class ValidationRuleSet:
     examples_rules: List[ValidationRule]
     security_rules: List[ValidationRule]
     performance_rules: List[ValidationRule]
-    
+
     def get_all_rules(self) -> List[ValidationRule]:
         """Get all rules as a flat list."""
         return (
-            self.structure_rules +
-            self.metadata_rules +
-            self.variables_rules +
-            self.documentation_rules +
-            self.examples_rules +
-            self.security_rules +
-            self.performance_rules
+            self.structure_rules
+            + self.metadata_rules
+            + self.variables_rules
+            + self.documentation_rules
+            + self.examples_rules
+            + self.security_rules
+            + self.performance_rules
         )
-    
+
     def get_rules_by_category(self, category: str) -> List[ValidationRule]:
         """Get rules for a specific category."""
         category_map = {
-            'structure': self.structure_rules,
-            'metadata': self.metadata_rules,
-            'variables': self.variables_rules,
-            'documentation': self.documentation_rules,
-            'examples': self.examples_rules,
-            'security': self.security_rules,
-            'performance': self.performance_rules
+            "structure": self.structure_rules,
+            "metadata": self.metadata_rules,
+            "variables": self.variables_rules,
+            "documentation": self.documentation_rules,
+            "examples": self.examples_rules,
+            "security": self.security_rules,
+            "performance": self.performance_rules,
         }
         return category_map.get(category, [])
 
 
 class ValidationRuleLoader:
     """Loads and manages validation rules from configuration files."""
-    
+
     def __init__(self, rules_root: Optional[Path] = None):
         """Initialize the rule loader."""
         if rules_root is None:
             self.rules_root = Path(__file__).parent / "validation_rules"
         else:
             self.rules_root = Path(rules_root)
-        
+
         # Create rules directory if it doesn't exist
         self.rules_root.mkdir(exist_ok=True)
-    
+
     @lru_cache(maxsize=1)
     def load_rules(self) -> ValidationRuleSet:
         """Load all validation rules from configuration files."""
@@ -96,44 +99,44 @@ class ValidationRuleLoader:
         except Exception:
             # Fallback to default built-in rules
             return self._load_default_rules()
-    
+
     def _load_from_files(self) -> ValidationRuleSet:
         """Load rules from external configuration files."""
         rules_file = self.rules_root / "validation_rules.yml"
-        
+
         if not rules_file.exists():
             return self._load_default_rules()
-        
-        with open(rules_file, 'r', encoding='utf-8') as f:
+
+        with open(rules_file, "r", encoding="utf-8") as f:
             rules_data = yaml.safe_load(f)
-        
+
         return ValidationRuleSet(
-            structure_rules=self._parse_rules(rules_data.get('structure', [])),
-            metadata_rules=self._parse_rules(rules_data.get('metadata', [])),
-            variables_rules=self._parse_rules(rules_data.get('variables', [])),
-            documentation_rules=self._parse_rules(rules_data.get('documentation', [])),
-            examples_rules=self._parse_rules(rules_data.get('examples', [])),
-            security_rules=self._parse_rules(rules_data.get('security', [])),
-            performance_rules=self._parse_rules(rules_data.get('performance', []))
+            structure_rules=self._parse_rules(rules_data.get("structure", [])),
+            metadata_rules=self._parse_rules(rules_data.get("metadata", [])),
+            variables_rules=self._parse_rules(rules_data.get("variables", [])),
+            documentation_rules=self._parse_rules(rules_data.get("documentation", [])),
+            examples_rules=self._parse_rules(rules_data.get("examples", [])),
+            security_rules=self._parse_rules(rules_data.get("security", [])),
+            performance_rules=self._parse_rules(rules_data.get("performance", [])),
         )
-    
+
     def _parse_rules(self, rules_data: List[Dict[str, Any]]) -> List[ValidationRule]:
         """Parse rule data into ValidationRule objects."""
         rules = []
         for rule_data in rules_data:
             rule = ValidationRule(
-                rule_id=rule_data.get('rule_id', ''),
-                category=rule_data.get('category', ''),
-                severity=rule_data.get('severity', 'warning'),
-                description=rule_data.get('description', ''),
-                check_function=rule_data.get('check_function', ''),
-                weight=rule_data.get('weight', 1.0),
-                enabled=rule_data.get('enabled', True),
-                parameters=rule_data.get('parameters', {})
+                rule_id=rule_data.get("rule_id", ""),
+                category=rule_data.get("category", ""),
+                severity=rule_data.get("severity", "warning"),
+                description=rule_data.get("description", ""),
+                check_function=rule_data.get("check_function", ""),
+                weight=rule_data.get("weight", 1.0),
+                enabled=rule_data.get("enabled", True),
+                parameters=rule_data.get("parameters", {}),
             )
             rules.append(rule)
         return rules
-    
+
     def _load_default_rules(self) -> ValidationRuleSet:
         """Load default built-in validation rules."""
         return ValidationRuleSet(
@@ -145,7 +148,9 @@ class ValidationRuleLoader:
                     description="Template must have required fields",
                     check_function="check_required_fields",
                     weight=2.0,
-                    parameters={"required_fields": ["name", "description", "category", "platforms"]}
+                    parameters={
+                        "required_fields": ["name", "description", "category", "platforms"]
+                    },
                 ),
                 ValidationRule(
                     rule_id="STR002",
@@ -153,7 +158,7 @@ class ValidationRuleLoader:
                     severity="error",
                     description="Field types must be correct",
                     check_function="check_field_types",
-                    weight=1.5
+                    weight=1.5,
                 ),
                 ValidationRule(
                     rule_id="STR003",
@@ -161,8 +166,8 @@ class ValidationRuleLoader:
                     severity="warning",
                     description="Template should have version field",
                     check_function="check_version_field",
-                    weight=0.5
-                )
+                    weight=0.5,
+                ),
             ],
             metadata_rules=[
                 ValidationRule(
@@ -172,7 +177,7 @@ class ValidationRuleLoader:
                     description="Name should be descriptive and clear",
                     check_function="check_name_quality",
                     weight=1.0,
-                    parameters={"min_length": 5, "max_length": 100}
+                    parameters={"min_length": 5, "max_length": 100},
                 ),
                 ValidationRule(
                     rule_id="META002",
@@ -181,7 +186,7 @@ class ValidationRuleLoader:
                     description="Description must be present and meaningful",
                     check_function="check_description_quality",
                     weight=1.5,
-                    parameters={"min_length": 20, "max_length": 500}
+                    parameters={"min_length": 20, "max_length": 500},
                 ),
                 ValidationRule(
                     rule_id="META003",
@@ -190,8 +195,8 @@ class ValidationRuleLoader:
                     description="Category should be valid",
                     check_function="check_category_validity",
                     weight=1.0,
-                    parameters={"valid_categories": ["platform", "use_case", "integration"]}
-                )
+                    parameters={"valid_categories": ["platform", "use_case", "integration"]},
+                ),
             ],
             variables_rules=[
                 ValidationRule(
@@ -200,7 +205,7 @@ class ValidationRuleLoader:
                     severity="warning",
                     description="Variables should have descriptions",
                     check_function="check_variable_descriptions",
-                    weight=1.0
+                    weight=1.0,
                 ),
                 ValidationRule(
                     rule_id="VAR002",
@@ -208,7 +213,7 @@ class ValidationRuleLoader:
                     severity="warning",
                     description="Variables should have examples",
                     check_function="check_variable_examples",
-                    weight=0.8
+                    weight=0.8,
                 ),
                 ValidationRule(
                     rule_id="VAR003",
@@ -216,8 +221,8 @@ class ValidationRuleLoader:
                     severity="error",
                     description="Required variables must be marked",
                     check_function="check_required_variables",
-                    weight=1.5
-                )
+                    weight=1.5,
+                ),
             ],
             documentation_rules=[
                 ValidationRule(
@@ -226,7 +231,7 @@ class ValidationRuleLoader:
                     severity="warning",
                     description="Template should have setup instructions",
                     check_function="check_setup_instructions",
-                    weight=1.2
+                    weight=1.2,
                 ),
                 ValidationRule(
                     rule_id="DOC002",
@@ -234,7 +239,7 @@ class ValidationRuleLoader:
                     severity="info",
                     description="Template should have best practices",
                     check_function="check_best_practices",
-                    weight=0.8
+                    weight=0.8,
                 ),
                 ValidationRule(
                     rule_id="DOC003",
@@ -242,8 +247,8 @@ class ValidationRuleLoader:
                     severity="info",
                     description="Template should have troubleshooting guide",
                     check_function="check_troubleshooting",
-                    weight=0.6
-                )
+                    weight=0.6,
+                ),
             ],
             examples_rules=[
                 ValidationRule(
@@ -252,7 +257,7 @@ class ValidationRuleLoader:
                     severity="warning",
                     description="Template should have practical examples",
                     check_function="check_example_presence",
-                    weight=1.0
+                    weight=1.0,
                 ),
                 ValidationRule(
                     rule_id="EX002",
@@ -260,8 +265,8 @@ class ValidationRuleLoader:
                     severity="info",
                     description="Examples should be complete and realistic",
                     check_function="check_example_quality",
-                    weight=0.8
-                )
+                    weight=0.8,
+                ),
             ],
             security_rules=[
                 ValidationRule(
@@ -270,7 +275,7 @@ class ValidationRuleLoader:
                     severity="error",
                     description="No hardcoded secrets or credentials",
                     check_function="check_hardcoded_secrets",
-                    weight=2.0
+                    weight=2.0,
                 ),
                 ValidationRule(
                     rule_id="SEC002",
@@ -278,8 +283,8 @@ class ValidationRuleLoader:
                     severity="warning",
                     description="Security best practices should be documented",
                     check_function="check_security_documentation",
-                    weight=1.0
-                )
+                    weight=1.0,
+                ),
             ],
             performance_rules=[
                 ValidationRule(
@@ -288,7 +293,7 @@ class ValidationRuleLoader:
                     severity="info",
                     description="Performance considerations should be documented",
                     check_function="check_performance_documentation",
-                    weight=0.8
+                    weight=0.8,
                 ),
                 ValidationRule(
                     rule_id="PERF002",
@@ -296,47 +301,50 @@ class ValidationRuleLoader:
                     severity="warning",
                     description="Large files or resources should be optimized",
                     check_function="check_resource_optimization",
-                    weight=1.0
-                )
-            ]
+                    weight=1.0,
+                ),
+            ],
         )
-    
+
     def save_rules_template(self) -> str:
         """Save a template rules configuration file for customization."""
         template_file = self.rules_root / "validation_rules_template.yml"
-        
+
         default_rules = self._load_default_rules()
         rules_data = {
-            'structure': [self._rule_to_dict(rule) for rule in default_rules.structure_rules],
-            'metadata': [self._rule_to_dict(rule) for rule in default_rules.metadata_rules],
-            'variables': [self._rule_to_dict(rule) for rule in default_rules.variables_rules],
-            'documentation': [self._rule_to_dict(rule) for rule in default_rules.documentation_rules],
-            'examples': [self._rule_to_dict(rule) for rule in default_rules.examples_rules],
-            'security': [self._rule_to_dict(rule) for rule in default_rules.security_rules],
-            'performance': [self._rule_to_dict(rule) for rule in default_rules.performance_rules]
+            "structure": [self._rule_to_dict(rule) for rule in default_rules.structure_rules],
+            "metadata": [self._rule_to_dict(rule) for rule in default_rules.metadata_rules],
+            "variables": [self._rule_to_dict(rule) for rule in default_rules.variables_rules],
+            "documentation": [
+                self._rule_to_dict(rule) for rule in default_rules.documentation_rules
+            ],
+            "examples": [self._rule_to_dict(rule) for rule in default_rules.examples_rules],
+            "security": [self._rule_to_dict(rule) for rule in default_rules.security_rules],
+            "performance": [self._rule_to_dict(rule) for rule in default_rules.performance_rules],
         }
-        
-        with open(template_file, 'w', encoding='utf-8') as f:
+
+        with open(template_file, "w", encoding="utf-8") as f:
             yaml.dump(rules_data, f, default_flow_style=False, indent=2)
-        
+
         return str(template_file)
-    
+
     def _rule_to_dict(self, rule: ValidationRule) -> Dict[str, Any]:
         """Convert ValidationRule to dictionary for serialization."""
         return {
-            'rule_id': rule.rule_id,
-            'category': rule.category,
-            'severity': rule.severity,
-            'description': rule.description,
-            'check_function': rule.check_function,
-            'weight': rule.weight,
-            'enabled': rule.enabled,
-            'parameters': rule.parameters
+            "rule_id": rule.rule_id,
+            "category": rule.category,
+            "severity": rule.severity,
+            "description": rule.description,
+            "check_function": rule.check_function,
+            "weight": rule.weight,
+            "enabled": rule.enabled,
+            "parameters": rule.parameters,
         }
 
 
 # Global rule loader instance
 _rule_loader: Optional[ValidationRuleLoader] = None
+
 
 def get_validation_rules() -> ValidationRuleSet:
     """Get the global validation rules instance."""
@@ -344,6 +352,7 @@ def get_validation_rules() -> ValidationRuleSet:
     if _rule_loader is None:
         _rule_loader = ValidationRuleLoader()
     return _rule_loader.load_rules()
+
 
 def reload_validation_rules() -> ValidationRuleSet:
     """Reload validation rules (clears cache)."""

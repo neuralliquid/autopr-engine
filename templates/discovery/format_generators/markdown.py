@@ -6,8 +6,8 @@ Markdown Format Generator Module
 Generates documentation in Markdown format.
 """
 
-from typing import List
 from datetime import datetime
+from typing import List
 
 from ..content_analyzer import TemplateAnalysis
 from .base import BaseFormatGenerator
@@ -15,56 +15,56 @@ from .base import BaseFormatGenerator
 
 class MarkdownGenerator(BaseFormatGenerator):
     """Generates Markdown documentation."""
-    
+
     def generate_platform_guide(self, analysis: TemplateAnalysis) -> str:
         """Generate platform guide in Markdown format."""
         return self.generate_content(
-            'platform_guide',
-            platform_name=analysis.name.replace('_', ' ').title(),
+            "platform_guide",
+            platform_name=analysis.name.replace("_", " ").title(),
             platform_info=analysis.platform_info,
             key_features=analysis.key_features,
             variables=analysis.variables,
-            development_approach=analysis.metadata.get('development_approach', {}),
-            best_practices=analysis.metadata.get('best_practices', {}),
+            development_approach=analysis.metadata.get("development_approach", {}),
+            best_practices=analysis.metadata.get("best_practices", {}),
             troubleshooting=analysis.troubleshooting,
-            pricing=analysis.platform_info.get('pricing', {})
+            pricing=analysis.platform_info.get("pricing", {}),
         )
-    
+
     def generate_use_case_guide(self, analysis: TemplateAnalysis) -> str:
         """Generate use case guide in Markdown format."""
         return self.generate_content(
-            'use_case_guide',
-            use_case_name=analysis.name.replace('_', ' ').title(),
+            "use_case_guide",
+            use_case_name=analysis.name.replace("_", " ").title(),
             use_case_info=analysis.use_case_info,
             key_features=analysis.key_features,
-            implementation_steps=analysis.use_case_info.get('implementation_steps', []),
+            implementation_steps=analysis.use_case_info.get("implementation_steps", []),
             configuration_options=analysis.variables,
-            recommended_platforms=analysis.metadata.get('recommended_platforms', []),
+            recommended_platforms=analysis.metadata.get("recommended_platforms", []),
             examples=analysis.examples,
             best_practices=analysis.best_practices,
-            common_pitfalls=analysis.metadata.get('common_pitfalls', [])
+            common_pitfalls=analysis.metadata.get("common_pitfalls", []),
         )
-    
+
     def generate_integration_guide(self, analysis: TemplateAnalysis) -> str:
         """Generate integration guide in Markdown format."""
         return self.generate_content(
-            'integration_guide',
-            integration_name=analysis.name.replace('_', ' ').title(),
+            "integration_guide",
+            integration_name=analysis.name.replace("_", " ").title(),
             integration_info=analysis.integration_info,
             key_features=analysis.key_features,
-            setup_steps=analysis.integration_info.get('setup_steps', []),
+            setup_steps=analysis.integration_info.get("setup_steps", []),
             configuration_options=analysis.variables,
             examples=analysis.examples,
-            troubleshooting=analysis.troubleshooting
+            troubleshooting=analysis.troubleshooting,
         )
-    
+
     def generate_main_index(self, analyses: List[TemplateAnalysis]) -> str:
         """Generate main documentation index."""
         # Group analyses by category
-        platforms = [a for a in analyses if a.category == 'platform']
-        use_cases = [a for a in analyses if a.category == 'use_case']
-        integrations = [a for a in analyses if a.category == 'integration']
-        
+        platforms = [a for a in analyses if a.category == "platform"]
+        use_cases = [a for a in analyses if a.category == "use_case"]
+        integrations = [a for a in analyses if a.category == "integration"]
+
         content = f"""# Template Documentation
 
 *Generated on {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}*
@@ -82,26 +82,32 @@ Welcome to the comprehensive template documentation. This guide covers all avail
 Build applications on these no-code platforms:
 
 """
-        
+
         for platform in sorted(platforms, key=lambda x: x.name):
-            platform_name = platform.name.replace('_', ' ').title()
-            description = platform.platform_info.get('description', 'No description available')
+            platform_name = platform.name.replace("_", " ").title()
+            description = platform.platform_info.get("description", "No description available")
             content += f"- **[{platform_name}](platforms/{platform.name}.md)**: {description}\n"
-        
-        content += "\n## Use Case Templates\n\nPre-built templates for common application types:\n\n"
-        
+
+        content += (
+            "\n## Use Case Templates\n\nPre-built templates for common application types:\n\n"
+        )
+
         for use_case in sorted(use_cases, key=lambda x: x.name):
-            use_case_name = use_case.name.replace('_', ' ').title()
-            description = use_case.use_case_info.get('description', 'No description available')
+            use_case_name = use_case.name.replace("_", " ").title()
+            description = use_case.use_case_info.get("description", "No description available")
             content += f"- **[{use_case_name}](use-cases/{use_case.name}.md)**: {description}\n"
-        
+
         content += "\n## Integration Templates\n\nAdd functionality with these integrations:\n\n"
-        
+
         for integration in sorted(integrations, key=lambda x: x.name):
-            integration_name = integration.name.replace('_', ' ').title()
-            description = integration.integration_info.get('description', 'No description available')
-            content += f"- **[{integration_name}](integrations/{integration.name}.md)**: {description}\n"
-        
+            integration_name = integration.name.replace("_", " ").title()
+            description = integration.integration_info.get(
+                "description", "No description available"
+            )
+            content += (
+                f"- **[{integration_name}](integrations/{integration.name}.md)**: {description}\n"
+            )
+
         content += """
 
 ## Getting Started Guide
@@ -122,9 +128,9 @@ Not sure which platform to choose? Check out our [platform comparison guide](pla
 
 *Happy building! 🚀*
 """
-        
+
         return content
-    
+
     def generate_comparison_guide(self, platform_analyses: List[TemplateAnalysis]) -> str:
         """Generate platform comparison guide."""
         content = f"""# Platform Comparison Guide
@@ -138,39 +144,39 @@ Choose the right no-code platform for your project with this comprehensive compa
 | Platform | Complexity | Best For | Pricing |
 |----------|------------|----------|---------|
 """
-        
+
         for analysis in sorted(platform_analyses, key=lambda x: x.name):
-            platform_name = analysis.name.replace('_', ' ').title()
+            platform_name = analysis.name.replace("_", " ").title()
             complexity = analysis.complexity.title()
-            best_for = analysis.platform_info.get('best_for', 'General use')
-            pricing = analysis.platform_info.get('pricing_summary', 'Varies')
+            best_for = analysis.platform_info.get("best_for", "General use")
+            pricing = analysis.platform_info.get("pricing_summary", "Varies")
             content += f"| {platform_name} | {complexity} | {best_for} | {pricing} |\n"
-        
+
         content += "\n## Detailed Comparison\n\n"
-        
+
         for analysis in sorted(platform_analyses, key=lambda x: x.name):
-            platform_name = analysis.name.replace('_', ' ').title()
+            platform_name = analysis.name.replace("_", " ").title()
             content += f"### {platform_name}\n\n"
             content += f"**Complexity**: {analysis.complexity.title()}\n\n"
-            
+
             if analysis.key_features:
                 content += "**Key Features**:\n"
                 for feature in analysis.key_features[:5]:  # Limit to top 5
                     content += f"- {feature}\n"
                 content += "\n"
-            
-            if analysis.platform_info.get('pros'):
+
+            if analysis.platform_info.get("pros"):
                 content += "**Pros**:\n"
-                for pro in analysis.platform_info['pros']:
+                for pro in analysis.platform_info["pros"]:
                     content += f"- {pro}\n"
                 content += "\n"
-            
-            if analysis.platform_info.get('cons'):
+
+            if analysis.platform_info.get("cons"):
                 content += "**Cons**:\n"
-                for con in analysis.platform_info['cons']:
+                for con in analysis.platform_info["cons"]:
                     content += f"- {con}\n"
                 content += "\n"
-        
+
         content += """## Decision Matrix
 
 Use this matrix to help choose the right platform:
@@ -202,5 +208,5 @@ Use this matrix to help choose the right platform:
 
 *Still unsure? Start with our [getting started guide](getting_started.md) for more guidance.*
 """
-        
+
         return content

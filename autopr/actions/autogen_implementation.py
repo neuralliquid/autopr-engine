@@ -5,9 +5,10 @@ Uses AutoGen for complex multi-agent development tasks
 
 import json
 import os
-from typing import Dict, List, Any, Optional
-from pydantic import BaseModel, Field
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, Field
 
 try:
     import autogen
@@ -24,7 +25,9 @@ except ImportError:
 
 class AutoGenInputs(BaseModel):
     task_description: str
-    task_type: str  # "feature_development", "bug_fix", "security_review", "performance_optimization"
+    task_type: (
+        str  # "feature_development", "bug_fix", "security_review", "performance_optimization"
+    )
     repository: str
     file_paths: List[str] = []
     requirements: Dict[str, Any] = {}
@@ -34,12 +37,8 @@ class AutoGenInputs(BaseModel):
 
 class AutoGenOutputs(BaseModel):
     implementation_plan: str
-    code_changes: Dict[str, str] = Field(
-        default_factory=dict
-    )  # file_path -> code_content
-    test_files: Dict[str, str] = Field(
-        default_factory=dict
-    )  # test_file_path -> test_content
+    code_changes: Dict[str, str] = Field(default_factory=dict)  # file_path -> code_content
+    test_files: Dict[str, str] = Field(default_factory=dict)  # test_file_path -> test_content
     documentation: str
     agent_conversations: List[Dict[str, Any]] = Field(default_factory=list)
     quality_score: float
@@ -50,9 +49,7 @@ class AutoGenOutputs(BaseModel):
 class AutoGenImplementation:
     def __init__(self) -> None:
         if not AUTOGEN_AVAILABLE:
-            raise ImportError(
-                "AutoGen not installed. Install with: pip install pyautogen"
-            )
+            raise ImportError("AutoGen not installed. Install with: pip install pyautogen")
 
         self.llm_config = {
             "model": os.getenv("OPENAI_MODEL", "gpt-4"),
@@ -123,9 +120,7 @@ class AutoGenImplementation:
                 errors=[str(e)],
             )
 
-    def _create_agents(
-        self, task_type: str, complexity_level: str
-    ) -> List[ConversableAgent]:
+    def _create_agents(self, task_type: str, complexity_level: str) -> List[ConversableAgent]:
         """Create specialized agents based on task requirements"""
 
         agents = []
@@ -279,9 +274,7 @@ Review criteria:
             # Initiate the conversation with the architect
             architect = agents[0]  # First agent is always the architect
 
-            result = architect.initiate_chat(
-                manager, message=task_message, max_turns=20
-            )
+            result = architect.initiate_chat(manager, message=task_message, max_turns=20)
 
             # Extract conversation history
             conversation_history = manager.groupchat.messages
@@ -338,9 +331,7 @@ Please work together to create a complete, production-ready solution.
 
         return message.strip()
 
-    def _process_results(
-        self, conversation_result: Dict, inputs: AutoGenInputs
-    ) -> AutoGenOutputs:
+    def _process_results(self, conversation_result: Dict, inputs: AutoGenInputs) -> AutoGenOutputs:
         """Process the conversation results into structured output"""
 
         if not conversation_result.get("success", False):
@@ -391,11 +382,7 @@ Please work together to create a complete, production-ready solution.
             if "implementation plan" in content.lower() or "plan:" in content.lower():
                 plan_content.append(f"**{message.get('name', 'Agent')}**: {content}")
 
-        return (
-            "\n\n".join(plan_content)
-            if plan_content
-            else "No implementation plan found"
-        )
+        return "\n\n".join(plan_content) if plan_content else "No implementation plan found"
 
     def _extract_code_changes(self, conversation_history: List) -> Dict[str, str]:
         """Extract code changes from conversation"""
@@ -463,9 +450,7 @@ Please work together to create a complete, production-ready solution.
 
         return "\n\n".join(doc_content) if doc_content else "No documentation found"
 
-    def _extract_filename_from_context(
-        self, content: str, code_block: str
-    ) -> Optional[str]:
+    def _extract_filename_from_context(self, content: str, code_block: str) -> Optional[str]:
         """Try to extract filename from the context around a code block"""
         import re
 

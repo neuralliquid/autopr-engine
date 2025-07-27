@@ -3,19 +3,18 @@ AutoPR Action: Learning & Memory System
 Tracks patterns, user preferences, and project context to improve decision-making over time.
 """
 
-import os
+import hashlib
 import json
+import os
 import sqlite3
 from datetime import datetime, timedelta
-from typing import Dict, Any, Optional, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
+
 from pydantic import BaseModel
-import hashlib
 
 
 class MemoryInputs(BaseModel):
-    action_type: (
-        str  # "record_fix", "record_preference", "get_patterns", "get_recommendations"
-    )
+    action_type: str  # "record_fix", "record_preference", "get_patterns", "get_recommendations"
     user_id: Optional[str] = None
     file_path: Optional[str] = None
     comment_type: Optional[str] = None
@@ -112,14 +111,12 @@ class LearningMemorySystem:
         cursor = conn.cursor()
 
         try:
-            file_ext = (
-                os.path.splitext(inputs.file_path or "")[1] if inputs.file_path else ""
-            )
+            file_ext = os.path.splitext(inputs.file_path or "")[1] if inputs.file_path else ""
 
             # Check if pattern exists
             cursor.execute(
                 """
-                SELECT id, usage_count, success_rate FROM fix_patterns 
+                SELECT id, usage_count, success_rate FROM fix_patterns
                 WHERE comment_type = ? AND file_extension = ? AND fix_type = ?
             """,
                 (inputs.comment_type, file_ext, inputs.fix_applied),
@@ -137,7 +134,7 @@ class LearningMemorySystem:
 
                 cursor.execute(
                     """
-                    UPDATE fix_patterns 
+                    UPDATE fix_patterns
                     SET usage_count = ?, success_rate = ?, last_used = ?
                     WHERE id = ?
                 """,
@@ -147,7 +144,7 @@ class LearningMemorySystem:
                 # Create new pattern
                 cursor.execute(
                     """
-                    INSERT INTO fix_patterns 
+                    INSERT INTO fix_patterns
                     (comment_type, file_extension, fix_type, fix_code, success_rate, usage_count, last_used)
                     VALUES (?, ?, ?, ?, ?, ?, ?)
                 """,
@@ -185,7 +182,7 @@ class LearningMemorySystem:
             # Upsert user preference
             cursor.execute(
                 """
-                INSERT OR REPLACE INTO user_preferences 
+                INSERT OR REPLACE INTO user_preferences
                 (user_id, preference_type, preference_value, confidence, last_updated)
                 VALUES (?, ?, ?, ?, ?)
             """,
@@ -219,9 +216,9 @@ class LearningMemorySystem:
             # Get patterns ordered by success rate and usage
             cursor.execute(
                 """
-                SELECT fix_type, fix_code, success_rate, usage_count, 
+                SELECT fix_type, fix_code, success_rate, usage_count,
                        (success_rate * 0.7 + (usage_count / 100.0) * 0.3) as score
-                FROM fix_patterns 
+                FROM fix_patterns
                 WHERE comment_type = ? AND (file_extension = ? OR file_extension = '')
                 ORDER BY score DESC
                 LIMIT 5
@@ -258,7 +255,7 @@ class LearningMemorySystem:
             cursor.execute(
                 """
                 SELECT preference_type, preference_value, confidence
-                FROM user_preferences 
+                FROM user_preferences
                 WHERE user_id = ?
                 ORDER BY confidence DESC
             """,
@@ -333,9 +330,7 @@ class LearningMemorySystem:
                 else "double"
             ),
             "indentation": (
-                "spaces"
-                if style_indicators["spaces"] > style_indicators["tabs"]
-                else "tabs"
+                "spaces" if style_indicators["spaces"] > style_indicators["tabs"] else "tabs"
             ),
         }
 
@@ -379,9 +374,7 @@ class LearningMemorySystem:
 
         return patterns
 
-    def _store_project_context(
-        self, project_hash: str, patterns: Dict[str, Any]
-    ) -> None:
+    def _store_project_context(self, project_hash: str, patterns: Dict[str, Any]) -> None:
         """Store project context in database."""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
@@ -390,7 +383,7 @@ class LearningMemorySystem:
             for context_type, pattern_data in patterns.items():
                 cursor.execute(
                     """
-                    INSERT OR REPLACE INTO project_context 
+                    INSERT OR REPLACE INTO project_context
                     (project_hash, context_type, pattern, frequency, effectiveness, last_seen)
                     VALUES (?, ?, ?, ?, ?, ?)
                 """,
@@ -431,9 +424,7 @@ def learning_memory_action(inputs: MemoryInputs) -> MemoryOutputs:
         recommendations = memory_system.get_fix_recommendations(
             inputs.comment_type, inputs.file_path
         )
-        confidence_scores = {
-            rec["fix_type"]: rec["confidence"] for rec in recommendations
-        }
+        confidence_scores = {rec["fix_type"]: rec["confidence"] for rec in recommendations}
         return MemoryOutputs(
             success=True,
             recommendations=[rec["fix_type"] for rec in recommendations],

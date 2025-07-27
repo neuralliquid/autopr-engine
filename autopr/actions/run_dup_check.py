@@ -1,5 +1,7 @@
-import pydantic
 import asyncio
+
+import pydantic
+
 from autopr.actions.base import Action
 
 

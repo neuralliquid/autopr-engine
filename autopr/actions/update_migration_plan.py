@@ -1,21 +1,27 @@
-import pydantic
 import re
 from typing import Optional
+
+import pydantic
+
 from autopr.actions.base import Action
+
 
 class Inputs(pydantic.BaseModel):
     step_number: int
     status: str  # e.g., "[x]", "[~]", "[ ]"
     text: Optional[str] = None  # Optional: new text for the line
 
+
 class Outputs(pydantic.BaseModel):
     success: bool
     updated_line: Optional[str] = None
+
 
 class UpdateMigrationPlan(Action[Inputs, Outputs]):
     """
     Updates a specific step in the MIGRATION_PLAN.md file.
     """
+
     id = "update_migration_plan"
 
     async def run(self, inputs: Inputs) -> Outputs:
@@ -34,17 +40,17 @@ class UpdateMigrationPlan(Action[Inputs, Outputs]):
                     # Replace text if provided
                     if inputs.text:
                         new_line = re.sub(r"(\d+\.\s*)(.*)", f"\\1{inputs.text}", new_line)
-                    
+
                     lines[i] = new_line
                     updated = True
                     break
-            
+
             if not updated:
                 return Outputs(success=False)
 
             with open(plan_path, "w", encoding="utf-8") as f:
                 f.writelines(lines)
-            
+
             return Outputs(success=True, updated_line=lines[i].strip() if updated else None)
 
         except FileNotFoundError:
@@ -52,9 +58,12 @@ class UpdateMigrationPlan(Action[Inputs, Outputs]):
         except Exception:
             return Outputs(success=False)
 
+
 if __name__ == "__main__":
-    from autopr.tests.utils import run_action_manually
     import asyncio
+
+    from autopr.tests.utils import run_action_manually
+
     # Ensure a dummy plan exists for testing
     with open("MIGRATION_PLAN.md", "w") as f:
         f.write("- [ ] 1. First step\\n- [ ] 2. Second step\\n")
@@ -63,4 +72,4 @@ if __name__ == "__main__":
             action=UpdateMigrationPlan,
             inputs=Inputs(step_number=1, status="[x]", text="First step completed!"),
         )
-    ) 
+    )
