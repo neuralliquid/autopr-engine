@@ -1,0 +1,101 @@
+"""
+Pattern matching classes for file analysis.
+"""
+
+import re
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Optional, Pattern, Union
+
+
+@dataclass
+class BasePattern:
+    """Base class for all pattern types."""
+
+    platform_id: str
+    """ID of the platform this pattern matches."""
+
+    confidence: float = 1.0
+    """Confidence score (0.0 to 1.0) that this pattern indicates the platform."""
+
+    def __post_init__(self):
+        """Validate the pattern after initialization."""
+        if not 0.0 <= self.confidence <= 1.0:
+            raise ValueError(f"Confidence must be between 0.0 and 1.0, got {self.confidence}")
+
+
+@dataclass
+class ContentPattern(BasePattern):
+    """Pattern for matching content within files."""
+
+    pattern: Union[str, Pattern[str]]
+    """The regex pattern to search for in file content."""
+
+    def __post_init__(self):
+        """Compile the regex pattern if it's a string."""
+        super().__post_init__()
+        if isinstance(self.pattern, str):
+            self._compiled = re.compile(self.pattern, re.IGNORECASE | re.MULTILINE)
+        else:
+            self._compiled = self.pattern
+
+    def matches(self, content: str) -> bool:
+        """Check if the pattern matches the given content."""
+        return bool(self._compiled.search(content))
+
+
+@dataclass
+class FilePattern(BasePattern):
+    """Pattern for matching file names and paths."""
+
+    pattern: str
+    """The glob pattern to match against file names."""
+
+    def matches(self, file_path: Path) -> bool:
+        """Check if the pattern matches the given file path."""
+        from fnmatch import fnmatch
+
+        return fnmatch(file_path.name, self.pattern)
+
+
+@dataclass
+class DirectoryPattern(BasePattern):
+    """Pattern for matching directory structures."""
+
+    pattern: str
+    """The glob pattern to match against directory paths."""
+
+    def matches(self, dir_path: Path) -> bool:
+        """Check if the pattern matches the given directory path."""
+        from fnmatch import fnmatch
+
+        return fnmatch(str(dir_path), self.pattern)
+
+
+@dataclass
+class CompositePattern(BasePattern):
+    """Combines multiple patterns with logical operators."""
+
+    patterns: list[BasePattern]
+    """List of patterns to combine."""
+
+    operator: str = "and"
+    """Logical operator to combine patterns ("and" or "or")."""
+
+    def __post_init__(self):
+        """Validate the operator."""
+        super().__post_init__()
+        if self.operator not in ("and", "or"):
+            raise ValueError(f"Operator must be 'and' or 'or', got {self.operator}")
+
+    def matches(self, target) -> bool:
+        """Check if the combined patterns match the target."""
+        if not self.patterns:
+            return False
+
+        results = [p.matches(target) for p in self.patterns]
+
+        if self.operator == "and":
+            return all(results)
+        else:  # "or"
+            return any(results)
