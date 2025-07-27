@@ -14,7 +14,7 @@ Features:
 
 import re
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Set
+from typing import Dict, List, Any, Optional, Set, Callable
 from dataclasses import dataclass
 from enum import Enum
 
@@ -46,7 +46,7 @@ class StructureValidator:
     def check_required_fields(data: Dict[str, Any], file_path: Path, rule: ValidationRule) -> List[ValidationIssue]:
         """Check for required fields in template."""
         issues = []
-        required_fields = rule.parameters.get('required_fields', [])
+        required_fields = rule.parameters.get('required_fields', []) if rule.parameters else []
         
         for field in required_fields:
             if field not in data:
@@ -125,14 +125,14 @@ class MetadataValidator:
     @staticmethod
     def check_name_quality(data: Dict[str, Any], file_path: Path, rule: ValidationRule) -> List[ValidationIssue]:
         """Check name field quality."""
-        issues = []
+        issues: List[ValidationIssue] = []
         
         if 'name' not in data:
             return issues
         
         name = data['name']
-        min_length = rule.parameters.get('min_length', 5)
-        max_length = rule.parameters.get('max_length', 100)
+        min_length = rule.parameters.get('min_length', 3) if rule.parameters else 3
+        max_length = rule.parameters.get('max_length', 100) if rule.parameters else 100
         
         if len(name) < min_length:
             issues.append(ValidationIssue(
@@ -159,14 +159,14 @@ class MetadataValidator:
     @staticmethod
     def check_description_quality(data: Dict[str, Any], file_path: Path, rule: ValidationRule) -> List[ValidationIssue]:
         """Check description field quality."""
-        issues = []
+        issues: List[ValidationIssue] = []
         
         if 'description' not in data:
             return issues
         
         description = data['description']
-        min_length = rule.parameters.get('min_length', 20)
-        max_length = rule.parameters.get('max_length', 500)
+        min_length = rule.parameters.get('min_length', 20) if rule.parameters else 20
+        max_length = rule.parameters.get('max_length', 500) if rule.parameters else 500
         
         if len(description) < min_length:
             issues.append(ValidationIssue(
@@ -193,13 +193,13 @@ class MetadataValidator:
     @staticmethod
     def check_category_validity(data: Dict[str, Any], file_path: Path, rule: ValidationRule) -> List[ValidationIssue]:
         """Check category field validity."""
-        issues = []
+        issues: List[ValidationIssue] = []
         
         if 'category' not in data:
             return issues
         
         category = data['category']
-        valid_categories = rule.parameters.get('valid_categories', [])
+        valid_categories = rule.parameters.get('valid_categories', []) if rule.parameters else []
         
         if valid_categories and category not in valid_categories:
             issues.append(ValidationIssue(
@@ -220,7 +220,7 @@ class VariablesValidator:
     @staticmethod
     def check_variable_descriptions(data: Dict[str, Any], file_path: Path, rule: ValidationRule) -> List[ValidationIssue]:
         """Check that variables have descriptions."""
-        issues = []
+        issues: List[ValidationIssue] = []
         
         if 'variables' not in data:
             return issues
@@ -248,7 +248,7 @@ class VariablesValidator:
     @staticmethod
     def check_variable_examples(data: Dict[str, Any], file_path: Path, rule: ValidationRule) -> List[ValidationIssue]:
         """Check that variables have examples."""
-        issues = []
+        issues: List[ValidationIssue] = []
         
         if 'variables' not in data:
             return issues
@@ -276,7 +276,7 @@ class VariablesValidator:
     @staticmethod
     def check_required_variables(data: Dict[str, Any], file_path: Path, rule: ValidationRule) -> List[ValidationIssue]:
         """Check that required variables are properly marked."""
-        issues = []
+        issues: List[ValidationIssue] = []
         
         if 'variables' not in data:
             return issues
@@ -407,7 +407,7 @@ class ExamplesValidator:
     @staticmethod
     def check_example_quality(data: Dict[str, Any], file_path: Path, rule: ValidationRule) -> List[ValidationIssue]:
         """Check quality of examples."""
-        issues = []
+        issues: List[ValidationIssue] = []
         
         if 'examples' not in data:
             return issues
@@ -556,7 +556,7 @@ class PerformanceValidator:
 class ValidatorRegistry:
     """Registry of all validation functions."""
     
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the validator registry."""
         self._validators = {
             # Structure validators
@@ -592,7 +592,7 @@ class ValidatorRegistry:
             'check_resource_optimization': PerformanceValidator.check_resource_optimization
         }
     
-    def get_validator(self, check_function: str):
+    def get_validator(self, check_function: str) -> Optional[Callable[[Dict[str, Any], Path, ValidationRule], List[ValidationIssue]]]:
         """Get a validator function by name."""
         return self._validators.get(check_function)
     

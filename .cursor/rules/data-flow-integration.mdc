@@ -1,58 +1,64 @@
 ---
-description: Specification for managing data flow between platforms and cross-system integration orchestration
-globs: /autopr/integrations/**,/autopr/actions/multi_platform_integrator.py,/autopr/actions/mem0_memory_integration.py
+description: Analysis and documentation of data flows between different components and platforms in the AutoPR system
+globs: **/integrations/**/*.py,**/workflows/**/*.py,**/ai/**/*.py,**/actions/**/*.py
 alwaysApply: false
 ---
 
 
 # data-flow-integration
 
-Core data flow architecture handles cross-platform synchronization and integration orchestration through several key components:
+## Core Data Flow Components
 
-1. Multi-Platform Integration Hub (Importance: 95)
-File: `/autopr/actions/multi_platform_integrator.py`
+### 1. LLM Provider Integration (90)
+- Location: `autopr/ai/providers/manager.py`
+- Orchestrates data flow between different LLM providers:
+  - Routes requests through selected provider (OpenAI, Anthropic, Groq, etc)
+  - Handles response streaming and completion generation
+  - Manages fallback behavior between providers
+  - Synchronizes provider health status and availability
 
-Primary integration flows:
-- Cross-platform event propagation system
-- Bidirectional state synchronization
-- Platform-specific data transformation pipeline
-- Conflict resolution handling for concurrent updates
+### 2. Platform Integration Bridge (85) 
+- Location: `autopr/integrations/base.py`
+- Manages bi-directional data flow between:
+  - GitHub PR events/comments
+  - Linear issue tracking
+  - Slack notifications via Axolo
+  - Error tracking systems
+- Implements synchronization logic to maintain consistency across platforms
 
-2. Memory Integration System (Importance: 85)
-File: `/autopr/actions/mem0_memory_integration.py`
+### 3. Memory & Learning System (80)
+- Location: `autopr/actions/learning_memory_system.py`
+- Handles data persistence and retrieval for:
+  - Fix pattern learning from successful PR fixes
+  - User preference tracking
+  - Project pattern analysis
+  - Integration with provider-specific storage
 
-Data persistence flows:
-- Context-aware data storage routing
-- Cross-platform memory synchronization
-- Historical pattern storage and retrieval
-- Integration state persistence
+### 4. Workflow Engine (75)
+- Location: `autopr/workflows/engine.py`
+- Orchestrates data flow through workflow steps:
+  - Routes events to appropriate handlers
+  - Manages workflow state transitions
+  - Synchronizes data between workflow stages
+  - Handles parallel workflow execution
 
-3. Axolo Integration Layer (Importance: 80)
-File: `/autopr/integrations/axolo_integration.py`
+### 5. Cross-Platform Synchronization (70)
+- Location: `autopr/actions/multi_platform_integrator.py`
+- Maintains data consistency across:
+  - Issue tracking systems (GitHub/Linear/Jira)
+  - Communication platforms (Slack/Discord/Teams)
+  - Documentation systems (Notion)
+- Implements custom sync strategies per platform
 
-Communication flows:
-- PR channel data routing
-- Message transformation and delivery
-- Notification state management
-- Command processing pipeline
-
-4. Platform Registry (Importance: 75)
-File: `/autopr/integrations/registry.py`
-
-Registration flows:
-- Platform capability registration
-- Integration point mapping
-- Data format compatibility checking
-- Cross-platform identifier resolution
-
-5. Base Integration Framework (Importance: 70)
-File: `/autopr/integrations/base.py`
-
-Core integration patterns:
-- Standard data exchange protocols
-- Platform authentication flow
-- Event subscription management
-- Error recovery mechanisms
+### 6. AI Multi-Agent Coordination (70)
+- Location: `autopr/actions/autogen_multi_agent.py`
+- Manages data flow between specialized AI agents:
+  - Code Analyzer
+  - Code Fixer
+  - Quality Reviewer
+  - Security Auditor
+  - Project Manager
+- Coordinates inter-agent communication and data sharing
 
 $END$
 

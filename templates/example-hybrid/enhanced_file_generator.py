@@ -32,7 +32,7 @@ class EnhancedFileGenerator:
         self.template_cache: Dict[str, TemplateMetadata] = {}
         self._load_templates()
     
-    def _load_templates(self):
+    def _load_templates(self) -> None:
         """Load all template metadata from YAML files."""
         for yaml_file in self.templates_dir.rglob("*.yml"):
             if yaml_file.name.endswith('.yml'):

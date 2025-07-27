@@ -10,11 +10,12 @@ Provides a clean interface for template management and supports multiple formats
 import os
 import yaml
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List, Union
 from functools import lru_cache
+import logging
 
 try:
-    from jinja2 import Template as Jinja2Template, Environment, FileSystemLoader
+    from jinja2 import Environment, FileSystemLoader, Template as Jinja2Template
     JINJA2_AVAILABLE = True
 except ImportError:
     JINJA2_AVAILABLE = False
@@ -27,7 +28,7 @@ except ImportError:
             # Simple string replacement fallback
             result = self.template_str
             for key, value in kwargs.items():
-                result = result.replace(f"{{{{ {key} }}}}", str(value))
+                result = result.replace(f"{{ {key} }}", str(value))
             return result
 
 
@@ -45,13 +46,13 @@ class TemplateLoader:
         
         # Initialize Jinja2 environment if available
         if JINJA2_AVAILABLE and self.doc_templates_dir.exists():
-            self.jinja_env = Environment(
+            self.jinja_env: Optional[Environment] = Environment(
                 loader=FileSystemLoader(str(self.doc_templates_dir)),
                 trim_blocks=True,
                 lstrip_blocks=True
             )
         else:
-            self.jinja_env = None
+            self.jinja_env: Optional[Environment] = None
     
     @lru_cache(maxsize=32)
     def load_template(self, template_name: str) -> str:
@@ -221,7 +222,7 @@ Template content not available.
 
 *Template not found: {template_name}*""")
     
-    def get_available_templates(self) -> list[str]:
+    def get_available_templates(self) -> List[str]:
         """Get list of available template files.
         
         Returns:

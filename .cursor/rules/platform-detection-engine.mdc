@@ -1,53 +1,76 @@
 ---
-description: Documentation for platform detection algorithms, confidence scoring, and platform-specific enhancement recommendations
-globs: /autopr/actions/platform_detector.py,/autopr/actions/prototype_enhancer.py,/autopr/actions/multi_platform_integrator.py
+description: Used for analyzing, scoring and classifying development platforms based on project characteristics with recommendations engine.
+globs: **/platform_detection/**,**/platform_detection.py,**/platform_configs/**
 alwaysApply: false
 ---
 
 
 # platform-detection-engine
 
-The platform detection engine consists of three core components:
+The platform detection system implements intelligent analysis and classification of development platforms through multi-factor scoring and recommendation generation.
 
-## Platform Detection Algorithm (Importance: 95)
-File: `/autopr/actions/platform_detector.py`
+## Core Components
 
-Detection system identifies development platforms through:
-- Signature matching against known platform-specific files
-- Analysis of dependency patterns in package manifests  
-- Project structure fingerprinting
-- Configuration file pattern recognition
-- Commit message analysis
+### Platform Scoring Engine (90/100)
+File: `autopr/actions/platform_detection/scoring.py`
 
-The detection process generates a confidence score for each potential platform match using:
-- Number of matched signatures
-- Strength of dependency correlations
-- Structure similarity scores
-- Configuration completeness metrics
+Calculates weighted confidence scores across multiple indicators:
+- File signatures (0.4 weight)
+- Dependencies (0.25 weight) 
+- Folder patterns (0.2 weight)
+- Commit patterns (0.15 weight)
+- Content matches (0.1 weight)
 
-## Enhancement Recommendations (Importance: 85)
-File: `/autopr/actions/prototype_enhancer.py`
+Implements score normalization and platform ranking to determine:
+- Primary platform (highest confidence)
+- Secondary platforms (>0.3 confidence)
+- Workflow type (single/hybrid/multi-platform)
 
-Once a platform is detected, the enhancer:
-1. Generates platform-optimized recommendations for:
-   - Required dependencies
-   - Recommended project structure
-   - Platform-specific best practices
-   - Missing configuration files
-2. Provides implementation templates for:
-   - Common platform patterns
-   - Integration points
-   - Development workflows
+### Platform Analysis Engine (85/100)
+File: `autopr/actions/platform_detection/detector.py`
 
-## Multi-Platform Integration (Importance: 80) 
-File: `/autopr/actions/multi_platform_integrator.py`
+Performs deep analysis of project characteristics:
+- Runtime environment detection
+- Database technology identification  
+- Framework pattern matching
+- TypeScript/JavaScript analysis
+- Project structure validation
 
-Handles cross-platform compatibility:
-- Maps detected platform features to universal capabilities
-- Identifies integration points between platforms
-- Manages platform-specific requirements
-- Generates compatibility matrices
-- Provides migration paths between platforms
+### Enhancement Recommendations (80/100)
+File: `autopr/actions/platform_detector.py`
+
+Generates platform-specific enhancement recommendations:
+- Missing configurations
+- Security improvements
+- Testing setup
+- Production readiness
+- Framework integrations
+
+### Migration Analysis (75/100)
+File: `autopr/actions/platform_detection/file_analyzer.py`
+
+Evaluates migration opportunities:
+- Cross-platform compatibility scoring
+- Technology stack alignment
+- Migration complexity assessment
+- Benefit analysis
+- Step-by-step migration paths
+
+## Platform Support
+
+Detects and analyzes platforms including:
+- Replit
+- Lovable
+- Bolt
+- Same
+- Emergent
+
+For each platform, maintains fingerprints of:
+- Required files
+- Dependency patterns 
+- Folder structures
+- Configuration formats
+- Framework indicators
 
 $END$
 

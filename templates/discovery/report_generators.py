@@ -18,7 +18,7 @@ from pathlib import Path
 from datetime import datetime
 from abc import ABC, abstractmethod
 
-from .quality_metrics import QualityMetrics, QualityAnalyzer
+from autopr.quality.template_metrics import QualityMetrics, QualityAnalyzer
 from .template_validators import ValidationIssue, ValidationSeverity
 
 

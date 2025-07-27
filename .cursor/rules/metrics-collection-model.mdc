@@ -1,52 +1,56 @@
 ---
-description: Specification for metrics collection and tracking system used to measure success rates, quality metrics, and performance indicators
-globs: /autopr/quality/metrics_collector.py,/autopr/evaluation/metrics_collector.py
+description: Specifies how metrics are collected, processed and analyzed across the AutoPR system to measure success rates, quality and performance.
+globs: **/metrics*.{py,ts},**/monitoring/*.{py,ts},**/evaluation/*.{py,ts},**/quality/*.{py,ts}
 alwaysApply: false
 ---
 
 
 # metrics-collection-model
 
-## Core Metrics Models
-Located in `/autopr/quality/metrics_collector.py` and `/autopr/evaluation/metrics_collector.py`
+The metrics collection system implements a comprehensive framework for measuring and analyzing AutoPR's performance across multiple dimensions:
 
-### Success Rate Tracking
-Importance Score: 85
-- PR fix attempt success/failure recording
-- Historical trend analysis for automation efficacy
-- Platform-specific success rate segmentation
-- Learning-based improvement tracking
+## Core Metrics Framework
 
-### Quality Measurements 
-Importance Score: 90
-- Code quality impact assessment
-- User satisfaction scoring system
-- Resolution time tracking
-- Automated fix reliability metrics
+### Evaluation Categories (90)
+- Fix Success Rate (25% weight)
+- User Satisfaction (20% weight) 
+- System Uptime (15% weight)
+- Test Pass Rates (15% weight)
+- Security Score (10% weight)
+- Code Quality (10% weight)
+- Error Rate (-5% negative weight)
 
-### Performance Indicators
-Importance Score: 80
-- Resource utilization per fix attempt
-- Response time measurements
-- Integration latency tracking
-- Cross-platform sync efficiency
+### Success Rate Calculations (85)
+- Automated fix acceptance rate
+- PR review success percentage
+- Classification accuracy for issues
+- False positive detection rate
+- API cost optimization tracking
 
-### Analysis Components
-Importance Score: 75
-- Trend analysis for fix patterns
-- Success rate correlation with:
-  - Platform types
-  - Issue categories
-  - Code contexts
-  - User interaction patterns
+### Quality Scoring (80)
+- Code quality measurements
+- Security vulnerability detection
+- Test coverage analysis
+- Documentation completeness
+- Coding standards compliance
 
-### Data Collection Points
-Importance Score: 70
-- Fix attempt initiation
-- Resolution completion
-- User feedback capture
-- Platform response logging
-- Quality gate results
+### Performance Monitoring (75)
+- Response time tracking
+- API latency measurements
+- Resource utilization
+- Rate limit monitoring
+- Cost per operation
+
+### Trend Analysis (70)
+- Weekly moving averages
+- Success rate trends (+/- 5%)
+- User satisfaction trends
+- Error rate patterns
+- Cost optimization trends
+
+File Paths:
+- autopr/evaluation/metrics_collector.py
+- autopr/quality/metrics_collector.py
 
 $END$
 

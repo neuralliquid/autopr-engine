@@ -220,7 +220,7 @@ class ContentAnalyzer:
         Returns:
             Platform information dictionary
         """
-        platform_info = template_data.get('platform_info', {})
+        platform_info: Dict[str, Any] = template_data.get('platform_info', {})
         
         # Add category-specific information
         if category == 'platform':
@@ -246,7 +246,7 @@ class ContentAnalyzer:
         Returns:
             Use case information dictionary
         """
-        use_case_info = template_data.get('use_case_info', {})
+        use_case_info: Dict[str, Any] = template_data.get('use_case_info', {})
         
         if category == 'use_case':
             # Extract use case-specific details
@@ -274,7 +274,7 @@ class ContentAnalyzer:
         Returns:
             Integration information dictionary
         """
-        integration_info = template_data.get('integration_info', {})
+        integration_info: Dict[str, Any] = template_data.get('integration_info', {})
         
         if category == 'integration':
             # Extract integration-specific details

@@ -30,9 +30,9 @@ class ValidationRule:
     check_function: str
     weight: float = 1.0
     enabled: bool = True
-    parameters: Dict[str, Any] = None
+    parameters: Optional[Dict[str, Any]] = None
     
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.parameters is None:
             self.parameters = {}
 
@@ -336,7 +336,7 @@ class ValidationRuleLoader:
 
 
 # Global rule loader instance
-_rule_loader = None
+_rule_loader: Optional[ValidationRuleLoader] = None
 
 def get_validation_rules() -> ValidationRuleSet:
     """Get the global validation rules instance."""
