@@ -1,6 +1,6 @@
 # Multi-stage build for AutoPR Engine
 # Stage 1: Build environment
-FROM python:3.11-slim as builder
+FROM python:3.13-slim as builder
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
@@ -34,12 +34,12 @@ RUN pip install -e .
 # Run tests (optional, can be disabled for faster builds)
 ARG RUN_TESTS=true
 RUN if [ "$RUN_TESTS" = "true" ]; then \
-        pip install -r requirements-dev.txt && \
-        pytest tests/ -v --tb=short; \
+    pip install -r requirements-dev.txt && \
+    pytest tests/ -v --tb=short; \
     fi
 
 # Stage 2: Production environment
-FROM python:3.11-slim as production
+FROM python:3.13-slim as production
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
@@ -66,7 +66,7 @@ RUN mkdir -p /app /app/logs /app/data /app/config && \
 WORKDIR /app
 
 # Copy built application from builder stage
-COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=builder /usr/local/lib/python3.13/site-packages /usr/local/lib/python3.13/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /app /app
 
@@ -105,9 +105,9 @@ CMD ["autopr-server"]
 
 # Labels for metadata
 LABEL org.opencontainers.image.title="AutoPR Engine" \
-      org.opencontainers.image.description="AI-Powered GitHub PR Automation and Issue Management" \
-      org.opencontainers.image.version="1.0.0" \
-      org.opencontainers.image.vendor="VeritasVault" \
-      org.opencontainers.image.source="https://github.com/veritasvault/autopr-engine" \
-      org.opencontainers.image.documentation="https://autopr-engine.readthedocs.io" \
-      org.opencontainers.image.licenses="MIT" 
+    org.opencontainers.image.description="AI-Powered GitHub PR Automation and Issue Management" \
+    org.opencontainers.image.version="1.0.0" \
+    org.opencontainers.image.vendor="VeritasVault" \
+    org.opencontainers.image.source="https://github.com/veritasvault/autopr-engine" \
+    org.opencontainers.image.documentation="https://autopr-engine.readthedocs.io" \
+    org.opencontainers.image.licenses="MIT"

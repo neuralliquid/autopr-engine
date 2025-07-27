@@ -88,7 +88,7 @@ setup(
     },
     include_package_data=True,
     # Python version and classifiers
-    python_requires=">=3.9",
+    python_requires=">=3.13",
     classifiers=[
         # Development Status
         "Development Status :: 4 - Beta",
@@ -105,6 +105,7 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Programming Language :: Python :: Implementation :: CPython",
         # Operating System
         "Operating System :: OS Independent",

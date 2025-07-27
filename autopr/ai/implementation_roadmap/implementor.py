@@ -357,7 +357,7 @@ class Phase1ExtensionImplementor:
         # Check Python version
         import sys
 
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 13):
             validation_results["issues"].append(
                 f"Python version {sys.version} is below minimum requirement (3.9+)"
             )

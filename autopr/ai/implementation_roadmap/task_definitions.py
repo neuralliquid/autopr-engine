@@ -184,7 +184,7 @@ class TaskRegistry:
                 packages_required=[
                     "pytest>=7.4.0",
                     "pytest-asyncio>=0.21.0",
-                    "pytest-mock>=3.11.0",
+                    "pytest-mock>=3.13.0",
                 ],
             ),
             # Strategic Priority Tasks
