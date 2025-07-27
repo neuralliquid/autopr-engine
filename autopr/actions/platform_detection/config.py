@@ -259,6 +259,5 @@ class PlatformConfigManager:
             for category, platform_ids in self._platforms_by_category.items()
         }
 
-
 # For backward compatibility
 PlatformConfig = PlatformConfigManager

@@ -51,7 +51,9 @@ classifiers = [
     "Topic :: Software Development :: Quality Assurance",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
+
 requires-python = ">=3.13"
+
 dependencies = [
     # Core dependencies
     "pydantic>=2.9.0,<3.0.0",

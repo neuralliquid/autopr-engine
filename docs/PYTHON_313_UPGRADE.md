@@ -217,8 +217,7 @@ pre-commit run mypy --all-files
 ```
 
 ## Rollback Plan
-
-If issues arise, you can rollback to Python 3.13:
+If issues arise, you can rollback to Python 3.11:
 
 ### 1. Revert Configuration Files
 

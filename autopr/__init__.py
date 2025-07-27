@@ -134,7 +134,14 @@ mem0 = None
 try:
     import mem0
 except ImportError:
-    pass
+    import warnings
+
+    warnings.warn(
+        "Mem0 is not installed. Advanced memory features will be unavailable. "
+        "Install with: pip install 'autopr-engine[memory]'",
+        ImportWarning,
+        stacklevel=2,
+    )
 
 # Setup logging defaults
 import logging

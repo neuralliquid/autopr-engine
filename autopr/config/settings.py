@@ -27,7 +27,6 @@ except ImportError:
     # Fallback to Pydantic 1.x
     from pydantic.env_settings import BaseSettings
 
-
 class Environment(str, Enum):
     """Environment types."""
 

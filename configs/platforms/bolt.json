@@ -1,0 +1,21 @@
+{
+  "name": "bolt",
+  "display_name": "Bolt.new",
+  "description": "Bolt.new full-stack applications",
+  "primary_language": "typescript",
+  "framework": "react",
+  "deployment_targets": ["vercel", "railway", "render"],
+  "common_files": [
+    "package.json",
+    "src/App.tsx",
+    "src/main.tsx",
+    "src/components/",
+    "src/lib/",
+    "index.html",
+    "vite.config.ts"
+  ],
+  "package_manager": "npm",
+  "build_command": "npm run build",
+  "start_command": "npm run dev",
+  "test_command": "npm test"
+}
