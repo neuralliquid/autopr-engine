@@ -5,65 +5,76 @@ Uses AutoGen for complex multi-agent development tasks
 
 import json
 import os
-from typing import Dict, List, Any, Optional
-from pydantic import BaseModel
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, Field
 
 try:
     import autogen
     from autogen import ConversableAgent, GroupChat, GroupChatManager
+
     AUTOGEN_AVAILABLE = True
 except ImportError:
     AUTOGEN_AVAILABLE = False
+    # Create dummy classes for type annotations
+    ConversableAgent = object
+    GroupChat = object
+    GroupChatManager = object
+
 
 class AutoGenInputs(BaseModel):
     task_description: str
-    task_type: str  # "feature_development", "bug_fix", "security_review", "performance_optimization"
+    task_type: (
+        str  # "feature_development", "bug_fix", "security_review", "performance_optimization"
+    )
     repository: str
     file_paths: List[str] = []
     requirements: Dict[str, Any] = {}
     complexity_level: str = "medium"  # "simple", "medium", "complex"
     max_agents: int = 4
 
+
 class AutoGenOutputs(BaseModel):
     implementation_plan: str
-    code_changes: Dict[str, str]  # file_path -> code_content
-    test_files: Dict[str, str]  # test_file_path -> test_content
+    code_changes: Dict[str, str] = Field(default_factory=dict)  # file_path -> code_content
+    test_files: Dict[str, str] = Field(default_factory=dict)  # test_file_path -> test_content
     documentation: str
-    agent_conversations: List[Dict[str, Any]]
+    agent_conversations: List[Dict[str, Any]] = Field(default_factory=list)
     quality_score: float
     success: bool
-    errors: List[str]
+    errors: List[str] = Field(default_factory=list)
+
 
 class AutoGenImplementation:
-    def __init__(self):
+    def __init__(self) -> None:
         if not AUTOGEN_AVAILABLE:
             raise ImportError("AutoGen not installed. Install with: pip install pyautogen")
-        
+
         self.llm_config = {
             "model": os.getenv("OPENAI_MODEL", "gpt-4"),
             "api_key": os.getenv("OPENAI_API_KEY"),
             "temperature": 0.1,
-            "timeout": 120
+            "timeout": 120,
         }
-        
+
         # Alternative LLM configurations
         self.alternative_configs = {
             "claude": {
                 "model": "claude-3-sonnet-20240229",
                 "api_key": os.getenv("ANTHROPIC_API_KEY"),
-                "api_type": "anthropic"
+                "api_type": "anthropic",
             },
             "mistral": {
                 "model": "mistral-large-latest",
                 "api_key": os.getenv("MISTRAL_API_KEY"),
-                "api_type": "mistral"
-            }
+                "api_type": "mistral",
+            },
         }
 
     def execute_multi_agent_task(self, inputs: AutoGenInputs) -> AutoGenOutputs:
         """Main function to execute multi-agent development task"""
-        
+
         if not AUTOGEN_AVAILABLE:
             return AutoGenOutputs(
                 implementation_plan="",
@@ -73,35 +84,30 @@ class AutoGenImplementation:
                 agent_conversations=[],
                 quality_score=0.0,
                 success=False,
-                errors=["AutoGen not available"]
+                errors=["AutoGen not available"],
             )
-        
+
         try:
             # Create specialized agents based on task type
             agents = self._create_agents(inputs.task_type, inputs.complexity_level)
-            
+
             # Setup group chat
             group_chat = GroupChat(
                 agents=agents,
                 messages=[],
                 max_round=20,
-                speaker_selection_method="round_robin"
+                speaker_selection_method="round_robin",
             )
-            
+
             # Create group chat manager
-            manager = GroupChatManager(
-                groupchat=group_chat,
-                llm_config=self.llm_config
-            )
-            
+            manager = GroupChatManager(groupchat=group_chat, llm_config=self.llm_config)
+
             # Execute the task
-            conversation_result = self._execute_conversation(
-                agents, manager, inputs
-            )
-            
+            conversation_result = self._execute_conversation(agents, manager, inputs)
+
             # Process results
             return self._process_results(conversation_result, inputs)
-            
+
         except Exception as e:
             return AutoGenOutputs(
                 implementation_plan="",
@@ -111,14 +117,14 @@ class AutoGenImplementation:
                 agent_conversations=[],
                 quality_score=0.0,
                 success=False,
-                errors=[str(e)]
+                errors=[str(e)],
             )
 
     def _create_agents(self, task_type: str, complexity_level: str) -> List[ConversableAgent]:
         """Create specialized agents based on task requirements"""
-        
+
         agents = []
-        
+
         # Always include a Software Architect for planning
         architect = ConversableAgent(
             name="Software_Architect",
@@ -139,10 +145,10 @@ Focus on:
 - Testing strategy
             """,
             llm_config=self.llm_config,
-            human_input_mode="NEVER"
+            human_input_mode="NEVER",
         )
         agents.append(architect)
-        
+
         # Always include a Senior Developer for implementation
         developer = ConversableAgent(
             name="Senior_Developer",
@@ -164,10 +170,10 @@ Coding standards:
 - Ensure accessibility compliance
             """,
             llm_config=self.llm_config,
-            human_input_mode="NEVER"
+            human_input_mode="NEVER",
         )
         agents.append(developer)
-        
+
         # Add task-specific agents
         if task_type == "security_review" or complexity_level == "complex":
             security_agent = ConversableAgent(
@@ -191,11 +197,14 @@ Security focus areas:
 - Data encryption and privacy
                 """,
                 llm_config=self.llm_config,
-                human_input_mode="NEVER"
+                human_input_mode="NEVER",
             )
             agents.append(security_agent)
-        
-        if task_type in ["feature_development", "performance_optimization"] or complexity_level == "complex":
+
+        if (
+            task_type in ["feature_development", "performance_optimization"]
+            or complexity_level == "complex"
+        ):
             qa_engineer = ConversableAgent(
                 name="QA_Engineer",
                 system_message="""
@@ -217,10 +226,10 @@ Testing expertise:
 - Performance testing considerations
                 """,
                 llm_config=self.llm_config,
-                human_input_mode="NEVER"
+                human_input_mode="NEVER",
             )
             agents.append(qa_engineer)
-        
+
         # Add Code Reviewer for complex tasks
         if complexity_level == "complex":
             reviewer = ConversableAgent(
@@ -244,50 +253,48 @@ Review criteria:
 - Documentation quality
                 """,
                 llm_config=self.llm_config,
-                human_input_mode="NEVER"
+                human_input_mode="NEVER",
             )
             agents.append(reviewer)
-        
+
         return agents
 
-    def _execute_conversation(self, agents: List, manager: GroupChatManager, inputs: AutoGenInputs) -> Dict:
+    def _execute_conversation(
+        self, agents: List, manager: GroupChatManager, inputs: AutoGenInputs
+    ) -> Dict:
         """Execute the multi-agent conversation"""
-        
+
         # Prepare the initial task message
         task_message = self._create_task_message(inputs)
-        
+
         # Start the conversation
         conversation_history = []
-        
+
         try:
             # Initiate the conversation with the architect
             architect = agents[0]  # First agent is always the architect
-            
-            result = architect.initiate_chat(
-                manager,
-                message=task_message,
-                max_turns=20
-            )
-            
+
+            result = architect.initiate_chat(manager, message=task_message, max_turns=20)
+
             # Extract conversation history
             conversation_history = manager.groupchat.messages
-            
+
             return {
                 "success": True,
                 "conversation_history": conversation_history,
-                "final_result": result
+                "final_result": result,
             }
-            
+
         except Exception as e:
             return {
                 "success": False,
                 "error": str(e),
-                "conversation_history": conversation_history
+                "conversation_history": conversation_history,
             }
 
     def _create_task_message(self, inputs: AutoGenInputs) -> str:
         """Create the initial task message for agents"""
-        
+
         message = f"""
 # Development Task: {inputs.task_type.replace('_', ' ').title()}
 
@@ -321,12 +328,12 @@ Review criteria:
 
 Please work together to create a complete, production-ready solution.
         """
-        
+
         return message.strip()
 
     def _process_results(self, conversation_result: Dict, inputs: AutoGenInputs) -> AutoGenOutputs:
         """Process the conversation results into structured output"""
-        
+
         if not conversation_result.get("success", False):
             return AutoGenOutputs(
                 implementation_plan="",
@@ -336,25 +343,25 @@ Please work together to create a complete, production-ready solution.
                 agent_conversations=[],
                 quality_score=0.0,
                 success=False,
-                errors=[conversation_result.get("error", "Unknown error")]
+                errors=[conversation_result.get("error", "Unknown error")],
             )
-        
+
         conversation_history = conversation_result.get("conversation_history", [])
-        
+
         # Extract different types of content from conversation
         implementation_plan = self._extract_implementation_plan(conversation_history)
         code_changes = self._extract_code_changes(conversation_history)
         test_files = self._extract_test_files(conversation_history)
         documentation = self._extract_documentation(conversation_history)
-        
+
         # Calculate quality score based on various factors
         quality_score = self._calculate_quality_score(
             implementation_plan, code_changes, test_files, conversation_history
         )
-        
+
         # Format conversation history
         formatted_conversations = self._format_conversations(conversation_history)
-        
+
         return AutoGenOutputs(
             implementation_plan=implementation_plan,
             code_changes=code_changes,
@@ -363,112 +370,130 @@ Please work together to create a complete, production-ready solution.
             agent_conversations=formatted_conversations,
             quality_score=quality_score,
             success=True,
-            errors=[]
+            errors=[],
         )
 
     def _extract_implementation_plan(self, conversation_history: List) -> str:
         """Extract implementation plan from conversation"""
         plan_content = []
-        
+
         for message in conversation_history:
             content = message.get("content", "")
             if "implementation plan" in content.lower() or "plan:" in content.lower():
                 plan_content.append(f"**{message.get('name', 'Agent')}**: {content}")
-        
+
         return "\n\n".join(plan_content) if plan_content else "No implementation plan found"
 
     def _extract_code_changes(self, conversation_history: List) -> Dict[str, str]:
         """Extract code changes from conversation"""
         code_changes = {}
-        
+
         for message in conversation_history:
             content = message.get("content", "")
-            
+
             # Look for code blocks
             if "```" in content:
                 # Extract code blocks and try to determine file paths
                 import re
-                code_blocks = re.findall(r'```(?:typescript|tsx|ts|javascript|jsx|js)?\n(.*?)\n```', content, re.DOTALL)
-                
+
+                code_blocks = re.findall(
+                    r"```(?:typescript|tsx|ts|javascript|jsx|js)?\n(.*?)\n```",
+                    content,
+                    re.DOTALL,
+                )
+
                 for i, code_block in enumerate(code_blocks):
                     # Try to extract filename from context
                     filename = self._extract_filename_from_context(content, code_block)
                     if not filename:
                         filename = f"generated_file_{i+1}.tsx"
-                    
+
                     code_changes[filename] = code_block.strip()
-        
+
         return code_changes
 
     def _extract_test_files(self, conversation_history: List) -> Dict[str, str]:
         """Extract test files from conversation"""
         test_files = {}
-        
+
         for message in conversation_history:
             content = message.get("content", "")
-            
+
             if "test" in content.lower() and "```" in content:
                 import re
-                code_blocks = re.findall(r'```(?:typescript|tsx|ts|javascript|jsx|js)?\n(.*?)\n```', content, re.DOTALL)
-                
+
+                code_blocks = re.findall(
+                    r"```(?:typescript|tsx|ts|javascript|jsx|js)?\n(.*?)\n```",
+                    content,
+                    re.DOTALL,
+                )
+
                 for i, code_block in enumerate(code_blocks):
-                    if "test" in code_block.lower() or "describe" in code_block or "it(" in code_block:
+                    if (
+                        "test" in code_block.lower()
+                        or "describe" in code_block
+                        or "it(" in code_block
+                    ):
                         filename = f"test_file_{i+1}.test.tsx"
                         test_files[filename] = code_block.strip()
-        
+
         return test_files
 
     def _extract_documentation(self, conversation_history: List) -> str:
         """Extract documentation from conversation"""
         doc_content = []
-        
+
         for message in conversation_history:
             content = message.get("content", "")
             if "documentation" in content.lower() or "readme" in content.lower():
                 doc_content.append(f"**{message.get('name', 'Agent')}**: {content}")
-        
+
         return "\n\n".join(doc_content) if doc_content else "No documentation found"
 
     def _extract_filename_from_context(self, content: str, code_block: str) -> Optional[str]:
         """Try to extract filename from the context around a code block"""
         import re
-        
+
         # Look for common filename patterns
         filename_patterns = [
-            r'File: ([^\n]+)',
-            r'`([^`]+\.(?:tsx?|jsx?|ts|js))`',
-            r'([a-zA-Z][a-zA-Z0-9_-]*\.(?:tsx?|jsx?|ts|js))',
+            r"File: ([^\n]+)",
+            r"`([^`]+\.(?:tsx?|jsx?|ts|js))`",
+            r"([a-zA-Z][a-zA-Z0-9_-]*\.(?:tsx?|jsx?|ts|js))",
         ]
-        
+
         for pattern in filename_patterns:
             match = re.search(pattern, content)
             if match:
                 return match.group(1)
-        
+
         # If code contains component or class names, generate filename
         if "export default" in code_block or "export class" in code_block:
-            component_match = re.search(r'(?:export default|export class|function) (\w+)', code_block)
+            component_match = re.search(
+                r"(?:export default|export class|function) (\w+)", code_block
+            )
             if component_match:
                 component_name = component_match.group(1)
                 return f"{component_name}.tsx"
-        
+
         return None
 
-    def _calculate_quality_score(self, plan: str, code_changes: Dict, test_files: Dict, conversation: List) -> float:
+    def _calculate_quality_score(
+        self, plan: str, code_changes: Dict, test_files: Dict, conversation: List
+    ) -> float:
         """Calculate quality score based on various factors"""
         score = 0.0
         max_score = 100.0
-        
+
         # Implementation plan quality (20 points)
         if len(plan) > 100:
             score += 20
         elif len(plan) > 50:
             score += 10
-        
+
         # Code changes quality (40 points)
         if code_changes:
             score += 20  # Base points for having code
-            
+
             # Check for TypeScript types
             for code in code_changes.values():
                 if "interface" in code or "type" in code:
@@ -479,37 +504,40 @@ Please work together to create a complete, production-ready solution.
                     score += 5
                 if "try" in code and "catch" in code:  # Error handling
                     score += 5
-        
+
         # Test files quality (25 points)
         if test_files:
             score += 15  # Base points for having tests
-            
+
             for test_code in test_files.values():
                 if "describe" in test_code and "it(" in test_code:
                     score += 5
                 if "expect" in test_code:
                     score += 5
-        
+
         # Conversation quality (15 points)
         if len(conversation) >= 5:
             score += 10  # Good collaboration
         if len(conversation) >= 10:
-            score += 5   # Excellent collaboration
-        
+            score += 5  # Excellent collaboration
+
         return min(score, max_score)
 
     def _format_conversations(self, conversation_history: List) -> List[Dict]:
         """Format conversation history for output"""
         formatted = []
-        
+
         for message in conversation_history:
-            formatted.append({
-                "agent": message.get("name", "Unknown"),
-                "content": message.get("content", ""),
-                "timestamp": datetime.now().isoformat()
-            })
-        
+            formatted.append(
+                {
+                    "agent": message.get("name", "Unknown"),
+                    "content": message.get("content", ""),
+                    "timestamp": datetime.now().isoformat(),
+                }
+            )
+
         return formatted
+
 
 # Entry point for AutoPR
 def run(inputs_dict: dict) -> dict:
@@ -518,6 +546,7 @@ def run(inputs_dict: dict) -> dict:
     implementation = AutoGenImplementation()
     outputs = implementation.execute_multi_agent_task(inputs)
     return outputs.dict()
+
 
 if __name__ == "__main__":
     # Test the action
@@ -530,10 +559,10 @@ if __name__ == "__main__":
             "roles": ["admin", "user", "viewer"],
             "permissions": ["read", "write", "admin"],
             "component_protection": True,
-            "route_protection": True
+            "route_protection": True,
         },
-        "complexity_level": "medium"
+        "complexity_level": "medium",
     }
-    
+
     result = run(sample_inputs)
-    print(json.dumps(result, indent=2)) 
+    print(json.dumps(result, indent=2))
