@@ -1,5 +1,5 @@
 """
-Enhanced Platform Detector - Refactored Main Module
+Platform Detector - Refactored Main Module
 
 Orchestrates platform detection using modular components for better maintainability.
 """
@@ -7,40 +7,20 @@ Orchestrates platform detection using modular components for better maintainabil
 import re
 from typing import Any, Dict, List, Optional
 
-from pydantic import BaseModel, Field
-
 from .config import PlatformConfig
 from .file_analyzer import FileAnalyzer
+from .inputs import PlatformDetectorInputs, PlatformDetectorOutputs
 from .scoring import PlatformScoringEngine
 
 
-class EnhancedPlatformDetectorInputs(BaseModel):
-    repository_url: str
-    commit_messages: List[str] = []
-    workspace_path: str = "."
-    package_json_content: Optional[str] = None
-    git_log_depth: int = 50
-
-
-class EnhancedPlatformDetectorOutputs(BaseModel):
-    primary_platform: str
-    secondary_platforms: List[str] = Field(default_factory=list)
-    confidence_scores: Dict[str, float] = Field(default_factory=dict)
-    workflow_type: str  # "single_platform", "hybrid_workflow", "multi_platform"
-    platform_specific_configs: Dict[str, Any] = Field(default_factory=dict)
-    recommended_enhancements: List[str] = Field(default_factory=list)
-    migration_opportunities: List[str] = Field(default_factory=list)
-    hybrid_workflow_analysis: Optional[Dict[str, Any]] = None
-
-
-class EnhancedPlatformDetector:
-    """Enhanced platform detector with modular architecture."""
+class PlatformDetector:
+    """Platform detector with modular architecture."""
 
     def __init__(self) -> None:
         self.config = PlatformConfig()
         self.scoring_engine = PlatformScoringEngine()
 
-    async def run(self, inputs: EnhancedPlatformDetectorInputs) -> EnhancedPlatformDetectorOutputs:
+    async def run(self, inputs: PlatformDetectorInputs) -> PlatformDetectorOutputs:
         """Main detection workflow."""
         # Initialize file analyzer
         file_analyzer = FileAnalyzer(inputs.workspace_path)
@@ -88,7 +68,7 @@ class EnhancedPlatformDetector:
             primary_platform, secondary_platforms, detection_results
         )
 
-        return EnhancedPlatformDetectorOutputs(
+        return PlatformDetectorOutputs(
             primary_platform=primary_platform,
             secondary_platforms=secondary_platforms,
             confidence_scores=confidence_scores,
@@ -103,7 +83,7 @@ class EnhancedPlatformDetector:
         self,
         file_analyzer: FileAnalyzer,
         platform_configs: Dict[str, Dict[str, Any]],
-        inputs: EnhancedPlatformDetectorInputs,
+        inputs: PlatformDetectorInputs,
     ) -> Dict[str, Any]:
         """Perform comprehensive detection analysis."""
 
@@ -216,7 +196,3 @@ class EnhancedPlatformDetector:
                 configs[platform] = platform_config
 
         return configs
-
-
-# Backward compatibility - maintain the original class name and interface
-OriginalEnhancedPlatformDetector = EnhancedPlatformDetector

@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from .mem0_memory_integration import Mem0MemoryManager as _Mem0MemoryManager
     from .multi_platform_integrator import MultiPlatformIntegrator as _MultiPlatformIntegrator
     from .platform_detector import PlatformDetector as _PlatformDetector
-    from .platform_detector_enhanced import EnhancedPlatformDetector as _EnhancedPlatformDetector
+    from .platform_detector_enhanced import PlatformDetector as _PlatformDetector
     from .post_comment import PostComment as _PostComment
     from .prototype_enhancer import PrototypeEnhancer as _PrototypeEnhancer
     from .quality_gates import QualityGates as _QualityGates
@@ -32,13 +32,11 @@ if TYPE_CHECKING:
     from .visual_regression_test import VisualRegressionTest as _VisualRegressionTest
 
 # Import action classes with error handling for optional dependencies
-EnhancedPlatformDetector: Optional[Type[Any]] = None
+PlatformDetector: Optional[Type[Any]] = None
 try:
-    from .platform_detector_enhanced import (
-        EnhancedPlatformDetector as _RealEnhancedPlatformDetector,
-    )
+    from .platform_detector_enhanced import PlatformDetector as _RealPlatformDetector
 
-    EnhancedPlatformDetector = _RealEnhancedPlatformDetector
+    PlatformDetector = _RealPlatformDetector
 except ImportError:
     pass
 
@@ -212,7 +210,7 @@ except ImportError:
 # All available actions
 __all__ = [
     # Core AI-powered actions
-    "EnhancedPlatformDetector",
+    "PlatformDetector",
     "PrototypeEnhancer",
     "PlatformDetector",
     "AutoGenImplementation",
