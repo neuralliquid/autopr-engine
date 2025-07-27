@@ -4,7 +4,7 @@
   "service": "autopr-engine",
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
-  
+
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": true,
@@ -13,7 +13,7 @@
       "upgradePackages": true
     },
     "ghcr.io/devcontainers/features/python:1": {
-      "version": "3.11",
+      "version": "3.13",
       "installTools": true,
       "optimize": true
     },
@@ -150,4 +150,4 @@
   "remoteUser": "vscode",
   "containerUser": "vscode",
   "updateRemoteUserUID": true
-} 
+}

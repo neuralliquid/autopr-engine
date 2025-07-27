@@ -1,140 +1,264 @@
 """
 Platform Configuration Module
 
-Centralized platform definitions and configurations for detection.
+Loads and manages platform configurations from JSON files using the new schema.
 """
 
-from typing import Any, Dict, List
+import json
+import logging
+from datetime import datetime
+from pathlib import Path
+from typing import Any, ClassVar, Dict, List, Optional, Type, TypeVar
+
+from .schema import PlatformConfig, PlatformSource, PlatformStatus, PlatformType
+
+# Set up logging
+logger = logging.getLogger(__name__)
+
+T = TypeVar("T", bound="PlatformConfigManager")
 
 
-class PlatformConfig:
-    """Centralized platform configuration definitions."""
+class PlatformConfigManager:
+    """Manages platform configurations with the new schema."""
 
-    @staticmethod
-    def get_core_platforms() -> Dict[str, Dict[str, Any]]:
-        """Get core rapid prototyping platform configurations."""
-        return {
-            "replit": {
-                "files": [".replit", "replit.nix", "pyproject.toml", ".replit.json"],
-                "package_scripts": ["repl-run", "replit-dev", "repl-dev"],
-                "commit_patterns": [
-                    "replit",
-                    "exported from replit",
-                    "repl.it",
-                    "from replit",
-                ],
-                "dependencies": ["@replit/database", "replit-py"],
-                "folder_patterns": [".replit_modules", "replit_modules"],
-                "content_patterns": ["replit.com", "repl.co"],
-            },
-            "lovable": {
-                "files": ["lovable.config.js", ".lovable", "lovable.json"],
-                "package_scripts": ["lovable-dev", "lovable-build", "lovable-deploy"],
-                "commit_patterns": ["lovable", "from lovable", "lovable.dev"],
-                "dependencies": ["@lovable/cli", "@lovable/components"],
-                "folder_patterns": [".lovable", "lovable_modules"],
-                "content_patterns": ["lovable.dev", "lovable.app"],
-            },
-            "bolt": {
-                "files": ["bolt.config.js", ".bolt", "bolt.json"],
-                "package_scripts": ["bolt-dev", "bolt-build", "bolt-deploy"],
-                "commit_patterns": ["bolt", "from bolt", "bolt.new"],
-                "dependencies": ["@bolt/cli", "@bolt/components"],
-                "folder_patterns": [".bolt", "bolt_modules"],
-                "content_patterns": ["bolt.new", "bolt.dev"],
-            },
-            "cursor": {
-                "files": [".cursor", "cursor.config.json", ".cursorrules"],
-                "package_scripts": ["cursor-dev", "cursor-build"],
-                "commit_patterns": ["cursor", "from cursor", "cursor.sh"],
-                "dependencies": ["@cursor/cli"],
-                "folder_patterns": [".cursor", "cursor_modules"],
-                "content_patterns": ["cursor.sh", "cursor.com"],
-            },
-            "v0": {
-                "files": ["v0.config.js", ".v0", "v0.json"],
-                "package_scripts": ["v0-dev", "v0-build", "v0-deploy"],
-                "commit_patterns": ["v0", "from v0", "v0.dev"],
-                "dependencies": ["@v0/cli", "@v0/components"],
-                "folder_patterns": [".v0", "v0_modules"],
-                "content_patterns": ["v0.dev", "vercel.com/v0"],
-            },
-        }
+    _instance: ClassVar[Optional["PlatformConfigManager"]] = None
+    _configs_loaded: bool = False
+    _platforms: Dict[str, PlatformConfig] = {}
+    _platforms_by_category: Dict[str, List[str]] = {}
+    _platforms_by_type: Dict[PlatformType, List[str]] = {}
 
-    @staticmethod
-    def get_ai_platforms() -> Dict[str, Dict[str, Any]]:
-        """Get AI-specific platform configurations."""
-        return {
-            "github_copilot": {
-                "files": [".github/copilot.yml", "copilot.config.json"],
-                "package_scripts": ["copilot-suggest", "copilot-complete"],
-                "commit_patterns": ["copilot", "github copilot", "co-authored-by: github"],
-                "dependencies": ["@github/copilot"],
-                "folder_patterns": [".copilot"],
-                "content_patterns": ["github.com/features/copilot"],
-            },
-            "codeium": {
-                "files": [".codeium", "codeium.config.json"],
-                "package_scripts": ["codeium-suggest"],
-                "commit_patterns": ["codeium", "from codeium"],
-                "dependencies": ["codeium"],
-                "folder_patterns": [".codeium"],
-                "content_patterns": ["codeium.com"],
-            },
-            "tabnine": {
-                "files": [".tabnine", "tabnine.config.json"],
-                "package_scripts": ["tabnine-suggest"],
-                "commit_patterns": ["tabnine", "from tabnine"],
-                "dependencies": ["tabnine"],
-                "folder_patterns": [".tabnine"],
-                "content_patterns": ["tabnine.com"],
-            },
-        }
+    # Default configuration directories
+    _BASE_CONFIG_DIR = Path(__file__).parent / "configs"
+    _CATEGORY_FILES = {
+        "core": "core_platforms.json",
+        "ai": "ai_platforms.json",
+        "cloud": "cloud_platforms.json",
+    }
 
-    @staticmethod
-    def get_cloud_platforms() -> Dict[str, Dict[str, Any]]:
-        """Get cloud platform configurations."""
-        return {
-            "vercel": {
-                "files": ["vercel.json", ".vercel", "now.json"],
-                "package_scripts": ["vercel", "vercel-build", "vercel-dev"],
-                "commit_patterns": ["vercel", "deployed to vercel"],
-                "dependencies": ["vercel", "@vercel/node"],
-                "folder_patterns": [".vercel"],
-                "content_patterns": ["vercel.com", "vercel.app"],
-            },
-            "netlify": {
-                "files": ["netlify.toml", ".netlify", "_redirects"],
-                "package_scripts": ["netlify", "netlify-build", "netlify-dev"],
-                "commit_patterns": ["netlify", "deployed to netlify"],
-                "dependencies": ["netlify-cli", "@netlify/functions"],
-                "folder_patterns": [".netlify"],
-                "content_patterns": ["netlify.com", "netlify.app"],
-            },
-            "railway": {
-                "files": ["railway.json", ".railway", "Procfile"],
-                "package_scripts": ["railway", "railway-deploy"],
-                "commit_patterns": ["railway", "deployed to railway"],
-                "dependencies": ["@railway/cli"],
-                "folder_patterns": [".railway"],
-                "content_patterns": ["railway.app"],
-            },
-        }
+    def __new__(cls: Type[T]) -> T:
+        """Singleton pattern implementation."""
+        if cls._instance is None:
+            cls._instance = super(PlatformConfigManager, cls).__new__(cls)
+            cls._instance._initialize()
+        return cls._instance
 
-    @staticmethod
-    def get_all_platforms() -> Dict[str, Dict[str, Any]]:
-        """Get all platform configurations combined."""
+    def _initialize(self) -> None:
+        """Initialize the configuration manager."""
+        self._platforms = {}
+        self._platforms_by_category = {}
+        self._platforms_by_type = {}
+        self._load_config_files()
+        self._configs_loaded = True
+
+    @classmethod
+    def _load_platform_file(cls, file_path: Path) -> Optional[PlatformConfig]:
+        """
+        Load a single platform configuration file.
+
+        Args:
+            file_path: Path to the platform configuration file
+
+        Returns:
+            PlatformConfig instance if successful, None otherwise
+        """
+        try:
+            if not file_path.exists():
+                logger.warning(f"Platform config file not found: {file_path}")
+                return None
+
+            platform_id = file_path.stem
+            return PlatformConfig.from_file(file_path)
+
+        except (json.JSONDecodeError, IOError, ValueError) as e:
+            logger.error(f"Error loading platform config {file_path}: {e}", exc_info=True)
+            return None
+
+    def _load_platforms_from_category(self, category: str) -> Dict[str, PlatformConfig]:
+        """
+        Load all platforms from a category directory.
+
+        Args:
+            category: Category name (core, ai, cloud, etc.)
+
+        Returns:
+            Dictionary of platform_id -> PlatformConfig
+        """
+        category_dir = self._BASE_CONFIG_DIR / category
+        if not category_dir.exists() or not category_dir.is_dir():
+            logger.warning("Category directory not found: %s", category_dir)
+            return {}
+
         platforms = {}
-        platforms.update(PlatformConfig.get_core_platforms())
-        platforms.update(PlatformConfig.get_ai_platforms())
-        platforms.update(PlatformConfig.get_cloud_platforms())
+
+        # Load all JSON files in the category directory
+        for config_file in category_dir.glob("*.json"):
+            if config_file.name in self._CATEGORY_FILES.values():
+                # Skip category index files
+                continue
+
+            platform = self._load_platform_file(config_file)
+            if platform:
+                platforms[platform.id] = platform
+
+                # Update indexes
+                self._platforms_by_category.setdefault(category, []).append(platform.id)
+                self._platforms_by_type.setdefault(platform.type, []).append(platform.id)
+
         return platforms
 
-    @staticmethod
-    def get_platform_categories() -> Dict[str, List[str]]:
-        """Get platform categories for classification."""
+    def _load_config_files(self) -> None:
+        """
+        Load all platform configurations from the config directory.
+
+        Raises:
+            Exception: If an error occurs while loading configurations
+        """
+        # Ensure config directory exists
+        self._BASE_CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+
+        # Load each category
+        for category in self._CATEGORY_FILES.keys():
+            platforms = self._load_platforms_from_category(category)
+            self._platforms.update(platforms)
+
+        logger.info("Loaded %d platform configurations", len(self._platforms))
+
+        # Load category index files for backward compatibility
+        self._load_category_index_files()
+
+    def _load_category_index_files(self) -> None:
+        """Load category index files for backward compatibility."""
+        for category, filename in self._CATEGORY_FILES.items():
+            category_file = self._BASE_CONFIG_DIR / filename
+            if not category_file.exists():
+                continue
+
+            try:
+                with open(category_file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+
+                if isinstance(data, dict):
+                    # Old format: {platform_id: path}
+                    for platform_id, path in data.items():
+                        if platform_id not in self._platforms:
+                            logger.warning(f"Referenced platform not found: {platform_id}")
+
+            except (json.JSONDecodeError, IOError) as e:
+                logger.error(f"Error loading category file {category_file}: {e}")
+
+    def get_platform(self, platform_id: str) -> Optional[PlatformConfig]:
+        """
+        Get a platform configuration by ID.
+
+        Args:
+            platform_id: The platform ID to look up
+
+        Returns:
+            PlatformConfig if found, None otherwise
+        """
+        if not self._configs_loaded:
+            self._load_config_files()
+        return self._platforms.get(platform_id)
+
+    def get_platforms_by_category(self, category: str) -> Dict[str, PlatformConfig]:
+        """
+        Get all platforms in a category.
+
+        Args:
+            category: The category name (core, ai, cloud, etc.)
+
+        Returns:
+            Dictionary of platform_id -> PlatformConfig
+        """
+        if not self._configs_loaded:
+            self._load_config_files()
+
+        platform_ids = self._platforms_by_category.get(category, [])
+        return {pid: self._platforms[pid] for pid in platform_ids if pid in self._platforms}
+
+    def get_platforms_by_type(self, platform_type: PlatformType) -> Dict[str, PlatformConfig]:
+        """
+        Get all platforms of a specific type.
+
+        Args:
+            platform_type: The platform type to filter by
+
+        Returns:
+            Dictionary of platform_id -> PlatformConfig
+        """
+        if not self._configs_loaded:
+            self._load_config_files()
+
+        platform_ids = self._platforms_by_type.get(platform_type, [])
+        return {pid: self._platforms[pid] for pid in platform_ids if pid in self._platforms}
+
+    def get_all_platforms(self) -> Dict[str, PlatformConfig]:
+        """
+        Get all platform configurations.
+
+        Returns:
+            Dictionary of platform_id -> PlatformConfig
+        """
+        if not self._configs_loaded:
+            self._load_config_files()
+        return self._platforms.copy()
+
+    def get_active_platforms(self) -> Dict[str, PlatformConfig]:
+        """
+        Get all active platform configurations.
+
+        Returns:
+            Dictionary of platform_id -> PlatformConfig
+        """
+        if not self._configs_loaded:
+            self._load_config_files()
+        return {pid: p for pid, p in self._platforms.items() if p.is_active}
+
+    def find_platforms(self, **filters) -> Dict[str, PlatformConfig]:
+        """
+        Find platforms matching the given filters.
+
+        Args:
+            **filters: Field names and values to filter by
+
+        Returns:
+            Dictionary of platform_id -> PlatformConfig that match all filters
+        """
+        if not self._configs_loaded:
+            self._load_config_files()
+
+        result = {}
+        for platform_id, platform in self._platforms.items():
+            match = True
+            for field, value in filters.items():
+                if not hasattr(platform, field):
+                    match = False
+                    break
+
+                if getattr(platform, field) != value:
+                    match = False
+                    break
+
+            if match:
+                result[platform_id] = platform
+
+        return result
+
+    def get_platform_categories(self) -> Dict[str, List[str]]:
+        """
+        Get platform categories with their associated platform IDs.
+
+        Returns:
+            Dictionary mapping category names to lists of platform IDs
+        """
+        if not self._configs_loaded:
+            self._load_config_files()
+
         return {
-            "rapid_prototyping": list(PlatformConfig.get_core_platforms().keys()),
-            "ai_assisted": list(PlatformConfig.get_ai_platforms().keys()),
-            "cloud_deployment": list(PlatformConfig.get_cloud_platforms().keys()),
+            category: platform_ids.copy()
+            for category, platform_ids in self._platforms_by_category.items()
         }
+
+
+# For backward compatibility
+PlatformConfig = PlatformConfigManager

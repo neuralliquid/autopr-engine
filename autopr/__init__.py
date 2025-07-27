@@ -101,6 +101,7 @@ __package_info__ = {
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Topic :: Software Development",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
     ],
@@ -117,7 +118,7 @@ if sys.version_info < (3, 8):
 
 # Optional dependency warnings
 try:
-    import autogen
+    import pyautogen as autogen
 except ImportError:
     import warnings
 
@@ -128,17 +129,12 @@ except ImportError:
         stacklevel=2,
     )
 
+# Mem0 is an optional dependency for advanced memory features
+mem0 = None
 try:
     import mem0
 except ImportError:
-    import warnings
-
-    warnings.warn(
-        "Mem0 is not installed. Advanced memory features will be unavailable. "
-        "Install with: pip install 'autopr-engine[memory]'",
-        ImportWarning,
-        stacklevel=2,
-    )
+    pass
 
 # Setup logging defaults
 import logging

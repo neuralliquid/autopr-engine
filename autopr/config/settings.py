@@ -19,7 +19,13 @@ from typing import Any, Dict, List, Optional, Type, Union
 
 import yaml
 from pydantic import BaseModel, Field, SecretStr, validator
-from pydantic.env_settings import BaseSettings
+
+try:
+    # Pydantic 2.0+
+    from pydantic_settings import BaseSettings
+except ImportError:
+    # Fallback to Pydantic 1.x
+    from pydantic.env_settings import BaseSettings
 
 
 class Environment(str, Enum):
