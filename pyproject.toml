@@ -2,6 +2,19 @@
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.poetry]
+name = "autopr-engine"
+version = "1.0.0"
+description = "AI-Powered GitHub PR Automation and Issue Management"
+authors = ["VeritasVault Team <dev@veritasvault.net>"]
+license = "MIT"
+packages = [
+    { include = "autopr", from = "." },
+]
+
+[tool.poetry.dependencies]
+python = "^3.13"
+
 [project]
 name = "autopr-engine"
 version = "1.0.0"
@@ -29,7 +42,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Operating System :: OS Independent",
@@ -38,7 +51,9 @@ classifiers = [
     "Topic :: Software Development :: Quality Assurance",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-requires-python = ">=3.9"
+
+requires-python = ">=3.13"
+
 dependencies = [
     # Core dependencies
     "pydantic>=2.9.0,<3.0.0",
@@ -207,7 +222,7 @@ known_third_party = [
 ]
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.13"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true

@@ -3,23 +3,23 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [main, develop]
-    tags: ['v*']
+    tags: ["v*"]
   pull_request:
     branches: [main, develop]
   workflow_dispatch:
     inputs:
       deploy_environment:
-        description: 'Environment to deploy to'
+        description: "Environment to deploy to"
         required: false
-        default: 'staging'
+        default: "staging"
         type: choice
         options:
           - staging
           - production
 
 env:
-  PYTHON_VERSION: '3.11'
-  POETRY_VERSION: '1.6.1'
+  PYTHON_VERSION: "3.13"
+  POETRY_VERSION: "1.6.1"
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
@@ -88,7 +88,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
     services:
       postgres:
         image: postgres:15
@@ -218,14 +218,14 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          format: 'sarif'
-          output: 'trivy-results.sarif'
+          format: "sarif"
+          output: "trivy-results.sarif"
         if: github.event_name != 'pull_request'
 
       - name: Upload Trivy scan results
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: "trivy-results.sarif"
         if: github.event_name != 'pull_request'
 
   # End-to-end tests
@@ -428,7 +428,7 @@ jobs:
         uses: 8398a7/action-slack@v4
         with:
           status: ${{ job.status }}
-          channel: '#autopr-deployments'
+          channel: "#autopr-deployments"
           webhook_url: ${{ secrets.SLACK_WEBHOOK }}
           fields: repo,message,commit,author,action,eventName,ref,workflow
         env:

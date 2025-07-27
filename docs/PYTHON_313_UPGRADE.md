@@ -217,7 +217,6 @@ pre-commit run mypy --all-files
 ```
 
 ## Rollback Plan
-
 If issues arise, you can rollback to Python 3.11:
 
 ### 1. Revert Configuration Files
@@ -226,12 +225,12 @@ If issues arise, you can rollback to Python 3.11:
 git checkout HEAD~1 -- pyproject.toml setup.py .pre-commit-config.yaml requirements-dev.txt
 ```
 
-### 2. Reinstall Python 3.11
+### 2. Reinstall Python 3.13
 
 ```cmd
-# Install Python 3.11
-pyenv install 3.11.9
-pyenv global 3.11.9
+# Install Python 3.13
+pyenv install 3.13.5
+pyenv global 3.13.5
 
 # Recreate virtual environment
 rmdir /s .venv
