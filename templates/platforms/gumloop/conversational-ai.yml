@@ -14,7 +14,7 @@ platform_info:
   pricing_model: "Freemium with subscription tiers"
   target_audience: "Customer service teams, sales organizations, marketing professionals, small to medium businesses"
   primary_use_cases: ["Customer service chatbots", "Sales automation", "Virtual assistants", "Lead qualification", "Support ticket automation"]
-  
+
   key_features:
     - "Advanced conversational AI with real-time NLP"
     - "Context-aware dialogue management"

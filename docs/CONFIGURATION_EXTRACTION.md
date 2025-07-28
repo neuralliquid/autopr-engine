@@ -52,7 +52,8 @@ configs/
 │   └── ...
 └── triggers/                   # Trigger configurations
     └── main-triggers.yaml      # Main workflow triggers
-```
+
+```text
 
 ### templates/ (File Generation Templates)
 

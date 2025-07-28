@@ -1,10 +1,13 @@
 # 13. Security Strategy
 
 ## Status
+
 Proposed
 
 ## Context
+
 AutoPR handles sensitive data and requires robust security measures to protect:
+
 - Repository access tokens
 - User credentials
 - Code and configuration
@@ -12,11 +15,13 @@ AutoPR handles sensitive data and requires robust security measures to protect:
 - Infrastructure
 
 ## Decision
+
 We will implement a defense-in-depth security strategy with the following layers:
 
 ### 1. Authentication & Authorization
 
 #### 1.1 Authentication
+
 - **OAuth 2.0 with PKCE** for GitHub/GitLab/Bitbucket
 - **JWT** for API authentication
 - **Short-lived access tokens** with refresh tokens
@@ -41,6 +46,7 @@ const authenticate = async (req: Request, res: Response, next: NextFunction) => 
 ```
 
 #### 1.2 Authorization
+
 - **Role-Based Access Control (RBAC)**
 - **Attribute-Based Access Control (ABAC)** for fine-grained permissions
 - **Repository-level access controls**
@@ -49,12 +55,14 @@ const authenticate = async (req: Request, res: Response, next: NextFunction) => 
 ### 2. Data Protection
 
 #### 2.1 Encryption
+
 - **At rest**: AES-256 for sensitive data
 - **In transit**: TLS 1.3 for all communications
 - **Secrets management**: AWS Secrets Manager or HashiCorp Vault
 - **Environment-specific keys**
 
 #### 2.2 Data Classification
+
 | Level | Description | Examples | Protection Required |
 |-------|-------------|----------|---------------------|
 | Public | Non-sensitive | Documentation, Open Source Code | None |
@@ -65,12 +73,14 @@ const authenticate = async (req: Request, res: Response, next: NextFunction) => 
 ### 3. Infrastructure Security
 
 #### 3.1 Network Security
+
 - **VPC** with private subnets
 - **Web Application Firewall (WAF)**
 - **DDoS protection**
 - **Rate limiting**
 
 #### 3.2 Container Security
+
 - **Minimal base images**
 - **Non-root user**
 - **Read-only filesystem** where possible
@@ -80,13 +90,16 @@ const authenticate = async (req: Request, res: Response, next: NextFunction) => 
 ### 4. Secure Development
 
 #### 4.1 Code Security
+
 - **SAST** (Static Application Security Testing)
 - **DAST** (Dynamic Application Security Testing)
 - **Dependency scanning**
 - **Secrets detection** in code
 
 #### 4.2 Secure Defaults
+
 ```python
+
 # Example: Secure Flask application setup
 def create_app():
     app = Flask(__name__)
@@ -118,40 +131,48 @@ def create_app():
 ## Implementation Phases
 
 ### Phase 1: Foundation (1-2 months)
+
 1. Implement OAuth 2.0 with PKCE
 2. Set up secrets management
 3. Enable HTTPS everywhere
 4. Basic rate limiting
 
 ### Phase 2: Hardening (2-4 months)
+
 1. Implement RBAC/ABAC
 2. Container security scanning
 3. WAF configuration
 4. Automated security testing
 
 ### Phase 3: Advanced (4-6 months)
+
 1. MFA enforcement
 2. Advanced threat detection
 3. Continuous security monitoring
 4. Security training for developers
 
 ## Consequences
+
 ### Positive
+
 - Reduced attack surface
 - Better compliance
 - Customer trust
 - Early vulnerability detection
 
 ### Negative
+
 - Development overhead
 - Complex configuration
 - Potential performance impact
 
 ### Neutral
+
 - Ongoing maintenance
 - Regular audits required
 
 ## Related Decisions
+
 - [ADR-0009: Error Handling Strategy](0009-error-handling-strategy.md)
 - [ADR-0010: Monitoring and Observability](0010-monitoring-observability.md)
 - [ADR-0011: Data Persistence Strategy](0011-data-persistence-strategy.md)

@@ -200,7 +200,8 @@ style: formatting changes
 refactor: code refactoring
 test: add tests
 chore: maintenance tasks
-```
+
+```text
 
 ## Troubleshooting
 
@@ -218,7 +219,8 @@ To skip pre-commit hooks in emergencies:
 
 ```bash
 git commit --no-verify -m "emergency commit message"
-```
+
+```text
 
 ### Updating Hooks
 
@@ -226,7 +228,8 @@ To update pre-commit hook versions:
 
 ```bash
 python -m pre_commit autoupdate
-```
+
+```text
 
 ## Benefits
 
@@ -245,10 +248,12 @@ All code quality tools are included in `requirements-dev.txt` and will be instal
 
 ```bash
 pip install -r requirements-dev.txt
-```
+
+```text
 
 The tools are also available as optional dependencies:
 
 ```bash
 pip install -e ".[dev]"
-```
+
+```text

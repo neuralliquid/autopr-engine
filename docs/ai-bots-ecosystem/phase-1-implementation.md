@@ -197,7 +197,7 @@ routing_rules = {
 # GitHub Integration
 GITHUB_TOKEN=ghp_your_github_token
 
-# Linear Integration  
+# Linear Integration
 LINEAR_API_KEY=lin_api_your_linear_key
 
 # Slack Notifications
@@ -238,7 +238,7 @@ cp -r tools/autopr/workflows/* /path/to/autopr/workflows/
 ```bash
 # 1. Setup Slack channels
 #development - Main development notifications
-#charlie-ai - TypeScript/Charlie assignments  
+#charlie-ai - TypeScript/Charlie assignments
 #security - Security vulnerability alerts
 
 # 2. Configure Linear teams
@@ -248,7 +248,7 @@ cp -r tools/autopr/workflows/* /path/to/autopr/workflows/
 
 # 3. Setup GitHub teams
 # frontend-team - TypeScript issue assignees
-# security-team - Security vulnerability assignees  
+# security-team - Security vulnerability assignees
 # development-team - General development issues
 ```
 
@@ -354,4 +354,5 @@ cp -r tools/autopr/workflows/* /path/to/autopr/workflows/
 ---
 
 *Phase 1 provides the foundation for intelligent development automation. With these components in place, your team now
-has automated PR review, intelligent issue routing, and multi-agent task processing - setting the stage for even more advanced automation in subsequent phases.*
+has automated PR review, intelligent issue routing, and multi-agent task processing - setting the stage for even more
+advanced automation in subsequent phases.*

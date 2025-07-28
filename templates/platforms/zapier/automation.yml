@@ -37,35 +37,35 @@ variables:
     required: true
     description: "Primary type of automation workflow"
     examples: ["data_sync", "notification", "lead_management", "content_publishing", "task_management", "reporting"]
-  
+
   trigger_app:
     type: "string"
     required: true
     description: "App that will trigger the automation"
     examples: ["gmail", "google_sheets", "slack", "salesforce", "shopify", "typeform", "calendly"]
-  
+
   action_apps:
     type: "array"
     required: true
     description: "Apps that will receive actions from the automation"
     examples: [["slack"], ["slack", "google_sheets"], ["salesforce", "mailchimp", "slack"]]
-  
+
   complexity_level:
     type: "string"
     default: "simple"
     description: "Complexity of the automation workflow"
     examples: ["simple", "medium", "complex", "advanced"]
-  
+
   conditional_logic:
     type: "boolean"
     default: false
     description: "Whether the workflow includes conditional branching"
-  
+
   data_transformation:
     type: "boolean"
     default: false
     description: "Whether data needs to be formatted or transformed"
-  
+
   schedule_required:
     type: "boolean"
     default: false
@@ -86,7 +86,7 @@ variants:
       - "Email list subscription"
       - "Team notifications"
       - "Lead scoring and routing"
-  
+
   content_publishing:
     description: "Multi-platform content distribution automation"
     variables:
@@ -101,7 +101,7 @@ variants:
       - "Content formatting"
       - "Team notifications"
       - "Analytics tracking"
-  
+
   customer_support:
     description: "Support ticket management and escalation"
     variables:
@@ -201,7 +201,7 @@ examples:
     complexity: "medium"
     estimated_tasks: "500-1000/month"
     estimated_setup_time: "2-3 hours"
-  
+
   hr_onboarding_automation:
     description: "New employee onboarding process automation"
     workflow:
@@ -216,7 +216,7 @@ examples:
     complexity: "complex"
     estimated_tasks: "50-100/month"
     estimated_setup_time: "4-6 hours"
-  
+
   social_media_monitoring:
     description: "Brand mention tracking and response workflow"
     workflow:

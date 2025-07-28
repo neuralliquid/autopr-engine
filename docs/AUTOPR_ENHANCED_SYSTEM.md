@@ -3,7 +3,8 @@
 ## Overview
 
 The AutoPR Enhanced System is a state-of-the-art AI-powered automation platform for GitHub pull request management. It
-combines multiple AI technologies, learning capabilities, and platform integrations to provide intelligent, automated responses to PR comments.
+combines multiple AI technologies, learning capabilities, and platform integrations to provide intelligent, automated
+responses to PR comments.
 
 ## Table of Contents
 
@@ -336,12 +337,14 @@ QDRANT_PORT=6333
 I've identified this as a simple cleanup request for debugging code.
 
 ✅ Applied Fix: Removed 1 console.log statement
+
 - Quality Score: 0.98
 - Tests: Passed
 - No warnings detected
 
 This response was generated using AI analysis and learned patterns from 15 similar cases.
-```
+
+```text
 
 ### 2. Complex Architecture Question
 
@@ -380,12 +383,14 @@ I've identified this as a critical security concern requiring immediate attentio
 📢 Notification sent to: #security-alerts
 
 Security Audit Results:
+
 - Potential SQL injection vector identified
 - Input validation recommended
 - Parameterized queries suggested
 
 This response was generated using AI analysis and learned patterns from 3 similar cases.
-```
+
+```text
 
 ## Evaluation Framework
 
@@ -415,7 +420,9 @@ This response was generated using AI analysis and learned patterns from 3 simila
 ### 2. Evaluation Dashboard
 
 ```python
+
 # Metrics/evaluation_dashboard.py
+
 class EvaluationDashboard:
     def generate_report(self, timeframe: str) -> Dict[str, Any]:
         return {
@@ -438,7 +445,8 @@ class EvaluationDashboard:
                 "maintainability_index": 85
             }
         }
-```
+
+```text
 
 ### 3. A/B Testing Framework
 
@@ -452,14 +460,17 @@ class EvaluationDashboard:
 **Measurement:**
 
 ```python
+
 # Evaluation/ab_testing.py
+
 class ABTestManager:
     def run_test(self, test_name: str, variants: List[str], traffic_split: Dict[str, float]):
         # Randomly assign users to variants
         # Track performance metrics per variant
         # Statistical significance testing
         pass
-```
+
+```text
 
 ## Performance Metrics
 
@@ -563,74 +574,105 @@ class ABTestManager:
 #### **1. API Key Configuration**
 
 ```bash
+
 # Problem: Provider not available
+
 # Solution: Check API key configuration
+
 echo $OPENAI_API_KEY  # Should not be empty
 echo $ANTHROPIC_API_KEY  # Should not be empty
-```
+
+```text
 
 #### **2. Memory System Issues**
 
 ```bash
+
 # Problem: Memory queries failing
+
 # Solution: Check database permissions
+
 ls -la autopr_memory.db
+
 # For Mem0, check Qdrant connection
+
 curl <http://localhost:6333/health>
-```
+
+```text
 
 #### **3. Quality Gate Failures**
 
 ```bash
+
 # Problem: All fixes fail quality gates
+
 # Solution: Lower quality threshold temporarily
+
 AUTOPR_QUALITY_THRESHOLD=0.5
-```
+
+```text
 
 #### **4. Multi-Agent Timeout**
 
 ```bash
+
 # Problem: AutoGen conversations timeout
+
 # Solution: Increase timeout settings
+
 AUTOGEN_TIMEOUT=300  # 5 minutes
-```
+
+```text
 
 ### Debug Mode
 
 ```bash
+
 # Enable detailed logging
+
 AUTOPR_DEBUG=true
 AUTOPR_LOG_LEVEL=DEBUG
 
 # Check system status
+
 python -m tools.autopr.actions.system_health_check
-```
+
+```text
 
 ### Performance Optimization
 
 #### **1. Provider Selection**
 
 ```bash
+
 # Use faster providers for simple tasks
+
 AUTOPR_SIMPLE_TASK_PROVIDER=groq  # Fastest inference
 AUTOPR_COMPLEX_TASK_PROVIDER=openai  # Most capable
-```
+
+```text
 
 #### **2. Caching Configuration**
 
 ```bash
+
 # Enable response caching
+
 AUTOPR_ENABLE_CACHE=true
 AUTOPR_CACHE_TTL=3600  # 1 hour
-```
+
+```text
 
 #### **3. Batch Processing**
 
 ```bash
+
 # Process multiple comments together
+
 AUTOPR_BATCH_SIZE=5
 AUTOPR_BATCH_TIMEOUT=30
-```
+
+```text
 
 ## Support & Community
 

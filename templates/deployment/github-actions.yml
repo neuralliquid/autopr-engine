@@ -130,25 +130,25 @@ usage:
 
 template: |
   name: {{ workflow_name }}
-  
+
   on:
     push:
       branches: [ main, develop ]
     pull_request:
       branches: [ main ]
-  
+
   jobs:
     test:
       runs-on: ubuntu-latest
-      
+
       strategy:
         matrix:
           node-version: [{{ node_version }}]
-      
+
       steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js ${{ "{{ matrix.node-version }}" }}
         uses: actions/setup-node@v4
         with:
@@ -156,39 +156,39 @@ template: |
           {% if enable_caching %}
           cache: 'npm'
           {% endif %}
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       {% if run_linting %}
       - name: Run linting
         run: npm run lint
       {% endif %}
-      
+
       {% if run_tests %}
       - name: Run tests
         run: {{ test_command }}
       {% endif %}
-      
+
       - name: Build application
         run: {{ build_command }}
-      
+
       {% if run_tests %}
       - name: Upload coverage reports
         uses: codecov/codecov-action@v3
         if: matrix.node-version == '{{ node_version }}'
       {% endif %}
-  
+
     {% if deploy_on_main %}
     deploy:
       needs: test
       runs-on: ubuntu-latest
       if: github.ref == 'refs/heads/main'
-      
+
       steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js {{ node_version }}
         uses: actions/setup-node@v4
         with:
@@ -196,13 +196,13 @@ template: |
           {% if enable_caching %}
           cache: 'npm'
           {% endif %}
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Build application
         run: {{ build_command }}
-      
+
       {% if deploy_target == "vercel" %}
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
@@ -244,11 +244,11 @@ template: |
           heroku_app_name: ${{ "{{ secrets.HEROKU_APP_NAME }}" }}
           heroku_email: ${{ "{{ secrets.HEROKU_EMAIL }}" }}
       {% endif %}
-      
+
       - name: Notify deployment success
         if: success()
         run: echo "Deployment completed successfully!"
-      
+
       - name: Notify deployment failure
         if: failure()
         run: echo "Deployment failed!"

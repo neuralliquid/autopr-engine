@@ -112,7 +112,7 @@ template: |
   {% if enable_compression %}
   import { compression } from 'vite-plugin-compression2';
   {% endif %}
-  
+
   export default defineConfig({
     plugins: [
       react(),

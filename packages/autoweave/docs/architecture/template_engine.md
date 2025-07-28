@@ -1,12 +1,15 @@
 # Template Engine Architecture
 
 ## Overview
+
 The template engine provides flexible template processing for AutoWeave, supporting both simple and complex templating scenarios.
 
 ## Core Components
 
 ### 1. Template Package Structure
-```
+
+```text
+
 template-package/
 ├── template.yaml         # Metadata and configuration
 ├── main.j2               # Main template
@@ -20,7 +23,9 @@ template-package/
 ```
 
 ### 2. Template Metadata (template.yaml)
+
 ```yaml
+
 id: "docker-app"
 name: "Docker Application"
 version: "1.0.0"
@@ -52,7 +57,9 @@ content:
 ```
 
 ### 3. Template Syntax
+
 ```jinja
+
 # main.j2
 FROM {{parameters.runtime}}:{{parameters.runtimeVersion}}
 
@@ -77,6 +84,7 @@ ENV {{env.name}}={{env.value}}
 ## Implementation Details
 
 ### 1. Template Processing Pipeline
+
 1. **Load & Validate**: Parse template.yaml and validate schema
 2. **Resolve Dependencies**: Check required tools/versions
 3. **Gather Inputs**: Collect user parameters
@@ -85,22 +93,26 @@ ENV {{env.name}}={{env.value}}
 6. **Output**: Generate final artifacts
 
 ### 2. Security Considerations
+
 - Sandbox template execution
 - Validate all user inputs
 - Limit filesystem access
 - Template signing and verification
 
 ### 3. Performance Optimizations
+
 - Template compilation caching
 - Parallel processing of independent templates
 - Lazy loading of template dependencies
 
 ## Integration Points
+
 - **CLI**: `autoweave template generate`
 - **REST API**: `/api/templates/generate`
 - **Build Pipeline**: Native integration with CI/CD
 
 ## Future Extensions
+
 - Template inheritance
 - Remote template repositories
 - Template testing framework

@@ -236,14 +236,14 @@ CMD ["npm", "start"]
    hadolint your-template.dockerfile
    ```
 
-2. **Test variable substitution**:
+1. **Test variable substitution**:
 
    ```bash
    # Generate with test values
    autopr generate docker --template your-template --test
    ```
 
-3. **Build test**:
+1. **Build test**:
 
    ```bash
    docker build -t test-image -f generated.Dockerfile .

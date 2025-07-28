@@ -13,7 +13,7 @@ platform_info:
   pricing_model: "Freemium with Advanced Features"
   target_audience: "Developers, technical teams, enterprises, agencies"
   primary_use_cases: ["Full-stack applications", "Complex backends", "Enterprise systems", "API services", "Real-time applications"]
-  
+
   key_features:
     - "Codeless backend logic development"
     - "Visual database designer and management"

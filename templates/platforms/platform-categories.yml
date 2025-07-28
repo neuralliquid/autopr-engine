@@ -104,15 +104,15 @@ pricing_tiers:
   free:
     description: "Platforms with substantial free tiers"
     platforms: ["jotform", "adalo", "flutterflow", "bubble", "replit"]
-  
+
   budget_friendly:
     description: "Platforms under $30/month for basic plans"
     platforms: ["horizons", "lovable", "flutterflow"]
-  
+
   professional:
     description: "Platforms $30-100/month for professional features"
     platforms: ["bubble", "softr", "thunkable", "budibase"]
-  
+
   enterprise:
     description: "Platforms with enterprise pricing and features"
     platforms: ["bubble", "budibase", "softr", "replit"]
@@ -121,19 +121,19 @@ use_cases:
   mvp_prototyping:
     description: "Quick MVP and prototype development"
     recommended: ["horizons", "lovable", "bubble", "replit"]
-  
+
   internal_tools:
     description: "Business process automation and internal tools"
     recommended: ["budibase", "softr", "jotform"]
-  
+
   mobile_apps:
     description: "Native mobile application development"
     recommended: ["glide", "thunkable", "adalo", "flutterflow"]
-  
+
   marketplaces:
     description: "E-commerce and marketplace platforms"
     recommended: ["bubble", "softr", "adalo"]
-  
+
   data_driven:
     description: "Apps that heavily rely on data management"
     recommended: ["glide", "softr", "budibase", "bubble"]

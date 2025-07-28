@@ -218,6 +218,7 @@ pre-commit run mypy --all-files
 ```
 
 ## Rollback Plan
+
 If issues arise, you can rollback to Python 3.11:
 
 ### 1. Revert Configuration Files
@@ -278,11 +279,13 @@ pre-commit install
 ### Common Issues
 
 1. **Import errors**: Some packages may need updates
+
    ```cmd
    pip install --upgrade package-name
    ```
 
-2. **Type checking errors**: Update type annotations
+1. **Type checking errors**: Update type annotations
+
    ```python
    # Old (Python 3.8)
    from typing import List, Dict
@@ -293,7 +296,8 @@ pre-commit install
        pass
    ```
 
-3. **Pre-commit failures**: Update hook versions
+1. **Pre-commit failures**: Update hook versions
+
    ```cmd
    pre-commit autoupdate
    pre-commit run --all-files
@@ -308,7 +312,8 @@ pre-commit install
 ## Conclusion
 
 The upgrade to Python 3.13.5 provides significant performance improvements, enhanced developer experience, and
-future-proofing for the AutoPR Engine project. All dependencies have been updated to compatible versions, and the migration process is straightforward.
+future-proofing for the AutoPR Engine project. All dependencies have been updated to compatible versions, and the
+migration process is straightforward.
 
 The project now benefits from the latest Python features while maintaining backward compatibility with existing code
 and configurations.

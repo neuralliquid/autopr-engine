@@ -115,25 +115,25 @@ usage:
 
 template: |
   # {{ pipeline_name }}
-  
+
   trigger:
     branches:
       include:
         - main
         - develop
-  
+
   pr:
     branches:
       include:
         - main
-  
+
   pool:
     vmImage: 'ubuntu-latest'
-  
+
   variables:
     nodeVersion: '{{ node_version }}'
     buildConfiguration: 'Release'
-  
+
   stages:
   - stage: Build
     displayName: 'Build and Test'
@@ -145,7 +145,7 @@ template: |
         inputs:
           versionSpec: '$(nodeVersion)'
         displayName: 'Install Node.js'
-      
+
       - task: Cache@2
         inputs:
           key: 'npm | "$(Agent.OS)" | package-lock.json'
@@ -153,20 +153,20 @@ template: |
             npm | "$(Agent.OS)"
           path: ~/.npm
         displayName: 'Cache npm packages'
-      
+
       - script: |
           npm ci
         displayName: 'Install dependencies'
-      
+
       - script: |
           npm run lint
         displayName: 'Run linting'
         continueOnError: true
-      
+
       - script: |
           {{ test_command }}
         displayName: 'Run tests'
-      
+
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'JUnit'
@@ -174,24 +174,24 @@ template: |
           mergeTestResults: true
         displayName: 'Publish test results'
         condition: succeededOrFailed()
-      
+
       - task: PublishCodeCoverageResults@1
         inputs:
           codeCoverageTool: 'Cobertura'
           summaryFileLocation: '**/coverage/cobertura-coverage.xml'
         displayName: 'Publish code coverage'
         condition: succeededOrFailed()
-      
+
       - script: |
           {{ build_command }}
         displayName: 'Build application'
-      
+
       - task: PublishBuildArtifacts@1
         inputs:
           pathToPublish: '$(Build.SourcesDirectory)/build'
           artifactName: 'build-artifacts'
         displayName: 'Publish build artifacts'
-  
+
   {% if azure_service == "app_service" %}
   - stage: Deploy
     displayName: 'Deploy to Azure App Service'
@@ -213,7 +213,7 @@ template: |
                 package: '$(Pipeline.Workspace)/build-artifacts'
                 runtimeStack: 'NODE|{{ node_version }}'
               displayName: 'Deploy to Azure App Service'
-  
+
   {% elif azure_service == "static_web_apps" %}
   - stage: Deploy
     displayName: 'Deploy to Azure Static Web Apps'
@@ -233,7 +233,7 @@ template: |
                 app_location: '/'
                 output_location: 'build'
               displayName: 'Deploy to Azure Static Web Apps'
-  
+
   {% elif azure_service == "functions" %}
   - stage: Deploy
     displayName: 'Deploy to Azure Functions'
@@ -255,7 +255,7 @@ template: |
                 package: '$(Pipeline.Workspace)/build-artifacts'
                 runtimeStack: 'NODE|{{ node_version }}'
               displayName: 'Deploy to Azure Functions'
-  
+
   {% elif azure_service == "container_instances" %}
   - stage: Deploy
     displayName: 'Deploy to Azure Container Instances'
@@ -279,7 +279,7 @@ template: |
                   $(Build.BuildId)
                   latest
               displayName: 'Build and push Docker image'
-            
+
             - task: AzureContainerInstances@0
               inputs:
                 azureSubscription: '{{ subscription_name }}'

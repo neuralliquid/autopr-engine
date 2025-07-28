@@ -234,7 +234,7 @@ template: |
   }
   EOF
   )
-      
+
       curl -X POST -H 'Content-type: application/json' \
           --data "$SLACK_PAYLOAD" \
           "$SLACK_WEBHOOK" 2>/dev/null || echo "Failed to send Slack notification"
@@ -268,7 +268,7 @@ template: |
   }
   EOF
   )
-      
+
       curl -X POST -H 'Content-type: application/json' \
           --data "$WEBHOOK_PAYLOAD" \
           "$CUSTOM_WEBHOOK" 2>/dev/null || echo "Failed to send webhook notification"

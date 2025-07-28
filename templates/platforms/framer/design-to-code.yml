@@ -37,28 +37,28 @@ variables:
     required: true
     description: "Type of project to create"
     examples: ["portfolio", "marketing_site", "product_showcase", "interactive_prototype", "design_system"]
-  
+
   animation_complexity:
     type: "string"
     default: "medium"
     description: "Level of animations and interactions"
     examples: ["minimal", "medium", "advanced", "experimental"]
-  
+
   responsive_design:
     type: "boolean"
     default: true
     description: "Enable responsive design across devices"
-  
+
   cms_integration:
     type: "boolean"
     default: false
     description: "Use Framer CMS for dynamic content"
-  
+
   code_overrides:
     type: "boolean"
     default: false
     description: "Include custom React code overrides"
-  
+
   design_system:
     type: "boolean"
     default: false
@@ -78,7 +78,7 @@ variants:
       - "Advanced scroll animations"
       - "Dynamic content loading"
       - "Mobile-optimized interactions"
-  
+
   product_landing_page:
     description: "Marketing landing page with conversion-focused design"
     variables:
@@ -92,7 +92,7 @@ variants:
       - "Social proof animations"
       - "Call-to-action optimization"
       - "Performance tracking"
-  
+
   design_system_library:
     description: "Component library and design system documentation"
     variables:
@@ -191,7 +191,7 @@ examples:
     complexity: "high"
     estimated_time: "3-4 weeks"
     animation_count: "15-20 custom animations"
-  
+
   creative_agency_showcase:
     description: "Agency portfolio with case study presentations"
     features:
@@ -204,7 +204,7 @@ examples:
     complexity: "advanced"
     estimated_time: "4-6 weeks"
     animation_count: "25-30 custom animations"
-  
+
   event_conference_site:
     description: "Conference website with speaker and schedule interactions"
     features:

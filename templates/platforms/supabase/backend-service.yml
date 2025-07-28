@@ -36,28 +36,28 @@ variables:
     required: true
     description: "Type of application backend"
     examples: ["web_app", "mobile_app", "saas_platform", "api_service", "real_time_app"]
-  
+
   authentication_method:
     type: "array"
     default: ["email_password"]
     description: "Authentication methods to implement"
     examples: [["email_password"], ["email_password", "oauth"], ["email_password", "oauth", "magic_link"]]
-  
+
   real_time_features:
     type: "boolean"
     default: false
     description: "Enable real-time subscriptions and updates"
-  
+
   file_storage:
     type: "boolean"
     default: false
     description: "Enable file storage and management"
-  
+
   edge_functions:
     type: "boolean"
     default: false
     description: "Use edge functions for serverless logic"
-  
+
   database_complexity:
     type: "string"
     default: "medium"
@@ -79,7 +79,7 @@ variants:
       - "Chat room management"
       - "Message history and search"
       - "Push notifications"
-  
+
   saas_application:
     description: "Multi-tenant SaaS platform with subscription management"
     variables:
@@ -94,7 +94,7 @@ variants:
       - "API rate limiting"
       - "Analytics and reporting"
       - "Webhook integrations"
-  
+
   content_management_system:
     description: "Headless CMS with content delivery and management"
     variables:
@@ -199,7 +199,7 @@ examples:
       - "Activity tracking and reporting"
     complexity: "medium"
     estimated_setup: "2-3 weeks"
-  
+
   ecommerce_backend:
     description: "E-commerce platform backend with inventory and orders"
     database_tables:
@@ -217,7 +217,7 @@ examples:
       - "Payment integration webhooks"
     complexity: "high"
     estimated_setup: "4-6 weeks"
-  
+
   social_media_platform:
     description: "Social networking platform with feeds and interactions"
     database_tables:

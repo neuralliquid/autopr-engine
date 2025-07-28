@@ -13,7 +13,7 @@ platform_info:
   pricing_model: "Freemium with Automation Focus"
   target_audience: "Business users, process automators, teams needing connected workflows"
   primary_use_cases: ["Business process hubs", "Client portals", "Lead capture forms", "Internal dashboards", "Workflow management"]
-  
+
   key_features:
     - "Automation-first design philosophy"
     - "Native integration with 6000+ apps via Zapier"

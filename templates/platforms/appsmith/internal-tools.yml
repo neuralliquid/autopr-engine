@@ -35,29 +35,29 @@ variables:
     required: true
     description: "Type of internal tool to build"
     examples: ["admin_panel", "dashboard", "crud_app", "database_gui", "approval_system", "analytics_tool"]
-  
+
   data_sources:
     type: "array"
     required: true
     description: "Data sources to connect"
     examples: [["postgresql"], ["mysql", "rest_api"], ["mongodb", "graphql", "google_sheets"]]
-  
+
   user_authentication:
     type: "boolean"
     default: true
     description: "Enable user authentication and access control"
-  
+
   deployment_type:
     type: "string"
     default: "cloud"
     description: "Deployment preference"
     examples: ["cloud", "self_hosted", "hybrid"]
-  
+
   team_collaboration:
     type: "boolean"
     default: true
     description: "Enable team collaboration features"
-  
+
   custom_branding:
     type: "boolean"
     default: false
@@ -78,7 +78,7 @@ variants:
       - "Team performance metrics"
       - "Escalation workflows"
       - "Real-time notifications"
-  
+
   admin_panel:
     description: "Administrative panel for managing application data"
     variables:
@@ -93,7 +93,7 @@ variants:
       - "Audit logs and tracking"
       - "System configuration"
       - "Reporting and exports"
-  
+
   analytics_dashboard:
     description: "Business intelligence dashboard with data visualization"
     variables:
@@ -194,7 +194,7 @@ examples:
     complexity: "medium"
     estimated_time: "2-3 weeks"
     data_sources: ["postgresql", "rest_api"]
-  
+
   employee_onboarding_portal:
     description: "HR tool for managing new employee onboarding"
     features:
@@ -207,7 +207,7 @@ examples:
     complexity: "medium"
     estimated_time: "1-2 weeks"
     data_sources: ["mysql", "rest_api", "google_sheets"]
-  
+
   financial_reporting_dashboard:
     description: "Executive dashboard for financial KPIs and reporting"
     features:

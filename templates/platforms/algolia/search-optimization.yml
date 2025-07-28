@@ -13,7 +13,7 @@ platform_info:
   pricing_model: "Usage-based with Free Tier"
   target_audience: "Developers, e-commerce sites, content platforms, SaaS applications"
   primary_use_cases: ["E-commerce search", "Content discovery", "Site search", "Mobile app search", "Enterprise search"]
-  
+
   key_features:
     - "Instant search with sub-50ms response times"
     - "AI-powered search relevance and personalization"

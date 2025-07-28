@@ -15,18 +15,21 @@ intelligent analysis, issue creation, and multi-agent collaboration.
 ## 🌟 **Features**
 
 ### **🤖 AI-Powered PR Analysis**
+
 - **Multi-Agent Review**: CodeRabbit, GitHub Copilot, AI TypeScript Check integration
 - **Platform Detection**: Detects 25+ development platforms (Replit, Bolt, Lovable, etc.)
 - **Intelligent Issue Classification**: Security, performance, bugs, features
 - **Quality Gates**: Automated validation before merge
 
 ### **🔗 Smart Integrations**
+
 - **Communication**: Slack (Axolo), Microsoft Teams, Discord, Notion
 - **Project Management**: Linear, GitHub Issues, Jira
 - **AI Tools**: AutoGen multi-agent, configurable LLM providers
 - **Monitoring**: Sentry, DataDog, Prometheus metrics
 
 ### **⚡ Advanced Automation**
+
 - **Issue Auto-Creation**: GitHub Issues and Linear tickets
 - **AI Tool Assignment**: Route issues to specialized AI tools
 - **Workflow Orchestration**: 20+ pre-built workflows
@@ -106,18 +109,21 @@ jobs:
 ## 📖 **Documentation**
 
 ### **Core Concepts**
+
 - [**Architecture Overview**](docs/architecture.md) - System design and components
 - [**Workflow Guide**](docs/workflows.md) - Creating and customizing workflows
 - [**Action Reference**](docs/actions.md) - Complete action documentation
 - [**Integration Guide**](docs/integrations.md) - Setting up external services
 
 ### **Platform-Specific Guides**
+
 - [**Replit Integration**](docs/platforms/replit.md) - Prototype to production
 - [**Slack/Axolo Setup**](docs/integrations/axolo.md) - PR channel automation
 - [**Linear Workflow**](docs/integrations/linear.md) - Issue management
 - [**Azure Deployment**](docs/deployment/azure.md) - Cloud deployment guide
 
 ### **Advanced Topics**
+
 - [**Multi-Agent AI**](docs/advanced/autogen.md) - AutoGen integration
 - [**Memory Systems**](docs/advanced/memory.md) - Learning and patterns
 - [**Custom Actions**](docs/advanced/custom-actions.md) - Building your own
@@ -188,7 +194,7 @@ python -m autopr.server --reload
 
 ### **Project Structure**
 
-```
+```text
 autopr-engine/
 ├── autopr/                 # Core engine package
 │   ├── actions/            # 50+ automation actions
@@ -302,17 +308,20 @@ ai_providers:
 ## 🔌 **Integrations**
 
 ### **Communication Platforms**
+
 - **[Slack](docs/integrations/slack.md)** - Channel automation with Axolo
 - **[Microsoft Teams](docs/integrations/teams.md)** - Enterprise communication
 - **[Discord](docs/integrations/discord.md)** - Community-focused teams
 - **[Notion](docs/integrations/notion.md)** - Documentation automation
 
 ### **Project Management**
+
 - **[Linear](docs/integrations/linear.md)** - Modern issue tracking
 - **[GitHub Issues](docs/integrations/github.md)** - Native GitHub integration
 - **[Jira](docs/integrations/jira.md)** - Enterprise project management
 
 ### **AI & Development Tools**
+
 - **[CodeRabbit](docs/integrations/coderabbit.md)** - AI code review
 - **[GitHub Copilot](docs/integrations/copilot.md)** - AI coding assistant
 - **[AutoGen](docs/integrations/autogen.md)** - Multi-agent collaboration
@@ -323,12 +332,14 @@ ai_providers:
 ## 📊 **Monitoring & Observability**
 
 ### **Built-in Metrics**
+
 - PR processing times and success rates
 - AI tool performance and accuracy
 - Issue creation and resolution tracking
 - Integration health monitoring
 
 ### **Supported Monitoring**
+
 - **Prometheus** metrics collection
 - **Grafana** dashboards
 - **Sentry** error tracking
@@ -342,6 +353,7 @@ ai_providers:
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
 ### **Development Workflow**
+
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
@@ -352,6 +364,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 8. Open a Pull Request
 
 ### **Code Standards**
+
 - Follow [PEP 8](<https://peps.python.org/pep-0008/)> style guidelines
 - Add type hints for all functions
 - Write comprehensive tests for new features

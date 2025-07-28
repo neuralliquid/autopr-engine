@@ -217,12 +217,15 @@ class PRReviewAnalyzer:
 **Severity**: {issue['severity']}
 
 ## Issue Description
+
 {issue['description']}
 
 ## Suggested Fix
+
 {issue['suggested_fix']}
 
 ## AI Confidence Score
+
 {issue['confidence']:.1%}
             """.strip(),
             'labels': [
@@ -245,16 +248,20 @@ class PRReviewAnalyzer:
 **Type**: {issue['type']}
 
 ## Current Implementation
+
 File: {issue['file_path']}
 Line: {issue['line_number']}
 
 ## Suggested Improvement
+
 {issue['description']}
 
 ## Implementation Guide
+
 {issue['suggested_fix']}
 
 ## AI Confidence
+
 {issue['confidence']:.1%}
             """.strip(),
             'labels': ['ai-suggested', issue['type']],
@@ -335,6 +342,7 @@ Line: {issue['line_number']}
         return summary
 
 # Entry point for AutoPR
+
 def run(inputs_dict: dict) -> dict:
     """AutoPR entry point"""
     inputs = PRReviewInputs(**inputs_dict)

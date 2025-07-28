@@ -396,7 +396,8 @@ release management
 ✅ GitHub Actions - Free tier (sufficient for most teams)
 
 Total: $80/month for Azure-optimized deployment automation
-```
+
+```text
 
 ### **Enhanced Azure Stack**
 
@@ -420,7 +421,8 @@ Total: $444/month for comprehensive Azure deployment automation
 ✅ Enterprise support - $500/month
 
 Total: $1,644/month for enterprise-grade Azure automation
-```
+
+```text
 
 ---
 

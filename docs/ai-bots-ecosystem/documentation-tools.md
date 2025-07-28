@@ -302,12 +302,14 @@ jobs:
 ### **PRD Enhancement Workflow**
 
 ``` text
+
 1. Initial PRD creation with ChatPRD ($5/month)
 2. Visual enhancement with PRDKit ($19/month)
 3. Technical detail addition with Mintlify ($20/month)
 4. Stakeholder review through GitBook (Free tier)
 5. Implementation tracking through Jira integration
-```
+
+```text
 
 ---
 
@@ -335,7 +337,8 @@ ROI: 4,000%
 
 Total: $450-500/month vs. manual work savings of $3,000+/month
 ROI: 600%
-```
+
+```text
 
 ### **For Enterprise Teams (15+ people)**
 

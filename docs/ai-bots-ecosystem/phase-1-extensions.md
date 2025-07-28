@@ -269,7 +269,7 @@ class RateLimiter:
         self.redis = redis_client
         self.limits = {
             'github_api': {'calls': 5000, 'window': 3600},  # 5000/hour
-            'openai_api': {'calls': 100, 'window': 60},     # 100/minute  
+            'openai_api': {'calls': 100, 'window': 60},     # 100/minute
             'linear_api': {'calls': 1000, 'window': 3600}   # 1000/hour
         }
 
@@ -401,7 +401,7 @@ class AutoPRCacheManager:
         self.redis_client = redis.Redis.from_url(os.getenv('REDIS_URL'))
         self.cache_configs = {
             'github_api': {'ttl': 300, 'prefix': 'gh'},        # 5 minutes
-            'llm_responses': {'ttl': 3600, 'prefix': 'llm'},   # 1 hour  
+            'llm_responses': {'ttl': 3600, 'prefix': 'llm'},   # 1 hour
             'analysis_results': {'ttl': 1800, 'prefix': 'analysis'}, # 30 minutes
             'user_data': {'ttl': 900, 'prefix': 'user'},       # 15 minutes
             'pr_metadata': {'ttl': 600, 'prefix': 'pr'}        # 10 minutes
@@ -974,7 +974,7 @@ Context: {context}
 
 Focus on:
 1. Security vulnerabilities
-2. Performance issues  
+2. Performance issues
 3. Code quality
 4. TypeScript type safety
 
@@ -1734,16 +1734,19 @@ class E2ETestSuite:
 ## 📊 **ROI Analysis: Extensions Impact**
 
 ### **Cost Reduction**
+
 - **LLM Cost Optimization**: 40-60% reduction in AI API costs
 - **Error Prevention**: 80% reduction in production incidents
 - **Performance Optimization**: 50% reduction in processing time
 
 ### **Quality Improvements**
+
 - **Monitoring & Observability**: 95% faster issue detection
 - **Advanced AI Features**: 30% improvement in response quality
 - **Testing Coverage**: 90% reduction in production bugs
 
 ### **Developer Experience**
+
 - **Comprehensive Logging**: 70% faster debugging
 - **Health Checks**: 85% faster troubleshooting
 - **Performance Dashboard**: Real-time system visibility
@@ -1751,4 +1754,5 @@ class E2ETestSuite:
 ---
 
 *These Phase 1 extensions transform AutoPR from a functional prototype into a production-grade, enterprise-ready system
-with comprehensive observability, advanced AI capabilities, and robust infrastructure. The prioritized implementation approach ensures immediate value while building toward long-term strategic capabilities.*
+with comprehensive observability, advanced AI capabilities, and robust infrastructure. The prioritized implementation
+approach ensures immediate value while building toward long-term strategic capabilities.*

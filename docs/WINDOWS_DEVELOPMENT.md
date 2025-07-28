@@ -60,7 +60,7 @@ if [ $? -ne 0 ]; then
 fi
 ```
 
-3. Make it executable: `chmod +x .git/hooks/pre-commit`
+1. Make it executable: `chmod +x .git/hooks/pre-commit`
 
 ## Development Workflow
 
@@ -86,7 +86,7 @@ scripts\code_quality.bat check
 Use conventional commit messages:
 
 
-```
+```text
 feat: add new feature
 fix: resolve bug in component
 docs: update documentation

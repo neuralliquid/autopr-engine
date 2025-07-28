@@ -13,7 +13,7 @@ platform_info:
   pricing_model: "Freemium with Pay-as-you-go"
   target_audience: "Mobile developers, web developers, startups, enterprises"
   primary_use_cases: ["Mobile backends", "Web applications", "Real-time apps", "Analytics", "Authentication systems"]
-  
+
   key_features:
     - "Real-time NoSQL database (Firestore)"
     - "User authentication and authorization"

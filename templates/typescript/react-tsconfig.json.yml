@@ -26,7 +26,7 @@ variants:
       - line: 4
         action: "replace"
         content: '        "target": "ES2020",'
-  
+
   legacy_jsx:
     name: "Legacy JSX Transform"
     description: "Uses legacy JSX transform"
