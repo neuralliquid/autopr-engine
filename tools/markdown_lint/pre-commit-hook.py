@@ -80,11 +80,11 @@ def main():
 
                 # Check if file was actually modified
                 if before_hash != after_hash:
-                    print("  → File modified and fixed")
+                    print("  -> File modified and fixed")
                     # Store the original relative path for git add
                     modified_files.append(file_path)
                 else:
-                    print("  → No changes needed")
+                    print("  -> No changes needed")
             else:
                 print(f"WARNING: Markdown linter failed for {file_path}: {result.stderr}")
 
@@ -110,9 +110,9 @@ def main():
             except Exception as e:
                 print(f"WARNING: Error staging {file_path}: {e}")
 
-        print("\n✅ Modified files have been re-staged for commit.")
+        print("\n[SUCCESS] Modified files have been re-staged for commit.")
     else:
-        print("\n✅ No files needed modification.")
+        print("\n[SUCCESS] No files needed modification.")
 
     print(f"Processed {files_processed} file(s), modified {len(modified_files)}")
 
