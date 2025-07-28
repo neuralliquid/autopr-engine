@@ -16,15 +16,15 @@ We will implement a flexible authentication and authorization system with these 
 
 ### Authentication
 1. **JWT-based Authentication**
-   - Short-lived access tokens (15-30 min)
-   - Refresh tokens for session management
-   - Stateless validation using public/private key pairs
+    - Short-lived access tokens (15-30 min)
+    - Refresh tokens for session management
+    - Stateless validation using public/private key pairs
 
 2. **Supported Identity Providers**
-   - GitHub OAuth (primary)
-   - Email/Password (for local development)
-   - Service Accounts (for CI/CD)
-   - SSO (SAML/OIDC for enterprise)
+    - GitHub OAuth (primary)
+    - Email/Password (for local development)
+    - Service Accounts (for CI/CD)
+    - SSO (SAML/OIDC for enterprise)
 
 3. **Token Structure**
    ```json
@@ -42,19 +42,19 @@ We will implement a flexible authentication and authorization system with these 
 
 ### Authorization
 1. **Role-Based Access Control (RBAC)**
-   - Predefined roles (admin, maintainer, developer, reader)
-   - Custom roles with granular permissions
-   - Organization-level and repository-level permissions
+    - Predefined roles (admin, maintainer, developer, reader)
+    - Custom roles with granular permissions
+    - Organization-level and repository-level permissions
 
 2. **Attribute-Based Access Control (ABAC)**
-   - Fine-grained permissions based on resource attributes
-   - Time-based access controls
-   - IP-based restrictions
+    - Fine-grained permissions based on resource attributes
+    - Time-based access controls
+    - IP-based restrictions
 
 3. **Policy as Code**
-   - Rego (Open Policy Agent) for complex policies
-   - GitOps-friendly policy definitions
-   - Policy testing framework
+    - Rego (Open Policy Agent) for complex policies
+    - GitOps-friendly policy definitions
+    - Policy testing framework
 
 ### Implementation
 ```python

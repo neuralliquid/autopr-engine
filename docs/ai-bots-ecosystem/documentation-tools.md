@@ -10,9 +10,7 @@ Specialized tools for creating, maintaining, and enhancing technical documentati
 
 ### **⭐ ChatPRD - Your Current Tool**
 
-**Pricing**: $5/month  
-**Core Skill**: AI-powered PRD (Product Requirements Document) generation  
-
+**Pricing**: $5/month**Core Skill**: AI-powered PRD (Product Requirements Document) generation
 **Current Features**:
 
 - Chat-based PRD creation from simple ideas
@@ -33,8 +31,7 @@ Specialized tools for creating, maintaining, and enhancing technical documentati
 
 ### **1. Promptless** ⭐⭐⭐⭐⭐ *Y Combinator Backed*
 
-**Pricing**: Custom (Y Combinator backed)  
-**Core Skill**: Automatic technical documentation updates with AI
+**Pricing**: Custom (Y Combinator backed)**Core Skill**: Automatic technical documentation updates with AI
 
 **Why It's Better Than ChatPRD**:
 
@@ -61,8 +58,7 @@ Specialized tools for creating, maintaining, and enhancing technical documentati
 
 ### **2. PRDKit** ⭐⭐⭐⭐ *Visual PRD Enhancement*
 
-**Pricing**: $19/month (Professional) + $49/month (Team)  
-**Core Skill**: PRD creation with visual design integration
+**Pricing**: $19/month (Professional) + $49/month (Team)**Core Skill**: PRD creation with visual design integration
 
 **Enhanced PRD Features**:
 
@@ -82,8 +78,7 @@ Specialized tools for creating, maintaining, and enhancing technical documentati
 
 ### **3. Mintlify Writer** ⭐⭐⭐⭐ *Technical Documentation Specialist*
 
-**Pricing**: Free tier + $20/month (Pro)  
-**Core Skill**: AI-powered technical documentation with 68% time savings
+**Pricing**: Free tier + $20/month (Pro)**Core Skill**: AI-powered technical documentation with 68% time savings
 
 **Technical Documentation Features**:
 
@@ -98,8 +93,7 @@ Specialized tools for creating, maintaining, and enhancing technical documentati
 
 ### **4. Doc-E.ai** ⭐⭐⭐⭐ *Community Integration*
 
-**Pricing**: $15/month (Starter) + $39/month (Professional)  
-**Core Skill**: Documentation with community insights integration
+**Pricing**: $15/month (Starter) + $39/month (Professional)**Core Skill**: Documentation with community insights integration
 
 **Community Features**:
 
@@ -118,8 +112,7 @@ Specialized tools for creating, maintaining, and enhancing technical documentati
 
 ### **1. GitBook AI** ⭐⭐⭐⭐⭐
 
-**Pricing**: Free tier + $6.70/user/month  
-**Core Skill**: Beautiful documentation with AI-powered content generation
+**Pricing**: Free tier + $6.70/user/month**Core Skill**: Beautiful documentation with AI-powered content generation
 
 **Features**:
 
@@ -132,8 +125,7 @@ Specialized tools for creating, maintaining, and enhancing technical documentati
 
 ### **2. Notion AI for Documentation** ⭐⭐⭐⭐
 
-**Pricing**: $8/user/month  
-**Core Skill**: All-in-one workspace with AI writing assistance
+**Pricing**: $8/user/month**Core Skill**: All-in-one workspace with AI writing assistance
 
 **Documentation Features**:
 
@@ -148,8 +140,7 @@ Specialized tools for creating, maintaining, and enhancing technical documentati
 
 ### **1. Slab** ⭐⭐⭐⭐
 
-**Pricing**: $6.67/user/month  
-**Core Skill**: Team knowledge base with AI-powered organization
+**Pricing**: $6.67/user/month**Core Skill**: Team knowledge base with AI-powered organization
 
 **Features**:
 
@@ -162,8 +153,7 @@ Specialized tools for creating, maintaining, and enhancing technical documentati
 
 ### **2. Confluence AI** ⭐⭐⭐⭐
 
-**Pricing**: $6.05/user/month  
-**Core Skill**: Enterprise knowledge management with AI assistance
+**Pricing**: $6.05/user/month**Core Skill**: Enterprise knowledge management with AI assistance
 
 **Enterprise Features**:
 
@@ -180,8 +170,7 @@ Specialized tools for creating, maintaining, and enhancing technical documentati
 
 ### **1. Codex Documentation** ⭐⭐⭐⭐
 
-**Pricing**: $10/month + API costs  
-**Core Skill**: Automatic code documentation generation
+**Pricing**: $10/month + API costs**Core Skill**: Automatic code documentation generation
 
 **Features**:
 
@@ -194,8 +183,7 @@ Specialized tools for creating, maintaining, and enhancing technical documentati
 
 ### **2. Swimm** ⭐⭐⭐⭐
 
-**Pricing**: Free tier + $19/month per developer  
-**Core Skill**: Interactive code documentation that stays updated
+**Pricing**: Free tier + $19/month per developer**Core Skill**: Interactive code documentation that stays updated
 
 **Interactive Features**:
 
@@ -212,8 +200,7 @@ Specialized tools for creating, maintaining, and enhancing technical documentati
 
 ### **1. FullStory for Docs** ⭐⭐⭐⭐
 
-**Pricing**: Custom enterprise pricing  
-**Core Skill**: User behavior analytics for documentation optimization
+**Pricing**: Custom enterprise pricing**Core Skill**: User behavior analytics for documentation optimization
 
 **Analytics Features**:
 
@@ -226,8 +213,7 @@ Specialized tools for creating, maintaining, and enhancing technical documentati
 
 ### **2. Hotjar for Documentation** ⭐⭐⭐⭐
 
-**Pricing**: Free tier + $32/month  
-**Core Skill**: User experience optimization for documentation sites
+**Pricing**: Free tier + $32/month**Core Skill**: User experience optimization for documentation sites
 
 **UX Features**:
 

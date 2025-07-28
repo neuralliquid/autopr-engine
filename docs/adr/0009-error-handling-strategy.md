@@ -11,19 +11,19 @@ We will implement a comprehensive error handling strategy with the following com
 
 ### Error Classification
 1. **Domain Errors**
-   - Business rule violations
-   - Validation failures
-   - Resource not found
+    - Business rule violations
+    - Validation failures
+    - Resource not found
 
 2. **Infrastructure Errors**
-   - Database connection issues
-   - Network timeouts
-   - External service failures
+    - Database connection issues
+    - Network timeouts
+    - External service failures
 
 3. **Security Errors**
-   - Authentication failures
-   - Authorization violations
-   - Rate limiting
+    - Authentication failures
+    - Authorization violations
+    - Rate limiting
 
 ### Error Response Format
 ```typescript
@@ -59,15 +59,15 @@ We will implement a comprehensive error handling strategy with the following com
    ```
 
 2. **Global Error Handler**
-   - Log errors with context
-   - Convert to appropriate HTTP status codes
-   - Mask sensitive information
-   - Generate error IDs for correlation
+    - Log errors with context
+    - Convert to appropriate HTTP status codes
+    - Mask sensitive information
+    - Generate error IDs for correlation
 
 3. **Retry Policies**
-   - Exponential backoff for transient errors
-   - Circuit breaker pattern
-   - Dead letter queues for failed operations
+    - Exponential backoff for transient errors
+    - Circuit breaker pattern
+    - Dead letter queues for failed operations
 
 ## Consequences
 ### Positive

@@ -37,16 +37,16 @@ AutoWeave is an AI-native templating engine designed to revolutionize how develo
 ### Target Audience
 
 1. **Template Integrator Ian** (Full-Stack Developer)
-   - Needs: Rapid integration, maintainability, reusable components
-   - Pain Points: Inconsistent syntax, poor documentation
+    - Needs: Rapid integration, maintainability, reusable components
+    - Pain Points: Inconsistent syntax, poor documentation
 
 2. **DevOps Dan** (DevOps Engineer)
-   - Needs: Automated deployment, version control, traceability
-   - Pain Points: Manual updates, environment inconsistencies
+    - Needs: Automated deployment, version control, traceability
+    - Pain Points: Manual updates, environment inconsistencies
 
 3. **Enterprise Architect Alice** (Solution Architect)
-   - Needs: Security, flexibility, cross-platform support
-   - Pain Points: Fragmented ecosystems, compliance gaps
+    - Needs: Security, flexibility, cross-platform support
+    - Pain Points: Fragmented ecosystems, compliance gaps
 
 ## Strategic Objectives (2025-2026)
 

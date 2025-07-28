@@ -89,9 +89,9 @@ interface ExecutionLog {
    ```
 
 2. **Rollback Plan**
-   - Automated backups before migrations
-   - Blue/green deployment support
-   - Point-in-time recovery
+    - Automated backups before migrations
+    - Blue/green deployment support
+    - Point-in-time recovery
 
 ## Consequences
 ### Positive

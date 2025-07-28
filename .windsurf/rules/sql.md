@@ -17,11 +17,7 @@ SQL Formatting: Format queries for readability. Use indentation to make query st
 sql
 Copy
 Edit
-SELECT column1, column2  
-  FROM table t  
- WHERE t.condition = 'X'  
-   AND t.other = 'Y';  
-Notice the WHERE and AND are aligned. Consistently formatting queries makes it easier to spot issues and for others to understand your SQL. Use a formatter tool or SQL IDE's formatting option to apply a standard style across the project.
+SELECT column1, column2  FROM table t WHERE t.condition = 'X'   AND t.other = 'Y';Notice the WHERE and AND are aligned. Consistently formatting queries makes it easier to spot issues and for others to understand your SQL. Use a formatter tool or SQL IDE's formatting option to apply a standard style across the project.
 SQLLint/Style Checks: Leverage tools like SQLFluff or TSqlLint to enforce style rules. These can catch things like missing trailing semicolon, inconsistent naming, or use of non-standard syntax. For example, these tools will encourage you to terminate statements with semicolons and warn if your keywords aren’t consistently uppercased. They also help enforce best practices (for example, SQLFluff has rules to forbid SELECT * usage or to require explicit aliasing). Use linting in CI if SQL is a significant part of your codebase to ensure queries remain clean and consistent.
 Consistency and Clarity: Always alias your tables (and choose short, meaningful aliases) when joining multiple tables, to make queries shorter and clearer – e.g. SELECT o.id, c.name FROM Orders o JOIN Customers c ON c.id = o.customer_id. Use the alias prefix on columns to avoid ambiguity, especially if columns have same names across tables. Write one condition per line in WHERE and ON clauses for readability (and include the logical operator at the start of the new line, e.g., AND/OR at beginning of line is a common style
 datalemur.com

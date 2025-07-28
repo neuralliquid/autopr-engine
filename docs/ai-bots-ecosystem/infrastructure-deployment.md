@@ -10,9 +10,7 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **1. Azure Site Reliability Engineering (SRE) Agent** ⭐⭐⭐⭐⭐ *NEW & Essential*
 
-**Pricing**: Included with Azure services  
-**Core Skill**: Autonomous Azure infrastructure monitoring and incident response  
-**Integration**: GitHub Copilot + Azure DevOps
+**Pricing**: Included with Azure services**Core Skill**: Autonomous Azure infrastructure monitoring and incident response**Integration**: GitHub Copilot + Azure DevOps
 
 **Azure-Specific Capabilities**:
 
@@ -41,9 +39,7 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **2. Azure DevOps AI Integration** ⭐⭐⭐⭐
 
-**Pricing**: Integrated with Azure DevOps pricing ($6/user/month)  
-**Core Skill**: AI-powered Azure pipeline optimization and deployment automation  
-**Platforms**: Azure DevOps, GitHub Actions with Azure
+**Pricing**: Integrated with Azure DevOps pricing ($6/user/month)**Core Skill**: AI-powered Azure pipeline optimization and deployment automation**Platforms**: Azure DevOps, GitHub Actions with Azure
 
 **Features for Azure Deployment**:
 
@@ -65,9 +61,7 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **3. Azure Copilot for Azure** ⭐⭐⭐⭐ *Microsoft Native*
 
-**Pricing**: Included with Azure subscriptions  
-**Core Skill**: Natural language Azure resource management and monitoring  
-**Integration**: Azure Portal, Azure CLI, PowerShell
+**Pricing**: Included with Azure subscriptions**Core Skill**: Natural language Azure resource management and monitoring**Integration**: Azure Portal, Azure CLI, PowerShell
 
 **Azure-Specific Functions**:
 
@@ -88,8 +82,7 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **4. Microsoft Copilot Studio for Azure** ⭐⭐⭐⭐ *Autonomous Agentic*
 
-**Pricing**: $200/month per tenant + usage costs  
-**Core Skill**: Autonomous agentic AI for Azure VM lifecycle management
+**Pricing**: $200/month per tenant + usage costs**Core Skill**: Autonomous agentic AI for Azure VM lifecycle management
 
 **Autonomous Capabilities**:
 
@@ -114,8 +107,7 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **5. GitHub Actions** ⭐⭐⭐⭐⭐ *Most Versatile*
 
-**Pricing**: 2000 minutes/month free + $0.008/minute  
-**Core Skill**: Comprehensive workflow automation for any cloud provider
+**Pricing**: 2000 minutes/month free + $0.008/minute**Core Skill**: Comprehensive workflow automation for any cloud provider
 
 **Advanced Azure Integration**:
 
@@ -136,8 +128,7 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **6. Azure Pipelines** ⭐⭐⭐⭐ *Azure Native*
 
-**Pricing**: Free for 5 users + $6/user/month  
-**Core Skill**: Native Azure CI/CD with deep Azure service integration
+**Pricing**: Free for 5 users + $6/user/month**Core Skill**: Native Azure CI/CD with deep Azure service integration
 
 **Azure-Optimized Features**:
 
@@ -150,8 +141,7 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **7. GitLab CI/CD** ⭐⭐⭐⭐
 
-**Pricing**: Free tier + $19/user/month (Premium)  
-**Core Skill**: Complete DevOps platform with strong Azure integration
+**Pricing**: Free tier + $19/user/month (Premium)**Core Skill**: Complete DevOps platform with strong Azure integration
 
 **Features**:
 
@@ -168,8 +158,7 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **8. Terraform Cloud** ⭐⭐⭐⭐⭐
 
-**Pricing**: Free tier + $20/user/month  
-**Core Skill**: Infrastructure as Code with multi-cloud support
+**Pricing**: Free tier + $20/user/month**Core Skill**: Infrastructure as Code with multi-cloud support
 
 **Azure Integration**:
 
@@ -190,8 +179,7 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **9. Pulumi** ⭐⭐⭐⭐
 
-**Pricing**: Free tier + $50/month (Team)  
-**Core Skill**: Infrastructure as Code using familiar programming languages
+**Pricing**: Free tier + $50/month (Team)**Core Skill**: Infrastructure as Code using familiar programming languages
 
 **Developer-Friendly Features**:
 
@@ -204,8 +192,7 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **10. Azure Resource Manager (ARM) Templates** ⭐⭐⭐
 
-**Pricing**: Free (included with Azure)  
-**Core Skill**: Native Azure infrastructure definition
+**Pricing**: Free (included with Azure)**Core Skill**: Native Azure infrastructure definition
 
 **Azure-Specific Benefits**:
 
@@ -222,8 +209,7 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **11. Mergify** ⭐⭐⭐⭐⭐ *Smart PR Automation*
 
-**Pricing**: Free (Open Source) + $8/month per private repo  
-**Core Skill**: Intelligent PR automation and merge queue management
+**Pricing**: Free (Open Source) + $8/month per private repo**Core Skill**: Intelligent PR automation and merge queue management
 
 **Deployment Features**:
 
@@ -244,8 +230,7 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **12. Renovate** ⭐⭐⭐⭐⭐ *Dependency Management*
 
-**Pricing**: Free + WhiteSource commercial support  
-**Core Skill**: Automated dependency updates with intelligent scheduling
+**Pricing**: Free + WhiteSource commercial support**Core Skill**: Automated dependency updates with intelligent scheduling
 
 **Azure Integration**:
 
@@ -266,8 +251,7 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **13. Octopus Deploy** ⭐⭐⭐⭐ *Enterprise Deployment*
 
-**Pricing**: $10/month per target + $14.40/month per user  
-**Core Skill**: Enterprise deployment automation with advanced release management
+**Pricing**: $10/month per target + $14.40/month per user**Core Skill**: Enterprise deployment automation with advanced release management
 
 **Enterprise Features**:
 
@@ -284,8 +268,7 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **14. New Relic AI** ⭐⭐⭐⭐⭐ *AI-Powered APM*
 
-**Pricing**: Free tier + $99/month per host  
-**Core Skill**: AI-powered application performance monitoring with anomaly detection
+**Pricing**: Free tier + $99/month per host**Core Skill**: AI-powered application performance monitoring with anomaly detection
 
 **AI Monitoring Capabilities**:
 
@@ -306,8 +289,7 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **15. DataDog AI** ⭐⭐⭐⭐ *Infrastructure Intelligence*
 
-**Pricing**: $15/host/month + usage-based pricing  
-**Core Skill**: Intelligent infrastructure monitoring with predictive analytics
+**Pricing**: $15/host/month + usage-based pricing**Core Skill**: Intelligent infrastructure monitoring with predictive analytics
 
 **Intelligent Features**:
 
@@ -320,8 +302,7 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **16. Azure Monitor + Application Insights** ⭐⭐⭐⭐ *Azure Native*
 
-**Pricing**: Pay-per-use (included with Azure)  
-**Core Skill**: Native Azure monitoring with deep service integration
+**Pricing**: Pay-per-use (included with Azure)**Core Skill**: Native Azure monitoring with deep service integration
 
 **Azure-Specific Benefits**:
 
@@ -338,8 +319,7 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **17. Snyk** ⭐⭐⭐⭐⭐ *Security-First DevOps*
 
-**Pricing**: Free tier + $25/month per developer  
-**Core Skill**: AI-powered security vulnerability detection and automated fixing
+**Pricing**: Free tier + $25/month per developer**Core Skill**: AI-powered security vulnerability detection and automated fixing
 
 **Security Automation Features**:
 
@@ -360,8 +340,7 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **18. Azure Security Center** ⭐⭐⭐⭐ *Azure Security*
 
-**Pricing**: Free tier + $15/server/month (Standard)  
-**Core Skill**: Comprehensive Azure security management and compliance
+**Pricing**: Free tier + $15/server/month (Standard)**Core Skill**: Comprehensive Azure security management and compliance
 
 **Security Features**:
 

@@ -131,28 +131,28 @@ graph TB
     A[GitHub PR Event] --> B[AutoPR Engine]
     B --> C[Platform Detector]
     B --> D[AI Analysis Engine]
-    
+
     D --> E[CodeRabbit Integration]
     D --> F[GitHub Copilot]
     D --> G[AI TypeScript Check]
-    
+
     C --> H[Workflow Router]
     H --> I[Issue Creator]
     H --> J[AI Assignment]
-    
+
     I --> K[GitHub Issues]
     I --> L[Linear Tickets]
-    
+
     J --> M[Communication Hub]
     M --> N[Slack/Axolo]
     M --> O[Teams/Discord]
-    
+
     subgraph "AI Layer"
         P[AutoGen Multi-Agent]
         Q[Configurable LLM]
         R[Memory System]
     end
-    
+
     subgraph "Quality Gates"
         S[Security Scanning]
         T[Performance Analysis]
@@ -264,7 +264,7 @@ SENTRY_DSN=https://...                  # Error tracking
 repositories:
   - owner: neuralliquid
     repos: ["vv-landing", "vv-backend"]
-    
+
 workflows:
   - name: "pr_review_analysis"
     triggers: ["pull_request.opened", "pull_request.synchronize"]
@@ -280,7 +280,7 @@ integrations:
     channels:
       pr_reviews: "#pr-reviews"
       security_alerts: "#security"
-  
+
   linear:
     enabled: true
     team_id: "VV"
@@ -384,4 +384,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Made with ❤️ by the NeuralLiquid team** 
+**Made with ❤️ by the NeuralLiquid team**

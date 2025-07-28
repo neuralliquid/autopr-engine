@@ -42,25 +42,25 @@ We will implement a plugin system with the following architecture:
    ```
 
 2. **Plugin Types**
-   - **Action Plugins**: Extend core functionality
-   - **Template Plugins**: Add new templates
-   - **LLM Provider Plugins**: Add new LLM providers
-   - **Integration Plugins**: Connect to external services
-   - **UI Plugins**: Extend the web interface
+    - **Action Plugins**: Extend core functionality
+    - **Template Plugins**: Add new templates
+    - **LLM Provider Plugins**: Add new LLM providers
+    - **Integration Plugins**: Connect to external services
+    - **UI Plugins**: Extend the web interface
 
 3. **Discovery & Loading**
-   - Entry points via `pyproject.toml`:
+    - Entry points via `pyproject.toml`:
      ```toml
      [tool.poetry.plugins."autopr.plugins"]
      "github" = "autopr_github.plugin:GithubPlugin"
      ```
-   - Dynamic loading from specified directories
-   - Namespace packages support
+    - Dynamic loading from specified directories
+    - Namespace packages support
 
 4. **Lifecycle Hooks**
-   - `on_plugin_load()`: Initialization
-   - `on_plugin_unload()`: Cleanup
-   - `on_config_change()`: React to config updates
+    - `on_plugin_load()`: Initialization
+    - `on_plugin_unload()`: Cleanup
+    - `on_config_change()`: React to config updates
 
 ### Configuration
 ```yaml

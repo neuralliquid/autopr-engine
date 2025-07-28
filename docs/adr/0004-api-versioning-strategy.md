@@ -21,16 +21,16 @@ We will implement the following versioning strategy:
 
 ### Versioning Mechanisms
 1. **URL Path Versioning**
-   - Format: `/v{major}/api/...`
-   - Example: `/v1/api/templates`
+    - Format: `/v{major}/api/...`
+    - Example: `/v1/api/templates`
 
 2. **Header Versioning**
-   - Header: `Accept: application/vnd.autopr.v1+json`
-   - For content negotiation
+    - Header: `Accept: application/vnd.autopr.v1+json`
+    - For content negotiation
 
 3. **Query Parameter** (for browser-based APIs)
-   - Format: `?api-version=1.0`
-   - Secondary fallback mechanism
+    - Format: `?api-version=1.0`
+    - Secondary fallback mechanism
 
 ### Deprecation Policy
 - Announce deprecation in release notes

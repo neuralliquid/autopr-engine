@@ -10,9 +10,7 @@ Language-specific AI specialists provide deep understanding of syntax, patterns,
 
 ### **1. CharlieHelps** ⭐⭐⭐⭐⭐ *Premier TypeScript Specialist*
 
-**Pricing**: Custom (Design partner program)  
-**Core Skill**: Autonomous TypeScript development and bug fixing  
-**Language Specialty**: TypeScript, TSX, React TypeScript patterns
+**Pricing**: Custom (Design partner program)**Core Skill**: Autonomous TypeScript development and bug fixing**Language Specialty**: TypeScript, TSX, React TypeScript patterns
 
 **Why It's Essential for TypeScript Teams**:
 
@@ -37,9 +35,7 @@ Language-specific AI specialists provide deep understanding of syntax, patterns,
 
 ### **2. AI TypeScript Check** ⭐⭐⭐⭐
 
-**Pricing**: Free API + ChatGPT Plugin  
-**Core Skill**: TypeScript linting, type checking, and error analysis  
-**API Endpoint**: `ts-check.okikio.dev`
+**Pricing**: Free API + ChatGPT Plugin**Core Skill**: TypeScript linting, type checking, and error analysis**API Endpoint**: `ts-check.okikio.dev`
 
 **Standout Features**:
 
@@ -65,9 +61,7 @@ curl -X POST https://ts-check.okikio.dev/twoslash \
 
 ### **3. Tabnine TypeScript Mode** ⭐⭐⭐⭐
 
-**Pricing**: Free tier + $12/month Pro  
-**Core Skill**: TypeScript-aware code completion with enterprise training  
-**Language Specialty**: TypeScript with custom model training
+**Pricing**: Free tier + $12/month Pro**Core Skill**: TypeScript-aware code completion with enterprise training**Language Specialty**: TypeScript with custom model training
 
 **TypeScript-Specific Features**:
 
@@ -89,9 +83,7 @@ curl -X POST https://ts-check.okikio.dev/twoslash \
 
 ### **1. PyCharm AI Assistant** ⭐⭐⭐⭐
 
-**Pricing**: $8.90/month (Individual) + AI features  
-**Core Skill**: Python-specific code analysis and generation  
-**Language Specialty**: Python, Django, FastAPI, scientific computing
+**Pricing**: $8.90/month (Individual) + AI features**Core Skill**: Python-specific code analysis and generation**Language Specialty**: Python, Django, FastAPI, scientific computing
 
 **Python-Specific Features**:
 
@@ -109,9 +101,7 @@ curl -X POST https://ts-check.okikio.dev/twoslash \
 
 ### **2. Sourcery** ⭐⭐⭐⭐
 
-**Pricing**: Free tier + $10/month Pro  
-**Core Skill**: Python code quality improvement and refactoring  
-**Language Specialty**: Python optimization and best practices
+**Pricing**: Free tier + $10/month Pro**Core Skill**: Python code quality improvement and refactoring**Language Specialty**: Python optimization and best practices
 
 **Features**:
 
@@ -133,9 +123,7 @@ curl -X POST https://ts-check.okikio.dev/twoslash \
 
 ### **1. IntelliJ IDEA AI Assistant** ⭐⭐⭐⭐
 
-**Pricing**: $16.90/month (Individual) + AI features  
-**Core Skill**: Java enterprise development assistance  
-**Language Specialty**: Java, Spring Boot, Maven/Gradle
+**Pricing**: $16.90/month (Individual) + AI features**Core Skill**: Java enterprise development assistance**Language Specialty**: Java, Spring Boot, Maven/Gradle
 
 **Java-Specific Features**:
 
@@ -153,9 +141,7 @@ curl -X POST https://ts-check.okikio.dev/twoslash \
 
 ### **2. Amazon CodeWhisperer for Java** ⭐⭐⭐⭐
 
-**Pricing**: Free tier + $19/month Pro  
-**Core Skill**: AWS-optimized Java development  
-**Language Specialty**: Java with AWS SDK integration
+**Pricing**: Free tier + $19/month Pro**Core Skill**: AWS-optimized Java development**Language Specialty**: Java with AWS SDK integration
 
 **Features**:
 
@@ -170,9 +156,7 @@ curl -X POST https://ts-check.okikio.dev/twoslash \
 
 ### **1. ESLint AI** ⭐⭐⭐⭐
 
-**Pricing**: Free + Enterprise support  
-**Core Skill**: JavaScript code quality and style enforcement  
-**Language Specialty**: JavaScript, Node.js, React
+**Pricing**: Free + Enterprise support**Core Skill**: JavaScript code quality and style enforcement**Language Specialty**: JavaScript, Node.js, React
 
 **Features**:
 
@@ -190,9 +174,7 @@ curl -X POST https://ts-check.okikio.dev/twoslash \
 
 ### **2. Node.js AI Assistant** ⭐⭐⭐⭐
 
-**Pricing**: Various (multiple tools)  
-**Core Skill**: Node.js backend development assistance  
-**Language Specialty**: Node.js, Express, NestJS
+**Pricing**: Various (multiple tools)**Core Skill**: Node.js backend development assistance**Language Specialty**: Node.js, Express, NestJS
 
 **Features**:
 
@@ -207,9 +189,7 @@ curl -X POST https://ts-check.okikio.dev/twoslash \
 
 ### **1. GoLand AI Assistant** ⭐⭐⭐⭐
 
-**Pricing**: $8.90/month (Individual) + AI features  
-**Core Skill**: Go development with concurrency expertise  
-**Language Specialty**: Go, microservices, cloud-native
+**Pricing**: $8.90/month (Individual) + AI features**Core Skill**: Go development with concurrency expertise**Language Specialty**: Go, microservices, cloud-native
 
 **Go-Specific Features**:
 
@@ -224,9 +204,7 @@ curl -X POST https://ts-check.okikio.dev/twoslash \
 
 ### **1. Rust Analyzer + AI** ⭐⭐⭐⭐
 
-**Pricing**: Free (open source) + commercial AI extensions  
-**Core Skill**: Memory-safe Rust development  
-**Language Specialty**: Systems programming, WebAssembly
+**Pricing**: Free (open source) + commercial AI extensions**Core Skill**: Memory-safe Rust development**Language Specialty**: Systems programming, WebAssembly
 
 **Features**:
 
@@ -241,9 +219,7 @@ curl -X POST https://ts-check.okikio.dev/twoslash \
 
 ### **1. CLion AI Assistant** ⭐⭐⭐⭐
 
-**Pricing**: $8.90/month (Individual) + AI features  
-**Core Skill**: C++ development with modern standards  
-**Language Specialty**: C++17/20/23, CMake, cross-platform
+**Pricing**: $8.90/month (Individual) + AI features**Core Skill**: C++ development with modern standards**Language Specialty**: C++17/20/23, CMake, cross-platform
 
 **Features**:
 

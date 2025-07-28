@@ -110,20 +110,17 @@ Categories: 25
   - File: `discovery\migration_guide.yml`
 
 - **Test**
-  - Description: 
-  - Platforms: N/A
+  - Description:  - Platforms: N/A
   - Variables: 0
   - File: `deployment\github-actions-test.yml`
 
 - **getting_started**
-  - Description: 
-  - Platforms: N/A
+  - Description:  - Platforms: N/A
   - Variables: 0
   - File: `documentation\getting_started.yml`
 
 - **main_index**
-  - Description: 
-  - Platforms: N/A
+  - Description:  - Platforms: N/A
   - Variables: 0
   - File: `documentation\main_index.yml`
 

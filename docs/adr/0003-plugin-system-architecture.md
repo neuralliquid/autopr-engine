@@ -15,19 +15,19 @@ We will implement a modular plugin system with the following characteristics:
 
 ### Core Components
 1. **Plugin Host**
-   - Manages plugin lifecycle
-   - Handles discovery and loading
-   - Provides services to plugins
+    - Manages plugin lifecycle
+    - Handles discovery and loading
+    - Provides services to plugins
 
 2. **Plugin Interface**
-   - Base interface all plugins must implement
-   - Versioning support
-   - Metadata (name, version, dependencies)
+    - Base interface all plugins must implement
+    - Versioning support
+    - Metadata (name, version, dependencies)
 
 3. **Dependency Injection**
-   - Built-in IoC container
-   - Service registration and resolution
-   - Scoped lifetimes (Singleton, Scoped, Transient)
+    - Built-in IoC container
+    - Service registration and resolution
+    - Scoped lifetimes (Singleton, Scoped, Transient)
 
 ### Implementation Details
 - **Language**: C# for core, with Python interop
