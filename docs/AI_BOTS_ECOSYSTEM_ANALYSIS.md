@@ -23,7 +23,8 @@
 
 ## Executive Summary
 
-Your repository ecosystem includes **35+ AI-powered tools** working across different aspects of the development lifecycle. This analysis categorizes them by core functionality, interaction methods, and strategic value to help optimize your automated development workflow.
+Your repository ecosystem includes **35+ AI-powered tools** working across different aspects of the development
+lifecycle. This analysis categorizes them by core functionality, interaction methods, and strategic value to help optimize your automated development workflow.
 
 ### Key Categories:
 - **🤖 AI Code Review Bots**: 7 tools
@@ -1068,13 +1069,15 @@ Your AutoPR system can serve as an **orchestration layer** that:
 - **Creates** custom multi-agent workflows using CrewAI integration
 - **Manages** the complexity of 35+ tools through intelligent automation
 
-This positions AutoPR as the **"conductor"** of your AI orchestra, maximizing the value of your existing investments while providing intelligent coordination and reducing tool sprawl.
+This positions AutoPR as the **"conductor"** of your AI orchestra, maximizing the value of your existing investments
+while providing intelligent coordination and reducing tool sprawl.
 
 ---
 
 ## 📚 Documentation Specialist Tools & ChatPRD Alternatives
 
-Based on your use of ChatPRD, here are specialized documentation automation tools that excel in technical writing and product documentation:
+Based on your use of ChatPRD, here are specialized documentation automation tools that excel in technical writing and
+product documentation:
 
 ### **⭐ ChatPRD - Your Current Tool**
 
@@ -1316,7 +1319,8 @@ Based on your use of ChatPRD, here are specialized documentation automation tool
 
 ## Conclusion
 
-Your GitHub ecosystem demonstrates a sophisticated approach to AI-powered development automation across **seven major categories**. The key to success lies in:
+Your GitHub ecosystem demonstrates a sophisticated approach to AI-powered development automation across **seven major
+categories**. The key to success lies in:
 
 1. **Strategic Selection**: Choose complementary tools rather than redundant ones
 2. **Clear Interaction Patterns**: Establish when and how to engage each tool
@@ -1325,9 +1329,11 @@ Your GitHub ecosystem demonstrates a sophisticated approach to AI-powered develo
 5. **Custom Development**: Use frameworks like CrewAI to build domain-specific agents
 6. **Integration Orchestration**: Use AutoPR as a coordination layer for optimal tool utilization
 
-This comprehensive multi-tool approach positions your team at the forefront of AI-assisted development, with the potential for significant productivity gains, quality improvements, and the ability to tackle increasingly complex development challenges through intelligent automation.
+This comprehensive multi-tool approach positions your team at the forefront of AI-assisted development, with the
+potential for significant productivity gains, quality improvements, and the ability to tackle increasingly complex development challenges through intelligent automation.
 
-The missing areas identified (advanced testing automation, performance optimization, database migration, API documentation, accessibility compliance, and cross-platform compatibility) represent opportunities for future expansion and custom agent development.
+The missing areas identified (advanced testing automation, performance optimization, database migration, API
+documentation, accessibility compliance, and cross-platform compatibility) represent opportunities for future expansion and custom agent development.
 
 ---
 

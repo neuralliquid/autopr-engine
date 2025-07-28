@@ -4,7 +4,8 @@
 Proposed
 
 ## Context
-AutoPR needs to handle asynchronous operations and integrate with various external systems while maintaining responsiveness and scalability.
+AutoPR needs to handle asynchronous operations and integrate with various external systems while maintaining
+responsiveness and scalability.
 
 ## Decision
 We will implement an event-driven architecture using the following components:

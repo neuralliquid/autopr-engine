@@ -1,6 +1,7 @@
 # Configuration and Template Extraction
 
-This document describes the systematic extraction and organization of embedded JSON and YAML configurations from the AutoPR engine codebase into a clean, maintainable directory structure.
+This document describes the systematic extraction and organization of embedded JSON and YAML configurations from the
+AutoPR engine codebase into a clean, maintainable directory structure.
 
 ## Overview
 
@@ -11,7 +12,7 @@ All embedded JSON and YAML configuration data has been extracted from Python fil
 
 ## Directory Structure
 
-### configs/ (Reusable Configuration Files)
+### Configs/ (Reusable Configuration Files)
 
 ``` text
 configs/
@@ -180,4 +181,5 @@ dockerfile_content = load_template("docker", "react.dockerfile")
 tsconfig_content = load_template("typescript", "react-tsconfig.json")
 ```
 
-This extraction significantly improves the maintainability, reusability, and clarity of configuration management in the AutoPR engine while preserving all original functionality.
+This extraction significantly improves the maintainability, reusability, and clarity of configuration management in the
+AutoPR engine while preserving all original functionality.

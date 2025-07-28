@@ -2,7 +2,8 @@
 
 ## 🎯 **Executive Summary**
 
-**Recommendation: Extract AutoPR to its own repository** with careful migration strategy to maintain integration benefits while gaining repository-focused advantages.
+**Recommendation: Extract AutoPR to its own repository** with careful migration strategy to maintain integration
+benefits while gaining repository-focused advantages.
 
 ---
 
@@ -566,4 +567,5 @@ Year 2+:
 - **Team Training**: Ensure all team members understand new workflows
 - **Documentation**: Complete guides for both internal and external users
 
-**The migration represents a strategic investment in AutoPR's future as a standalone product while maintaining seamless integration with the existing ecosystem.**
+**The migration represents a strategic investment in AutoPR's future as a standalone product while maintaining seamless
+integration with the existing ecosystem.**

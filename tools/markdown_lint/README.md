@@ -178,7 +178,7 @@ Add this to your `.pre-commit-config.yaml`:
 
 ```yaml
 repos:
-  - repo: https://github.com/yourusername/markdown-lint
+  - repo: <https://github.com/yourusername/markdown-lint>
     rev: v0.1.0
     hooks:
       - id: mdlint

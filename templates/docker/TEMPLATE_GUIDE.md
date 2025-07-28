@@ -2,7 +2,8 @@
 
 ## Overview
 
-This guide explains how to create and maintain Docker templates for the AutoPR template system. Docker templates follow a structured YAML + template approach that enables flexible generation of Docker-related files.
+This guide explains how to create and maintain Docker templates for the AutoPR template system. Docker templates follow
+a structured YAML + template approach that enables flexible generation of Docker-related files.
 
 ## Template Structure
 
@@ -13,7 +14,8 @@ Each Docker template consists of two files:
 
 ## Template Metadata (YAML)
 
-The YAML file defines metadata, variables, and configuration options for the template. Here's the complete schema with detailed explanations:
+The YAML file defines metadata, variables, and configuration options for the template. Here's the complete schema with
+detailed explanations:
 
 ### Required Fields
 

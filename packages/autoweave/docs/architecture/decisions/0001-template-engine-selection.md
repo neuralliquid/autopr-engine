@@ -4,7 +4,8 @@
 ✅ Accepted
 
 ## Context
-We need to select a template language and structure for AutoWeave's template system that balances power, familiarity, and maintainability. The template engine will be used across multiple components including the CI/CD pipeline, CLI, and web UI.
+We need to select a template language and structure for AutoWeave's template system that balances power, familiarity,
+and maintainability. The template engine will be used across multiple components including the CI/CD pipeline, CLI, and web UI.
 
 ## Decision
 We will implement a multi-file template system using:
@@ -89,8 +90,8 @@ We will implement a multi-file template system using:
 - Provide clear documentation and examples
 
 ## Related Work
-- [Scriban Documentation](https://github.com/scriban/scriban)
-- [YAML Specification](https://yaml.org/spec/)
+- [Scriban Documentation](<https://github.com/scriban/scriban)>
+- [YAML Specification](<https://yaml.org/spec/)>
 - [Template System Requirements](./../template_engine.md)
 
 ## Decision Makers

@@ -2,12 +2,13 @@
 
 **AI-Powered GitHub PR Automation and Issue Management**
 
-[![PyPI version](https://badge.fury.io/py/autopr-engine.svg)](https://badge.fury.io/py/autopr-engine)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub Marketplace](https://img.shields.io/badge/GitHub-Marketplace-blue)](https://github.com/marketplace/autopr-engine)
+[![PyPI version](<https://badge.fury.io/py/autopr-engine.svg)](https://badge.fury.io/py/autopr-engine)>
+[![Python 3.8+](<https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)>
+[![License: MIT](<https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)>
+[![GitHub Marketplace](<https://img.shields.io/badge/GitHub-Marketplace-blue)](https://github.com/marketplace/autopr-engine)>
 
-AutoPR Engine is a comprehensive AI-powered automation platform that transforms GitHub pull request workflows through intelligent analysis, issue creation, and multi-agent collaboration.
+AutoPR Engine is a comprehensive AI-powered automation platform that transforms GitHub pull request workflows through
+intelligent analysis, issue creation, and multi-agent collaboration.
 
 ---
 
@@ -351,7 +352,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 8. Open a Pull Request
 
 ### **Code Standards**
-- Follow [PEP 8](https://peps.python.org/pep-0008/) style guidelines
+- Follow [PEP 8](<https://peps.python.org/pep-0008/)> style guidelines
 - Add type hints for all functions
 - Write comprehensive tests for new features
 - Update documentation for user-facing changes
@@ -377,9 +378,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 **Support**
 
-- **Documentation**: [https://autopr-engine.readthedocs.io](https://autopr-engine.readthedocs.io)
-- **GitHub Issues**: [Report bugs and request features](https://github.com/neuralliquid/autopr-engine/issues)
-- **Discussions**: [Community discussions](https://github.com/neuralliquid/autopr-engine/discussions)
+- **Documentation**: [https://autopr-engine.readthedocs.io](<https://autopr-engine.readthedocs.io)>
+- **GitHub Issues**: [Report bugs and request features](<https://github.com/neuralliquid/autopr-engine/issues)>
+- **Discussions**: [Community discussions](<https://github.com/neuralliquid/autopr-engine/discussions)>
 - **Email**: [support@neuralliquid.com](mailto:support@neuralliquid.com)
 
 ---

@@ -4,7 +4,8 @@
 Proposed
 
 ## Context
-AutoPR needs to optimize performance and reduce redundant operations by implementing an effective caching strategy. The system requires caching for:
+AutoPR needs to optimize performance and reduce redundant operations by implementing an effective caching strategy. The
+system requires caching for:
 - LLM API responses
 - Repository metadata and file contents
 - Authentication tokens

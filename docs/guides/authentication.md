@@ -1,7 +1,8 @@
 # Authentication System Documentation
 
 ## Overview
-The Tezos Liquidity Management platform implements a version-aware authentication system that supports both standard and corporate user flows. The system is built on Supabase Auth and includes route protection, social login options, and version-specific redirects.
+The Tezos Liquidity Management platform implements a version-aware authentication system that supports both standard
+and corporate user flows. The system is built on Supabase Auth and includes route protection, social login options, and version-specific redirects.
 
 ## Table of Contents
 - [Architecture](#architecture)
@@ -39,7 +40,7 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 
 ### Social Login Configuration
 1. Configure OAuth providers in your Supabase dashboard
-2. Add the callback URL: `https://your-domain.com/auth/callback`
+2. Add the callback URL: `<https://your-domain.com/auth/callback`>
 3. Update the allowed redirect URLs in your OAuth provider settings
 
 ## Authentication Flow
@@ -114,9 +115,9 @@ const publicRoutes = [
 The `VersionAwareLoginForm` component adapts its styling and behavior based on the version:
 
 ```tsx
-<VersionAwareLoginForm 
-  version="corporate" 
-  redirectTo="/corporate/dashboard" 
+<VersionAwareLoginForm
+  version="corporate"
+  redirectTo="/corporate/dashboard"
 />
 ```
 
@@ -125,9 +126,9 @@ The `VersionAwareLoginForm` component adapts its styling and behavior based on t
 The `VersionAwareSocialLogins` component provides social login options with version-specific redirects:
 
 ```tsx
-<VersionAwareSocialLogins 
-  version="standard" 
-  redirectTo="/standard/dashboard" 
+<VersionAwareSocialLogins
+  version="standard"
+  redirectTo="/standard/dashboard"
 />
 ```
 
@@ -135,9 +136,9 @@ The `VersionAwareSocialLogins` component provides social login options with vers
 The `VersionAwareRegisterForm` component adapts its styling and behavior based on the version:
 
 ```tsx
-<VersionAwareRegisterForm 
-  version="corporate" 
-  redirectTo="/corporate/dashboard" 
+<VersionAwareRegisterForm
+  version="corporate"
+  redirectTo="/corporate/dashboard"
 />
 ```
 
@@ -198,7 +199,8 @@ The system includes a callback handler at `/auth/callback/route.ts` that process
 
 **Symptom**: User is caught in a redirect loop between login and dashboard
 
-**Solution**: Check that the middleware is correctly identifying authenticated users. Verify that cookies are being properly set and read.
+**Solution**: Check that the middleware is correctly identifying authenticated users. Verify that cookies are being
+properly set and read.
 
 #### Social Login Failure
 
@@ -210,7 +212,8 @@ The system includes a callback handler at `/auth/callback/route.ts` that process
 
 **Symptom**: Unauthenticated users can access protected routes
 
-**Solution**: Verify that the route is included in the `protectedPatterns` array and that the middleware is running on that route.
+**Solution**: Verify that the route is included in the `protectedPatterns` array and that the middleware is running on
+that route.
 
 #### Version-Specific Styling Not Applied
 
@@ -256,8 +259,8 @@ To add MFA support:
 
 ## Additional Resources
 
-- [Supabase Auth Documentation](https://supabase.io/docs/guides/auth)
-- [Next.js Middleware Documentation](https://nextjs.org/docs/advanced-features/middleware)
-- [OAuth 2.0 Flow Explained](https://auth0.com/docs/authorization/flows)
+- [Supabase Auth Documentation](<https://supabase.io/docs/guides/auth)>
+- [Next.js Middleware Documentation](<https://nextjs.org/docs/advanced-features/middleware)>
+- [OAuth 2.0 Flow Explained](<https://auth0.com/docs/authorization/flows)>
 
 For further assistance, contact the development team at [support@example.com](mailto:support@example.com).

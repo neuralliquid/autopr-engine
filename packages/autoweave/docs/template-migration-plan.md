@@ -1,7 +1,8 @@
 # AutoPR Template Repository Migration Plan
 
 ## Overview
-This document outlines the strategy and steps for migrating AutoPR's template system from the main repository to a dedicated template repository. The migration will improve maintainability, enable independent versioning, and simplify template contributions.
+This document outlines the strategy and steps for migrating AutoPR's template system from the main repository to a
+dedicated template repository. The migration will improve maintainability, enable independent versioning, and simplify template contributions.
 
 ## Current Template Inventory
 
@@ -229,7 +230,8 @@ autopr-templates/
 # AutoPR Template Repository Migration Plan
 
 ## Overview
-This document outlines the strategy and steps for migrating AutoPR's template system from the main repository to a dedicated template repository. The migration will improve maintainability, enable independent versioning, and simplify template contributions.
+This document outlines the strategy and steps for migrating AutoPR's template system from the main repository to a
+dedicated template repository. The migration will improve maintainability, enable independent versioning, and simplify template contributions.
 
 ## Current Template Inventory
 
@@ -410,42 +412,42 @@ autopr-templates/
 
 ### Technical Risks
 1. **Breaking Changes**
-   - Maintain backward compatibility
-   - Provide migration utilities
-   - Thorough testing
+    - Maintain backward compatibility
+    - Provide migration utilities
+    - Thorough testing
 
 2. **Performance Impact**
-   - Benchmark template loading
-   - Implement caching
-   - Profile critical paths
+    - Benchmark template loading
+    - Implement caching
+    - Profile critical paths
 
 ### Process Risks
 1. **Team Coordination**
-   - Clear communication plan
-   - Staged rollout
-   - Rollback procedures
+    - Clear communication plan
+    - Staged rollout
+    - Rollback procedures
 
 2. **Documentation**
-   - Keep documentation in sync
-   - Document known issues
-   - Maintain upgrade guides
+    - Keep documentation in sync
+    - Document known issues
+    - Maintain upgrade guides
 
 ## Success Metrics
 
 1. **Code Quality**
-   - 100% test coverage of new code
-   - No critical security issues
-   - Static type checking passing
+    - 100% test coverage of new code
+    - No critical security issues
+    - Static type checking passing
 
 2. **Performance**
-   - <100ms template loading time
-   - <5% increase in memory usage
-   - No regressions in application startup
+    - <100ms template loading time
+    - <5% increase in memory usage
+    - No regressions in application startup
 
 3. **Adoption**
-   - 90% template usage through new interface
-   - <5 support requests related to migration
-   - Positive community feedback
+    - 90% template usage through new interface
+    - <5 support requests related to migration
+    - Positive community feedback
 
 ## Next Steps
 

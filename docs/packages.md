@@ -2,7 +2,8 @@
 
 ## Overview
 
-AutoPR is built as a modular system with a clear separation of concerns across multiple packages, supporting both .NET and Python runtimes. This document outlines the package structure, responsibilities, and relationships between different components.
+AutoPR is built as a modular system with a clear separation of concerns across multiple packages, supporting both .NET
+and Python runtimes. This document outlines the package structure, responsibilities, and relationships between different components.
 
 ## Core Packages (NuGet/.NET)
 
@@ -75,7 +76,8 @@ AutoPR is built as a modular system with a clear separation of concerns across m
 
 ### @autopr/client (npm)
 
-**Package**: `@autopr/client`**Language**: TypeScript/JavaScript**Purpose**: Official TypeScript/JavaScript client for interacting with AutoPR services.
+**Package**: `@autopr/client`**Language**: TypeScript/JavaScript**Purpose**: Official TypeScript/JavaScript client for
+interacting with AutoPR services.
 
 **Features**:
 
@@ -218,7 +220,8 @@ myplugin/
 ### Standard Template Packages
 
 #### @autoweave/templates-standard
-**Package**: `@autoweave/templates-standard`**Type**: Template Package**Purpose**: Standard Pull Request templates for common scenarios.
+**Package**: `@autoweave/templates-standard`**Type**: Template Package**Purpose**: Standard Pull Request templates for
+common scenarios.
 
 **Included Templates**:
 - Feature PR template

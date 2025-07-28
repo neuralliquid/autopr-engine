@@ -2,7 +2,8 @@
 
 ## 📚 AI-Powered Documentation & PRD Generation
 
-Specialized tools for creating, maintaining, and enhancing technical documentation, product requirements, and knowledge management.
+Specialized tools for creating, maintaining, and enhancing technical documentation, product requirements, and knowledge
+management.
 
 ---
 
@@ -368,4 +369,5 @@ ROI: 700-900%
 
 ---
 
-*AI-powered documentation tools can reduce documentation time by 68-80% while improving quality and consistency, making them essential for scaling development teams.*
+*AI-powered documentation tools can reduce documentation time by 68-80% while improving quality and consistency, making
+them essential for scaling development teams.*

@@ -2,7 +2,8 @@
 
 ## Overview
 
-This document outlines the upgrade of the AutoPR Engine project from Python 3.8+ to Python 3.13.5, including all necessary configuration changes, dependency updates, and compatibility considerations.
+This document outlines the upgrade of the AutoPR Engine project from Python 3.8+ to Python 3.13.5, including all
+necessary configuration changes, dependency updates, and compatibility considerations.
 
 ## What Changed
 
@@ -306,6 +307,8 @@ pre-commit install
 
 ## Conclusion
 
-The upgrade to Python 3.13.5 provides significant performance improvements, enhanced developer experience, and future-proofing for the AutoPR Engine project. All dependencies have been updated to compatible versions, and the migration process is straightforward.
+The upgrade to Python 3.13.5 provides significant performance improvements, enhanced developer experience, and
+future-proofing for the AutoPR Engine project. All dependencies have been updated to compatible versions, and the migration process is straightforward.
 
-The project now benefits from the latest Python features while maintaining backward compatibility with existing code and configurations.
+The project now benefits from the latest Python features while maintaining backward compatibility with existing code
+and configurations.

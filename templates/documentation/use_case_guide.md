@@ -12,7 +12,8 @@
 
 ### Complexity Level
 
-**{{ use_case_info.get('complexity', 'Medium') }}** - {{ use_case_info.get('complexity_description', 'Standard implementation') }}
+**{{ use_case_info.get('complexity', 'Medium') }}** - {{ use_case_info.get('complexity_description', 'Standard
+implementation') }}
 
 ## Key Features
 

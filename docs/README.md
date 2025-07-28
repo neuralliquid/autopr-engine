@@ -1,6 +1,7 @@
 # AutoPR Engine Documentation
 
-Welcome to the AutoPR Engine documentation hub. This comprehensive collection of guides and references will help you understand, deploy, and extend the AutoPR Engine system.
+Welcome to the AutoPR Engine documentation hub. This comprehensive collection of guides and references will help you
+understand, deploy, and extend the AutoPR Engine system.
 
 ## 📚 Table of Contents
 

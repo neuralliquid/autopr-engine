@@ -456,4 +456,5 @@ print(f"Payback period: {roi['payback_period_days']:.1f} days")
 
 ---
 
-*Successful AI tool implementation requires careful planning, phased rollout, and continuous optimization. The key is starting with high-impact, low-risk tools and gradually building a comprehensive AI-enhanced development ecosystem.*
+*Successful AI tool implementation requires careful planning, phased rollout, and continuous optimization. The key is
+starting with high-impact, low-risk tools and gradually building a comprehensive AI-enhanced development ecosystem.*
