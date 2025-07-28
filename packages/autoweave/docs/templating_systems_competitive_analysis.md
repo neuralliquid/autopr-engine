@@ -69,21 +69,21 @@ This document provides a comprehensive analysis of leading templating systems, e
 ## Key Takeaways
 
 1. **Market Gaps**:
-   - Need for cross-language templating solutions
-   - Balance between power and security
-   - Better developer experience with modular components
+    - Need for cross-language templating solutions
+    - Balance between power and security
+    - Better developer experience with modular components
 
 2. **AutoWeave Opportunities**:
-   - Cross-platform support
-   - Enhanced security features
-   - Better developer tooling
-   - Modern cloud integration
+    - Cross-platform support
+    - Enhanced security features
+    - Better developer tooling
+    - Modern cloud integration
 
 3. **Recommended Focus Areas**:
-   - Developer experience
-   - Performance optimization
-   - Security features
-   - Integration capabilities
+    - Developer experience
+    - Performance optimization
+    - Security features
+    - Integration capabilities
 
 ## Appendix: Technical Comparison
 

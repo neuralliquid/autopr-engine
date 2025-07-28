@@ -8,8 +8,7 @@ AutoPR is built as a modular system with a clear separation of concerns across m
 
 ### AutoPR.Core
 
-**NuGet**: `AutoPR.Core`  
-**Purpose**: Core interfaces, models, and shared utilities used throughout the platform.
+**NuGet**: `AutoPR.Core`**Purpose**: Core interfaces, models, and shared utilities used throughout the platform.
 
 **Key Components**:
 
@@ -21,8 +20,7 @@ AutoPR is built as a modular system with a clear separation of concerns across m
 
 ### AutoPR.Plugins
 
-**NuGet**: `AutoPR.Plugins`  
-**Purpose**: Base interfaces and utilities for developing AutoPR plugins.
+**NuGet**: `AutoPR.Plugins`**Purpose**: Base interfaces and utilities for developing AutoPR plugins.
 
 **Key Components**:
 
@@ -34,8 +32,7 @@ AutoPR is built as a modular system with a clear separation of concerns across m
 
 ### AutoPR.Extensions
 
-**NuGet**: `AutoPR.Extensions`  
-**Purpose**: Common extensions and utilities used across the platform.
+**NuGet**: `AutoPR.Extensions`**Purpose**: Common extensions and utilities used across the platform.
 
 **Key Components**:
 
@@ -49,8 +46,7 @@ AutoPR is built as a modular system with a clear separation of concerns across m
 
 ### AutoPR.Python
 
-**NuGet**: `AutoPR.Python`  
-**Purpose**: Python runtime integration for AutoPR.
+**NuGet**: `AutoPR.Python`**Purpose**: Python runtime integration for AutoPR.
 
 **Features**:
 
@@ -65,12 +61,11 @@ AutoPR is built as a modular system with a clear separation of concerns across m
 
 ### AutoPR.Node
 
-**NuGet**: `AutoPR.Node`  
-**Purpose**: Node.js runtime integration for AutoPR.
+**NuGet**: `AutoPR.Node`**Purpose**: Node.js runtime integration for AutoPR.
 
 **Features**:
 
-- Node.js 18+ script execution
+- Node.js 22+ script execution
 - NPM/Yarn/PNPM package management
 - Dependency resolution and auditing
 - JavaScript/TypeScript code analysis
@@ -80,9 +75,7 @@ AutoPR is built as a modular system with a clear separation of concerns across m
 
 ### @autopr/client (npm)
 
-**Package**: `@autopr/client`  
-**Language**: TypeScript/JavaScript  
-**Purpose**: Official TypeScript/JavaScript client for interacting with AutoPR services.
+**Package**: `@autopr/client`**Language**: TypeScript/JavaScript**Purpose**: Official TypeScript/JavaScript client for interacting with AutoPR services.
 
 **Features**:
 
@@ -94,9 +87,7 @@ AutoPR is built as a modular system with a clear separation of concerns across m
 
 ### AutoPR.Client (NuGet)
 
-**NuGet**: `AutoPR.Client`  
-**Language**: C#  
-**Purpose**: Official .NET client for AutoPR services.
+**NuGet**: `AutoPR.Client`**Language**: C#**Purpose**: Official .NET client for AutoPR services.
 
 **Features**:
 
@@ -140,9 +131,7 @@ myplugin/
 
 ### @autopr/plugin-github
 
-**Package**: `@autopr/plugin-github`  
-**Type**: Integration Plugin  
-**Purpose**: GitHub integration for AutoPR.
+**Package**: `@autopr/plugin-github`**Type**: Integration Plugin**Purpose**: GitHub integration for AutoPR.
 
 **Features**:
 
@@ -156,9 +145,7 @@ myplugin/
 
 ### @autopr/plugin-azure
 
-**Package**: `@autopr/plugin-azure`  
-**Type**: Integration Plugin  
-**Purpose**: Azure DevOps integration for AutoPR.
+**Package**: `@autopr/plugin-azure`**Type**: Integration Plugin**Purpose**: Azure DevOps integration for AutoPR.
 
 **Features**:
 
@@ -171,9 +158,7 @@ myplugin/
 
 ### @autopr/plugin-gitlab
 
-**Package**: `@autopr/plugin-gitlab`  
-**Type**: Integration Plugin  
-**Purpose**: GitLab integration for AutoPR.
+**Package**: `@autopr/plugin-gitlab`**Type**: Integration Plugin**Purpose**: GitLab integration for AutoPR.
 
 **Features**:
 
@@ -186,9 +171,7 @@ myplugin/
 
 ### @autopr/plugin-autoweave
 
-**Package**: `@autopr/plugin-autoweave`  
-**Type**: Integration Plugin  
-**Purpose**: AutoWeave integration for AutoPR.
+**Package**: `@autopr/plugin-autoweave`**Type**: Integration Plugin**Purpose**: AutoWeave integration for AutoPR.
 
 **Features**:
 
@@ -203,8 +186,7 @@ myplugin/
 ### Core Template Packages
 
 #### @autoweave/template-engine
-**Package**: `@autoweave/template-engine`  
-**Purpose**: Core template processing engine.
+**Package**: `@autoweave/template-engine`**Purpose**: Core template processing engine.
 
 **Features**:
 - Multi-template language support (Liquid, Handlebars, etc.)
@@ -214,8 +196,7 @@ myplugin/
 - Dependency tracking
 
 #### @autoweave/template-sdk
-**Package**: `@autoweave/template-sdk`  
-**Purpose**: Development kit for creating custom templates.
+**Package**: `@autoweave/template-sdk`**Purpose**: Development kit for creating custom templates.
 
 **Features**:
 - TypeScript/JavaScript API
@@ -225,8 +206,7 @@ myplugin/
 - Documentation generation
 
 #### @autoweave/template-registry
-**Package**: `@autoweave/template-registry`  
-**Purpose**: Central template repository and management.
+**Package**: `@autoweave/template-registry`**Purpose**: Central template repository and management.
 
 **Features**:
 - Template discovery and resolution
@@ -238,9 +218,7 @@ myplugin/
 ### Standard Template Packages
 
 #### @autoweave/templates-standard
-**Package**: `@autoweave/templates-standard`  
-**Type**: Template Package  
-**Purpose**: Standard Pull Request templates for common scenarios.
+**Package**: `@autoweave/templates-standard`**Type**: Template Package**Purpose**: Standard Pull Request templates for common scenarios.
 
 **Included Templates**:
 - Feature PR template
@@ -252,9 +230,7 @@ myplugin/
 - Experimental feature template
 
 #### @autoweave/templates-security
-**Package**: `@autoweave/templates-security`  
-**Type**: Template Package  
-**Purpose**: Security-focused PR templates and workflows.
+**Package**: `@autoweave/templates-security`**Type**: Template Package**Purpose**: Security-focused PR templates and workflows.
 
 **Included Templates**:
 - Security vulnerability fix template
@@ -266,9 +242,7 @@ myplugin/
 - Compliance documentation template
 
 #### @autoweave/templates-ai
-**Package**: `@autoweave/templates-ai`  
-**Type**: Template Package  
-**Purpose**: AI/ML focused templates.
+**Package**: `@autoweave/templates-ai`**Type**: Template Package**Purpose**: AI/ML focused templates.
 
 **Included Templates**:
 - Model training PR

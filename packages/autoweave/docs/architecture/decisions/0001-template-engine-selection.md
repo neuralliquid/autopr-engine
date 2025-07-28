@@ -14,22 +14,22 @@ We will implement a multi-file template system using:
 
 ## Rationale
 1. **Jinja2/Scriban** offers the best balance of power and familiarity:
-   - Supports complex logic, loops, and conditionals
-   - Familiar to DevOps and platform engineers
-   - Good performance characteristics
-   - Strong .NET support through Scriban
+    - Supports complex logic, loops, and conditionals
+    - Familiar to DevOps and platform engineers
+    - Good performance characteristics
+    - Strong .NET support through Scriban
 
 2. **YAML** was chosen over JSON for metadata because:
-   - More readable and writable by humans
-   - Better support for comments
-   - Widely used in DevOps tools (Kubernetes, Ansible, etc.)
-   - Good tooling support in .NET
+    - More readable and writable by humans
+    - Better support for comments
+    - Widely used in DevOps tools (Kubernetes, Ansible, etc.)
+    - Good tooling support in .NET
 
 3. **Multi-file structure** was selected because:
-   - Better organization of complex templates
-   - Easier maintenance and version control
-   - Supports separation of concerns
-   - Enables partial templates and reuse
+    - Better organization of complex templates
+    - Easier maintenance and version control
+    - Supports separation of concerns
+    - Enables partial templates and reuse
 
 ## Consequences
 

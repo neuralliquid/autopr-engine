@@ -370,15 +370,15 @@ class GitHubWebhookIntegration:
             'veritasvault/vv-backend',
             # Other repositories using AutoPR
         ]
-    
+
     async def handle_pr_event(self, payload: dict):
         """Handle PR events from multiple repositories"""
-        
+
         source_repo = payload['repository']['full_name']
-        
+
         if source_repo not in self.supported_repos:
             return
-        
+
         # Route to appropriate workflow
         if source_repo == 'veritasvault/vv-landing':
             await self._handle_frontend_pr(payload)
@@ -549,8 +549,7 @@ Year 2+:
 
 ### **Recommended Timeline: 4 weeks**
 - **Week 1**: Repository setup and code extraction
-- **Week 2**: Package configuration and CI/CD setup  
-- **Week 3**: Cross-repository integration and testing
+- **Week 2**: Package configuration and CI/CD setup- **Week 3**: Cross-repository integration and testing
 - **Week 4**: Distribution and documentation
 
 ### **Success Criteria**
@@ -567,4 +566,4 @@ Year 2+:
 - **Team Training**: Ensure all team members understand new workflows
 - **Documentation**: Complete guides for both internal and external users
 
-**The migration represents a strategic investment in AutoPR's future as a standalone product while maintaining seamless integration with the existing ecosystem.** 
+**The migration represents a strategic investment in AutoPR's future as a standalone product while maintaining seamless integration with the existing ecosystem.**
