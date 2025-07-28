@@ -23,7 +23,6 @@ class TestGenerator(BaseGenerator):
                 - test_framework: The testing framework to use
                 - src_dir: The source directory (defaults to 'src')
                 - test_dir: The test directory (defaults to 'tests')
-
         Returns:
             List of paths to generated files
         """
@@ -172,5 +171,4 @@ class TestGenerator(BaseGenerator):
                 file_path.parent.mkdir(parents=True, exist_ok=True)
                 self._write_file(str(file_path), content)
                 generated_files.append(str(file_path))
-
         return generated_files

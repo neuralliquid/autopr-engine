@@ -67,7 +67,6 @@ class BaseGenerator(ABC):
             template_key: Key identifying the template
             variables: Variables to pass to the template
             variants: List of template variants to apply
-
         Returns:
             Rendered template content, or None if template not found
         """

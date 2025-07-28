@@ -29,12 +29,10 @@ graph TD
         B --> D[AI/ML Services]
         B --> E[Version Control Integration]
     end
-
     subgraph AutoWeave
         F[Template Registry] -->|Discovers| G[Core Templates]
         F -->|Discovers| H[AI Templates]
         F -->|Discovers| I[Cloud Templates]
-
         J[Template Processor] -->|Validates| G
         J -->|Processes| H
         J -->|Deploys| I
@@ -123,7 +121,6 @@ sequenceDiagram
     participant AE as Action Executor
     participant TP as Template Processor
     participant TR as Template Registry
-
     AP->>AE: Execute GenerateTemplateAction
     AE->>TP: Process template request
     TP->>TR: Fetch template metadata
@@ -268,13 +265,11 @@ graph TD
         C -->|3. Issue Tokens| B
         B -->|4. JWT + Refresh Token| A
     end
-
     subgraph Authorization
         D[API Gateway] -->|5. Validate JWT| E[Token Validator]
         E -->|6. Check Claims| F[Policy Engine]
         F -->|7. Enforce Policies| G[Resource Access]
     end
-
     A -->|8. API Request with JWT| D
     G -->|9. Resource Data| A
 ```
@@ -669,7 +664,6 @@ class AutoWeaveClient:
         """List available templates, optionally filtered by category."""
         url = f"{self.base_url}/api/templates"
         params = {"category": ",".join(categories)} if categories else {}
-
         response = self.session.get(url, params=params)
         response.raise_for_status()
         return response.json()

@@ -23,7 +23,6 @@ class ConfigGenerator(BaseGenerator):
                 - language: The programming language
                 - app_name: The name of the application
                 - version: The version of the application
-
         Returns:
             List of paths to generated files
         """
@@ -148,5 +147,4 @@ class ConfigGenerator(BaseGenerator):
                 file_path = str(Path(output_dir) / template)
                 self._write_file(file_path, content)
                 generated_files.append(file_path)
-
         return generated_files

@@ -24,7 +24,6 @@ class DockerGenerator(BaseGenerator):
                 - framework: The web framework being used
                 - database: The database type (if any)
                 - environment: The target environment (dev, prod, etc.)
-
         Returns:
             List of paths to generated files
         """

@@ -32,7 +32,6 @@ class CICDGenerator(BaseGenerator):
                 - cache: Whether to enable caching
                 - notifications: Configuration for notifications
                 - environment: The target environment (dev, staging, prod)
-
         Returns:
             List of paths to generated files
         """
