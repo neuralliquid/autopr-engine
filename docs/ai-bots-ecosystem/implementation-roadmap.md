@@ -283,7 +283,7 @@ Weekend: Plan Month 2 advanced features
 
 # 2. Export to GitHub
 # Use Replit's GitHub integration
-git remote add origin <https://github.com/yourusername/your-repo.git>
+git remote add origin <<<https://github.com/yourusername/your-repo.git>>>
 git push -u origin main
 
 # 3. Setup AutoPR triggers
@@ -486,13 +486,13 @@ npm install -g continue
 # 2. Install Aiderpip install aider-chat
 
 # 3. Setup CodeRabbit (GitHub App)
-# Visit: <https://github.com/apps/coderabbit-ai>
+# Visit: <<<https://github.com/apps/coderabbit-ai>>>
 
 # 4. Configure Renovate
-# Visit: <https://github.com/apps/renovate>
+# Visit: <<<https://github.com/apps/renovate>>>
 
 # 5. Start with Replit prototype
-# Visit: <https://replit.com/ai>
+# Visit: <<<https://replit.com/ai>>>
 ```
 
 ### **Test Your Setup**

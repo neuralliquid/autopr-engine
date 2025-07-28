@@ -2,7 +2,8 @@
 
 ## 🔄 Complete Development Lifecycle with AI Automation
 
-Detailed workflows showing how AI tools interact throughout the development process, from PR creation to ticket resolution and deployment.
+Detailed workflows showing how AI tools interact throughout the development process, from PR creation to ticket
+resolution and deployment.
 
 ---
 
@@ -41,13 +42,13 @@ jobs:
       - name: CodeRabbit Analysis
         # Automatically triggered via GitHub App
         # Reviews: code quality, security, performance, best practices
-        
+
       # GitHub Copilot Chat provides additional insights
       - name: Copilot Chat Review
         run: |
           gh copilot explain "${{ github.event.pull_request.diff_url }}"
           gh copilot suggest improvements
-          
+
       # AI TypeScript Check validates types
       - name: TypeScript AI Validation
         run: |
@@ -103,7 +104,7 @@ graph TD
 class PRReviewIssueCreator:
     def create_issue_from_review(self, pr_review_data):
         """Creates GitHub issue from CodeRabbit review findings"""
-        
+
         for finding in pr_review_data.findings:
             if finding.severity in ['high', 'critical']:
                 issue = self.github.create_issue(
@@ -113,26 +114,26 @@ class PRReviewIssueCreator:
                     **PR**: #{pr_review_data.pr_number}
                     **File**: {finding.file_path}
                     **Line**: {finding.line_number}
-                    
+
                     ## Issue Description
                     {finding.description}
-                    
+
                     ## Suggested Fix
                     {finding.suggested_fix}
-                    
+
                     ## AI Confidence Score
                     {finding.confidence_score}/100
                     """,
                     labels=['ai-detected', finding.severity, finding.type],
                     assignees=['team-lead']  # Auto-assign based on file ownership
                 )
-                
+
                 # Tag relevant AI for pickup
                 if finding.type == 'typescript':
                     self.assign_to_charlie(issue)
                 elif finding.type == 'security':
                     self.assign_to_snyk_workflow(issue)
-                    
+
         return created_issues
 
     def assign_to_charlie(self, issue):
@@ -157,16 +158,16 @@ class LinearTicketCreator {
         **Source**: CodeRabbit AI Review
         **PR**: #${reviewData.prNumber}
         **Suggestion Type**: ${reviewData.suggestion.type}
-        
+
         ## Current Implementation
         ${reviewData.currentCode}
-        
+
         ## Suggested Improvement
         ${reviewData.suggestion.description}
-        
+
         ## Expected Benefits
         - ${reviewData.suggestion.benefits.join('\n- ')}
-        
+
         ## Implementation Estimate
         ${reviewData.suggestion.timeEstimate}
       `,
@@ -174,12 +175,12 @@ class LinearTicketCreator {
       priority: this.calculatePriority(reviewData.suggestion.impact),
       assignee: null  // Will be picked up by Charlie
     });
-    
+
     // Notify Charlie via Linear
-    await this.linear.addComment(ticket.id, 
+    await this.linear.addComment(ticket.id,
       "@charlie this ticket is ready for autonomous implementation"
     );
-    
+
     return ticket;
   }
 }
@@ -194,14 +195,14 @@ graph TD
     B -->|Security| D[Snyk + Manual Review]
     B -->|General Development| E[Continue.dev + Aider]
     B -->|Infrastructure| F[Azure SRE Agent]
-    
+
     C --> G[Charlie Analyzes Ticket]
     G --> H[Charlie Creates Implementation Plan]
     H --> I[Charlie Creates New Branch]
     I --> J[Charlie Implements Code]
     J --> K[Charlie Creates PR]
     K --> L[Back to PR Review Cycle]
-    
+
     E --> M[Developer Uses AI Assistants]
     M --> N[Aider Autonomous Implementation]
     N --> O[Continue.dev Code Enhancement]
@@ -256,11 +257,11 @@ interface Permission {
 // Enhanced dashboard component with role validation
 const DashboardComponent: React.FC<{user: User}> = ({user}) => {
   const hasPermission = useRoleValidation(user.roles);
-  
+
   if (!hasPermission('dashboard', 'read')) {
     return <UnauthorizedComponent />;
   }
-  
+
   return (
     <div className="dashboard">
       {hasPermission('analytics', 'read') && <AnalyticsSection />}
@@ -315,7 +316,7 @@ architect = Agent(
 )
 
 implementer = Agent(
-    role='Senior Developer', 
+    role='Senior Developer',
     goal='Implement robust, tested code',
     tools=['code_generator', 'test_framework', 'documentation_generator']
 )
@@ -372,7 +373,7 @@ graph TD
     C -->|TypeScript| F[Charlie Assignment]
     C -->|Infrastructure| G[Azure SRE Analysis]
     C -->|Documentation| H[Promptless Assignment]
-    
+
     D --> I[Security Priority Queue]
     E --> J[Product Backlog]
     F --> K[Charlie Implementation Queue]
@@ -393,11 +394,11 @@ class AIIssueClassifier:
             'documentation': ['docs', 'readme', 'documentation', 'guide'],
             'infrastructure': ['deployment', 'ci/cd', 'pipeline', 'azure', 'docker']
         }
-    
+
     def classify_and_route(self, issue):
         """Classifies issue and routes to appropriate AI system"""
         classification = self.classify_issue(issue.title + " " + issue.body)
-        
+
         routing_actions = {
             'security': self.route_to_security_workflow,
             'typescript': self.route_to_charlie,
@@ -406,9 +407,9 @@ class AIIssueClassifier:
             'documentation': self.route_to_documentation_ai,
             'infrastructure': self.route_to_azure_sre
         }
-        
+
         return routing_actions[classification](issue)
-    
+
     def route_to_charlie(self, issue):
         """Routes TypeScript issues to Charlie"""
         # Create Linear ticket
@@ -417,22 +418,22 @@ class AIIssueClassifier:
             'description': f"""
                 **GitHub Issue**: #{issue.number}
                 **Type**: TypeScript Implementation
-                
+
                 {issue.body}
-                
+
                 @charlie please analyze and implement this TypeScript feature/fix
             """,
             'labels': ['charlie-assigned', 'typescript'],
             'priority': self.calculate_priority(issue)
         })
-        
+
         # Add GitHub comment
-        self.github.add_comment(issue.number, 
+        self.github.add_comment(issue.number,
             f"This TypeScript issue has been assigned to Charlie for autonomous implementation.\n"
             f"Linear Ticket: {linear_ticket.url}\n"
             f"Expected implementation time: {self.estimate_charlie_time(issue)}"
         )
-        
+
         return linear_ticket
 ```
 
@@ -451,11 +452,11 @@ graph TD
     E -->|Success| F[Success Notifications]
     E -->|Failure| G[Automatic Rollback]
     E -->|Issues| H[Create Incident Ticket]
-    
+
     F --> I[Close Related Tickets]
     G --> J[Create Rollback Issue]
     H --> K[Alert Development Team]
-    
+
     I --> L[Update Documentation]
     J --> M[Priority Investigation]
     K --> N[Incident Response Workflow]
@@ -469,25 +470,25 @@ deployment_monitoring:
   triggers:
     - pr_merged_to_main
     - manual_deployment
-  
+
   health_checks:
     - endpoint_availability
     - response_time_threshold: 500ms
     - error_rate_threshold: 1%
     - dependency_health
-  
+
   automation_actions:
     success:
       - close_linear_tickets
       - update_deployment_dashboard
       - notify_stakeholders
-    
+
     failure:
       - automatic_rollback
       - create_incident_issue
       - alert_on_call_engineer
       - gather_diagnostic_data
-    
+
     degraded_performance:
       - scale_resources
       - investigate_bottlenecks
@@ -500,7 +501,7 @@ deployment_monitoring:
 class PostDeploymentAutomation:
     def handle_successful_deployment(self, deployment_info):
         """Handles post-deployment cleanup and documentation"""
-        
+
         # Close related Linear tickets
         related_tickets = self.find_tickets_for_deployment(deployment_info.pr_numbers)
         for ticket in related_tickets:
@@ -510,18 +511,18 @@ class PostDeploymentAutomation:
                     ✅ Successfully deployed in version {deployment_info.version}
                     📅 Deployed at: {deployment_info.timestamp}
                     🔗 Deployment: {deployment_info.url}
-                    
+
                     Automatically closed by Azure SRE Agent
                 """
             })
-        
+
         # Update documentation via Promptless
         self.promptless.update_docs({
             'deployment': deployment_info,
             'changelog': self.generate_changelog(deployment_info.changes),
             'api_changes': self.extract_api_changes(deployment_info.pr_numbers)
         })
-        
+
         # Notify stakeholders
         self.slack.send_message({
             'channel': '#deployments',
@@ -548,11 +549,11 @@ graph TD
     D -->|P0 - Service Down| E[Immediate Rollback]
     D -->|P1 - Security| F[Security Team Alert]
     D -->|P2 - Performance| G[Auto-scaling Response]
-    
+
     E --> H[Create Emergency Linear Ticket]
     F --> I[Create Security Incident]
     G --> J[Create Performance Investigation]
-    
+
     H --> K[Charlie Emergency Implementation]
     I --> L[Manual Security Response]
     J --> M[Azure SRE Auto-remediation]
@@ -564,41 +565,41 @@ graph TD
 class EmergencyResponseWorkflow:
     def handle_critical_issue(self, alert):
         """Handles critical production issues with AI assistance"""
-        
+
         severity = self.assess_severity(alert)
-        
+
         if severity == 'P0':  # Service down
             # Immediate rollback
             rollback_result = self.azure_sre.rollback_to_last_known_good()
-            
+
             # Create emergency Linear ticket for Charlie
             emergency_ticket = self.linear.create_issue({
                 'title': f'[P0 EMERGENCY] {alert.title}',
                 'description': f"""
                     🚨 **PRODUCTION DOWN**
-                    
+
                     **Alert**: {alert.description}
                     **Service**: {alert.service}
                     **Started**: {alert.timestamp}
                     **Impact**: {alert.impact}
-                    
+
                     **Rollback Status**: {rollback_result.status}
                     **Previous Version**: {rollback_result.version}
-                    
+
                     @charlie please analyze and implement emergency fix
                 """,
                 'priority': 1,
                 'labels': ['emergency', 'p0', 'charlie-urgent']
             })
-            
+
             # Immediate notifications
             self.notify_emergency_team(alert, emergency_ticket)
-            
+
         elif severity == 'P1':  # Security issue
             # Security-specific response
             self.snyk.create_security_incident(alert)
             self.security_team.alert_immediate(alert)
-            
+
         return self.track_resolution(alert, severity)
 ```
 
@@ -612,7 +613,7 @@ class EmergencyResponseWorkflow:
 class WorkflowMetrics:
     def calculate_workflow_efficiency(self):
         """Tracks efficiency across all AI workflows"""
-        
+
         metrics = {
             'pr_review_cycle': {
                 'ai_review_time': self.average_ai_review_time(),
@@ -620,27 +621,27 @@ class WorkflowMetrics:
                 'total_cycle_time': self.average_total_cycle_time(),
                 'auto_approval_rate': self.calculate_auto_approval_rate()
             },
-            
+
             'ticket_resolution': {
                 'charlie_pickup_time': self.average_charlie_pickup_time(),
                 'charlie_implementation_time': self.average_charlie_implementation_time(),
                 'charlie_success_rate': self.calculate_charlie_success_rate(),
                 'manual_fallback_rate': self.calculate_manual_fallback_rate()
             },
-            
+
             'issue_triage': {
                 'classification_accuracy': self.measure_classification_accuracy(),
                 'routing_efficiency': self.measure_routing_efficiency(),
                 'resolution_time_by_type': self.analyze_resolution_times()
             },
-            
+
             'deployment_automation': {
                 'deployment_success_rate': self.calculate_deployment_success_rate(),
                 'rollback_frequency': self.calculate_rollback_frequency(),
                 'incident_response_time': self.average_incident_response_time()
             }
         }
-        
+
         return self.generate_optimization_recommendations(metrics)
 ```
 
@@ -696,4 +697,5 @@ Based on workflow metrics analysis:
 
 ---
 
-*These workflows provide complete automation from code review to deployment, with AI systems handling routine tasks and escalating complex issues to appropriate specialists. The key is proper routing and clear handoff points between different AI systems.*
+*These workflows provide complete automation from code review to deployment, with AI systems handling routine tasks and
+escalating complex issues to appropriate specialists. The key is proper routing and clear handoff points between different AI systems.*

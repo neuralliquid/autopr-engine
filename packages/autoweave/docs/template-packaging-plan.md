@@ -1,7 +1,8 @@
 # AutoWeave Template Packaging & Modularization Plan
 
 ## Overview
-This document outlines the strategy for migrating from inline/hardcoded templates to a structured, maintainable template system with proper packaging and versioning, following the new C# Core architecture with Python AI/ML integration.
+This document outlines the strategy for migrating from inline/hardcoded templates to a structured, maintainable
+template system with proper packaging and versioning, following the new C# Core architecture with Python AI/ML integration.
 
 ## Architecture Overview
 

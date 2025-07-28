@@ -2,13 +2,13 @@
 
 /**
  * Theme Import Migration Script
- * 
+ *
  * This script scans the codebase for theme-related imports and updates them
  * to use the consolidated single source of truth.
- * 
+ *
  * Usage:
  *   node scripts/update-theme-imports.js [--dry-run] [--path=./src]
- * 
+ *
  * Options:
  *   --dry-run    Show changes without applying them
  *   --path       Specify a subdirectory to process (default: ./src)
@@ -73,12 +73,12 @@ function processFile(filePath) {
   if (filePath.includes('node_modules') || filePath.includes('.next')) {
     return;
   }
-  
+
   // Only process TypeScript and JavaScript files
   if (!['.ts', '.tsx', '.js', '.jsx'].includes(path.extname(filePath))) {
     return;
   }
-  
+
   // Read the file content
   let content;
   try {
@@ -87,11 +87,11 @@ function processFile(filePath) {
     console.error(`Error reading file ${filePath}:`, error);
     return;
   }
-  
+
   // Apply replacements
   let newContent = content;
   let hasChanges = false;
-  
+
   importPatterns.forEach(({ pattern, replacement }) => {
     const updatedContent = newContent.replace(pattern, (match) => {
       hasChanges = true;
@@ -100,12 +100,12 @@ function processFile(filePath) {
       }
       return replacement;
     });
-    
+
     if (updatedContent !== newContent) {
       newContent = updatedContent;
     }
   });
-  
+
   // If there are changes, write them back or report them
   if (hasChanges) {
     if (dryRun) {
@@ -131,10 +131,10 @@ function processFile(filePath) {
  */
 function processDirectory(dirPath) {
   const entries = fs.readdirSync(dirPath, { withFileTypes: true });
-  
+
   for (const entry of entries) {
     const fullPath = path.join(dirPath, entry.name);
-    
+
     if (entry.isDirectory()) {
       processDirectory(fullPath);
     } else {
@@ -150,7 +150,7 @@ console.log(`Mode: ${dryRun ? 'Dry run (no changes will be made)' : 'Making chan
 try {
   processDirectory(rootDir);
   console.log('Scan complete!');
-  
+
   // Run TypeScript check if not in dry run mode
   if (!dryRun) {
     console.log('\nRunning TypeScript check to verify changes...');

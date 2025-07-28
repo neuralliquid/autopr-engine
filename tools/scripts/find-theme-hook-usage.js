@@ -1,11 +1,11 @@
 /**
  * Script to identify components using useTheme hooks that might need ThemeProvider wrappers
- * 
+ *
  * This script searches the codebase for:
  * 1. Components using the useTheme hook directly
  * 2. Components using other components that might use useTheme
  * 3. Potential locations where ThemeProvider is missing
- * 
+ *
  * Usage: node scripts/find-theme-hook-usage.js
  */
 
@@ -36,26 +36,26 @@ const results = {
  */
 function findFiles(dir, fileList = []) {
   const files = fs.readdirSync(dir);
-  
+
   files.forEach(file => {
     const filePath = path.join(dir, file);
     const stat = fs.statSync(filePath);
-    
+
     if (stat.isDirectory()) {
       // Skip node_modules and .next directories
       if (file !== 'node_modules' && file !== '.next') {
         findFiles(filePath, fileList);
       }
     } else if (
-      file.endsWith('.tsx') || 
-      file.endsWith('.ts') || 
-      file.endsWith('.jsx') || 
+      file.endsWith('.tsx') ||
+      file.endsWith('.ts') ||
+      file.endsWith('.jsx') ||
       file.endsWith('.js')
     ) {
       fileList.push(filePath);
     }
   });
-  
+
   return fileList;
 }
 
@@ -74,7 +74,7 @@ function searchInFile(filePath, patterns) {
   try {
     const content = fs.readFileSync(filePath, 'utf8');
     const matches = [];
-    
+
     patterns.forEach(pattern => {
       // Simple string search
       if (content.includes(pattern)) {
@@ -90,7 +90,7 @@ function searchInFile(filePath, patterns) {
         });
       }
     });
-    
+
     return matches;
   } catch (error) {
     console.error(`Error reading file ${filePath}:`, error);
@@ -112,7 +112,7 @@ function analyzeFile(filePath) {
       matches: hookMatches
     });
   }
-  
+
   // Find theme component usage
   const componentMatches = searchInFile(filePath, THEME_COMPONENTS);
   if (componentMatches.length > 0) {
@@ -121,7 +121,7 @@ function analyzeFile(filePath) {
       matches: componentMatches
     });
   }
-  
+
   // Find theme provider usage
   const providerMatches = searchInFile(filePath, THEME_PROVIDERS);
   if (providerMatches.length > 0) {
@@ -130,15 +130,15 @@ function analyzeFile(filePath) {
       matches: providerMatches
     });
   }
-  
+
   // Identify potential issues (hook usage without provider in same file)
   if ((hookMatches.length > 0 || componentMatches.length > 0) && providerMatches.length === 0) {
     // Check if this is a page component
-    const isPageComponent = 
-      filePath.includes('/page.') || 
-      filePath.includes('/pages/') || 
+    const isPageComponent =
+      filePath.includes('/page.') ||
+      filePath.includes('/pages/') ||
       filePath.includes('/app/');
-    
+
     results.potentialIssues.push({
       file: filePath,
       isPageComponent,
@@ -195,7 +195,7 @@ const reportData = {
 };
 
 fs.writeFileSync(
-  'theme-usage-report.json', 
+  'theme-usage-report.json',
   JSON.stringify(reportData, null, 2)
 );
 

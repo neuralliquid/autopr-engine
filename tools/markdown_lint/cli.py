@@ -116,7 +116,7 @@ def parse_args(args: List[str]) -> argparse.Namespace:
     parser.add_argument(
         "--version",
         action="version",
-        version=f"%(prog)s {__import__('markdown_lint').__version__}",
+        version=f"%(prog)s {__import__('tools.markdown_lint', fromlist=['__version__']).__version__}",
     )
 
     return parser.parse_args(args)

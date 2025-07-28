@@ -2,14 +2,17 @@
 
 ## Overview
 
-This document outlines the integration patterns, technical architecture, and best practices for combining AutoPR's automated pull request capabilities with AutoWeave's template-based project generation system. The integration is designed for enterprise-scale operations with high performance, security, and reliability requirements.
+This document outlines the integration patterns, technical architecture, and best practices for combining AutoPR's
+automated pull request capabilities with AutoWeave's template-based project generation system. The integration is designed for enterprise-scale operations with high performance, security, and reliability requirements.
 
 ## Executive Summary
 
-The AutoPR and AutoWeave integration provides a seamless workflow for template-based project generation with automated pull request capabilities. The architecture is built on a modular microservices approach, delivering optimal performance for each domain while maintaining enterprise-grade security and scalability.
+The AutoPR and AutoWeave integration provides a seamless workflow for template-based project generation with automated
+pull request capabilities. The architecture is built on a modular microservices approach, delivering optimal performance for each domain while maintaining enterprise-grade security and scalability.
 
 **Key Capabilities:**
-- **Modular Architecture**: Clean separation of concerns with dedicated modules for template processing, AI/ML, and workflow orchestration
+- **Modular Architecture**: Clean separation of concerns with dedicated modules for template processing, AI/ML, and
+workflow orchestration
 - **High Performance**: Optimized template processing with intelligent caching and parallel execution
 - **Extensible Platform**: Plugin-based architecture for custom template types and processing logic
 - **Enterprise Security**: Comprehensive security controls and compliance features
@@ -801,7 +804,8 @@ GET /health
 
 ## Alternative Integration: Direct Package Installation
 
-For projects requiring tighter integration or offline capabilities, AutoWeave can be installed directly as a package in the target project.
+For projects requiring tighter integration or offline capabilities, AutoWeave can be installed directly as a package in
+the target project.
 
 ### Installation
 
@@ -1040,6 +1044,6 @@ AUTOWEAVE_API_URL=https://autoweave.example.com/api
 
 ## Support
 For assistance with integration:
-1. Check the [documentation](https://docs.autoweave.dev)
-2. Open an issue in the [GitHub repository](https://github.com/yourorg/autoweave)
+1. Check the [documentation](<https://docs.autoweave.dev)>
+2. Open an issue in the [GitHub repository](<https://github.com/yourorg/autoweave)>
 3. Contact support@autoweave.dev

@@ -258,22 +258,30 @@ class MarkdownLinter:
         self, report: FileReport, line_num: int, line: str, prev_line: str
     ) -> None:
         """Check for common markdown mistakes."""
-        # Check for bare URLs
+        # Check for bare URLs (not already in angle brackets or markdown links)
         if "http://" in line or "https://" in line:
-            # Simple check for bare URLs (very basic, might have false positives)
-            words = re.split(r"[\s<>]", line)
-            for word in words:
+            # More precise check for bare URLs
+            url_pattern = r"(?<![<\[])(https?://[^\s<>]+)(?![>\]])"
+            matches = re.finditer(url_pattern, line)
+            for match in matches:
+                url = match.group(1)
+                # Make sure it's not part of a markdown link [text](url)
+                start_pos = match.start()
                 if (
-                    (word.startswith("http://") or word.startswith("https://"))
-                    and "](" not in line
-                    and not word.startswith("<http")
+                    start_pos > 0
+                    and line[start_pos - 1 : start_pos + 2] != "]("
+                    and line[start_pos - 1] != "]"
                 ):
+                    # Create a fix function that properly captures the URL
+                    def create_url_fix(url_to_fix):
+                        return lambda l: l.replace(url_to_fix, f"<{url_to_fix}>")
+
                     self._add_issue(
                         report,
                         line_num,
-                        f"Bare URL used, consider using a link reference: {word}",
+                        f"Bare URL used, consider using a link reference: {url}",
                         "MD034",
-                        fix=lambda l, url=word: l.replace(url, f"<{url}>"),
+                        fix=create_url_fix(url),
                     )
 
         # Check for multiple spaces after list markers
@@ -335,7 +343,7 @@ class MarkdownLinter:
         self, directory: Union[str, Path], exclude: Optional[List[str]] = None
     ) -> Dict[Path, FileReport]:
         """Check all markdown files in a directory."""
-        from find_markdown_files import find_markdown_files
+        from tools.find_markdown_files import find_markdown_files
 
         directory = Path(directory).resolve()
         exclude = exclude or []

@@ -4,7 +4,8 @@ This document provides Windows-specific development setup instructions and worka
 
 ## Known Issues with Windows Store Python
 
-The Microsoft Store version of Python has several limitations that can cause issues with development tools, particularly pre-commit hooks:
+The Microsoft Store version of Python has several limitations that can cause issues with development tools,
+particularly pre-commit hooks:
 
 ### Problems:
 
@@ -32,10 +33,10 @@ scripts\code_quality.bat test
 
 #### Option 2: Install Standard Python 3.13.5 (Highly Recommended)
 
-For the best development experience with Python 3.13.5, install from [python.org](https://python.org) instead of the Microsoft Store version:
+For the best development experience with Python 3.13.5, install from [python.org](<https://python.org)> instead of the Microsoft Store version:
 
 1. Uninstall Python from Microsoft Store
-2. Download **Python 3.13.5** from [python.org](https://python.org/downloads/release/python-3135/)
+2. Download **Python 3.13.5** from [python.org](<https://python.org/downloads/release/python-3135/)>
 3. Install with "Add Python to PATH" option checked
 4. Create new virtual environment: `python -m venv .venv`
 5. Activate environment: `.venv\Scripts\activate`

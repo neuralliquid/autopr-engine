@@ -1,6 +1,7 @@
 # AutoWeave User Personas (Expanded)
 
-This document outlines the key user personas for the AutoWeave templating system, providing insights into the needs, goals, and pain points of different user types, as well as usage scenarios, requirements, and success metrics.
+This document outlines the key user personas for the AutoWeave templating system, providing insights into the needs,
+goals, and pain points of different user types, as well as usage scenarios, requirements, and success metrics.
 
 ---
 
@@ -8,7 +9,8 @@ This document outlines the key user personas for the AutoWeave templating system
 
 ## Overview
 
-A technical expert responsible for implementing and maintaining the templating system across the organization's infrastructure and development workflows.
+A technical expert responsible for implementing and maintaining the templating system across the organization's
+infrastructure and development workflows.
 
 **Demographics:**
 
@@ -322,4 +324,5 @@ A specialist responsible for ensuring all systems, including templating, meet re
 * Zero security incidents related to templates
 * Demonstrable ROI and compliance reporting for stakeholders
 
-A technical expert responsible for implementing and maintaining the templating system across the organization's infrastructure and development workflows.
+A technical expert responsible for implementing and maintaining the templating system across the organization's
+infrastructure and development workflows.

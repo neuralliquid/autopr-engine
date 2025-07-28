@@ -4,7 +4,8 @@ This document describes the configuration structure for platform detection in Au
 
 ## Overview
 
-The platform detection system identifies development platforms and tools used in a codebase. It supports three main categories of platforms:
+The platform detection system identifies development platforms and tools used in a codebase. It supports three main
+categories of platforms:
 
 1. **Core Platforms**: General development platforms and frameworks
 2. **AI Platforms**: AI development tools and services
@@ -152,11 +153,11 @@ The platform detector uses a weighted scoring system based on multiple factors:
      "project_config": {
        "features": ["ai_completion", "code_generation"],
        "configuration_files": ["newplatform.config"],
-       "documentation": "https://newplatform.ai/docs"
+       "documentation": "<https://newplatform.ai/docs">
      },
      "metadata": {
        "vendor": "New AI Inc.",
-       "website": "https://newplatform.ai",
+       "website": "<https://newplatform.ai",>
        "pricing_model": "freemium",
        "supported_languages": ["python", "javascript", "typescript"],
        "last_updated": "2025-07-27",

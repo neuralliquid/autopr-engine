@@ -2,7 +2,8 @@
 
 ## Overview
 
-The AutoPR Enhanced System is a state-of-the-art AI-powered automation platform for GitHub pull request management. It combines multiple AI technologies, learning capabilities, and platform integrations to provide intelligent, automated responses to PR comments.
+The AutoPR Enhanced System is a state-of-the-art AI-powered automation platform for GitHub pull request management. It
+combines multiple AI technologies, learning capabilities, and platform integrations to provide intelligent, automated responses to PR comments.
 
 ## Table of Contents
 
@@ -374,7 +375,7 @@ This response was generated using AI analysis and learned patterns from 8 simila
 
 I've identified this as a critical security concern requiring immediate attention.
 
-📝 Created Issue: [SEC-456](https://linear.app/team/issue/SEC-456)
+📝 Created Issue: [SEC-456](<https://linear.app/team/issue/SEC-456)>
 🚨 Escalated to: @security-team
 📢 Notification sent to: #security-alerts
 
@@ -575,7 +576,7 @@ echo $ANTHROPIC_API_KEY  # Should not be empty
 # Solution: Check database permissions
 ls -la autopr_memory.db
 # For Mem0, check Qdrant connection
-curl http://localhost:6333/health
+curl <http://localhost:6333/health>
 ```
 
 #### **3. Quality Gate Failures**

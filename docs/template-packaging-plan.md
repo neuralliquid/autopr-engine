@@ -1,7 +1,8 @@
 # Template Packaging & Modularization Plan
 
 ## Overview
-This document outlines the strategy for migrating from inline/hardcoded templates to a structured, maintainable template system with proper packaging and versioning.
+This document outlines the strategy for migrating from inline/hardcoded templates to a structured, maintainable
+template system with proper packaging and versioning.
 
 ## Current State Analysis
 

@@ -2,7 +2,8 @@
 
 ## 🚀 CI/CD, Azure, Cloud & DevOps Automation Tools
 
-Comprehensive automation tools for infrastructure management, deployment pipelines, and cloud operations with special focus on Azure deployment solutions.
+Comprehensive automation tools for infrastructure management, deployment pipelines, and cloud operations with special
+focus on Azure deployment solutions.
 
 ---
 
@@ -10,7 +11,8 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **1. Azure Site Reliability Engineering (SRE) Agent** ⭐⭐⭐⭐⭐ *NEW & Essential*
 
-**Pricing**: Included with Azure services**Core Skill**: Autonomous Azure infrastructure monitoring and incident response**Integration**: GitHub Copilot + Azure DevOps
+**Pricing**: Included with Azure services**Core Skill**: Autonomous Azure infrastructure monitoring and incident
+response**Integration**: GitHub Copilot + Azure DevOps
 
 **Azure-Specific Capabilities**:
 
@@ -39,7 +41,8 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **2. Azure DevOps AI Integration** ⭐⭐⭐⭐
 
-**Pricing**: Integrated with Azure DevOps pricing ($6/user/month)**Core Skill**: AI-powered Azure pipeline optimization and deployment automation**Platforms**: Azure DevOps, GitHub Actions with Azure
+**Pricing**: Integrated with Azure DevOps pricing ($6/user/month)**Core Skill**: AI-powered Azure pipeline optimization
+and deployment automation**Platforms**: Azure DevOps, GitHub Actions with Azure
 
 **Features for Azure Deployment**:
 
@@ -61,7 +64,8 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **3. Azure Copilot for Azure** ⭐⭐⭐⭐ *Microsoft Native*
 
-**Pricing**: Included with Azure subscriptions**Core Skill**: Natural language Azure resource management and monitoring**Integration**: Azure Portal, Azure CLI, PowerShell
+**Pricing**: Included with Azure subscriptions**Core Skill**: Natural language Azure resource management and
+monitoring**Integration**: Azure Portal, Azure CLI, PowerShell
 
 **Azure-Specific Functions**:
 
@@ -251,7 +255,8 @@ Comprehensive automation tools for infrastructure management, deployment pipelin
 
 ### **13. Octopus Deploy** ⭐⭐⭐⭐ *Enterprise Deployment*
 
-**Pricing**: $10/month per target + $14.40/month per user**Core Skill**: Enterprise deployment automation with advanced release management
+**Pricing**: $10/month per target + $14.40/month per user**Core Skill**: Enterprise deployment automation with advanced
+release management
 
 **Enterprise Features**:
 

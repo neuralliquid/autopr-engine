@@ -387,4 +387,5 @@ def enhanced_pattern_detection(self, platform, file_structure, package_json):
 
 ---
 
-*This expansion transforms the Platform Detector from a prototype-focused tool into a comprehensive AI development ecosystem analyzer, capable of intelligently routing any AI-generated code to the appropriate production enhancement pipeline.*
+*This expansion transforms the Platform Detector from a prototype-focused tool into a comprehensive AI development
+ecosystem analyzer, capable of intelligently routing any AI-generated code to the appropriate production enhancement pipeline.*

@@ -2,7 +2,8 @@
 
 ## Executive Summary
 
-AutoWeave is an AI-native templating engine designed to revolutionize how development teams create, manage, and deploy infrastructure, application, and content templates. This document outlines our strategic vision, market position, and execution plan to establish AutoWeave as the industry standard for intelligent templating by 2026.
+AutoWeave is an AI-native templating engine designed to revolutionize how development teams create, manage, and deploy
+infrastructure, application, and content templates. This document outlines our strategic vision, market position, and execution plan to establish AutoWeave as the industry standard for intelligent templating by 2026.
 
 ## Vision and Mission
 
@@ -144,6 +145,7 @@ AutoWeave is an AI-native templating engine designed to revolutionize how develo
 
 ## Conclusion
 
-AutoWeave is positioned to transform template management through AI-powered automation and enterprise-grade governance. By executing this strategy, we will establish AutoWeave as the de facto standard for modern development teams worldwide.
+AutoWeave is positioned to transform template management through AI-powered automation and enterprise-grade governance.
+By executing this strategy, we will establish AutoWeave as the de facto standard for modern development teams worldwide.
 
 *Last updated: July 2025*

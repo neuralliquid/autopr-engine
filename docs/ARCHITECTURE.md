@@ -2,13 +2,15 @@
 
 ## Overview
 
-AutoPR is built on a hybrid architecture that leverages the strengths of both C# and Python, connected via gRPC for high-performance inter-process communication. The system is designed with modularity, scalability, and maintainability as core principles, with a strong focus on extensibility through plugins and templates.
+AutoPR is built on a hybrid architecture that leverages the strengths of both C# and Python, connected via gRPC for
+high-performance inter-process communication. The system is designed with modularity, scalability, and maintainability as core principles, with a strong focus on extensibility through plugins and templates.
 
 ## AutoWeave: The Templating Engine
 
 ### Role in AutoPR
 
-AutoWeave serves as the intelligent templating engine within AutoPR, providing a unified system for template management, processing, and rendering across the platform. It handles:
+AutoWeave serves as the intelligent templating engine within AutoPR, providing a unified system for template
+management, processing, and rendering across the platform. It handles:
 
 - **Template Definition**: Structured YAML/JSON-based template definitions with support for variables, conditions, and loops
 - **Multi-Format Support**: Generation of various output formats (YAML, JSON, HCL, etc.) from a single template
