@@ -120,4 +120,5 @@ for staging, use testnets (Goerli, Sepolia, etc.) and possibly have a script to 
 colleagues can play with the contract on testnet UI). Good DX also means using consistent commit messages and perhaps a
 changelog for contract changes (especially if multiple people work on it). Finally, when deploying to production
 (mainnet), double-check everything: addresses, constructor params, compiler optimization settings, etc., and consider a
-small “beta” deployment first. Solid developer practices ensure that the path from code to deployed bytecode is smooth and error-free, which is crucial when real money is on the line.
+small “beta” deployment first. Solid developer practices ensure that the path from code to deployed bytecode is smooth
+and error-free, which is crucial when real money is on the line.
