@@ -63,7 +63,7 @@ pytest-cov>=5.0.0,<6.0.0          # Was: 4.1.0
 black>=24.8.0,<25.0.0             # Was: 23.7.0
 flake8>=7.0.0,<8.0.0              # Was: 6.0.0
 mypy>=1.11.0,<2.0.0               # Was: 1.5.0
-pre-commit>=4.0.0,<5.0.0          # Was: 3.4.0
+pre-commit>=3.0.0,<4.0.0          # Was: 3.4.0, updated to use available versions
 
 # Documentation
 sphinx>=8.1.0,<9.0.0              # Was: 7.1.0
