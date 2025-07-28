@@ -137,32 +137,32 @@ All tools are configured in `pyproject.toml`:
 - Target Python version: 3.8+
 - Excludes common build directories
 
-### isort Configuration
+### Isort Configuration
 
 - Profile: black (compatible with Black)
 - Line length: 100 characters
 - Known first-party: autopr
 - Known third-party packages listed
 
-### mypy Configuration
+### Mypy Configuration
 
 - Strict type checking enabled
 - Python version: 3.8
 - Comprehensive warnings enabled
 - Third-party modules with missing stubs ignored
 
-### flake8 Configuration
+### Flake8 Configuration
 
 - Max line length: 100 characters
 - Ignores: E203 (whitespace before ':'), W503 (line break before binary operator)
 - Per-file ignores: F401 in `__init__.py` files
 
-### bandit Configuration
+### Bandit Configuration
 
 - Skips: B101 (assert used), B601 (shell injection)
 - Excludes: tests, docs, migrations directories
 
-### pydocstyle Configuration
+### Pydocstyle Configuration
 
 - Relaxed docstring requirements for development
 - Excludes test files
