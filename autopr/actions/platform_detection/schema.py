@@ -147,8 +147,8 @@ class PlatformConfig:
     compatibility: Dict[str, Any] = field(default_factory=dict)
 
     # Nested configurations
-    detection: DetectionRules = field(default_factory=dict)
-    project_config: ProjectConfig = field(default_factory=dict)
+    detection: DetectionRules = field(default_factory=lambda: {})
+    project_config: ProjectConfig = field(default_factory=lambda: {})
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     # Class variables

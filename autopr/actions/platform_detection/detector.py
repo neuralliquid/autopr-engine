@@ -7,9 +7,11 @@ Orchestrates platform detection using modular components for better maintainabil
 import re
 from typing import Any, Dict, List, Optional
 
-from .config import PlatformConfig
+from .config import PlatformConfigManager
 from .file_analyzer import FileAnalyzer
 from .inputs import PlatformDetectorInputs, PlatformDetectorOutputs
+
+__all__ = ["PlatformDetector", "PlatformDetectorInputs", "PlatformDetectorOutputs"]
 from .scoring import PlatformScoringEngine
 
 
@@ -17,7 +19,7 @@ class PlatformDetector:
     """Platform detector with modular architecture."""
 
     def __init__(self) -> None:
-        self.config = PlatformConfig()
+        self.config = PlatformConfigManager()
         self.scoring_engine = PlatformScoringEngine()
 
     async def run(self, inputs: PlatformDetectorInputs) -> PlatformDetectorOutputs:

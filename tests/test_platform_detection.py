@@ -1,14 +1,14 @@
 import unittest
 from pathlib import Path
 
-from autopr.actions.platform_detection.config import PlatformConfig
+from autopr.actions.platform_detection.config import PlatformConfigManager
 
 
 class TestPlatformDetection(unittest.TestCase):
     def test_ai_platforms_loading(self):
         """Test that AI platforms are loaded correctly with valid structure."""
         # Get AI platforms
-        ai_platforms = PlatformConfig.get_ai_platforms()
+        ai_platforms = PlatformConfigManager().get_ai_platforms()
 
         # Verify we have at least one platform loaded
         self.assertGreaterEqual(len(ai_platforms), 1, "No AI platforms loaded")
@@ -54,7 +54,7 @@ class TestPlatformDetection(unittest.TestCase):
 
     def test_platform_structure(self):
         """Test the structure of all loaded platforms."""
-        all_platforms = PlatformConfig.get_all_platforms()
+        all_platforms = PlatformConfigManager().get_all_platforms()
         self.assertGreater(len(all_platforms), 0, "No platforms were loaded")
 
         for platform_id, platform in all_platforms.items():
