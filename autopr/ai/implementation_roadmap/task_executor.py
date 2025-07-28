@@ -3,9 +3,6 @@ Task Executor for Implementation Roadmap
 Handles the execution of individual implementation tasks
 """
 
-import asyncio
-import os
-import subprocess
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -297,7 +294,10 @@ class CircuitBreaker:
                 raise Exception(f"Circuit breaker {self.name} is OPEN")
 
         try:
-            result = await func(*args, **kwargs) if asyncio.iscoroutinefunction(func) else func(*args, **kwargs)
+            if asyncio.iscoroutinefunction(func):
+                result = await func(*args, **kwargs)
+            else:
+                result = func(*args, **kwargs)
             await self._on_success()
             return result
         except Exception as e:
@@ -343,7 +343,11 @@ class CircuitBreaker:
                     full_path.parent.mkdir(parents=True, exist_ok=True)
 
                     if not full_path.exists():
-                        placeholder_content = f'"""\n{task.description}\nTODO: Implement {task.name}\n"""\n\n# Placeholder implementation\npass\n'
+                        placeholder_content = (
+                            f'"""\n{task.description}\n'
+                            f'TODO: Implement {task.name}\n"""\n\n'
+                            "# Placeholder implementation\npass\n"
+                        )
                         await self._write_file(str(full_path), placeholder_content)
 
         # Add requirements
