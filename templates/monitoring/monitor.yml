@@ -154,18 +154,18 @@ template: |
   while true; do
       # Get current timestamp
       TIMESTAMP=$(date)
-      
+
       # Get CPU usage
       CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | awk '{print $2}' | cut -d'%' -f1)
-      
+
       # Get memory usage
       MEMORY_USAGE=$(free | grep Mem | awk '{printf("%.2f", $3/$2 * 100.0)}')
-      
+
       {% if include_disk_usage %}
       # Get disk usage
       DISK_USAGE=$(df -h / | awk 'NR==2{print $5}' | cut -d'%' -f1)
       {% endif %}
-      
+
       {% if include_network %}
       # Get network statistics (requires additional setup)
       NETWORK_RX=$(cat /proc/net/dev | grep eth0 | awk '{print $2}' || echo "0")

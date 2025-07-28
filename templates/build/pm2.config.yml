@@ -179,7 +179,7 @@ template: |
       disable_source_map_support: false,
       node_args: '--max-old-space-size=4096'
     }],
-    
+
     deploy: {
       production: {
         user: 'deploy',

@@ -13,7 +13,7 @@ platform_info:
   pricing_model: "Freemium with Transparent Pricing"
   target_audience: "Designers, developers, businesses, agencies"
   primary_use_cases: ["Web applications", "Client portals", "SaaS products", "Multi-step forms", "Internal tools"]
-  
+
   key_features:
     - "Pixel-perfect visual editor with drag-and-drop interface"
     - "Responsive design with mobile-first approach"

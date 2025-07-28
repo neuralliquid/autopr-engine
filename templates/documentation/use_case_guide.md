@@ -67,9 +67,11 @@ implementation') }}
 {% endif %}
 
 {% if examples %}
+
 ## Examples
 
 {% for example in examples %}
+
 ### {{ example.title }}
 
 {{ example.description }}
@@ -80,7 +82,7 @@ implementation') }}
 
 {{ example.code }}
 
-```
+```text
 {% endif %}
 
 {% endfor %}

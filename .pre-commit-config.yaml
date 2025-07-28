@@ -1,17 +1,60 @@
 # Simplified Pre-commit hooks configuration for AutoPR Engine
-# Optimized for Windows compatibility
+# Optimized for cross-platform compatibility
 # See https://pre-commit.com for more information
 
 repos:
+  # Local hooks for our custom fixers
+  - repo: local
+    hooks:
+      # Enhanced Whitespace and Line Ending Fixer
+      - id: whitespace-fixer
+        name: Fix whitespace and line endings
+        entry: python
+        args: ['tools/whitespace_fixer/pre-commit-hook.py']
+        language: system
+        types: [text]
+        exclude: |
+          (?x)^(
+            .*\.min\.(js|css)$|
+            .*\.lock$|
+            .*\.log$|
+            node_modules/.*|
+            \.git/.*|
+            htmlcov/.*|
+            .*\.egg-info/.*|
+            __pycache__/.*|
+            \.pytest_cache/.*
+          )$
+        stages: [pre-commit]
+
+      # Enhanced Markdown Linter
+      - id: markdown-linter
+        name: Lint and fix markdown files
+        entry: python
+        args: ['tools/markdown_lint/pre-commit-hook.py']
+        language: system
+        files: \.md$
+        exclude: |
+          (?x)^(
+            node_modules/.*|
+            \.git/.*|
+            htmlcov/.*|
+            .*\.egg-info/.*
+          )$
+        stages: [pre-commit]
+
   # Pre-commit built-in hooks
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
-      - id: trailing-whitespace
-        args: [--markdown-linebreak-ext=md]
-      - id: end-of-file-fixer
       - id: check-yaml
         args: [--unsafe]  # Allow custom YAML tags
+        exclude: |
+          (?x)^(
+            configs/workflows/.*|
+            templates/.*\.yml|
+            .*\.template\.ya?ml
+          )$
       - id: check-toml
       - id: check-json
       - id: check-added-large-files
@@ -27,9 +70,9 @@ repos:
     hooks:
       - id: black
         args: [--line-length=100]
-        language_version: python3.13
+        language_version: python3
 
-  # Import sorting with isort
+  # Python import sorting with isort
   - repo: https://github.com/pycqa/isort
     rev: 5.13.2
     hooks:
@@ -38,7 +81,7 @@ repos:
 
 # Configuration for specific hooks
 default_language_version:
-  python: python3.13
+  python: python3
 
 # Exclude patterns
 exclude: |

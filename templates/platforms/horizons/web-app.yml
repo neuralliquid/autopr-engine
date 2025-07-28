@@ -24,7 +24,7 @@ platform_info:
     - "Supabase database integration"
     - "24/7 multilingual support (80+ languages)"
     - "Human-AI collaboration workflow"
-  
+
   vibe_coding_benefits:
     - "Focus on intent rather than implementation"
     - "Hours vs weeks for prototyping"
@@ -39,29 +39,29 @@ variables:
     required: true
     description: "Name of your web application"
     examples: ["TaskManager Pro", "Recipe Finder", "Event Planner"]
-  
+
   app_description:
     type: "string"
     required: true
     description: "Detailed description of what your app should do"
-    examples: 
+    examples:
       - "A task management app with user authentication, project boards, and team collaboration"
       - "A recipe discovery platform with ingredient search and meal planning"
-  
+
   target_audience:
     type: "string"
     default: "general users"
     description: "Who will use this application"
     examples: ["small businesses", "students", "freelancers", "teams"]
-  
+
   key_features:
     type: "array"
     required: true
     description: "List of main features your app should have"
-    examples: 
+    examples:
       - ["user authentication", "dashboard", "data visualization"]
       - ["search functionality", "user profiles", "messaging system"]
-  
+
   design_style:
     type: "string"
     default: "modern"
@@ -76,7 +76,7 @@ variants:
       - line: 10
         action: "add_after"
         content: "- User registration and login system\n- Profile management\n- Password reset functionality"
-  
+
   with_database:
     name: "With Database Integration"
     description: "Includes Supabase database setup and data management"
@@ -84,7 +84,7 @@ variants:
       - line: 15
         action: "add_after"
         content: "- Supabase database integration\n- Data CRUD operations\n- Real-time data updates"
-  
+
   with_payments:
     name: "With Payment Processing"
     description: "Includes payment gateway integration for monetization"
@@ -109,7 +109,7 @@ development_approach:
     - "Conversational refinement and iteration"
     - "AI-assisted gap filling and error correction"
     - "Single-platform workflow integration"
-  
+
   vibe_coding_workflow:
     - "Conceptualize: Define your app vision and core functionality"
     - "Prompt: Use natural language, voice, or image commands"
@@ -117,7 +117,7 @@ development_approach:
     - "Iterate: Send feedback prompts for improvements and bug fixes"
     - "Validate: Test functionality and user experience"
     - "Deploy: One-click publishing with integrated hosting"
-  
+
   prompt_engineering_tips:
     - "Be specific about functionality and user experience"
     - "Describe the 'why' behind features, not just the 'what'"
@@ -129,45 +129,45 @@ development_approach:
 prompt_examples:
   basic_app:
     prompt: |
-      Create a {{app_name}} web app for {{target_audience}}. 
-      
+      Create a {{app_name}} web app for {{target_audience}}.
+
       The app should {{app_description}}.
-      
+
       Key features needed:
       {{#each key_features}}
       - {{this}}
       {{/each}}
-      
+
       Design style: {{design_style}}
-      
+
       Include user authentication and a clean, responsive interface.
-  
+
   business_app:
     prompt: |
       Build a {{app_name}} business application with the following requirements:
-      
+
       Purpose: {{app_description}}
-      
+
       Target Users: {{target_audience}}
-      
+
       Core Features:
       {{#each key_features}}
       - {{this}}
       {{/each}}
-      
+
       Additional Requirements:
       - User roles and permissions
       - Data export capabilities
       - Mobile-responsive design
       - Dashboard with analytics
-      
+
       Style: {{design_style}} and professional
 
 dependencies:
   required:
     - "Hostinger Horizons account"
     - "Clear app concept and requirements"
-  
+
   optional:
     - "Custom domain name"
     - "Figma designs for reference"
@@ -179,13 +179,13 @@ best_practices:
     - "Provide examples of similar apps or features"
     - "Iterate in small steps rather than large changes"
     - "Use clear, descriptive language"
-  
+
   development:
     - "Start with core features before adding complexity"
     - "Test frequently during development"
     - "Use the preview feature to validate functionality"
     - "Plan your database structure early"
-  
+
   deployment:
     - "Test thoroughly before publishing"
     - "Set up custom domain for professional appearance"
@@ -209,7 +209,7 @@ examples:
       key_features: ["project boards", "task assignment", "progress tracking", "team chat", "file sharing"]
       design_style: "modern"
     variants: ["with_authentication", "with_database"]
-  
+
   recipe_app:
     name: "Recipe Discovery Platform"
     description: "Platform for sharing and discovering recipes"

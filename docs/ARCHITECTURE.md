@@ -3,7 +3,8 @@
 ## Overview
 
 AutoPR is built on a hybrid architecture that leverages the strengths of both C# and Python, connected via gRPC for
-high-performance inter-process communication. The system is designed with modularity, scalability, and maintainability as core principles, with a strong focus on extensibility through plugins and templates.
+high-performance inter-process communication. The system is designed with modularity, scalability, and maintainability
+as core principles, with a strong focus on extensibility through plugins and templates.
 
 ## AutoWeave: The Templating Engine
 
@@ -147,6 +148,7 @@ graph TD
 ## Core Architectural Decisions
 
 ### 1. Hybrid C#/Python Architecture
+
 - **C# (.NET 9+)** for high-performance core services
   - API Gateway and request routing
   - Plugin management and lifecycle
@@ -163,6 +165,7 @@ graph TD
   - Bidirectional streaming support
 
 ### 2. Plugin System
+
 - Dynamic plugin loading and management
   - Hot-loading of plugins without restart
   - Dependency resolution and versioning
@@ -181,6 +184,7 @@ graph TD
   - Crash recovery
 
 ### 3. Template Engine
+
 - **Template Processing**
   - Multi-stage template rendering pipeline
   - Support for multiple template languages (Liquid, Handlebars, etc.)
@@ -198,6 +202,7 @@ graph TD
   - Documentation generation
 
 ### 4. AutoWeave Integration
+
 - **Bidirectional Communication**
   - Real-time synchronization with AutoWeave
   - Event-driven architecture integration
@@ -212,6 +217,7 @@ graph TD
   - Audit logging and compliance
 
 ### 5. Event-Driven Architecture
+
 - Asynchronous event processing
   - High-throughput message processing
   - Backpressure handling
@@ -226,18 +232,21 @@ graph TD
   - Pluggable storage backends
 
 ### 4. API Design
+
 - RESTful API for external consumers
 - gRPC for internal service communication
 - Versioned API endpoints
 - Comprehensive API documentation using OpenAPI/Swagger
 
 ### 5. Data Persistence
+
 - Primary database: PostgreSQL for structured data
 - Redis for caching and pub/sub
 - Blob storage for large assets
 - Data encryption at rest and in transit
 
 ### 6. Security
+
 - OAuth 2.0 and OpenID Connect for authentication
 - Role-Based Access Control (RBAC)
 - Attribute-Based Access Control (ABAC)
@@ -245,6 +254,7 @@ graph TD
 - Regular security audits and penetration testing
 
 ### 7. Monitoring & Observability
+
 - Distributed tracing with OpenTelemetry
 - Metrics collection with Prometheus
 - Structured logging with Serilog
@@ -253,46 +263,54 @@ graph TD
 ## Deployment Architecture
 
 ### Containerization
+
 - Docker containers for all services
 - Kubernetes for orchestration
 - Helm charts for deployment
 - Service mesh for service-to-service communication
 
 ### CI/CD
+
 - Automated testing and validation
 - Blue/Green deployments
 - Canary releases
 - Infrastructure as Code (Terraform)
 
 ## Performance Considerations
+
 - Caching strategy with Redis
 - Database query optimization
 - Asynchronous processing for long-running tasks
 - Horizontal scaling of stateless services
 
 ## High Availability
+
 - Multi-region deployment
 - Automated failover
 - Data replication
 - Load balancing
 
 ## Future Extensibility
+
 - Support for additional VCS providers
 - Expanded plugin capabilities
 - Enhanced AI/ML features
 - Serverless function support
 
 ## Compliance & Standards
+
 - GDPR compliance
 - SOC 2 Type II certification
 - Regular security audits
 - Compliance as code
 
 ## Related Documents
+
 - [Architecture Decision Records (ADRs)](./adr/)
 - [Deployment Guide](./deployment.md)
 - [Developer Guide](./DEVELOPER.md)
 - [API Documentation](./api/)
 
 ## Getting Started
+
 See the [Quick Start Guide](./QUICKSTART.md) for instructions on setting up a development environment and running AutoPR locally.

@@ -13,7 +13,7 @@ platform_info:
   pricing_model: "Subscription-based Enterprise Pricing"
   target_audience: "Enterprise organizations, IT professionals, business users"
   primary_use_cases: ["Enterprise applications", "Workforce automation", "Digital transformation", "Process optimization"]
-  
+
   key_features:
     - "Visual drag-and-drop development environment"
     - "AI toolkit with intelligent features (summarization, search, classification)"

@@ -26,7 +26,7 @@ variants:
       - line: 10
         action: "add_after"
         content: "    ui: true,"
-  
+
   node_testing:
     name: "Node Environment Testing"
     description: "Configured for Node.js testing without DOM"

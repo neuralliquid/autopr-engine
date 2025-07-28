@@ -3,7 +3,8 @@
 ## Overview
 
 AutoPR is built as a modular system with a clear separation of concerns across multiple packages, supporting both .NET
-and Python runtimes. This document outlines the package structure, responsibilities, and relationships between different components.
+and Python runtimes. This document outlines the package structure, responsibilities, and relationships between
+different components.
 
 ## Core Packages (NuGet/.NET)
 
@@ -188,9 +189,11 @@ myplugin/
 ### Core Template Packages
 
 #### @autoweave/template-engine
+
 **Package**: `@autoweave/template-engine`**Purpose**: Core template processing engine.
 
 **Features**:
+
 - Multi-template language support (Liquid, Handlebars, etc.)
 - Template inheritance and composition
 - Built-in template functions and filters
@@ -198,9 +201,11 @@ myplugin/
 - Dependency tracking
 
 #### @autoweave/template-sdk
+
 **Package**: `@autoweave/template-sdk`**Purpose**: Development kit for creating custom templates.
 
 **Features**:
+
 - TypeScript/JavaScript API
 - Template validation and linting
 - Testing utilities
@@ -208,9 +213,11 @@ myplugin/
 - Documentation generation
 
 #### @autoweave/template-registry
+
 **Package**: `@autoweave/template-registry`**Purpose**: Central template repository and management.
 
 **Features**:
+
 - Template discovery and resolution
 - Versioning and semantic version support
 - Access control and permissions
@@ -220,10 +227,12 @@ myplugin/
 ### Standard Template Packages
 
 #### @autoweave/templates-standard
+
 **Package**: `@autoweave/templates-standard`**Type**: Template Package**Purpose**: Standard Pull Request templates for
 common scenarios.
 
 **Included Templates**:
+
 - Feature PR template
 - Bugfix PR template
 - Documentation PR template
@@ -233,9 +242,11 @@ common scenarios.
 - Experimental feature template
 
 #### @autoweave/templates-security
+
 **Package**: `@autoweave/templates-security`**Type**: Template Package**Purpose**: Security-focused PR templates and workflows.
 
 **Included Templates**:
+
 - Security vulnerability fix template
 - Dependency update template
 - Security policy update template
@@ -245,9 +256,11 @@ common scenarios.
 - Compliance documentation template
 
 #### @autoweave/templates-ai
+
 **Package**: `@autoweave/templates-ai`**Type**: Template Package**Purpose**: AI/ML focused templates.
 
 **Included Templates**:
+
 - Model training PR
 - Dataset update
 - Feature engineering

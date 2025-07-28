@@ -6,8 +6,8 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from .linter import MarkdownLinter
-from .models import IssueSeverity
+from linter import MarkdownLinter
+from models import IssueSeverity
 
 
 def parse_args(args: List[str]) -> argparse.Namespace:
@@ -55,6 +55,42 @@ def parse_args(args: List[str]) -> argparse.Namespace:
         action="store_false",
         dest="trim_trailing_whitespace",
         help="Don't trim trailing whitespace",
+    )
+    lint_group.add_argument(
+        "--no-check-blank-lines-around-headings",
+        action="store_false",
+        dest="check_blank_lines_around_headings",
+        help="Disable MD022: Don't check for blank lines around headings",
+    )
+    lint_group.add_argument(
+        "--no-check-blank-lines-around-lists",
+        action="store_false",
+        dest="check_blank_lines_around_lists",
+        help="Disable MD032: Don't check for blank lines around lists",
+    )
+    lint_group.add_argument(
+        "--no-check-ordered-list-numbering",
+        action="store_false",
+        dest="check_ordered_list_numbering",
+        help="Disable MD029: Don't check ordered list item numbering",
+    )
+    lint_group.add_argument(
+        "--no-check-fenced-code-blocks",
+        action="store_false",
+        dest="check_fenced_code_blocks",
+        help="Disable MD031/MD040: Don't check fenced code blocks spacing and language",
+    )
+    lint_group.add_argument(
+        "--no-check-duplicate-headings",
+        action="store_false",
+        dest="check_duplicate_headings",
+        help="Disable MD024: Don't check for duplicate headings",
+    )
+    lint_group.add_argument(
+        "--no-check-bare-urls",
+        action="store_false",
+        dest="check_bare_urls",
+        help="Disable MD034: Don't check for bare URLs",
     )
     lint_group.add_argument(
         "--no-insert-final-newline",
@@ -196,6 +232,12 @@ def main() -> int:
             "allow_multiple_blank_lines": args.allow_multiple_blank_lines,
             "trim_trailing_whitespace": args.trim_trailing_whitespace,
             "insert_final_newline": args.insert_final_newline,
+            "check_blank_lines_around_headings": args.check_blank_lines_around_headings,
+            "check_blank_lines_around_lists": args.check_blank_lines_around_lists,
+            "check_ordered_list_numbering": args.check_ordered_list_numbering,
+            "check_fenced_code_blocks": args.check_fenced_code_blocks,
+            "check_duplicate_headings": args.check_duplicate_headings,
+            "check_bare_urls": args.check_bare_urls,
         }
     )
 

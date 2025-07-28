@@ -36,29 +36,29 @@ variables:
     required: true
     description: "Category of internal tool to build"
     examples: ["admin_panel", "dashboard", "crud_interface", "workflow_tool", "data_viewer", "api_frontend"]
-  
+
   data_complexity:
     type: "string"
     default: "medium"
     description: "Complexity of data operations required"
     examples: ["simple", "medium", "complex", "enterprise"]
-  
+
   database_types:
     type: "array"
     required: true
     description: "Database systems to connect"
     examples: [["postgresql"], ["mysql", "mongodb"], ["postgresql", "redis", "elasticsearch"]]
-  
+
   custom_components:
     type: "boolean"
     default: false
     description: "Need for custom React components"
-  
+
   workflow_automation:
     type: "boolean"
     default: false
     description: "Include automated workflows and triggers"
-  
+
   team_collaboration:
     type: "boolean"
     default: true
@@ -79,7 +79,7 @@ variants:
       - "Automated incident response"
       - "Performance analytics"
       - "Custom notification workflows"
-  
+
   customer_support_tool:
     description: "Customer support team interface with ticket management"
     variables:
@@ -94,7 +94,7 @@ variants:
       - "SLA monitoring and alerts"
       - "Knowledge base integration"
       - "Performance reporting"
-  
+
   data_administration_panel:
     description: "Database administration and data management interface"
     variables:
@@ -195,7 +195,7 @@ examples:
     complexity: "high"
     estimated_time: "4-6 weeks"
     integrations: ["salesforce", "hubspot", "postgresql"]
-  
+
   content_management_system:
     description: "Internal content creation and publishing workflow"
     features:
@@ -208,7 +208,7 @@ examples:
     complexity: "medium"
     estimated_time: "3-4 weeks"
     integrations: ["postgresql", "s3", "cms_api"]
-  
+
   financial_reporting_tool:
     description: "Finance team reporting and analysis dashboard"
     features:

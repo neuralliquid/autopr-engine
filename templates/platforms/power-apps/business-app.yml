@@ -36,29 +36,29 @@ variables:
     required: true
     description: "Type of Power Apps application"
     examples: ["canvas_app", "model_driven_app", "portal_app", "teams_app"]
-  
+
   data_sources:
     type: "array"
     required: true
     description: "Data sources to integrate"
     examples: [["sharepoint"], ["dataverse", "sharepoint"], ["sql_server", "sharepoint", "excel"]]
-  
+
   microsoft_integration:
     type: "array"
     default: ["office365"]
     description: "Microsoft services to integrate"
     examples: [["office365"], ["office365", "teams"], ["office365", "teams", "sharepoint", "outlook"]]
-  
+
   automation_required:
     type: "boolean"
     default: false
     description: "Include Power Automate workflow automation"
-  
+
   mobile_optimization:
     type: "boolean"
     default: true
     description: "Optimize for mobile device usage"
-  
+
   compliance_level:
     type: "string"
     default: "standard"
@@ -80,7 +80,7 @@ variants:
       - "Mobile expense reporting"
       - "Automated email notifications"
       - "Expense analytics and reporting"
-  
+
   customer_portal:
     description: "External customer self-service portal"
     variables:
@@ -95,7 +95,7 @@ variants:
       - "Document sharing and downloads"
       - "Support ticket tracking"
       - "Customer feedback collection"
-  
+
   inventory_tracking_app:
     description: "Warehouse inventory management and tracking"
     variables:
@@ -195,7 +195,7 @@ examples:
     complexity: "medium"
     estimated_time: "3-4 weeks"
     microsoft_services: ["sharepoint", "teams", "planner"]
-  
+
   hr_employee_directory:
     description: "Employee information and organizational directory"
     features:
@@ -208,7 +208,7 @@ examples:
     complexity: "medium"
     estimated_time: "2-3 weeks"
     microsoft_services: ["azure_ad", "sharepoint", "outlook"]
-  
+
   facility_maintenance_app:
     description: "Facility management and maintenance request system"
     features:

@@ -80,41 +80,41 @@ variables:
     required: true
     description: "Primary authentication service provider"
     examples: ["firebase_auth", "auth0", "supabase_auth", "custom", "platform_native"]
-  
+
   registration_method:
     type: "array"
     default: ["email_password"]
     description: "Supported user registration methods"
     examples: [["email_password"], ["email_password", "phone"], ["social_only"]]
-  
+
   social_providers:
     type: "array"
     default: []
     description: "Social login providers to integrate"
     examples: [["google"], ["google", "facebook"], ["google", "facebook", "apple", "github"]]
-  
+
   mfa_enabled:
     type: "boolean"
     default: false
     description: "Whether to enable multi-factor authentication"
-  
+
   user_roles:
     type: "array"
     default: ["user"]
     description: "User roles and permission levels"
     examples: [["user"], ["user", "admin"], ["user", "moderator", "admin"]]
-  
+
   profile_fields:
     type: "array"
     default: ["name", "email"]
     description: "User profile fields to collect"
     examples: [["name", "email"], ["name", "email", "phone", "avatar"], ["name", "email", "company", "role"]]
-  
+
   password_requirements:
     type: "object"
     default: {"min_length": 8, "require_special": true}
     description: "Password complexity requirements"
-  
+
   session_duration:
     type: "string"
     default: "30_days"
@@ -129,7 +129,7 @@ variants:
       - line: 15
         action: "add_after"
         content: "- SAML 2.0 and OpenID Connect support\n- Active Directory integration\n- Enterprise user provisioning\n- Domain-based authentication"
-  
+
   with_advanced_security:
     name: "With Advanced Security"
     description: "Includes advanced security features like device tracking and risk assessment"
@@ -137,7 +137,7 @@ variants:
       - line: 20
         action: "add_after"
         content: "- Device fingerprinting and tracking\n- Risk-based authentication\n- Login anomaly detection\n- Account lockout and security alerts"
-  
+
   with_passwordless:
     name: "With Passwordless Authentication"
     description: "Includes magic links, biometric, and passwordless login options"
@@ -162,7 +162,7 @@ platform_implementations:
       - "Implement password reset and email verification"
     estimated_time: "1-2 days"
     complexity: "low_to_medium"
-  
+
   lovable:
     approach: "Supabase Auth integration with AI assistance"
     strengths:
@@ -178,7 +178,7 @@ platform_implementations:
       - "Add profile management and user settings"
     estimated_time: "1 day"
     complexity: "low"
-  
+
   flutterflow:
     approach: "Firebase Auth with Flutter authentication widgets"
     strengths:
@@ -194,7 +194,7 @@ platform_implementations:
       - "Implement protected pages and navigation"
     estimated_time: "1-2 days"
     complexity: "low_to_medium"
-  
+
   thunkable:
     approach: "Firebase Auth or custom API integration"
     strengths:
@@ -210,7 +210,7 @@ platform_implementations:
       - "Add profile editing and user settings"
     estimated_time: "1-2 days"
     complexity: "medium"
-  
+
   horizons:
     approach: "AI-generated authentication with hosting integration"
     strengths:
@@ -226,7 +226,7 @@ platform_implementations:
       - "Deploy with integrated hosting solution"
     estimated_time: "1 day"
     complexity: "low"
-  
+
   replit:
     approach: "Custom authentication implementation with full control"
     strengths:
@@ -257,7 +257,7 @@ authentication_providers:
       - "Set up OAuth credentials for social providers"
       - "Configure email templates and domains"
     pricing: "Free tier: 10K verifications/month, then $0.0055 per verification"
-  
+
   auth0:
     features:
       - "Universal login with customizable UI"
@@ -271,7 +271,7 @@ authentication_providers:
       - "Customize login pages and branding"
       - "Set up rules and hooks for custom logic"
     pricing: "Free tier: 7,000 active users, then $23/month for 1,000 users"
-  
+
   supabase_auth:
     features:
       - "Email/password and magic link authentication"
@@ -285,7 +285,7 @@ authentication_providers:
       - "Configure email templates and SMTP"
       - "Implement RLS policies for data security"
     pricing: "Free tier: 50,000 monthly active users, then $25/month"
-  
+
   custom_auth:
     features:
       - "Complete control over authentication flow"
@@ -305,19 +305,19 @@ security_best_practices:
     - "Use secure password hashing (bcrypt, Argon2)"
     - "Implement password breach checking"
     - "Provide password strength indicators"
-  
+
   session_management:
     - "Use secure, httpOnly cookies for sessions"
     - "Implement proper session timeout"
     - "Provide logout from all devices functionality"
     - "Monitor and log authentication events"
-  
+
   data_protection:
     - "Encrypt sensitive user data"
     - "Implement proper access controls"
     - "Regular security audits and updates"
     - "GDPR compliance for user data"
-  
+
   fraud_prevention:
     - "Rate limiting for login attempts"
     - "CAPTCHA for suspicious activity"
@@ -330,19 +330,19 @@ user_experience_patterns:
     - "Progressive profile completion"
     - "Clear privacy policy and terms acceptance"
     - "Email verification with clear instructions"
-  
+
   login_experience:
     - "Remember me functionality"
     - "Social login as primary option"
     - "Clear error messages and recovery options"
     - "Biometric login for mobile apps"
-  
+
   profile_management:
     - "Easy profile editing and updates"
     - "Avatar upload and management"
     - "Privacy settings and data control"
     - "Account deletion and data export"
-  
+
   password_management:
     - "Self-service password reset"
     - "Password change with current password verification"
@@ -361,7 +361,7 @@ compliance_considerations:
       - "Data export functionality"
       - "Account deletion workflows"
       - "Privacy policy and data usage disclosure"
-  
+
   accessibility:
     requirements:
       - "Screen reader compatibility"
@@ -387,7 +387,7 @@ integration_examples:
       social_providers: ["google", "facebook"]
       profile_fields: ["name", "email", "phone", "shipping_address"]
       user_roles: ["customer", "admin"]
-  
+
   social_platform:
     requirements:
       - "User profiles with rich content"
@@ -400,7 +400,7 @@ integration_examples:
       social_providers: ["google", "facebook", "twitter", "apple"]
       profile_fields: ["username", "display_name", "bio", "avatar", "location"]
       user_roles: ["user", "moderator", "admin"]
-  
+
   project_management:
     requirements:
       - "Team member invitation and management"
@@ -423,14 +423,14 @@ testing_checklist:
     - "Profile creation and editing"
     - "Role-based access control"
     - "Session management and logout"
-  
+
   security:
     - "Password strength enforcement"
     - "Rate limiting and brute force protection"
     - "SQL injection and XSS prevention"
     - "Secure session handling"
     - "Data encryption and protection"
-  
+
   user_experience:
     - "Mobile responsiveness and usability"
     - "Error handling and user feedback"
@@ -445,13 +445,13 @@ monitoring_and_analytics:
     - "Password reset frequency"
     - "Social login adoption"
     - "Session duration and activity"
-  
+
   security_monitoring:
     - "Failed login attempt tracking"
     - "Suspicious activity detection"
     - "Account lockout and recovery events"
     - "Data access and modification logs"
-  
+
   tools:
     - "Authentication provider analytics"
     - "Application performance monitoring"

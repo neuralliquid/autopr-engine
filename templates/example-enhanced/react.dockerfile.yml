@@ -9,16 +9,16 @@ documentation:
   overview: |
     This template creates a production-ready Docker image for React applications using a multi-stage build process.
     The first stage builds the application, and the second stage serves it using nginx for optimal performance.
-  
+
   architecture: |
     Stage 1 (Builder): Node.js environment for building React app
     Stage 2 (Production): Nginx serving static files from build output
-  
+
   prerequisites:
     - "Node.js application with package.json"
     - "Build script that outputs to /build or /dist directory"
     - "Optional: nginx.conf for custom server configuration"
-  
+
   deployment_notes: |
     - Image exposes port 80 by default
     - Assumes build output goes to /app/build directory
@@ -32,13 +32,13 @@ variables:
     description: "Node.js version for the build stage"
     examples: ["16", "18", "20"]
     validation: "Must be a valid Node.js version"
-  
+
   build_command:
     type: "string"
     default: "npm run build"
     description: "Command to build the React application"
     examples: ["npm run build", "yarn build", "npm run build:prod"]
-  
+
   nginx_port:
     type: "string"
     default: "80"
@@ -58,7 +58,7 @@ variants:
       - line: 13
         action: "add_after"
         content: "COPY nginx.conf /etc/nginx/nginx.conf"
-  
+
   with_env_vars:
     name: "With Environment Variables"
     description: "Includes environment variable support"
@@ -75,7 +75,7 @@ usage:
     - "Create React App projects"
     - "Vite React projects"
     - "Next.js static exports"
-  
+
   deployment_targets:
     - "Production deployments with nginx"
     - "Container orchestration (Kubernetes, Docker Swarm)"
@@ -93,7 +93,7 @@ examples:
         "node_version": "18",
         "build_command": "npm run build"
       })
-  
+
   production:
     name: "Production with Custom Nginx"
     description: "Production deployment with custom nginx configuration"
@@ -106,7 +106,7 @@ examples:
         "node_version": "20",
         "build_command": "npm run build:prod"
       }, ["with_nginx_config", "with_env_vars"])
-  
+
   development:
     name: "Development Build"
     description: "Development build for testing"
@@ -121,7 +121,7 @@ dependencies:
       description: "Node.js package configuration"
     - name: "src/"
       description: "React application source code"
-  
+
   optional:
     - name: "nginx.conf"
       description: "Custom nginx configuration (for with_nginx_config variant)"
@@ -138,10 +138,10 @@ troubleshooting:
   common_issues:
     - issue: "Build fails with 'npm not found'"
       solution: "Ensure package.json exists and node_version is valid"
-    
+
     - issue: "nginx fails to start"
       solution: "Check nginx.conf syntax if using with_nginx_config variant"
-    
+
     - issue: "App shows blank page"
       solution: "Verify build_command produces output in correct directory"
 
@@ -150,7 +150,7 @@ performance:
     - "Multi-stage build reduces final image size"
     - "nginx serves static files efficiently"
     - "Alpine Linux base image for minimal footprint"
-  
+
   metrics:
     - "Typical image size: 50-100MB"
     - "Build time: 2-5 minutes"
@@ -161,7 +161,7 @@ security:
     - "nginx runs as non-root user"
     - "Only necessary files copied to production stage"
     - "No development dependencies in final image"
-  
+
   recommendations:
     - "Use specific Node.js version tags"
     - "Regularly update base images"

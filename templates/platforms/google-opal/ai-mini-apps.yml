@@ -15,7 +15,7 @@ platform_info:
   pricing_model: "Experimental public beta (US-only)"
   target_audience: "Creators, innovators, productivity enthusiasts, non-technical users, rapid prototypers"
   primary_use_cases: ["AI workflow prototyping", "Custom productivity tools", "Proof of concept development", "AI mini-app creation", "Workflow automation"]
-  
+
   key_features:
     - "No-code AI mini-app builder with natural language"
     - "Visual workflow editor with conversational commands"

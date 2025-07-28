@@ -30,7 +30,8 @@ Day 5-7: Azure & Monitoring
 
 Total Week 1 Cost: $12-50/month
 Expected Impact: 40% faster development, 60% better code quality
-```
+
+```text
 
 ### **Days 8-30: Enhanced Automation**
 
@@ -75,7 +76,8 @@ Week 7-8: Infrastructure & Deployment
 
 Total Month 2 Cost: $300-800/month
 Expected Impact: 70% faster deployment, 90% automated workflows
-```
+
+```text
 
 ### **Days 61-90: Enterprise Features**
 
@@ -121,12 +123,12 @@ graph LR
     - Built-in AI pair programming
     - Instant deployment for testing
 
-2. **GitHub Migration** - Move to GitHub when ready
+1. **GitHub Migration** - Move to GitHub when ready
     - Export from Replit to GitHub repository
     - Automatic README and documentation generation
     - Initial CI/CD setup with GitHub Actions
 
-3. **AutoPR Activation** - Triggers on first push/PR
+1. **AutoPR Activation** - Triggers on first push/PR
     - Automatic code review with CodeRabbit
     - Security scanning with Snyk
     - Quality gates with SonarCloud
@@ -154,13 +156,13 @@ graph TD
     - Aider for autonomous code generation
     - Cursor for advanced IDE features
 
-2. **Automated PR Process**
+1. **Automated PR Process**
     - CharlieHelps for TypeScript-specific reviews
     - CodeRabbit for comprehensive analysis
     - AI TypeScript Check for validation
     - Automatic fixes applied via AI
 
-3. **Smart Merging & Deployment**
+1. **Smart Merging & Deployment**
     - Mergify handles merge queue management
     - AutoPR workflows for custom automation
     - Azure SRE Agent monitors deployments
@@ -218,7 +220,8 @@ Phase 3: Enterprise Scale ($1000+/month)
 ├── Custom AutoPR workflows
 ├── Advanced analytics
 └── Compliance automation
-```
+
+```text
 
 ---
 
@@ -228,7 +231,7 @@ Phase 3: Enterprise Scale ($1000+/month)
 
 ``` text
 Monday: Setup Continue.dev + Aider
-Tuesday: Install CodeRabbit on main repositories  
+Tuesday: Install CodeRabbit on main repositories
 Wednesday: Configure Renovate for dependency updates
 Thursday: Setup AI TypeScript Check in CI/CD
 Friday: Team training session + workflow documentation
@@ -244,7 +247,8 @@ Wednesday: Configure AutoPR basic workflows
 Thursday: Integrate Replit for rapid prototyping
 Friday: Optimize PR review process
 Weekend: Analyze PR review time improvements
-```
+
+```text
 
 ### **Week 3: Quality & Testing**
 
@@ -266,7 +270,8 @@ Wednesday: Setup comprehensive monitoring
 Thursday: Configure team analytics
 Friday: Month 1 review and optimization
 Weekend: Plan Month 2 advanced features
-```
+
+```text
 
 ---
 
@@ -277,30 +282,40 @@ Weekend: Plan Month 2 advanced features
 #### **Setup Process:**
 
 ```bash
+
 # 1. Create prototype in Replit
+
 # Use natural language prompts with Replit Agent
+
 "Create a TypeScript React app with user authentication"
 
 # 2. Export to GitHub
+
 # Use Replit's GitHub integration
+
 git remote add origin <<<https://github.com/yourusername/your-repo.git>>>
 git push -u origin main
 
 # 3. Setup AutoPR triggers
+
 # Add .github/workflows/autopr.yml
+
 name: AutoPR Workflow
 on: [push, pull_request]
 jobs:
   autopr:
     runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v3
       - name: Trigger AutoPR
+
         run: |
           # CodeRabbit review
           # Snyk security scan          # SonarCloud quality check
           # Automatic documentation update
-```
+
+```text
 
 #### **Replit → Production Timeline:**
 
@@ -348,7 +363,8 @@ jobs:
     }
   ]
 }
-```
+
+```text
 
 ### **CharlieHelps Integration**
 
@@ -356,7 +372,7 @@ jobs:
 
 ``` text
 1. Create Linear ticket with requirements
-2. Tag @charlie in Linear ticket  
+2. Tag @charlie in Linear ticket
 3. Charlie generates implementation plan
 4. Charlie creates GitHub branch and PR
 5. AutoPR workflows trigger on PR creation:
@@ -389,12 +405,15 @@ Week 2-4 Targets:
 ├── Bug Detection Rate: 50% improvement
 ├── Deployment Frequency: 2x increase├── Feature Delivery Time: 30% reduction
 └── Developer Satisfaction: 20% improvement
-```
+
+```text
 
 #### **Cost Efficiency Tracking**
 
 ```python
+
 # Monthly ROI Calculator
+
 def track_monthly_progress(month):
     costs = {
         1: 200,   # Month 1 tool costs
@@ -418,7 +437,8 @@ def track_monthly_progress(month):
         "roi": roi,
         "payback_days": costs[month] / (savings / 30)
     }
-```
+
+```text
 
 ### **Success Milestones**
 
@@ -430,7 +450,7 @@ def track_monthly_progress(month):
 - [ ] Zero critical security vulnerabilities in new code
 - [ ] Basic automation workflows operational
 
-#### **60-Day Milestones**  
+#### **60-Day Milestones**
 
 - [ ] Advanced tools integrated and optimized
 - [ ] Development velocity increased by 40%
@@ -480,40 +500,52 @@ def track_monthly_progress(month):
 ### **Get Started Today (30 minutes)**
 
 ```bash
+
 # 1. Install Continue.dev
+
 npm install -g continue
 
 # 2. Install Aiderpip install aider-chat
 
 # 3. Setup CodeRabbit (GitHub App)
+
 # Visit: <<<https://github.com/apps/coderabbit-ai>>>
 
 # 4. Configure Renovate
+
 # Visit: <<<https://github.com/apps/renovate>>>
 
 # 5. Start with Replit prototype
+
 # Visit: <<<https://replit.com/ai>>>
-```
+
+```text
 
 ### **Test Your Setup**
 
 ```bash
+
 # Test Continue.dev
+
 continue --help
 
 # Test Aider with a simple task
+
 aider --message "Add TypeScript types to this JavaScript file"
 
 # Verify GitHub integrations
+
 gh api /user/installations  # Check installed apps
 
 # Create test PR to verify AutoPR workflows
+
 git checkout -b test-autopr
 echo "// Test change" >> README.md
 git add . && git commit -m "Test AutoPR workflow"
 git push origin test-autopr
 gh pr create --title "Test AutoPR" --body "Testing automated review"
-```
+
+```text
 
 ---
 

@@ -24,48 +24,48 @@ variables:
     required: true
     description: "Name of the social media platform"
     examples: ["CommunityHub", "CreatorSpace", "LocalConnect"]
-  
+
   platform_description:
     type: "string"
     required: true
     description: "Brief description of the platform's purpose and target audience"
-    examples: 
+    examples:
       - "A community platform for local businesses and residents to connect"
       - "Creative space for artists and designers to showcase and collaborate"
-  
+
   content_types:
     type: "array"
     required: true
     description: "Types of content users can create and share"
-    examples: 
+    examples:
       - ["text", "images", "links"]
       - ["text", "images", "videos", "polls"]
       - ["articles", "photos", "events", "discussions"]
-  
+
   community_focus:
     type: "string"
     default: "general"
     description: "Primary focus or niche of the community"
     examples: ["general", "professional", "creative", "local", "educational", "hobby"]
-  
+
   privacy_model:
     type: "string"
     default: "public_private"
     description: "Privacy and visibility model for content"
     examples: ["public_only", "private_only", "public_private", "invite_only"]
-  
+
   monetization:
     type: "array"
     default: []
     description: "Monetization features to include"
     examples: [["advertising"], ["subscriptions"], ["creator_tips"], ["premium_features"]]
-  
+
   real_time_features:
     type: "array"
     default: ["notifications"]
     description: "Real-time features to implement"
     examples: [["notifications"], ["live_chat", "notifications"], ["live_streaming", "chat", "notifications"]]
-  
+
   moderation_level:
     type: "string"
     default: "community"
@@ -80,7 +80,7 @@ variants:
       - line: 15
         action: "add_after"
         content: "- Live video streaming capabilities\n- Real-time audience chat and reactions\n- Stream scheduling and notifications\n- Recording and replay functionality"
-  
+
   with_marketplace:
     name: "With Marketplace Features"
     description: "Includes buying/selling capabilities within the social platform"
@@ -88,7 +88,7 @@ variants:
       - line: 20
         action: "add_after"
         content: "- User marketplace for buying and selling\n- Product listings and transactions\n- Seller ratings and reviews\n- Integrated payment processing"
-  
+
   with_events:
     name: "With Event Management"
     description: "Includes event creation, RSVP, and community gathering features"
@@ -113,7 +113,7 @@ platform_implementations:
       - "Set up real-time notifications and messaging"
     estimated_time: "4-6 weeks"
     complexity: "medium_to_high"
-  
+
   lovable:
     approach: "AI-assisted rapid social platform development"
     strengths:
@@ -129,7 +129,7 @@ platform_implementations:
       - "Add social features with AI assistance"
     estimated_time: "3-4 weeks"
     complexity: "low_to_medium"
-  
+
   flutterflow:
     approach: "Mobile-first social experience"
     strengths:
@@ -145,7 +145,7 @@ platform_implementations:
       - "Add social interactions and notification system"
     estimated_time: "5-7 weeks"
     complexity: "medium_to_high"
-  
+
   thunkable:
     approach: "Cross-platform mobile social app"
     strengths:
@@ -161,7 +161,7 @@ platform_implementations:
       - "Add push notifications and real-time updates"
     estimated_time: "4-5 weeks"
     complexity: "medium"
-  
+
   replit:
     approach: "Custom-coded social platform with full control"
     strengths:
@@ -191,7 +191,7 @@ core_features:
       users: ["id", "username", "email", "password_hash", "display_name", "bio", "avatar_url", "verified", "created_at"]
       user_profiles: ["user_id", "location", "website", "birth_date", "privacy_level"]
       user_settings: ["user_id", "notifications_enabled", "privacy_mode", "language"]
-  
+
   content_system:
     description: "Flexible content creation and management"
     components:
@@ -204,7 +204,7 @@ core_features:
       posts: ["id", "user_id", "content_type", "text_content", "media_urls", "tags", "privacy_level", "created_at"]
       media_files: ["id", "post_id", "file_url", "file_type", "file_size", "alt_text"]
       post_tags: ["post_id", "tag_name"]
-  
+
   social_interactions:
     description: "Engagement and interaction features"
     components:
@@ -218,7 +218,7 @@ core_features:
       comments: ["id", "user_id", "post_id", "parent_comment_id", "content", "created_at"]
       shares: ["id", "user_id", "original_post_id", "shared_at"]
       reports: ["id", "reporter_id", "content_id", "reason", "status", "created_at"]
-  
+
   social_graph:
     description: "User relationships and connections"
     components:
@@ -231,7 +231,7 @@ core_features:
       follows: ["id", "follower_id", "following_id", "created_at", "notification_enabled"]
       friend_requests: ["id", "sender_id", "receiver_id", "status", "sent_at", "responded_at"]
       blocked_users: ["id", "blocker_id", "blocked_id", "created_at"]
-  
+
   messaging_system:
     description: "Direct messaging and real-time communication"
     components:
@@ -250,11 +250,11 @@ real_time_features:
     types: ["likes", "comments", "follows", "mentions", "messages"]
     delivery: ["in_app", "push_notifications", "email"]
     customization: "User-configurable notification preferences"
-  
+
   live_updates:
     features: ["Real-time feed updates", "Live comment threads", "Online status indicators"]
     implementation: "WebSocket connections or real-time database subscriptions"
-  
+
   messaging:
     features: ["Instant message delivery", "Typing indicators", "Read receipts"]
     implementation: "Real-time messaging with presence indicators"
@@ -265,13 +265,13 @@ content_moderation:
     - "Inappropriate content screening"
     - "Automated flagging of violations"
     - "Rate limiting for posting"
-  
+
   community:
     - "User reporting system"
     - "Community voting on content"
     - "Peer moderation tools"
     - "Reputation-based privileges"
-  
+
   manual:
     - "Admin moderation dashboard"
     - "Content review workflows"
@@ -284,13 +284,13 @@ privacy_and_security:
     - "User data deletion and right to be forgotten"
     - "Secure password storage and authentication"
     - "Two-factor authentication support"
-  
+
   content_privacy:
     - "Public, private, and friends-only content"
     - "Granular privacy controls"
     - "Content visibility settings"
     - "Anonymous posting options"
-  
+
   safety_features:
     - "User blocking and reporting"
     - "Content filtering and warnings"
@@ -301,15 +301,15 @@ integration_requirements:
   authentication:
     services: ["Auth0", "Firebase Auth", "Custom OAuth"]
     features: ["Social login", "Multi-factor authentication", "Single sign-on"]
-  
+
   media_storage:
     services: ["AWS S3", "Cloudinary", "Firebase Storage"]
     features: ["Image optimization", "Video transcoding", "CDN delivery"]
-  
+
   push_notifications:
     services: ["Firebase Cloud Messaging", "OneSignal", "Pusher"]
     features: ["Targeted notifications", "Scheduling", "Analytics"]
-  
+
   analytics:
     services: ["Google Analytics", "Mixpanel", "Custom analytics"]
     metrics: ["User engagement", "Content performance", "Growth metrics"]
@@ -318,11 +318,11 @@ monetization_strategies:
   advertising:
     types: ["Display ads", "Sponsored content", "Video ads"]
     platforms: ["Google AdSense", "Facebook Audience Network", "Custom ad server"]
-  
+
   subscriptions:
     features: ["Premium memberships", "Ad-free experience", "Exclusive content"]
     implementation: ["Stripe subscriptions", "In-app purchases", "PayPal recurring"]
-  
+
   creator_economy:
     features: ["Creator tips", "Paid content", "Merchandise integration"]
     platforms: ["Stripe Connect", "PayPal", "Ko-fi integration"]
@@ -334,19 +334,19 @@ best_practices:
     - "Fast loading times and smooth interactions"
     - "Accessible design for users with disabilities"
     - "Clear privacy settings and controls"
-  
+
   community_building:
     - "Encourage positive interactions and engagement"
     - "Provide tools for community self-governance"
     - "Foster diverse and inclusive environments"
     - "Support content creators and active users"
-  
+
   technical:
     - "Scalable architecture for growing user base"
     - "Efficient data storage and retrieval"
     - "Real-time performance optimization"
     - "Regular security audits and updates"
-  
+
   content_strategy:
     - "Clear community guidelines and terms of service"
     - "Consistent and fair moderation policies"
@@ -359,13 +359,13 @@ success_metrics:
     - "Time spent on platform"
     - "Content creation and interaction rates"
     - "User retention and churn rates"
-  
+
   growth:
     - "New user registration rates"
     - "Viral coefficient and sharing rates"
     - "Organic vs. paid user acquisition"
     - "Geographic and demographic expansion"
-  
+
   community_health:
     - "Content quality and diversity"
     - "Positive vs. negative interactions"
@@ -382,7 +382,7 @@ examples:
     real_time_features: ["notifications", "chat"]
     platform_recommendation: "bubble"
     reasoning: "Complex location-based features and community moderation require sophisticated workflows"
-  
+
   creative_community:
     platform_name: "ArtistHub"
     platform_description: "Social platform for artists and designers to showcase work, collaborate, and get feedback"
@@ -392,7 +392,7 @@ examples:
     monetization: ["creator_tips", "premium_features"]
     platform_recommendation: "flutterflow"
     reasoning: "Mobile-first approach ideal for visual content sharing and portfolio browsing"
-  
+
   professional_network:
     platform_name: "IndustryConnect"
     platform_description: "Professional networking platform for industry-specific communities and knowledge sharing"

@@ -79,14 +79,18 @@ Categories: 25
 
 - **Netlify Deployment Configuration**
   - Description: Netlify deployment configuration with build settings, redirects, headers, and environment variables
+
   for SPAs and static sites
+
   - Platforms: N/A
   - Variables: 10
   - File: `deployment\netlify.config.yml`
 
 - **Vercel Deployment Configuration**
   - Description: Vercel deployment configuration for React SPAs, Node.js APIs, and static sites with routing and build
+
   optimization
+
   - Platforms: N/A
   - Variables: 9
   - File: `deployment\vercel.config.yml`
@@ -176,7 +180,9 @@ Categories: 25
 
 - **Alert Notification Script**
   - Description: Bash script for sending alerts and notifications with multiple delivery methods (email, Slack,
+
   webhooks, logging)
+
   - Platforms: N/A
   - Variables: 9
   - File: `monitoring\alert.yml`
@@ -195,7 +201,9 @@ Categories: 25
 
 - **Restore Script**
   - Description: Bash script for restoring databases, files, and configurations from backup files with validation and
+
   safety checks
+
   - Platforms: N/A
   - Variables: 10
   - File: `monitoring\restore.yml`
@@ -210,7 +218,9 @@ Categories: 25
 
 - **AI-Powered Development Platform Tier Classification**
   - Description: Classification of no-code, vibe coding, and AI agent builder platforms by market position, features,
+
   and target audience
+
   - Platforms: N/A
   - Variables: 0
   - File: `platforms\platform-tiers.yml`
@@ -219,7 +229,9 @@ Categories: 25
 
 - **Adalo Native Mobile App Template**
   - Description: Native mobile app builder for entrepreneurs and small businesses with database integration and
+
   marketplace features
+
   - Platforms: adalo
   - Variables: 7
   - File: `platforms\adalo\mobile-app.yml`
@@ -232,7 +244,9 @@ Categories: 25
 
 - **Appsmith Internal Tools Template**
   - Description: Open-source low-code platform for building internal business tools with drag-and-drop interface and
+
   database integrations
+
   - Platforms: appsmith
   - Variables: 6
   - File: `platforms\appsmith\internal-tools.yml`
@@ -301,7 +315,9 @@ Categories: 25
 
 - **Algolia Search Optimization Service**
   - Description: Advanced search-as-a-service platform for implementing fast, relevant, and intelligent search
+
   functionality in applications
+
   - Platforms: N/A
   - Variables: 9
   - File: `platforms\algolia\search-optimization.yml`
@@ -310,7 +326,9 @@ Categories: 25
 
 - **Backendless Advanced Backend Control**
   - Description: Comprehensive backend-as-a-service platform with codeless logic, advanced data management, and full
+
   infrastructure control
+
   - Platforms: N/A
   - Variables: 9
   - File: `platforms\backendless\advanced-backend.yml`
@@ -319,7 +337,9 @@ Categories: 25
 
 - **Betty Blocks Enterprise No-Code Application**
   - Description: Enterprise no-code platform for building scalable applications with AI toolkit and visual development
+
   environment
+
   - Platforms: N/A
   - Variables: 9
   - File: `platforms\betty-blocks\enterprise-no-code.yml`
@@ -332,7 +352,9 @@ Categories: 25
 
 - **WaveMaker Enterprise Application**
   - Description: Enterprise low-code platform for building modern, API-driven web and mobile applications with
+
   AI-generated code capabilities
+
   - Platforms: N/A
   - Variables: 8
   - File: `platforms\wavemaker\enterprise-app.yml`
@@ -341,7 +363,9 @@ Categories: 25
 
 - **Bildr Visual Flexibility Platform**
   - Description: Highly visual no-code platform for building flexible web apps, Chrome extensions, and progressive web
+
   apps with Figma-like interface
+
   - Platforms: N/A
   - Variables: 9
   - File: `platforms\bildr\visual-flexibility.yml`
@@ -362,21 +386,27 @@ Categories: 25
 
 - **Google Opal AI Mini-Apps Template**
   - Description: Google's experimental no-code AI mini-app builder - Describe, create, and share AI-powered
+
   applications using natural language
+
   - Platforms: N/A
   - Variables: 8
   - File: `platforms\google-opal\ai-mini-apps.yml`
 
 - **Hostinger Horizons Vibe Coding Template**
   - Description: Best overall vibe coding platform - AI-powered web app development using conversational prompts and
+
   natural language
+
   - Platforms: horizons
   - Variables: 5
   - File: `platforms\horizons\web-app.yml`
 
 - **Lovable Vibe Coding Template**
   - Description: #5 Best vibe coding tool for fast, prompt-based programming - Single-prompt development with AI error
+
   suggestions
+
   - Platforms: lovable
   - Variables: 6
   - File: `platforms\lovable\web-app.yml`
@@ -385,7 +415,9 @@ Categories: 25
 
 - **Budibase Open-Source Application**
   - Description: Open-source low-code platform for building apps and workflows from any data source with self-hosting
+
   capabilities
+
   - Platforms: N/A
   - Variables: 8
   - File: `platforms\budibase\open-source-app.yml`
@@ -402,7 +434,9 @@ Categories: 25
 
 - **Firebase Google Backend Platform**
   - Description: Google's comprehensive backend-as-a-service platform with real-time database, authentication, hosting,
+
   and cloud functions
+
   - Platforms: N/A
   - Variables: 9
   - File: `platforms\firebase\google-backend.yml`
@@ -423,7 +457,9 @@ Categories: 25
 
 - **Google Agent Development Kit (ADK) Template**
   - Description: Google's enterprise-grade open-source framework for multi-agent system development - Powers Agentspace
+
   and Google CES
+
   - Platforms: N/A
   - Variables: 9
   - File: `platforms\google-adk\multi-agent-framework.yml`
@@ -450,7 +486,9 @@ Categories: 25
 
 - **Softr Database-Driven Application**
   - Description: No-code platform for building dynamic, database-driven web applications, websites, and client portals
+
   with extensive data source integrations
+
   - Platforms: N/A
   - Variables: 9
   - File: `platforms\softr\database-driven-app.yml`
@@ -459,7 +497,9 @@ Categories: 25
 
 - **WeWeb Frontend Builder Application**
   - Description: No-code frontend builder for creating pixel-perfect, responsive web applications with extensive data
+
   source integrations
+
   - Platforms: N/A
   - Variables: 9
   - File: `platforms\weweb\frontend-builder.yml`
@@ -476,7 +516,9 @@ Categories: 25
 
 - **Zapier Interfaces Automation-First Application**
   - Description: Automation-first no-code platform for creating apps with AI orchestration and seamless integration
+
   with thousands of external services
+
   - Platforms: N/A
   - Variables: 8
   - File: `platforms\zapier-interfaces\automation-first-app.yml`

@@ -110,19 +110,19 @@ The platform detector uses a weighted scoring system based on multiple factors:
     - Looks for specific files or directories that indicate the platform
     - Example: `.cursor` directory for Cursor IDE
 
-2. **Dependency Detection** (30% weight):
+1. **Dependency Detection** (30% weight):
     - Checks for platform-specific packages in dependency files
     - Example: `@githubnext/github-copilot-cli` for GitHub Copilot
 
-3. **Folder Pattern Matching** (15% weight):
+1. **Folder Pattern Matching** (15% weight):
     - Matches directory names against known patterns
     - Example: `*-copilot` for GitHub Copilot related directories
 
-4. **Commit Message Patterns** (10% weight):
+1. **Commit Message Patterns** (10% weight):
     - Looks for platform-related terms in commit messages
     - Example: "Add Copilot configuration"
 
-5. **Content Patterns** (5% weight):
+1. **Content Patterns** (5% weight):
     - Searches for platform-specific strings in files
     - Example: "github-copilot" in configuration files
 
@@ -166,7 +166,7 @@ The platform detector uses a weighted scoring system based on multiple factors:
    }
    ```
 
-2. Add the platform to `configs/platforms/ai_platforms.json`:
+1. Add the platform to `configs/platforms/ai_platforms.json`:
 
    ```json
    {

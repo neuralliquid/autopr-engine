@@ -13,7 +13,7 @@ platform_info:
   pricing_model: "Custom Enterprise Pricing"
   target_audience: "Enterprise developers, ISVs, large organizations"
   primary_use_cases: ["Enterprise web apps", "Mobile applications", "API-driven solutions", "Legacy modernization"]
-  
+
   key_features:
     - "AI-generated code from Figma designs"
     - "Automatic data binding and UI mapping"

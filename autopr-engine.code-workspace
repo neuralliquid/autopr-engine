@@ -97,7 +97,13 @@
         "baseUrl": "https://autopr.neuralliquid.com",
         "apiToken": "{{$dotenv AUTOPR_PROD_API_TOKEN}}"
       }
-    }
+    },
+    "cSpell.words": [
+      "Alertmanager",
+      "FINRA",
+      "PKCE",
+      "SPIFFE"
+    ]
   },
   "tasks": {
     "version": "2.0.0",

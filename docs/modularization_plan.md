@@ -1,6 +1,7 @@
 # AutoPR Engine Modularization & Refactor Plan
 
 ## Architecture Overview
+
 - **Core Platform**: Hybrid C# (.NET 9+) and Python (3.13+) system
 - **C# Components**: API Gateway, Plugin Manager, Event Bus, Core Orchestration
 - **Python Services**: AI/ML, Code Analysis, Template Processors
@@ -8,6 +9,7 @@
 - **Template Engine (AutoWeave)**: External TypeScript-based service with REST/gRPC APIs
 
 ## Core Principles
+
 - **Modularity**: Independent, reusable components with clear interfaces
 - **Extensibility**: Plugin-based architecture for easy extension
 - **Security**: Built-in validation and compliance at all layers
@@ -17,6 +19,7 @@
 ## Task List
 
 ### 1. C# Core Modularization
+
 - [ ] **API Gateway**
   - [ ] Define clear API contracts and versioning
   - [ ] Implement request/response middleware pipeline
@@ -42,6 +45,7 @@
   - [ ] Set up template version management
 
 ### 2. Python Services Modularization
+
 - [ ] **AI/ML Services**
   - [ ] Modularize NLP components
   - [ ] Implement model management and versioning
@@ -61,6 +65,7 @@
   - [ ] Add support for custom template filters/functions
 
 ### 3. Integration Layer
+
 - [ ] **gRPC Services**
   - [ ] Define service contracts (.proto files)
   - [ ] Implement client/server stubs
@@ -74,6 +79,7 @@
   - [ ] Implement template validation and preprocessing
 
 ### 4. Plugin System Enhancements
+
 - [ ] **Plugin Lifecycle**
   - [ ] Implement plugin loading/unloading
   - [ ] Add version compatibility checks
@@ -87,6 +93,7 @@
   - [ ] Document plugin development
 
 ### 5. Testing Strategy
+
 - [ ] **Unit Tests**
   - [ ] Core components
   - [ ] Plugin interfaces
@@ -103,6 +110,7 @@
   - [ ] Long-running stability
 
 ### 6. Documentation
+
 - [ ] **Architecture**
   - [ ] System overview
   - [ ] Component interactions
@@ -119,12 +127,14 @@
   - [ ] Testing and debugging
 
 ## Next Steps
+
 1. Review and refine task breakdown with team
 2. Prioritize implementation phases
 3. Set up development environment and CI/CD pipelines
 4. Begin iterative implementation with regular reviews
 
 ## Success Metrics
+
 - 50% reduction in code complexity per module
 - 30% improvement in build/test times
 - 90%+ test coverage for new code

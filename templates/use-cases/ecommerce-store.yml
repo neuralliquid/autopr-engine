@@ -24,52 +24,52 @@ variables:
     required: true
     description: "Name of the e-commerce store"
     examples: ["TechGadgets", "FashionHub", "HomeDecor"]
-  
+
   store_description:
     type: "string"
     required: true
     description: "Brief description of what the store sells"
-    examples: 
+    examples:
       - "Premium electronics and gadgets for tech enthusiasts"
       - "Sustainable fashion for conscious consumers"
-  
+
   product_categories:
     type: "array"
     required: true
     description: "Main product categories for the store"
-    examples: 
+    examples:
       - ["electronics", "accessories", "home_automation"]
       - ["clothing", "shoes", "accessories"]
       - ["furniture", "decor", "lighting"]
-  
+
   target_market:
     type: "string"
     default: "b2c"
     description: "Target market type"
     examples: ["b2c", "b2b", "marketplace"]
-  
+
   payment_methods:
     type: "array"
     default: ["stripe", "paypal"]
     description: "Supported payment methods"
     examples: [["stripe"], ["paypal"], ["stripe", "paypal", "apple_pay"]]
-  
+
   shipping_regions:
     type: "array"
     default: ["domestic"]
     description: "Shipping coverage areas"
     examples: [["domestic"], ["international"], ["domestic", "international"]]
-  
+
   inventory_management:
     type: "boolean"
     default: true
     description: "Whether to include inventory tracking"
-  
+
   multi_vendor:
     type: "boolean"
     default: false
     description: "Support for multiple vendors/sellers"
-  
+
   subscription_products:
     type: "boolean"
     default: false
@@ -83,7 +83,7 @@ variants:
       - line: 15
         action: "add_after"
         content: "- Advanced sales analytics and reporting\n- Customer behavior tracking\n- Revenue and profit analysis\n- Inventory turnover metrics"
-  
+
   with_mobile_app:
     name: "With Mobile Application"
     description: "Includes dedicated mobile app for customers"
@@ -91,7 +91,7 @@ variants:
       - line: 20
         action: "add_after"
         content: "- Native mobile app for iOS and Android\n- Push notifications for orders and promotions\n- Mobile-optimized shopping experience\n- Offline browsing capabilities"
-  
+
   with_marketplace_features:
     name: "With Marketplace Features"
     description: "Multi-vendor marketplace with seller management"
@@ -116,7 +116,7 @@ platform_implementations:
       - "Set up order management and notification workflows"
     estimated_time: "3-4 weeks"
     complexity: "medium"
-  
+
   lovable:
     approach: "AI-assisted development with GitHub sync"
     strengths:
@@ -132,7 +132,7 @@ platform_implementations:
       - "Set up payment processing and order management"
     estimated_time: "2-3 weeks"
     complexity: "low_to_medium"
-  
+
   flutterflow:
     approach: "Flutter-based mobile-first development"
     strengths:
@@ -148,7 +148,7 @@ platform_implementations:
       - "Integrate payment processing and order tracking"
     estimated_time: "4-5 weeks"
     complexity: "medium_to_high"
-  
+
   thunkable:
     approach: "Cross-platform mobile app development"
     strengths:
@@ -164,7 +164,7 @@ platform_implementations:
       - "Implement checkout and payment processing"
     estimated_time: "3-4 weeks"
     complexity: "medium"
-  
+
   horizons:
     approach: "AI-powered web development"
     strengths:
@@ -194,7 +194,7 @@ core_features:
       products: ["id", "name", "description", "price", "category_id", "inventory_count", "images"]
       categories: ["id", "name", "description", "parent_category_id"]
       product_variants: ["id", "product_id", "variant_type", "variant_value", "price_modifier"]
-  
+
   shopping_cart:
     description: "Cart management and checkout system"
     components:
@@ -206,7 +206,7 @@ core_features:
     database_schema:
       cart_items: ["id", "user_id", "product_id", "variant_id", "quantity", "added_at"]
       shipping_methods: ["id", "name", "cost", "delivery_time", "regions"]
-  
+
   user_management:
     description: "Customer account and authentication system"
     components:
@@ -219,7 +219,7 @@ core_features:
       users: ["id", "email", "password_hash", "first_name", "last_name", "created_at"]
       user_addresses: ["id", "user_id", "address_line1", "city", "state", "postal_code", "country"]
       wishlists: ["id", "user_id", "product_id", "added_at"]
-  
+
   order_management:
     description: "Order processing and tracking system"
     components:
@@ -239,20 +239,20 @@ integration_requirements:
       setup: "Create Stripe account and obtain API keys"
       features: ["Credit card processing", "Digital wallets", "Subscription billing"]
       implementation: "Integrate Stripe Checkout or Payment Intents API"
-    
+
     paypal:
       setup: "Create PayPal Business account and obtain credentials"
       features: ["PayPal payments", "Express checkout", "Buyer protection"]
       implementation: "Integrate PayPal SDK or REST API"
-  
+
   shipping_calculation:
     services: ["ShipStation", "Easyship", "Custom rates"]
     features: ["Real-time shipping rates", "Label printing", "Tracking integration"]
-  
+
   email_notifications:
     services: ["SendGrid", "Mailgun", "AWS SES"]
     templates: ["Order confirmation", "Shipping notification", "Delivery confirmation"]
-  
+
   analytics:
     services: ["Google Analytics", "Mixpanel", "Custom analytics"]
     metrics: ["Sales performance", "Customer behavior", "Conversion rates"]
@@ -264,19 +264,19 @@ best_practices:
     - "Provide clear product information and high-quality images"
     - "Streamline checkout process to reduce cart abandonment"
     - "Include customer reviews and ratings"
-  
+
   performance:
     - "Optimize image loading and compression"
     - "Implement caching for product data"
     - "Use pagination for large product catalogs"
     - "Minimize checkout steps and form fields"
-  
+
   security:
     - "Use HTTPS for all transactions"
     - "Implement secure payment processing (PCI compliance)"
     - "Protect customer data with encryption"
     - "Regular security audits and updates"
-  
+
   business:
     - "Plan inventory management and fulfillment processes"
     - "Set up customer service and return policies"
@@ -289,7 +289,7 @@ success_metrics:
     - "Mobile responsiveness across devices"
     - "99.9% uptime and availability"
     - "Secure payment processing"
-  
+
   business:
     - "Conversion rate optimization"
     - "Average order value tracking"
@@ -306,7 +306,7 @@ examples:
     shipping_regions: ["domestic", "international"]
     platform_recommendation: "flutterflow"
     reasoning: "Mobile-first approach ideal for tech-savvy customers who prefer mobile shopping"
-  
+
   fashion_boutique:
     store_name: "EcoStyle"
     store_description: "Sustainable fashion and accessories for conscious consumers"
@@ -316,7 +316,7 @@ examples:
     shipping_regions: ["domestic"]
     platform_recommendation: "bubble"
     reasoning: "Complex inventory management and size variants require sophisticated workflows"
-  
+
   marketplace_platform:
     store_name: "LocalCrafts"
     store_description: "Marketplace for local artisans and handmade products"

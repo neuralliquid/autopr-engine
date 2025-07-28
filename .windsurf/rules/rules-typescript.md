@@ -3,6 +3,7 @@ trigger: glob
 ---
 
 # TS / TSX
+
 - "strict": true. No `any` without a comment.
 - One export per file, named exports only.
 - camelCase funcs/vars, PascalCase types/components, kebab-case dirs.

@@ -15,7 +15,7 @@ platform_info:
   pricing_model: "Freemium with subscription tiers"
   target_audience: "Non-technical users, small businesses, marketing teams, operations managers"
   primary_use_cases: ["App integration automation", "Marketing workflows", "Data synchronization", "Customer service automation", "Sales pipeline automation"]
-  
+
   key_features:
     - "Intuitive drag-and-drop no-code interface"
     - "1,500+ app integrations and connectors"

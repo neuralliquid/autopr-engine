@@ -13,7 +13,7 @@ platform_info:
   pricing_model: "Freemium with Usage-based Scaling"
   target_audience: "Developers, no-code builders, agencies, startups"
   primary_use_cases: ["Custom APIs", "Workflow automation", "Backend logic", "Third-party integrations", "AI-powered workflows"]
-  
+
   key_features:
     - "Visual workflow builder for backend logic"
     - "AI-powered code generation and assistance"
