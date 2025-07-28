@@ -40,7 +40,7 @@ class PlatformConfigManager:
         if cls._instance is None:
             cls._instance = super(PlatformConfigManager, cls).__new__(cls)
             cls._instance._initialize()
-        return cls._instance
+        return cls._instance  # type: ignore[return-value]
 
     def _initialize(self) -> None:
         """Initialize the configuration manager.
@@ -51,7 +51,7 @@ class PlatformConfigManager:
         self._platforms = {}
         self._platforms_by_category = {}
         self._platforms_by_type = {}
-        self._platforms_by_id = {}
+        self._platforms_by_id: Dict[str, PlatformConfig] = {}
         self._load_config_files()
         self._index_platforms()
         self._configs_loaded = True
@@ -107,6 +107,8 @@ class PlatformConfigManager:
                 platforms[platform.id] = platform
 
                 # Update indexes
+
+        return platforms
 
     def _load_config_files(self) -> None:
         """Load platform configuration files from the configured directories.
@@ -233,9 +235,8 @@ class PlatformConfigManager:
         Returns:
             A list of platform configurations of the specified type
         """
-        return [
-            self._platforms[pid].to_dict() for pid in self._platforms_by_type.get(platform_type, [])
-        ]
+        platform_ids: List[str] = self._platforms_by_type.get(platform_type, [])
+        return [self._platforms[pid].to_dict() for pid in platform_ids]
 
     def get_all_platforms(self) -> Dict[str, Dict[str, Any]]:
         """Get all platform configurations.
@@ -269,9 +270,9 @@ class PlatformConfigManager:
         """
         if not self._configs_loaded:
             self._load_config_files()
-        return {pid: p for pid, p in self._platforms.items() if p.is_active}
+        return {pid: p.to_dict() for pid, p in self._platforms.items() if p.is_active}
 
-    def find_platforms(self, **filters) -> Dict[str, PlatformConfig]:
+    def find_platforms(self, **filters: Any) -> Dict[str, PlatformConfig]:
         """
         Find platforms matching the given filters.
 
@@ -318,4 +319,5 @@ class PlatformConfigManager:
 
 
 # For backward compatibility
-PlatformConfig = PlatformConfigManager
+# Backward compatibility alias
+# PlatformConfig = PlatformConfigManager

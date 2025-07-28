@@ -4,13 +4,14 @@ Base classes and interfaces for file analysis.
 
 from __future__ import annotations
 
+import fnmatch
 import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Type, TypeVar, Union
+from typing import Any, Dict, List, Optional, Set, Tuple, Type, TypeVar, Union
 
-from autopr.actions.platform_detection.analysis.handlers import FileHandler
+from autopr.actions.platform_detection.analysis.handlers import DefaultFileHandler, FileHandler
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +61,7 @@ class FileAnalyzer:
     def __init__(
         self,
         workspace_path: Union[str, Path],
-        handlers: Dict[str, Type[FileHandler]] = None,
+        handlers: Optional[Dict[str, Type[FileHandler]]] = None,
     ):
         """
         Initialize the file analyzer.
@@ -77,7 +78,7 @@ class FileAnalyzer:
         """Initialize the file handlers."""
         from fnmatch import fnmatch
 
-        self._handler_patterns = []
+        self._handler_patterns: List[Tuple[Any, Type[FileHandler]]] = []
 
         for pattern, handler_cls in handlers.items():
             self.register_handler(pattern, handler_cls)
@@ -105,7 +106,7 @@ class FileAnalyzer:
 
         # Check for exact matches first
         for pattern, handler_cls in self.handlers.items():
-            if pattern == filename or pattern == f"*.{file_path.suffix.lswith('.')}":
+            if pattern == filename or pattern == f"*.{file_path.suffix.lstrip('.')}":
                 return handler_cls()
 
         # Then check glob patterns

@@ -5,6 +5,7 @@ Coordinates all modular components and maintains backward compatibility
 
 import asyncio
 import logging
+import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -355,8 +356,6 @@ class Phase1ExtensionImplementor:
         validation_results = {"valid": True, "issues": [], "warnings": [], "recommendations": []}
 
         # Check Python version
-        import sys
-
         if sys.version_info < (3, 13):
             validation_results["issues"].append(
                 f"Python version {sys.version} is below minimum requirement (3.9+)"

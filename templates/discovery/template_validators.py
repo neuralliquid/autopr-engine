@@ -55,7 +55,7 @@ class StructureValidator:
     ) -> List[ValidationIssue]:
         """Check that all required fields are present."""
         issues: List[ValidationIssue] = []
-        required_fields = rule.params.get("required_fields", [])
+        required_fields = (rule.parameters or {}).get("required_fields", [])
 
         for field in required_fields:
             if field not in data:
@@ -66,7 +66,7 @@ class StructureValidator:
                         message=f"Missing required field: {field}",
                         location=str(file_path),
                         suggestion=f"Add the required '{field}' field to the template",
-                        rule_id=rule.id,
+                        rule_id=rule.rule_id,
                     )
                 )
         return issues
@@ -77,7 +77,7 @@ class StructureValidator:
     ) -> List[ValidationIssue]:
         """Check that fields have the correct types."""
         issues: List[ValidationIssue] = []
-        field_types = rule.params.get("field_types", {})
+        field_types = (rule.parameters or {}).get("field_types", {})
 
         for field, expected_type in field_types.items():
             if field in data and not isinstance(data[field], eval(expected_type)):
@@ -88,7 +88,7 @@ class StructureValidator:
                         message=f"Field '{field}' has incorrect type (expected {expected_type})",
                         location=str(file_path),
                         suggestion=f"Ensure '{field}' is of type {expected_type}",
-                        rule_id=rule.id,
+                        rule_id=rule.rule_id,
                     )
                 )
         return issues
@@ -109,7 +109,7 @@ class StructureValidator:
                         message="Version should follow semantic versioning (e.g., 1.0.0)",
                         location=str(file_path),
                         suggestion="Update version to follow semantic versioning (MAJOR.MINOR.PATCH)",
-                        rule_id=rule.id,
+                        rule_id=rule.rule_id,
                     )
                 )
         return issues
@@ -136,7 +136,7 @@ class MetadataValidator:
                     message="Name cannot be empty",
                     location=str(file_path),
                     suggestion="Provide a non-empty name for the template",
-                    rule_id=rule.id,
+                    rule_id=rule.rule_id,
                 )
             )
         elif len(name) > 50:
@@ -147,7 +147,7 @@ class MetadataValidator:
                     message="Name is too long (max 50 characters recommended)",
                     location=str(file_path),
                     suggestion="Shorten the template name",
-                    rule_id=rule.id,
+                    rule_id=rule.rule_id,
                 )
             )
         return issues
@@ -170,7 +170,7 @@ class MetadataValidator:
                     message="Description cannot be empty",
                     location=str(file_path),
                     suggestion="Provide a meaningful description for the template",
-                    rule_id=rule.id,
+                    rule_id=rule.rule_id,
                 )
             )
         elif len(description) < 20:
@@ -181,7 +181,7 @@ class MetadataValidator:
                     message="Description is too short (min 20 characters recommended)",
                     location=str(file_path),
                     suggestion="Provide a more detailed description",
-                    rule_id=rule.id,
+                    rule_id=rule.rule_id,
                 )
             )
         return issues
@@ -196,7 +196,7 @@ class MetadataValidator:
             return issues
 
         category = str(data["category"]).lower()
-        valid_categories = rule.params.get("valid_categories", [])
+        valid_categories = (rule.parameters or {}).get("valid_categories", [])
 
         if valid_categories and category not in valid_categories:
             issues.append(
@@ -206,7 +206,7 @@ class MetadataValidator:
                     message=f"Category '{category}' is not in the list of recommended categories",
                     location=str(file_path),
                     suggestion=f"Use one of: {', '.join(valid_categories)}",
-                    rule_id=rule.id,
+                    rule_id=rule.rule_id,
                 )
             )
         return issues
@@ -235,7 +235,7 @@ class VariablesValidator:
                         message=f"Variable '{var_name}' is missing a description",
                         location=str(file_path),
                         suggestion=f"Add a description for the '{var_name}' variable",
-                        rule_id=rule.id,
+                        rule_id=rule.rule_id,
                     )
                 )
         return issues
@@ -260,7 +260,7 @@ class VariablesValidator:
                         message=f"Variable '{var_name}' is missing an example",
                         location=str(file_path),
                         suggestion=f"Add an example for the '{var_name}' variable",
-                        rule_id=rule.id,
+                        rule_id=rule.rule_id,
                     )
                 )
         return issues
@@ -288,7 +288,7 @@ class VariablesValidator:
                         message=f"Required variable '{var_name}' has a default value",
                         location=str(file_path),
                         suggestion="Remove either 'required: true' or the 'default' value",
-                        rule_id=rule.id,
+                        rule_id=rule.rule_id,
                     )
                 )
         return issues
@@ -312,7 +312,7 @@ class DocumentationValidator:
                     message="Missing setup instructions",
                     location=str(file_path),
                     suggestion="Add setup instructions to help users get started",
-                    rule_id=rule.id,
+                    rule_id=rule.rule_id,
                 )
             )
         return issues
@@ -332,7 +332,7 @@ class DocumentationValidator:
                     message="Missing best practices documentation",
                     location=str(file_path),
                     suggestion="Add best practices to help users follow conventions",
-                    rule_id=rule.id,
+                    rule_id=rule.rule_id,
                 )
             )
         return issues
@@ -352,7 +352,7 @@ class DocumentationValidator:
                     message="Missing troubleshooting documentation",
                     location=str(file_path),
                     suggestion="Add troubleshooting tips for common issues",
-                    rule_id=rule.id,
+                    rule_id=rule.rule_id,
                 )
             )
         return issues
@@ -376,7 +376,7 @@ class ExamplesValidator:
                     message="No examples provided",
                     location=str(file_path),
                     suggestion="Add usage examples to help users understand how to use the template",
-                    rule_id=rule.id,
+                    rule_id=rule.rule_id,
                 )
             )
         return issues
@@ -404,7 +404,7 @@ class ExamplesValidator:
                         message=f"Example {i} is missing name or code",
                         location=str(file_path),
                         suggestion="Ensure all examples have both a name and code snippet",
-                        rule_id=rule.id,
+                        rule_id=rule.rule_id,
                     )
                 )
         return issues
@@ -438,7 +438,7 @@ class SecurityValidator:
                             message=f"{message} found in {context}",
                             location=str(file_path),
                             suggestion="Remove hardcoded secrets and use environment variables",
-                            rule_id=rule.id,
+                            rule_id=rule.rule_id,
                         )
                     )
 
@@ -474,7 +474,7 @@ class SecurityValidator:
                     message="Missing security considerations",
                     location=str(file_path),
                     suggestion="Add security considerations to help users understand potential risks",
-                    rule_id=rule.id,
+                    rule_id=rule.rule_id,
                 )
             )
         return issues
@@ -498,7 +498,7 @@ class PerformanceValidator:
                     message="Missing performance considerations",
                     location=str(file_path),
                     suggestion="Add performance considerations to help users optimize their usage",
-                    rule_id=rule.id,
+                    rule_id=rule.rule_id,
                 )
             )
         return issues
@@ -570,7 +570,7 @@ class ValidatorRegistry:
                         message=f"Error running validation '{check_function}': {str(e)}",
                         location=str(file_path),
                         suggestion="Check the validation implementation for issues",
-                        rule_id=rule.id,
+                        rule_id=rule.rule_id,
                     )
                 ]
         return []
