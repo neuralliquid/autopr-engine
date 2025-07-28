@@ -21,11 +21,24 @@ import yaml
 from pydantic import BaseModel, Field, SecretStr, validator
 
 try:
-    # Pydantic 2.0+
+    # Pydantic 2.0+ (preferred)
     from pydantic_settings import BaseSettings
 except ImportError:
-    # Fallback to Pydantic 1.x
-    from pydantic.env_settings import BaseSettings
+    try:
+        # Pydantic 1.x fallback
+        from pydantic.env_settings import BaseSettings
+    except ImportError:
+        # Final fallback - create a basic BaseSettings class
+        from pydantic import BaseModel
+
+        class BaseSettings(BaseModel):
+            """Fallback BaseSettings implementation for compatibility."""
+
+            class Config:
+                env_file = ".env"
+                env_file_encoding = "utf-8"
+                case_sensitive = False
+
 
 class Environment(str, Enum):
     """Environment types."""
