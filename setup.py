@@ -152,6 +152,7 @@ setup(
     install_requires=[
         # Core dependencies
         "pydantic>=2.0.0,<3.0.0",
+        "pydantic_settings>=2.0.0,<3.0.0",
         "aiohttp>=3.8.0,<4.0.0",
         "structlog>=22.0.0,<24.0.0",
         "click>=8.0.0,<9.0.0",
