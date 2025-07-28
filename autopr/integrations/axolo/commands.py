@@ -47,9 +47,7 @@ class AxoloCommandHandler:
             return
 
         # Trigger AutoPR analysis
-        from tools.autopr.actions.pr_review_analyzer import (
-            PRReviewAnalyzer,  # type: ignore[import-not-found]
-        )
+        from autopr.actions.pr_review_analyzer import PRReviewAnalyzer
 
         analyzer = PRReviewAnalyzer()
 

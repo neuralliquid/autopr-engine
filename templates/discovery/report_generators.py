@@ -19,8 +19,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from autopr.quality.template_metrics import QualityAnalyzer, QualityMetrics
-
-from .template_validators import ValidationIssue, ValidationSeverity
+from templates.discovery.template_validators import ValidationIssue, ValidationSeverity
 
 
 class ReportGenerator(ABC):
