@@ -142,6 +142,7 @@
         "mongodump",
         "msapp",
         "mvnw",
+        "myplugin",
         "mypy",
         "mysqladmin",
         "mysqldump",

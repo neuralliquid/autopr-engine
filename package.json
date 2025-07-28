@@ -1,0 +1,28 @@
+{
+  "name": "autopr-engine",
+  "version": "1.0.0",
+  "description": "**AI-Powered GitHub PR Automation and Issue Management**",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neuralliquid/autopr-engine.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/neuralliquid/autopr-engine/issues"
+  },
+  "homepage": "https://github.com/neuralliquid/autopr-engine#readme",
+  "devDependencies": {
+    "markdownlint-cli2": "^0.18.1"
+  }
+}
