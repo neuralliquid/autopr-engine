@@ -135,13 +135,72 @@ class MarkdownLinter:
         """Check if the line exceeds the maximum allowed length."""
         max_length = self.config["max_line_length"]
         if len(line) > max_length:
+            # Try to determine if we can auto-fix this line
+            fix_func = self._get_line_length_fix(line, max_length)
             self._add_issue(
                 report,
                 line_num,
                 f"Line too long ({len(line)} > {max_length} characters)",
                 "MD013",
-                # This is not auto-fixable as it might require semantic understanding
+                fix=fix_func,
             )
+
+    def _get_line_length_fix(self, line: str, max_length: int) -> Optional[Callable[[str], str]]:
+        """Determine if and how to fix a long line."""
+        stripped = line.strip()
+
+        # Don't auto-fix code blocks, tables, or very complex structures
+        if (
+            stripped.startswith("```")
+            or stripped.startswith("|")
+            or stripped.startswith("    ")
+            or "---" in stripped
+        ):
+            return None
+
+        # Don't auto-fix headings or very short overruns (< 10 chars)
+        if stripped.startswith("#") or len(line) - max_length < 10:
+            return None
+
+        # Auto-fix text paragraphs and list items
+        if self._can_wrap_text(stripped):
+            return lambda l: self._wrap_text_line(l, max_length)
+
+        return None
+
+    def _can_wrap_text(self, line: str) -> bool:
+        """Check if a line can be safely wrapped."""
+        stripped = line.strip()
+        # Can wrap normal text, list items, and simple markdown
+        return (
+            not stripped.startswith(">")  # Not blockquote
+            and not re.match(r"^\s*\d+\.", stripped)  # Not numbered list (for now)
+            and "http" not in stripped  # Not URLs (handle separately)
+            and "[" not in stripped
+            and "]" not in stripped
+        )  # Not complex links
+
+    def _wrap_text_line(self, line: str, max_length: int) -> str:
+        """Wrap a text line at word boundaries."""
+        if len(line) <= max_length:
+            return line
+
+        # Preserve leading whitespace
+        leading_space = len(line) - len(line.lstrip())
+        indent = line[:leading_space]
+        content = line[leading_space:]
+
+        # Find the best break point
+        break_point = max_length - leading_space
+        if break_point >= len(content):
+            return line
+
+        # Find word boundary before break point
+        space_before = content.rfind(" ", 0, break_point)
+        if space_before > break_point // 2:  # Reasonable break point found
+            return indent + content[:space_before] + "\n" + indent + content[space_before:].lstrip()
+
+        return line  # Can't find good break point
 
     def _check_heading(self, report: FileReport, line_num: int, line: str, match: re.Match) -> None:
         """Check heading formatting and spacing."""
@@ -175,7 +234,9 @@ class MarkdownLinter:
                 line_num,
                 "First word in heading should be capitalized",
                 "MD002",
-                fix=lambda l: l[0].upper() + l[1:],
+                fix=lambda l: re.sub(
+                    r"^(#+\s*)([a-z])", lambda m: m.group(1) + m.group(2).upper(), l
+                ),
             )
 
     def _check_list_item(
@@ -202,12 +263,17 @@ class MarkdownLinter:
             # Simple check for bare URLs (very basic, might have false positives)
             words = re.split(r"[\s<>]", line)
             for word in words:
-                if (word.startswith("http://") or word.startswith("https://")) and "](" not in line:
+                if (
+                    (word.startswith("http://") or word.startswith("https://"))
+                    and "](" not in line
+                    and not word.startswith("<http")
+                ):
                     self._add_issue(
                         report,
                         line_num,
                         f"Bare URL used, consider using a link reference: {word}",
                         "MD034",
+                        fix=lambda l, url=word: l.replace(url, f"<{url}>"),
                     )
 
         # Check for multiple spaces after list markers

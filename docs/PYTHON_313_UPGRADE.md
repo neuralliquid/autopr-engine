@@ -14,14 +14,14 @@ This document outlines the upgrade of the AutoPR Engine project from Python 3.8+
 
 ### 2. Configuration Files Updated
 
-#### pyproject.toml
+#### Pyproject.toml
 
 - Updated `requires-python = ">=3.9"`
 - Added Python 3.13 classifier
 - Updated Black target version to `py313`
 - Updated all core dependencies to Python 3.13 compatible versions
 
-#### setup.py
+#### Setup.py
 
 - Updated `python_requires=">=3.9"`
 
@@ -31,7 +31,7 @@ This document outlines the upgrade of the AutoPR Engine project from Python 3.8+
 - Set `language_version: python3.13` for Black hook
 - Updated `default_language_version` to `python3.13`
 
-#### requirements-dev.txt
+#### Requirements-dev.txt
 
 - Updated all development dependencies to latest Python 3.13 compatible versions
 
