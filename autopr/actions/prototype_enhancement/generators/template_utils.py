@@ -66,13 +66,11 @@ class TemplateManager:
             template_key: Key identifying the template (e.g., 'docker/Dockerfile')
             variables: Variables to pass to the template
             variants: List of variants to apply
-
         Returns:
             Rendered template content, or None if template not found
         """
         if variables is None:
             variables = {}
-
         # Get template metadata
         template_meta = self.template_registry.get_template(template_key)
         if not template_meta:
@@ -111,7 +109,6 @@ class TemplateManager:
         """
         # Start with a copy of the original metadata
         result = template_meta.copy()
-
         # Apply each variant in order
         for variant in variants:
             if variant in template_meta.variants:
@@ -122,5 +119,4 @@ class TemplateManager:
                 # Apply any template overrides
                 if variant_meta.template:
                     result.template = variant_meta.template
-
         return result

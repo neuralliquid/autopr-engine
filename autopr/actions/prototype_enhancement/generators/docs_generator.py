@@ -36,7 +36,6 @@ class DocsGenerator(BaseGenerator):
                 - include_code_of_conduct: Whether to include CODE_OF_CONDUCT.md (default: True)
                 - include_license: Whether to include LICENSE (default: True)
                 - include_github_actions: Whether to include GitHub Actions workflows (default: True)
-
         Returns:
             List of paths to generated files
         """
@@ -450,7 +449,6 @@ autodoc_default_options = {
 """
                 self._write_file(str(conf_py), sphinx_quickstart)
                 generated_files.append(str(conf_py))
-
                 # Create index.rst
                 index_rst = f""".. {variables['project_name']} documentation master file, created by
    sphinx-quickstart on {datetime.now().strftime('%Y-%m-%d')}.
@@ -508,7 +506,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [16.x, 18.x]

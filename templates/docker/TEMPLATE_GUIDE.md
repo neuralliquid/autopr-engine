@@ -97,7 +97,6 @@ variants:
       - line: 8
         action: "add_after"
         content: "RUN npm install -g pm2"
-
       # Replace CMD with PM2
       - line: -1
         action: "replace"
@@ -148,7 +147,6 @@ examples:
   - name: "Basic Usage"
     description: "Generate a standard Node.js Dockerfile"
     command: "autopr generate docker --template node"
-
   - name: "With PM2"
     description: "Generate with PM2 process manager"
     command: "autopr generate docker --template node --variant with_pm2"
