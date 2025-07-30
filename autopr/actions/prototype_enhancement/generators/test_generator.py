@@ -5,7 +5,7 @@ Handles generation of test files and configurations for different testing framew
 """
 
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from .base_generator import BaseGenerator
 
@@ -13,7 +13,7 @@ from .base_generator import BaseGenerator
 class TestGenerator(BaseGenerator):
     """Generates test files and configurations for different testing frameworks."""
 
-    def generate(self, output_dir: str, **kwargs) -> List[str]:
+    def generate(self, output_dir: str, **kwargs) -> list[str]:
         """Generate test files and configurations.
 
         Args:
@@ -55,7 +55,7 @@ class TestGenerator(BaseGenerator):
 
         return generated_files
 
-    def _generate_test_config(self, output_dir: str, variables: Dict[str, Any]) -> List[str]:
+    def _generate_test_config(self, output_dir: str, variables: dict[str, Any]) -> list[str]:
         """Generate test configuration files."""
         generated_files = []
         language = variables.get("language", "")
@@ -87,7 +87,7 @@ class TestGenerator(BaseGenerator):
 
         return generated_files
 
-    def _generate_typescript_tests(self, output_dir: str, variables: Dict[str, Any]) -> List[str]:
+    def _generate_typescript_tests(self, output_dir: str, variables: dict[str, Any]) -> list[str]:
         """Generate TypeScript test files."""
         generated_files = []
         test_framework = variables.get("test_framework", "")
@@ -120,7 +120,7 @@ class TestGenerator(BaseGenerator):
 
         return generated_files
 
-    def _generate_python_tests(self, output_dir: str, variables: Dict[str, Any]) -> List[str]:
+    def _generate_python_tests(self, output_dir: str, variables: dict[str, Any]) -> list[str]:
         """Generate Python test files."""
         generated_files = []
         test_framework = variables.get("test_framework", "pytest")
@@ -151,7 +151,7 @@ class TestGenerator(BaseGenerator):
 
         return generated_files
 
-    def _generate_test_ci_config(self, output_dir: str, variables: Dict[str, Any]) -> List[str]:
+    def _generate_test_ci_config(self, output_dir: str, variables: dict[str, Any]) -> list[str]:
         """Generate CI/CD configuration for running tests."""
         generated_files = []
         ci_provider = variables.get("ci_provider", "github")

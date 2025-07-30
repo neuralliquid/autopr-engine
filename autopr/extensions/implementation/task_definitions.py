@@ -5,7 +5,7 @@ Centralized task definitions and phase configurations for implementation roadmap
 """
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List
+from typing import Any
 
 
 @dataclass
@@ -15,8 +15,8 @@ class Task:
     id: str
     description: str
     status: str = "pending"
-    dependencies: List[str] = field(default_factory=list)
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    dependencies: list[str] = field(default_factory=list)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         # Default factory handles None values automatically
@@ -27,7 +27,7 @@ class TaskRegistry:
     """Registry for all available implementation tasks."""
 
     @staticmethod
-    def get_task_definitions() -> Dict[str, Dict[str, Any]]:
+    def get_task_definitions() -> dict[str, dict[str, Any]]:
         """Get all task definitions with their metadata."""
         return {
             # Immediate Priority Tasks
@@ -201,7 +201,7 @@ class TaskRegistry:
         }
 
     @staticmethod
-    def get_phase_definitions() -> Dict[str, Dict[str, Any]]:
+    def get_phase_definitions() -> dict[str, dict[str, Any]]:
         """Get phase definitions with their task assignments."""
         return {
             "immediate": {
@@ -267,10 +267,10 @@ class TaskRegistry:
         }
 
     @staticmethod
-    def get_task_categories() -> Dict[str, List[str]]:
+    def get_task_categories() -> dict[str, list[str]]:
         """Get tasks organized by category."""
         tasks = TaskRegistry.get_task_definitions()
-        categories: Dict[str, List[str]] = {}
+        categories: dict[str, list[str]] = {}
 
         for task_id, task_info in tasks.items():
             category = task_info.get("category", "uncategorized")
@@ -281,7 +281,7 @@ class TaskRegistry:
         return categories
 
     @staticmethod
-    def get_dependency_graph() -> Dict[str, List[str]]:
+    def get_dependency_graph() -> dict[str, list[str]]:
         """Get the complete dependency graph for all tasks."""
         tasks = TaskRegistry.get_task_definitions()
         return {task_id: task_info.get("dependencies", []) for task_id, task_info in tasks.items()}

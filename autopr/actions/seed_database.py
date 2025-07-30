@@ -1,5 +1,5 @@
 import asyncio
-import os
+import pathlib
 
 import pydantic
 
@@ -25,7 +25,7 @@ class SeedDatabase(Action[Inputs, Outputs]):
     id = "seed_database"
 
     async def run(self, inputs: Inputs) -> Outputs:
-        if not os.path.isfile(inputs.seed_file_path):
+        if not pathlib.Path(inputs.seed_file_path).is_file():
             return Outputs(
                 success=False, log=f"Error: Seed file '{inputs.seed_file_path}' not found."
             )
@@ -46,7 +46,7 @@ class SeedDatabase(Action[Inputs, Outputs]):
 
         success = process.returncode == 0
         if not success:
-            log += f"--- FAILED ---"
+            log += "--- FAILED ---"
 
         return Outputs(success=success, log=log)
 
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     from autopr.tests.utils import run_action_manually
 
     # Create a dummy seed file for testing
-    with open("seed-test.sql", "w") as f:
+    with open("seed-test.sql", "w", encoding="utf-8") as f:
         f.write("INSERT INTO users VALUES (1, 'test');")
     asyncio.run(
         run_action_manually(

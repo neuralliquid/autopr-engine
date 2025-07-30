@@ -5,11 +5,11 @@ This module contains data models for various artifacts used in the AutoPR system
 """
 
 from dataclasses import dataclass
-from enum import Enum
-from typing import Any, Dict, List, Optional
+from enum import StrEnum
+from typing import Any
 
 
-class EnhancementType(str, Enum):
+class EnhancementType(StrEnum):
     """Types of enhancements that can be applied to a prototype."""
 
     PRODUCTION = "production"
@@ -24,7 +24,7 @@ class PrototypeEnhancerInputs:
     platform: str
     enhancement_type: "EnhancementType"
     project_path: str
-    config: Optional[Dict[str, Any]] = None
+    config: dict[str, Any] | None = None
     dry_run: bool = False
 
 
@@ -34,7 +34,7 @@ class PrototypeEnhancerOutputs:
 
     success: bool
     message: str
-    generated_files: List[str]
-    modified_files: List[str]
-    next_steps: List[str]
-    metadata: Optional[Dict[str, Any]] = None
+    generated_files: list[str]
+    modified_files: list[str]
+    next_steps: list[str]
+    metadata: dict[str, Any] | None = None

@@ -8,7 +8,7 @@ from typing import Any, List, Optional, Type
 from .base import Integration
 
 # Import integration classes with error handling
-AxoloIntegration: Optional[Type[Any]] = None
+AxoloIntegration: type[Any] | None = None
 _axolo_available = False
 try:
     from .axolo import AxoloIntegration
@@ -23,20 +23,20 @@ if _axolo_available and AxoloIntegration is not None:
     AVAILABLE_INTEGRATIONS["axolo"] = AxoloIntegration
 
 
-def get_integration(integration_name: str) -> Optional[Type[Integration]]:
+def get_integration(integration_name: str) -> type[Integration] | None:
     """Get an integration class by name"""
     return AVAILABLE_INTEGRATIONS.get(integration_name)
 
 
-def list_integrations() -> List[str]:
+def list_integrations() -> list[str]:
     """List all available integrations"""
     return list(AVAILABLE_INTEGRATIONS.keys())
 
 
 __all__ = [
+    "AVAILABLE_INTEGRATIONS",
     "get_integration",
     "list_integrations",
-    "AVAILABLE_INTEGRATIONS",
 ]
 
 # Conditionally add AxoloIntegration to __all__ if available

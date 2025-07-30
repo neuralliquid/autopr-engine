@@ -7,7 +7,6 @@ Configuration classes for documentation generation.
 """
 
 from dataclasses import dataclass
-from typing import Optional
 
 
 @dataclass
@@ -20,4 +19,4 @@ class DocumentationConfig:
     include_troubleshooting: bool = True
     include_best_practices: bool = True
     generate_index: bool = True
-    custom_css: Optional[str] = None
+    custom_css: str | None = None

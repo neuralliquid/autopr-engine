@@ -6,11 +6,10 @@ Loads and manages platform configurations from JSON files using the new schema.
 
 import json
 import logging
-from datetime import datetime
 from pathlib import Path
-from typing import Any, ClassVar, Dict, List, Optional, Type, TypeVar
+from typing import Any, ClassVar, Optional, Self, TypeVar
 
-from .schema import PlatformConfig, PlatformSource, PlatformStatus, PlatformType
+from .schema import PlatformConfig, PlatformType
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -23,9 +22,9 @@ class PlatformConfigManager:
 
     _instance: ClassVar[Optional["PlatformConfigManager"]] = None
     _configs_loaded: bool = False
-    _platforms: Dict[str, PlatformConfig] = {}
-    _platforms_by_category: Dict[str, List[str]] = {}
-    _platforms_by_type: Dict[PlatformType, List[str]] = {}
+    _platforms: dict[str, PlatformConfig] = {}
+    _platforms_by_category: dict[str, list[str]] = {}
+    _platforms_by_type: dict[PlatformType, list[str]] = {}
 
     # Default configuration directories
     _BASE_CONFIG_DIR = Path(__file__).parent / "configs"
@@ -35,10 +34,10 @@ class PlatformConfigManager:
         "cloud": "cloud_platforms.json",
     }
 
-    def __new__(cls: Type[T]) -> T:
+    def __new__(cls) -> Self:
         """Singleton pattern implementation."""
         if cls._instance is None:
-            cls._instance = super(PlatformConfigManager, cls).__new__(cls)
+            cls._instance = super().__new__(cls)
             cls._instance._initialize()
         return cls._instance  # type: ignore[return-value]
 
@@ -51,13 +50,13 @@ class PlatformConfigManager:
         self._platforms = {}
         self._platforms_by_category = {}
         self._platforms_by_type = {}
-        self._platforms_by_id: Dict[str, PlatformConfig] = {}
+        self._platforms_by_id: dict[str, PlatformConfig] = {}
         self._load_config_files()
         self._index_platforms()
         self._configs_loaded = True
 
     @classmethod
-    def _load_platform_file(cls, file_path: Path) -> Optional[PlatformConfig]:
+    def _load_platform_file(cls, file_path: Path) -> PlatformConfig | None:
         """
         Load a single platform configuration file.
 
@@ -72,14 +71,14 @@ class PlatformConfigManager:
                 logger.warning(f"Platform config file not found: {file_path}")
                 return None
 
-            platform_id = file_path.stem
+            file_path.stem
             return PlatformConfig.from_file(file_path)
 
-        except (json.JSONDecodeError, IOError, ValueError) as e:
+        except (OSError, json.JSONDecodeError, ValueError) as e:
             logger.error(f"Error loading platform config {file_path}: {e}", exc_info=True)
             return None
 
-    def _load_platforms_from_category(self, category: str) -> Dict[str, PlatformConfig]:
+    def _load_platforms_from_category(self, category: str) -> dict[str, PlatformConfig]:
         """
         Load all platforms from a category directory.
 
@@ -124,7 +123,7 @@ class PlatformConfigManager:
                     logger.warning(f"Config file not found: {config_path}")
                     continue
 
-                with open(config_path, "r", encoding="utf-8") as f:
+                with open(config_path, encoding="utf-8") as f:
                     config_data = json.load(f)
 
                 # Validate the config file structure
@@ -150,7 +149,7 @@ class PlatformConfigManager:
                             logger.warning(f"Platform config not found: {platform_config_path}")
                             continue
 
-                        with open(platform_config_path, "r", encoding="utf-8") as pf:
+                        with open(platform_config_path, encoding="utf-8") as pf:
                             platform_data = json.load(pf)
 
                         # Create and store the platform config
@@ -168,11 +167,11 @@ class PlatformConfigManager:
                         self._platforms_by_type[platform_type].append(platform_id)
 
                     except Exception as e:
-                        logger.error(f"Error loading platform config {platform_id}: {str(e)}")
+                        logger.exception(f"Error loading platform config {platform_id}: {e!s}")
                         continue
 
             except Exception as e:
-                logger.error(f"Error loading config file {filename}: {str(e)}")
+                logger.exception(f"Error loading config file {filename}: {e!s}")
                 continue
 
     def _index_platforms(self) -> None:
@@ -201,7 +200,7 @@ class PlatformConfigManager:
                 key=lambda x: self._platforms[x].priority, reverse=True
             )
 
-    def get_platform(self, platform_id: str) -> Optional[Dict[str, Any]]:
+    def get_platform(self, platform_id: str) -> dict[str, Any] | None:
         """Get a platform configuration by ID.
 
         Args:
@@ -213,7 +212,7 @@ class PlatformConfigManager:
         platform = self._platforms_by_id.get(platform_id)
         return platform.to_dict() if platform else None
 
-    def get_platforms_by_category(self, category: str) -> List[Dict[str, Any]]:
+    def get_platforms_by_category(self, category: str) -> list[dict[str, Any]]:
         """Get all platforms in a specific category.
 
         Args:
@@ -226,7 +225,7 @@ class PlatformConfigManager:
             self._platforms[pid].to_dict() for pid in self._platforms_by_category.get(category, [])
         ]
 
-    def get_platforms_by_type(self, platform_type: str) -> List[Dict[str, Any]]:
+    def get_platforms_by_type(self, platform_type: str) -> list[dict[str, Any]]:
         """Get all platforms of a specific type.
 
         Args:
@@ -235,10 +234,10 @@ class PlatformConfigManager:
         Returns:
             A list of platform configurations of the specified type
         """
-        platform_ids: List[str] = self._platforms_by_type.get(platform_type, [])
+        platform_ids: list[str] = self._platforms_by_type.get(platform_type, [])
         return [self._platforms[pid].to_dict() for pid in platform_ids]
 
-    def get_all_platforms(self) -> Dict[str, Dict[str, Any]]:
+    def get_all_platforms(self) -> dict[str, dict[str, Any]]:
         """Get all platform configurations.
 
         Returns:
@@ -246,7 +245,7 @@ class PlatformConfigManager:
         """
         return {pid: platform.to_dict() for pid, platform in self._platforms.items()}
 
-    def get_platforms_with_detection_rules(self) -> Dict[str, Dict[str, Any]]:
+    def get_platforms_with_detection_rules(self) -> dict[str, dict[str, Any]]:
         """Get platforms that have detection rules configured.
 
         This is useful for the detector to only process platforms
@@ -261,7 +260,7 @@ class PlatformConfigManager:
             if hasattr(platform, "detection") and platform.detection
         }
 
-    def get_active_platforms(self) -> Dict[str, Dict[str, Any]]:
+    def get_active_platforms(self) -> dict[str, dict[str, Any]]:
         """
         Get all active platform configurations.
 
@@ -272,7 +271,7 @@ class PlatformConfigManager:
             self._load_config_files()
         return {pid: p.to_dict() for pid, p in self._platforms.items() if p.is_active}
 
-    def find_platforms(self, **filters: Any) -> Dict[str, PlatformConfig]:
+    def find_platforms(self, **filters: Any) -> dict[str, PlatformConfig]:
         """
         Find platforms matching the given filters.
 
@@ -302,7 +301,7 @@ class PlatformConfigManager:
 
         return result
 
-    def get_platform_categories(self) -> Dict[str, List[str]]:
+    def get_platform_categories(self) -> dict[str, list[str]]:
         """
         Get platform categories with their associated platform IDs.
 

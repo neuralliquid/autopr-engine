@@ -1,6 +1,3 @@
-import subprocess
-from typing import Optional
-
 import pydantic
 
 from autopr.actions.base import Action
@@ -13,7 +10,7 @@ class Inputs(pydantic.BaseModel):
 class Outputs(pydantic.BaseModel):
     success: bool
     log: str
-    new_version: Optional[str] = None
+    new_version: str | None = None
 
 
 class UpdateDependency(Action[Inputs, Outputs]):
@@ -24,7 +21,6 @@ class UpdateDependency(Action[Inputs, Outputs]):
     id = "update_dependency"
 
     async def run(self, inputs: Inputs) -> Outputs:
-        print(f"--- Updating dependency: {inputs.package_name} ---")
         # In a real implementation, you would run 'pnpm add <package>@latest' and create a branch
         # For simulation, just print and return success
         return Outputs(

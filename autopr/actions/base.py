@@ -7,7 +7,7 @@ Base classes and interfaces for action implementation.
 import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Dict, Generic, List, Optional, TypeVar
+from typing import Any, TypeVar
 
 logger = logging.getLogger(__name__)
 
@@ -24,12 +24,12 @@ class ActionInputs:
     Actions should define their own input classes that inherit from this.
     """
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert inputs to dictionary."""
         return self.__dict__
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "ActionInputs":
+    def from_dict(cls, data: dict[str, Any]) -> "ActionInputs":
         """Create inputs from dictionary."""
         return cls(**data)
 
@@ -44,18 +44,18 @@ class ActionOutputs:
 
     success: bool = True
     message: str = ""
-    data: Optional[Dict[str, Any]] = None
+    data: dict[str, Any] | None = None
 
     def __post_init__(self) -> None:
         if self.data is None:
             self.data = {}
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert outputs to dictionary."""
         return {"success": self.success, "message": self.message, "data": self.data}
 
 
-class Action(ABC, Generic[TInputs, TOutputs]):
+class Action[TInputs, TOutputs](ABC):
     """
     Base class for all AutoPR actions.
 
@@ -75,11 +75,11 @@ class Action(ABC, Generic[TInputs, TOutputs]):
         self.name = name
         self.description = description
         self.version = version
-        self.required_permissions: List[str] = []
-        self.supported_platforms: List[str] = ["github"]
+        self.required_permissions: list[str] = []
+        self.supported_platforms: list[str] = ["github"]
 
     @abstractmethod
-    async def execute(self, inputs: TInputs, context: Dict[str, Any]) -> TOutputs:
+    async def execute(self, inputs: TInputs, context: dict[str, Any]) -> TOutputs:
         """
         Execute the action with given inputs.
 
@@ -90,7 +90,6 @@ class Action(ABC, Generic[TInputs, TOutputs]):
         Returns:
             Action execution result
         """
-        pass
 
     async def validate_inputs(self, inputs: TInputs) -> None:
         """
@@ -103,7 +102,6 @@ class Action(ABC, Generic[TInputs, TOutputs]):
             ValidationError: If inputs are invalid
         """
         # Default implementation - can be overridden
-        pass
 
     async def validate_outputs(self, outputs: TOutputs) -> None:
         """
@@ -116,7 +114,6 @@ class Action(ABC, Generic[TInputs, TOutputs]):
             ValidationError: If outputs are invalid
         """
         # Default implementation - can be overridden
-        pass
 
     async def run(self, inputs: TInputs) -> TOutputs:
         """
@@ -131,7 +128,7 @@ class Action(ABC, Generic[TInputs, TOutputs]):
         # Default implementation calls execute with empty context
         return await self.execute(inputs, {})
 
-    def get_input_schema(self) -> Dict[str, Any]:
+    def get_input_schema(self) -> dict[str, Any]:
         """
         Get JSON schema for action inputs.
 
@@ -141,7 +138,7 @@ class Action(ABC, Generic[TInputs, TOutputs]):
         # Default implementation - can be overridden
         return {"type": "object", "properties": {}, "required": []}
 
-    def get_output_schema(self) -> Dict[str, Any]:
+    def get_output_schema(self) -> dict[str, Any]:
         """
         Get JSON schema for action outputs.
 
@@ -183,7 +180,7 @@ class Action(ABC, Generic[TInputs, TOutputs]):
         """
         return permission in self.required_permissions
 
-    def get_metadata(self) -> Dict[str, Any]:
+    def get_metadata(self) -> dict[str, Any]:
         """
         Get action metadata.
 
@@ -219,7 +216,7 @@ class GitHubAction(Action):
         self.supported_platforms = ["github"]
         self.required_permissions.extend(["repo", "pull_requests"])
 
-    def get_github_context(self, context: Dict[str, Any]) -> Dict[str, Any]:
+    def get_github_context(self, context: dict[str, Any]) -> dict[str, Any]:
         """
         Extract GitHub-specific context information.
 
@@ -250,7 +247,7 @@ class LLMAction(Action):
         super().__init__(name, description, version)
         self.required_permissions.append("llm_access")
 
-    def get_llm_context(self, context: Dict[str, Any]) -> Dict[str, Any]:
+    def get_llm_context(self, context: dict[str, Any]) -> dict[str, Any]:
         """
         Extract LLM-specific context information.
 

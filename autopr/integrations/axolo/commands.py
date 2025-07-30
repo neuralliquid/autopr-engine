@@ -1,14 +1,11 @@
-"""Slack command handlers for Axolo integration."""
-
 import logging
 import re
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any
 
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
-    from .client import AxoloIntegration
     from .messaging import AxoloMessaging
     from .models import AxoloPRChannel
 
@@ -17,20 +14,20 @@ class AxoloCommandHandler:
     """Handles Slack command processing for Axolo integration."""
 
     def __init__(
-        self, messaging: "AxoloMessaging", active_channels: Dict[str, "AxoloPRChannel"]
+        self, messaging: "AxoloMessaging", active_channels: dict[str, "AxoloPRChannel"]
     ) -> None:
         self.messaging = messaging
         self.active_channels = active_channels
 
-    async def handle_analyze_command(self, command_data: Dict[str, Any]) -> None:
+    async def handle_analyze_command(self, command_data: dict[str, Any]) -> None:
         """Handle /autopr-analyze command"""
 
         channel_id = command_data["channel_id"]
-        user_id = command_data["user_id"]
+        command_data["user_id"]
         text = command_data.get("text", "")
 
         # Extract PR URL if provided, otherwise use current channel's PR
-        pr_url = text.strip() if text.strip() else None
+        pr_url = text.strip() or None
 
         if not pr_url:
             # Try to get PR from current channel context
@@ -58,7 +55,7 @@ class AxoloCommandHandler:
 
         try:
             # Run analysis
-            analysis_result = await analyzer.analyze_pr_review(
+            await analyzer.analyze_pr_review(
                 {
                     "pr_number": pr_data["pr_number"],
                     "repository": pr_data["repository"],
@@ -74,19 +71,17 @@ class AxoloCommandHandler:
                 from slack_sdk.errors import SlackApiError  # type: ignore[import-not-found]
 
                 if isinstance(e, SlackApiError):
-                    logger.error(f"Slack API error: {str(e)}")
-                    await self.messaging.post_error_response(
-                        channel_id, f"Slack API error: {str(e)}"
-                    )
+                    logger.exception(f"Slack API error: {e!s}")
+                    await self.messaging.post_error_response(channel_id, f"Slack API error: {e!s}")
             except ImportError:
-                logger.error(f"Analysis command failed: {str(e)}")
-                await self.messaging.post_error_response(channel_id, f"Analysis failed: {str(e)}")
+                logger.exception(f"Analysis command failed: {e!s}")
+                await self.messaging.post_error_response(channel_id, f"Analysis failed: {e!s}")
 
-    async def handle_status_command(self, command_data: Dict[str, Any]) -> None:
+    async def handle_status_command(self, command_data: dict[str, Any]) -> None:
         """Handle /autopr-status command"""
 
         channel_id = command_data["channel_id"]
-        user_id = command_data["user_id"]
+        command_data["user_id"]
 
         # Get PR from channel context
         pr_data = await self._get_pr_from_channel_context(channel_id)
@@ -114,10 +109,7 @@ class AxoloCommandHandler:
                 {
                     "type": "section",
                     "fields": [
-                        {
-                            "type": "mrkdwn",
-                            "text": f"*Status:*\n{status.get('status', 'Unknown')}",
-                        },
+                        {"type": "mrkdwn", "text": f"*Status:*\n{status.get('status', 'Unknown')}"},
                         {
                             "type": "mrkdwn",
                             "text": f"*Last Analyzed:*\n{status.get('last_analyzed', 'Never')}",
@@ -137,17 +129,17 @@ class AxoloCommandHandler:
 
         await self.messaging.post_slack_message(status_message)
 
-    async def handle_assign_ai_command(self, command_data: Dict[str, Any]) -> None:
+    async def handle_assign_ai_command(self, command_data: dict[str, Any]) -> None:
         """Handle /autopr-assign-ai command"""
 
         channel_id = command_data["channel_id"]
-        user_id = command_data["user_id"]
+        command_data["user_id"]
         text = command_data.get("text", "")
 
         # Parse AI tool from command text
         ai_tool = text.strip().lower() if text.strip() else "autopr"
 
-        if ai_tool not in ["autopr", "copilot", "coderabbit"]:
+        if ai_tool not in {"autopr", "copilot", "coderabbit"}:
             await self.messaging.post_error_response(
                 channel_id,
                 f"Unknown AI tool: {ai_tool}. Available tools: autopr, copilot, coderabbit",
@@ -170,10 +162,10 @@ class AxoloCommandHandler:
             channel_id, f"✅ {ai_tool.title()} assigned to PR #{pr_data['pr_number']}"
         )
 
-    async def _get_pr_from_channel_context(self, channel_id: str) -> Optional[Dict[str, Any]]:
+    async def _get_pr_from_channel_context(self, channel_id: str) -> dict[str, Any] | None:
         """Get PR data from channel context."""
         # Look up the PR associated with this channel
-        for pr_key, channel in self.active_channels.items():
+        for channel in self.active_channels.values():
             if channel.channel_id == channel_id:
                 return {
                     "pr_number": channel.pr_number,
@@ -182,7 +174,7 @@ class AxoloCommandHandler:
                 }
         return None
 
-    async def _parse_pr_from_url(self, pr_url: str) -> Optional[Dict[str, Any]]:
+    async def _parse_pr_from_url(self, pr_url: str) -> dict[str, Any] | None:
         """Parse PR data from GitHub URL."""
         # Match GitHub PR URL pattern
         pattern = r"https://github\.com/([^/]+)/([^/]+)/pull/(\d+)"
@@ -193,7 +185,7 @@ class AxoloCommandHandler:
             return {"pr_number": int(pr_number), "repository": f"{owner}/{repo}", "url": pr_url}
         return None
 
-    async def _gather_review_data(self, pr_number: int) -> Dict[str, Any]:
+    async def _gather_review_data(self, pr_number: int) -> dict[str, Any]:
         """Gather review data for PR analysis."""
         # This would typically fetch data from GitHub API
         return {
@@ -204,7 +196,7 @@ class AxoloCommandHandler:
             "commits": [],
         }
 
-    async def _get_pr_analysis_status(self, pr_number: int) -> Dict[str, Any]:
+    async def _get_pr_analysis_status(self, pr_number: int) -> dict[str, Any]:
         """Get current analysis status for a PR."""
         # This would check the status of ongoing or completed analyses
         return {

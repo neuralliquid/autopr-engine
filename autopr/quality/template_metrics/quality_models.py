@@ -12,7 +12,6 @@ utility functions.
 
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Any, Dict, List, Optional
 
 from templates.discovery.template_validators import ValidationIssue, ValidationSeverity
 
@@ -22,15 +21,15 @@ class QualityMetrics:
     """Comprehensive quality metrics for a template."""
 
     overall_score: float = 0.0
-    category_scores: Dict[str, float] = field(default_factory=dict)
-    issues: List[ValidationIssue] = field(default_factory=list)
+    category_scores: dict[str, float] = field(default_factory=dict)
+    issues: list[ValidationIssue] = field(default_factory=list)
     total_checks: int = 0
     passed_checks: int = 0
     warnings_count: int = 0
     errors_count: int = 0
     info_count: int = 0
     template_path: str = ""
-    analysis_timestamp: Optional[datetime] = None
+    analysis_timestamp: datetime | None = None
 
     def __post_init__(self) -> None:
         """Calculate derived metrics after initialization."""
@@ -63,25 +62,24 @@ class QualityMetrics:
         """Get quality grade based on overall score."""
         if self.overall_score >= 90:
             return "A"
-        elif self.overall_score >= 80:
+        if self.overall_score >= 80:
             return "B"
-        elif self.overall_score >= 70:
+        if self.overall_score >= 70:
             return "C"
-        elif self.overall_score >= 60:
+        if self.overall_score >= 60:
             return "D"
-        else:
-            return "F"
+        return "F"
 
     @property
     def has_critical_issues(self) -> bool:
         """Check if template has critical issues (errors)."""
         return self.errors_count > 0
 
-    def get_issues_by_category(self, category: str) -> List[ValidationIssue]:
+    def get_issues_by_category(self, category: str) -> list[ValidationIssue]:
         """Get issues for a specific category."""
         return [issue for issue in self.issues if issue.category == category]
 
-    def get_issues_by_severity(self, severity: ValidationSeverity) -> List[ValidationIssue]:
+    def get_issues_by_severity(self, severity: ValidationSeverity) -> list[ValidationIssue]:
         """Get issues by severity level."""
         return [issue for issue in self.issues if issue.severity == severity]
 

@@ -7,7 +7,7 @@ insights, metrics, and recommendations.
 
 import logging
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -22,19 +22,19 @@ class PRReviewAnalysis:
     approval_count: int
     requested_changes_count: int
     review_comment_count: int
-    review_commenters: List[str]
-    review_duration_hours: Optional[float] = None
-    sentiment_score: Optional[float] = None
-    risk_score: Optional[float] = None
-    summary: Optional[str] = None
-    recommendations: Optional[List[str]] = None
-    metadata: Optional[Dict[str, Any]] = None
+    review_commenters: list[str]
+    review_duration_hours: float | None = None
+    sentiment_score: float | None = None
+    risk_score: float | None = None
+    summary: str | None = None
+    recommendations: list[str] | None = None
+    metadata: dict[str, Any] | None = None
 
 
 class PRReviewAnalyzer:
     """Analyzes pull request reviews to generate insights and metrics."""
 
-    def __init__(self, config: Optional[Dict[str, Any]] = None):
+    def __init__(self, config: dict[str, Any] | None = None):
         """Initialize the PR review analyzer.
 
         Args:
@@ -46,9 +46,9 @@ class PRReviewAnalyzer:
     def analyze_reviews(
         self,
         pr_number: int,
-        reviews_data: List[Dict[str, Any]],
-        comments_data: List[Dict[str, Any]],
-        pr_data: Optional[Dict[str, Any]] = None,
+        reviews_data: list[dict[str, Any]],
+        comments_data: list[dict[str, Any]],
+        pr_data: dict[str, Any] | None = None,
     ) -> PRReviewAnalysis:
         """Analyze PR reviews and generate insights.
 
@@ -91,7 +91,7 @@ class PRReviewAnalyzer:
         return analysis
 
     def _generate_summary(
-        self, analysis: PRReviewAnalysis, pr_data: Optional[Dict[str, Any]] = None
+        self, analysis: PRReviewAnalysis, pr_data: dict[str, Any] | None = None
     ) -> str:
         """Generate a summary of the PR review analysis."""
         summary_parts = [
@@ -113,7 +113,7 @@ class PRReviewAnalyzer:
 
         return " ".join(summary_parts)
 
-    def _generate_recommendations(self, analysis: PRReviewAnalysis) -> List[str]:
+    def _generate_recommendations(self, analysis: PRReviewAnalysis) -> list[str]:
         """Generate recommendations based on the PR review analysis."""
         recommendations = []
 

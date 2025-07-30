@@ -3,15 +3,14 @@ Report Generator for Implementation Roadmap
 Handles analytics, reporting, and progress visualization
 """
 
-import json
-from dataclasses import asdict
+import operator
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
-from .phase_manager import PhaseExecution, PhaseManager
+from .phase_manager import PhaseManager
 from .task_definitions import ImplementationPhases, TaskRegistry
-from .task_executor import TaskExecution, TaskExecutor
+from .task_executor import TaskExecutor
 
 
 class ReportGenerator:
@@ -25,7 +24,7 @@ class ReportGenerator:
         self.phase_manager = phase_manager
         self.phases = ImplementationPhases()
 
-    def generate_executive_summary(self) -> Dict[str, Any]:
+    def generate_executive_summary(self) -> dict[str, Any]:
         """Generate high-level executive summary"""
         overall_progress = self.phase_manager.get_overall_progress()
 
@@ -58,7 +57,7 @@ class ReportGenerator:
             "next_milestones": self._get_next_milestones(),
         }
 
-    def generate_detailed_report(self) -> Dict[str, Any]:
+    def generate_detailed_report(self) -> dict[str, Any]:
         """Generate comprehensive detailed report"""
         executive_summary = self.generate_executive_summary()
         phase_analysis = self._analyze_phases()
@@ -79,7 +78,7 @@ class ReportGenerator:
             "resource_utilization": self._analyze_resource_utilization(),
         }
 
-    def generate_html_report(self, output_path: Optional[str] = None) -> str:
+    def generate_html_report(self, output_path: str | None = None) -> str:
         """Generate HTML report for stakeholder viewing"""
         report_data = self.generate_detailed_report()
 
@@ -226,7 +225,7 @@ class ReportGenerator:
 
         return formatted_html
 
-    def _calculate_health_scores(self) -> Dict[str, float]:
+    def _calculate_health_scores(self) -> dict[str, float]:
         """Calculate health scores for different aspects"""
         overall_progress = self.phase_manager.get_overall_progress()
 
@@ -255,7 +254,7 @@ class ReportGenerator:
             "quality": round(quality_health, 1),
         }
 
-    def _estimate_completion_timeline(self) -> Dict[str, Any]:
+    def _estimate_completion_timeline(self) -> dict[str, Any]:
         """Estimate completion timeline based on current progress"""
         overall_progress = self.phase_manager.get_overall_progress()
 
@@ -339,7 +338,7 @@ class ReportGenerator:
         # Low risk (default)
         return "Low"
 
-    def _get_next_milestones(self) -> List[Dict[str, Any]]:
+    def _get_next_milestones(self) -> list[dict[str, Any]]:
         """Get upcoming milestones and key deliverables"""
         milestones = []
 
@@ -369,7 +368,7 @@ class ReportGenerator:
 
         return milestones[:5]  # Return top 5 milestones
 
-    def _estimate_milestone_date(self, phase_name: str, milestone_type: str) -> Optional[str]:
+    def _estimate_milestone_date(self, phase_name: str, milestone_type: str) -> str | None:
         """Estimate date for a specific milestone"""
         velocity = self._calculate_velocity()
         if velocity <= 0:
@@ -382,7 +381,7 @@ class ReportGenerator:
         if milestone_type == "start":
             # Assume immediate start for not-started phases
             return datetime.now().isoformat()
-        elif milestone_type == "completion":
+        if milestone_type == "completion":
             phase_progress = self.phase_manager.get_phase_progress(phase_name)
             remaining_tasks = phase_progress["total_tasks"] - phase_progress["completed_tasks"]
             hours_to_completion = remaining_tasks / velocity
@@ -391,7 +390,7 @@ class ReportGenerator:
 
         return None
 
-    def _analyze_phases(self) -> Dict[str, Any]:
+    def _analyze_phases(self) -> dict[str, Any]:
         """Analyze each phase in detail"""
         phase_analysis = {}
 
@@ -449,7 +448,7 @@ class ReportGenerator:
 
         return phase_analysis
 
-    def _analyze_tasks(self) -> Dict[str, Any]:
+    def _analyze_tasks(self) -> dict[str, Any]:
         """Analyze task-level performance and patterns"""
         all_executions = list(self.task_executor.executions.values())
 
@@ -483,7 +482,7 @@ class ReportGenerator:
         for stats in category_stats.values():
             if stats["total"] > 0:
                 stats["success_rate"] = stats["success"] / stats["total"]
-                stats["avg_duration"] = stats["avg_duration"] / stats["total"]
+                stats["avg_duration"] /= stats["total"]
 
         # Complexity vs success rate correlation
         complexity_analysis = {}
@@ -512,7 +511,7 @@ class ReportGenerator:
                     for e in all_executions
                     if e.duration
                 ],
-                key=lambda x: x["duration"],
+                key=operator.itemgetter("duration"),
                 reverse=True,
             )[:5],
             "failed_tasks_analysis": [
@@ -522,7 +521,7 @@ class ReportGenerator:
             ],
         }
 
-    def _calculate_performance_metrics(self) -> Dict[str, Any]:
+    def _calculate_performance_metrics(self) -> dict[str, Any]:
         """Calculate detailed performance metrics"""
         return {
             "velocity_metrics": {
@@ -553,7 +552,7 @@ class ReportGenerator:
         )
         return failed_executions / total_executions
 
-    def _generate_recommendations(self) -> List[str]:
+    def _generate_recommendations(self) -> list[str]:
         """Generate actionable recommendations based on analysis"""
         recommendations = []
 
@@ -597,7 +596,7 @@ class ReportGenerator:
 
         return recommendations
 
-    def _analyze_timeline(self) -> Dict[str, Any]:
+    def _analyze_timeline(self) -> dict[str, Any]:
         """Analyze timeline and scheduling aspects"""
         timeline_data = self._estimate_completion_timeline()
 
@@ -612,7 +611,7 @@ class ReportGenerator:
             "critical_path": self._identify_critical_path(),
         }
 
-    def _identify_critical_path(self) -> List[str]:
+    def _identify_critical_path(self) -> list[str]:
         """Identify critical path tasks that could delay completion"""
         # Simplified critical path - tasks with dependencies
         critical_tasks = []
@@ -627,7 +626,7 @@ class ReportGenerator:
 
         return critical_tasks[:10]  # Top 10 critical tasks
 
-    def _analyze_resource_utilization(self) -> Dict[str, Any]:
+    def _analyze_resource_utilization(self) -> dict[str, Any]:
         """Analyze resource utilization patterns"""
         return {
             "task_distribution": self._analyze_task_distribution(),
@@ -636,7 +635,7 @@ class ReportGenerator:
             "optimization_opportunities": self._identify_optimization_opportunities(),
         }
 
-    def _analyze_task_distribution(self) -> Dict[str, int]:
+    def _analyze_task_distribution(self) -> dict[str, int]:
         """Analyze distribution of tasks across categories"""
         distribution = {}
 
@@ -648,7 +647,7 @@ class ReportGenerator:
 
         return distribution
 
-    def _analyze_time_allocation(self) -> Dict[str, float]:
+    def _analyze_time_allocation(self) -> dict[str, float]:
         """Analyze time allocation across different task types"""
         time_allocation = {}
 
@@ -660,7 +659,7 @@ class ReportGenerator:
 
         return time_allocation
 
-    def _identify_bottlenecks(self) -> List[str]:
+    def _identify_bottlenecks(self) -> list[str]:
         """Identify potential bottlenecks in the implementation"""
         bottlenecks = []
 
@@ -673,12 +672,14 @@ class ReportGenerator:
         # Failed critical tasks
         immediate_phase = self.phase_manager.phase_executions.get("immediate")
         if immediate_phase:
-            for failed_task in immediate_phase.failed_tasks:
-                bottlenecks.append(f"Critical task '{failed_task}' has failed")
+            bottlenecks.extend(
+                f"Critical task '{failed_task}' has failed"
+                for failed_task in immediate_phase.failed_tasks
+            )
 
         return bottlenecks
 
-    def _identify_optimization_opportunities(self) -> List[str]:
+    def _identify_optimization_opportunities(self) -> list[str]:
         """Identify opportunities for optimization"""
         opportunities = []
 

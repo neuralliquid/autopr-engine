@@ -4,13 +4,11 @@ AutoPR Engine Exceptions
 Custom exception classes for the AutoPR Engine.
 """
 
-from typing import Optional
-
 
 class AutoPRException(Exception):
     """Base exception class for all AutoPR Engine errors."""
 
-    def __init__(self, message: str, error_code: Optional[str] = None):
+    def __init__(self, message: str, error_code: str | None = None):
         super().__init__(message)
         self.message = message
         self.error_code = error_code
@@ -31,7 +29,7 @@ class ConfigurationError(AutoPRException):
 class IntegrationError(AutoPRException):
     """Raised when there's an issue with external integrations."""
 
-    def __init__(self, message: str, integration_name: Optional[str] = None):
+    def __init__(self, message: str, integration_name: str | None = None):
         if integration_name:
             message = f"Integration '{integration_name}': {message}"
         super().__init__(message, "INTEGRATION_ERROR")
@@ -41,7 +39,7 @@ class IntegrationError(AutoPRException):
 class WorkflowError(AutoPRException):
     """Raised when there's an issue with workflow execution."""
 
-    def __init__(self, message: str, workflow_name: Optional[str] = None):
+    def __init__(self, message: str, workflow_name: str | None = None):
         if workflow_name:
             message = f"Workflow '{workflow_name}': {message}"
         super().__init__(message, "WORKFLOW_ERROR")
@@ -51,7 +49,7 @@ class WorkflowError(AutoPRException):
 class ActionError(AutoPRException):
     """Raised when there's an issue with action execution."""
 
-    def __init__(self, message: str, action_name: Optional[str] = None):
+    def __init__(self, message: str, action_name: str | None = None):
         if action_name:
             message = f"Action '{action_name}': {message}"
         super().__init__(message, "ACTION_ERROR")
@@ -61,7 +59,7 @@ class ActionError(AutoPRException):
 class LLMProviderError(AutoPRException):
     """Raised when there's an issue with LLM providers."""
 
-    def __init__(self, message: str, provider_name: Optional[str] = None):
+    def __init__(self, message: str, provider_name: str | None = None):
         if provider_name:
             message = f"LLM Provider '{provider_name}': {message}"
         super().__init__(message, "LLM_ERROR")
@@ -71,7 +69,7 @@ class LLMProviderError(AutoPRException):
 class ValidationError(AutoPRException):
     """Raised when data validation fails."""
 
-    def __init__(self, message: str, field_name: Optional[str] = None):
+    def __init__(self, message: str, field_name: str | None = None):
         if field_name:
             message = f"Validation error for '{field_name}': {message}"
         super().__init__(message, "VALIDATION_ERROR")
@@ -81,7 +79,7 @@ class ValidationError(AutoPRException):
 class RateLimitError(AutoPRException):
     """Raised when rate limits are exceeded."""
 
-    def __init__(self, message: str, retry_after: Optional[int] = None):
+    def __init__(self, message: str, retry_after: int | None = None):
         super().__init__(message, "RATE_LIMIT_ERROR")
         self.retry_after = retry_after
 

@@ -1,8 +1,9 @@
 """Core markdown linter implementation."""
 
+import operator
 import re
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Pattern, Set, Tuple, Union
 
 from models import FileReport, IssueSeverity, LintIssue
 
@@ -44,12 +45,12 @@ class MarkdownLinter:
     )
     CLOSED_ATX_HEADING_PATTERN = re.compile(r"^#+\s+.*\s+#+\s*$")
 
-    def __init__(self, config: Optional[dict] = None):
+    def __init__(self, config: dict | None = None):
         """Initialize the linter with the given configuration."""
         self.config = {**self.DEFAULT_CONFIG, **(config or {})}
-        self.reports: Dict[Path, FileReport] = {}
+        self.reports: dict[Path, FileReport] = {}
 
-    def check_file(self, file_path: Union[str, Path]) -> FileReport:
+    def check_file(self, file_path: str | Path) -> FileReport:
         """Check a single markdown file for issues."""
         file_path = Path(file_path)
         report = FileReport(file_path)
@@ -64,7 +65,6 @@ class MarkdownLinter:
             in_code_block = False
             in_html_comment = False
             in_list = False
-            list_indent = 0
             prev_line = ""
             prev_line_blank = True  # Start as if previous line was blank
             current_list_type = None  # 'ordered' or 'unordered'
@@ -99,12 +99,9 @@ class MarkdownLinter:
                             self._check_fenced_code_block_start(
                                 report, i, lines, prev_line_blank, code_block_match
                             )
-                    else:
-                        # Ending a code block
-                        if self.config["check_fenced_code_blocks"]:
-                            self._check_fenced_code_block_end(
-                                report, i, lines, code_block_start_line
-                            )
+                    # Ending a code block
+                    elif self.config["check_fenced_code_blocks"]:
+                        self._check_fenced_code_block_end(report, i, lines, code_block_start_line)
 
                     in_code_block = not in_code_block
                     prev_line = line
@@ -216,7 +213,7 @@ class MarkdownLinter:
 
         except Exception as e:
             self._add_issue(
-                report, 0, f"Error processing file: {str(e)}", "ERROR", severity=IssueSeverity.ERROR
+                report, 0, f"Error processing file: {e!s}", "ERROR", severity=IssueSeverity.ERROR
             )
 
         return report
@@ -235,17 +232,12 @@ class MarkdownLinter:
                 fix=fix_func,
             )
 
-    def _get_line_length_fix(self, line: str, max_length: int) -> Optional[Callable[[str], str]]:
+    def _get_line_length_fix(self, line: str, max_length: int) -> Callable[[str], str] | None:
         """Determine if and how to fix a long line."""
         stripped = line.strip()
 
         # Don't auto-fix code blocks, tables, or very complex structures
-        if (
-            stripped.startswith("```")
-            or stripped.startswith("|")
-            or stripped.startswith("    ")
-            or "---" in stripped
-        ):
+        if stripped.startswith(("```", "|", "    ")) or "---" in stripped:
             return None
 
         # Don't auto-fix headings or very short overruns (< 10 chars)
@@ -302,7 +294,7 @@ class MarkdownLinter:
             self._add_issue(
                 report,
                 line_num,
-                f"Missing space after heading marker",
+                "Missing space after heading marker",
                 "MD018",
                 fix=lambda l: f"{'#' * level} {l.lstrip('#').lstrip()}",
             )
@@ -330,7 +322,7 @@ class MarkdownLinter:
             )
 
     def _check_heading_spacing(
-        self, report: FileReport, line_num: int, lines: List[str], prev_line_blank: bool
+        self, report: FileReport, line_num: int, lines: list[str], prev_line_blank: bool
     ) -> None:
         """Check MD022: Headings should be surrounded by blank lines."""
         # Check if previous line is blank (unless it's the first line)
@@ -372,7 +364,7 @@ class MarkdownLinter:
             )
 
     def _check_list_end_spacing(
-        self, report: FileReport, last_list_line: int, lines: List[str], list_start_line: int
+        self, report: FileReport, last_list_line: int, lines: list[str], list_start_line: int
     ) -> None:
         """Check MD032: Lists should be surrounded by blank lines (end)."""
         # Check if there's a line after the list and it's not blank
@@ -407,7 +399,8 @@ class MarkdownLinter:
                 return line_content
 
             # Create a closure to capture the expected number
-            fix_func = lambda content: fix_ordered_number(content, expected_number)
+            def fix_func(content):
+                return fix_ordered_number(content, expected_number)
 
             self._add_issue(
                 report,
@@ -422,7 +415,7 @@ class MarkdownLinter:
         self,
         report: FileReport,
         line_num: int,
-        lines: List[str],
+        lines: list[str],
         prev_line_blank: bool,
         match: re.Match,
     ) -> None:
@@ -455,7 +448,7 @@ class MarkdownLinter:
             )
 
     def _check_fenced_code_block_end(
-        self, report: FileReport, line_num: int, lines: List[str], code_block_start_line: int
+        self, report: FileReport, line_num: int, lines: list[str], code_block_start_line: int
     ) -> None:
         """Check MD031 for fenced code block end."""
         # MD031: Check blank line after code block
@@ -556,8 +549,7 @@ class MarkdownLinter:
                     last_part = last_part.split(".")[0]
                 title = last_part.replace("-", " ").replace("_", " ").title()
                 return f"{title} - {domain}"
-            else:
-                return domain.title()
+            return domain.title()
 
         except Exception:
             # Final fallback
@@ -606,7 +598,7 @@ class MarkdownLinter:
                         self._add_issue(
                             report,
                             line_num,
-                            f"Bare URL used, converting to markdown link with title",
+                            "Bare URL used, converting to markdown link with title",
                             "MD034",
                             fix=create_url_fix(url),
                         )
@@ -634,7 +626,7 @@ class MarkdownLinter:
                         self._add_issue(
                             report,
                             line_num,
-                            f"Bare email address used, converting to angle bracket format",
+                            "Bare email address used, converting to angle bracket format",
                             "MD034",
                             fix=create_email_fix(email),
                         )
@@ -655,7 +647,7 @@ class MarkdownLinter:
         line_num: int,
         message: str,
         code: str,
-        fix: Optional[Callable[[str], str]] = None,
+        fix: Callable[[str], str] | None = None,
         severity: IssueSeverity = IssueSeverity.WARNING,
         file_level: bool = False,
     ) -> None:
@@ -670,7 +662,7 @@ class MarkdownLinter:
         )
         report.add_issue(issue)
 
-    def _apply_fixes(self, content: str, issues: List[LintIssue]) -> List[str]:
+    def _apply_fixes(self, content: str, issues: list[LintIssue]) -> list[str]:
         """Apply all fixes to the content and return the fixed lines."""
         lines = content.splitlines(keepends=False)
 
@@ -678,9 +670,9 @@ class MarkdownLinter:
         line_fixes = [
             i
             for i in issues
-            if i.fixable and i.line > 0 and i.code not in ["MD022", "MD032", "MD031"]
+            if i.fixable and i.line > 0 and i.code not in {"MD022", "MD032", "MD031"}
         ]
-        spacing_fixes = [i for i in issues if i.fixable and i.code in ["MD022", "MD032", "MD031"]]
+        spacing_fixes = [i for i in issues if i.fixable and i.code in {"MD022", "MD032", "MD031"}]
         file_fixes = [i for i in issues if i.fixable and i.line == 0]
 
         # Apply line-level fixes first (sort descending to avoid offset issues)
@@ -703,7 +695,7 @@ class MarkdownLinter:
         # Ensure lines end with newlines (except the last one which will be handled by file write)
         return [line + "\n" if not line.endswith("\n") else line for line in lines]
 
-    def _apply_spacing_fixes(self, lines: List[str], spacing_issues: List[LintIssue]) -> List[str]:
+    def _apply_spacing_fixes(self, lines: list[str], spacing_issues: list[LintIssue]) -> list[str]:
         """Apply MD022, MD032, and MD031 spacing fixes by inserting blank lines."""
         # Collect all blank line insertions needed
         insertions = []  # List of (line_index, position) tuples
@@ -744,7 +736,7 @@ class MarkdownLinter:
                             insertions.append((line_idx + 1, "before"))
 
         # Sort insertions by line index in descending order to avoid offset issues
-        insertions.sort(key=lambda x: x[0], reverse=True)
+        insertions.sort(key=operator.itemgetter(0), reverse=True)
 
         # Remove duplicates
         seen = set()
@@ -755,7 +747,7 @@ class MarkdownLinter:
                 unique_insertions.append(insertion)
 
         # Apply insertions
-        new_lines = lines[:]
+        new_lines = lines.copy()
         for line_idx, position in unique_insertions:
             if position == "before" and 0 <= line_idx <= len(new_lines):
                 # Insert blank line before the specified line
@@ -764,8 +756,8 @@ class MarkdownLinter:
         return new_lines
 
     def check_directory(
-        self, directory: Union[str, Path], exclude: Optional[List[str]] = None
-    ) -> Dict[Path, FileReport]:
+        self, directory: str | Path, exclude: list[str] | None = None
+    ) -> dict[Path, FileReport]:
         """Check all markdown files in a directory."""
         from tools.find_markdown_files import find_markdown_files
 
@@ -794,10 +786,6 @@ class MarkdownLinter:
                 continue
 
             if dry_run:
-                print(
-                    f"Would fix {len([i for i in report.issues if i.fixable])} "
-                    f"issues in {file_path}"
-                )
                 continue
 
             if report.fixed_content is not None:
@@ -805,11 +793,7 @@ class MarkdownLinter:
                     with open(file_path, "w", encoding="utf-8") as f:
                         f.writelines(report.fixed_content)
                     fixed_count += 1
-                    print(
-                        f"Fixed {len([i for i in report.issues if i.fixable])} "
-                        f"issues in {file_path}"
-                    )
-                except Exception as e:
-                    print(f"Error fixing {file_path}: {e}", file=sys.stderr)
+                except Exception:
+                    pass
 
         return fixed_count

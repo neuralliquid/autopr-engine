@@ -198,3 +198,9 @@ yarn-error.log*
 # Local development
 .DS_Store
 Thumbs.db
+
+# AI Linting System
+*.backup_*
+ai_linting_interactions.db
+ai_linting_attempts.json
+ai_interactions_export.json

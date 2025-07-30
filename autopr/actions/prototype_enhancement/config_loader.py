@@ -9,7 +9,7 @@ import json
 import logging
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import yaml
 
@@ -25,7 +25,7 @@ class ConfigLoader:
 
     @staticmethod
     @lru_cache(maxsize=32)
-    def load_platform_config(platform_name: str) -> Dict[str, Any]:
+    def load_platform_config(platform_name: str) -> dict[str, Any]:
         """Load platform configuration from JSON file.
 
         Args:
@@ -41,23 +41,23 @@ class ConfigLoader:
         config_path = CONFIG_BASE_PATH / "platforms" / f"{platform_name}.json"
 
         if not config_path.exists():
-            raise FileNotFoundError(f"Platform config not found: {config_path}")
+            msg = f"Platform config not found: {config_path}"
+            raise FileNotFoundError(msg)
 
         try:
-            with open(config_path, "r", encoding="utf-8") as f:
+            with open(config_path, encoding="utf-8") as f:
                 config_data = json.load(f)
             logger.debug(f"Loaded platform config for {platform_name}")
             if isinstance(config_data, dict):
                 return config_data
-            else:
-                return {}
+            return {}
         except json.JSONDecodeError as e:
-            logger.error(f"Invalid JSON in platform config {config_path}: {e}")
+            logger.exception(f"Invalid JSON in platform config {config_path}: {e}")
             raise
 
     @staticmethod
     @lru_cache(maxsize=16)
-    def load_package_dependencies(category: str) -> Dict[str, Any]:
+    def load_package_dependencies(category: str) -> dict[str, Any]:
         """Load package dependencies configuration from JSON file.
 
         Args:
@@ -69,25 +69,25 @@ class ConfigLoader:
         config_path = CONFIG_BASE_PATH / "packages" / f"{category}.json"
 
         if not config_path.exists():
-            raise FileNotFoundError(f"Package config not found: {config_path}")
+            msg = f"Package config not found: {config_path}"
+            raise FileNotFoundError(msg)
 
         try:
-            with open(config_path, "r", encoding="utf-8") as f:
+            with open(config_path, encoding="utf-8") as f:
                 config_data = json.load(f)
             logger.debug(f"Loaded package dependencies for {category}")
             if isinstance(config_data, dict):
                 return config_data
-            else:
-                return {}
+            return {}
         except json.JSONDecodeError as e:
-            logger.error(f"Invalid JSON in package config {config_path}: {e}")
+            logger.exception(f"Invalid JSON in package config {config_path}: {e}")
             raise
 
     @staticmethod
-    def load_template_metadata(template_path: str) -> Dict[str, Any]:
+    def load_template_metadata(template_path: str) -> dict[str, Any]:
         """Load metadata from a YAML template file."""
         try:
-            with open(template_path, "r", encoding="utf-8") as f:
+            with open(template_path, encoding="utf-8") as f:
                 content = f.read()
 
             # Split YAML front matter from template content
@@ -99,13 +99,12 @@ class ConfigLoader:
                     return metadata if isinstance(metadata, dict) else {}
 
             return {}
-        except Exception as e:
-            print(f"Error loading template metadata from {template_path}: {e}")
+        except Exception:
             return {}
 
     @staticmethod
     @lru_cache(maxsize=32)
-    def load_workflow_config(workflow_name: str) -> Dict[str, Any]:
+    def load_workflow_config(workflow_name: str) -> dict[str, Any]:
         """Load workflow configuration from YAML file.
 
         Args:
@@ -117,20 +116,21 @@ class ConfigLoader:
         config_path = CONFIG_BASE_PATH / "workflows" / f"{workflow_name}.yml"
 
         if not config_path.exists():
-            raise FileNotFoundError(f"Workflow config not found: {config_path}")
+            msg = f"Workflow config not found: {config_path}"
+            raise FileNotFoundError(msg)
 
         try:
-            with open(config_path, "r", encoding="utf-8") as f:
+            with open(config_path, encoding="utf-8") as f:
                 config = yaml.safe_load(f)
             logger.debug(f"Loaded workflow config for {workflow_name}")
             return config if isinstance(config, dict) else {}
         except yaml.YAMLError as e:
-            logger.error(f"Invalid YAML in workflow config {config_path}: {e}")
+            logger.exception(f"Invalid YAML in workflow config {config_path}: {e}")
             raise
 
     @staticmethod
     @lru_cache(maxsize=64)
-    def load_template_config(template_name: str, category: Optional[str] = None) -> Dict[str, Any]:
+    def load_template_config(template_name: str, category: str | None = None) -> dict[str, Any]:
         """Load template configuration from YAML file.
 
         Args:
@@ -152,19 +152,20 @@ class ConfigLoader:
                 config_path = TEMPLATE_BASE_PATH / f"{template_name}.yml"
 
         if not config_path.exists():
-            raise FileNotFoundError(f"Template config not found: {config_path}")
+            msg = f"Template config not found: {config_path}"
+            raise FileNotFoundError(msg)
 
         try:
-            with open(config_path, "r", encoding="utf-8") as f:
+            with open(config_path, encoding="utf-8") as f:
                 config = yaml.safe_load(f)
             logger.debug(f"Loaded template config for {template_name}")
             return config if isinstance(config, dict) else {}
         except yaml.YAMLError as e:
-            logger.error(f"Invalid YAML in template config {config_path}: {e}")
+            logger.exception(f"Invalid YAML in template config {config_path}: {e}")
             raise
 
     @staticmethod
-    def get_available_platforms() -> List[str]:
+    def get_available_platforms() -> list[str]:
         """Get list of available platform configurations.
 
         Returns:
@@ -174,14 +175,12 @@ class ConfigLoader:
         if not platforms_dir.exists():
             return []
 
-        platforms = []
-        for config_file in platforms_dir.glob("*.json"):
-            platforms.append(config_file.stem)
+        platforms = [config_file.stem for config_file in platforms_dir.glob("*.json")]
 
         return sorted(platforms)
 
     @staticmethod
-    def get_available_package_categories() -> List[str]:
+    def get_available_package_categories() -> list[str]:
         """Get list of available package categories.
 
         Returns:
@@ -191,14 +190,12 @@ class ConfigLoader:
         if not packages_dir.exists():
             return []
 
-        categories = []
-        for config_file in packages_dir.glob("*.json"):
-            categories.append(config_file.stem)
+        categories = [config_file.stem for config_file in packages_dir.glob("*.json")]
 
         return sorted(categories)
 
     @staticmethod
-    def get_available_templates(category: Optional[str] = None) -> Dict[str, List[str]]:
+    def get_available_templates(category: str | None = None) -> dict[str, list[str]]:
         """Get list of available templates, optionally filtered by category.
 
         Args:
@@ -213,9 +210,9 @@ class ConfigLoader:
             # Search specific category
             category_dir = TEMPLATE_BASE_PATH / category
             if category_dir.exists():
-                template_files = []
-                for template_file in category_dir.glob("*.yml"):
-                    template_files.append(template_file.stem)
+                template_files = [
+                    template_file.stem for template_file in category_dir.glob("*.yml")
+                ]
                 templates[category] = sorted(template_files)
         else:
             # Search all categories
@@ -230,7 +227,7 @@ class ConfigLoader:
         return templates
 
     @staticmethod
-    def get_template_variants(template_path: str) -> List[str]:
+    def get_template_variants(template_path: str) -> list[str]:
         """Get available variants for a template.
 
         Args:
@@ -264,29 +261,30 @@ class ConfigLoader:
         template_path = TEMPLATE_BASE_PATH / category / template_name
 
         if not template_path.exists():
-            raise FileNotFoundError(f"Template not found: {template_path}")
+            msg = f"Template not found: {template_path}"
+            raise FileNotFoundError(msg)
 
         try:
-            with open(template_path, "r", encoding="utf-8") as f:
+            with open(template_path, encoding="utf-8") as f:
                 content = f.read()
             logger.debug(f"Loaded template {category}/{template_name}")
             return content
         except Exception as e:
-            logger.error(f"Error loading template {template_path}: {e}")
+            logger.exception(f"Error loading template {template_path}: {e}")
             raise
 
 
 # Convenience functions for backward compatibility
-def load_platform_config(platform_name: str) -> Dict[str, Any]:
+def load_platform_config(platform_name: str) -> dict[str, Any]:
     """Load platform configuration - convenience function."""
     return ConfigLoader.load_platform_config(platform_name)
 
 
-def load_package_dependencies(category: str) -> Dict[str, Any]:
+def load_package_dependencies(category: str) -> dict[str, Any]:
     """Load package dependencies - convenience function."""
     return ConfigLoader.load_package_dependencies(category)
 
 
-def load_template_config(template_name: str, category: Optional[str] = None) -> Dict[str, Any]:
+def load_template_config(template_name: str, category: str | None = None) -> dict[str, Any]:
     """Load template configuration - convenience function."""
     return ConfigLoader.load_template_config(template_name, category)

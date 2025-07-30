@@ -1,6 +1,4 @@
-import os
 import re
-from typing import Optional
 
 import pydantic
 
@@ -17,7 +15,7 @@ class Inputs(pydantic.BaseModel):
 
 class Outputs(pydantic.BaseModel):
     success: bool
-    error: Optional[str] = None
+    error: str | None = None
 
 
 class UpdateDocsFile(Action[Inputs, Outputs]):
@@ -29,7 +27,7 @@ class UpdateDocsFile(Action[Inputs, Outputs]):
 
     async def run(self, inputs: Inputs) -> Outputs:
         try:
-            with open(inputs.filepath, "r", encoding="utf-8") as f:
+            with open(inputs.filepath, encoding="utf-8") as f:
                 original_content = f.read()
 
             # Use regex to find and replace content between markers
@@ -62,7 +60,7 @@ if __name__ == "__main__":
     from autopr.tests.utils import run_action_manually
 
     # Create a dummy docs file for testing
-    with open("dummy_docs.md", "w") as f:
+    with open("dummy_docs.md", "w", encoding="utf-8") as f:
         f.write(
             "Some text before.\\n<!-- DOCS:START -->\\nOld content.\\n<!-- DOCS:END -->\\nSome text after."
         )

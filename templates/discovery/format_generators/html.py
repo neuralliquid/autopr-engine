@@ -6,10 +6,10 @@ HTML Format Generator Module
 Generates documentation in HTML format.
 """
 
-from pathlib import Path
-from typing import Any, List
+from typing import Any
 
-from ..content_analyzer import TemplateAnalysis
+from discovery.content_analyzer import TemplateAnalysis
+
 from .base import BaseFormatGenerator
 from .html_template_loader import YAMLHTMLTemplateLoader
 from .markdown import MarkdownGenerator
@@ -70,16 +70,16 @@ class HTMLGenerator(BaseFormatGenerator):
             difficulty_level=getattr(analysis, "difficulty", "Intermediate"),
         )
 
-    def generate_main_index(self, analyses: List[TemplateAnalysis]) -> str:
+    def generate_main_index(self, analyses: list[TemplateAnalysis]) -> str:
         """Generate main documentation index in HTML format using YAML template."""
         markdown_content = self.markdown_generator.generate_main_index(analyses)
         html_content = self._markdown_to_html(markdown_content)
 
         # Calculate statistics for the template
-        categories = set(a.category for a in analyses)
+        categories = {a.category for a in analyses}
         # Get platform analyses (templates with category 'platform')
         platform_analyses = [a for a in analyses if a.category == "platform"]
-        platforms = set(a.name for a in platform_analyses)
+        platforms = {a.name for a in platform_analyses}
 
         return self.html_template_loader.render_template(
             "documentation_index",
@@ -91,7 +91,7 @@ class HTMLGenerator(BaseFormatGenerator):
             last_updated=self._get_current_date(),
         )
 
-    def generate_comparison_guide(self, platform_analyses: List[TemplateAnalysis]) -> str:
+    def generate_comparison_guide(self, platform_analyses: list[TemplateAnalysis]) -> str:
         """Generate platform comparison guide in HTML format using YAML template."""
         markdown_content = self.markdown_generator.generate_comparison_guide(platform_analyses)
         html_content = self._markdown_to_html(markdown_content)

@@ -5,9 +5,8 @@ Handles rendering of templates with variables and variants.
 """
 
 import logging
-import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 
 import jinja2
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, TemplateError
@@ -20,7 +19,7 @@ logger = logging.getLogger(__name__)
 class TemplateRenderer:
     """Handles rendering of templates with variables and variants."""
 
-    def __init__(self, template_dirs: Optional[List[Path]] = None):
+    def __init__(self, template_dirs: list[Path] | None = None):
         """Initialize the template renderer.
 
         Args:
@@ -32,13 +31,14 @@ class TemplateRenderer:
     def _create_environment(self) -> Environment:
         """Create and configure a Jinja2 environment."""
         # Create a custom loader that can handle multiple template directories
-        loaders = []
-        for template_dir in self.template_dirs:
-            if template_dir.exists():
-                loaders.append(FileSystemLoader(str(template_dir)))
+        loaders = [
+            FileSystemLoader(str(template_dir))
+            for template_dir in self.template_dirs
+            if template_dir.exists()
+        ]
 
         if not loaders:
-            loaders = [FileSystemLoader(searchpath=os.getcwd())]
+            loaders = [FileSystemLoader(searchpath=Path.cwd())]
 
         env = Environment(
             loader=jinja2.ChoiceLoader(loaders),
@@ -88,9 +88,9 @@ class TemplateRenderer:
 
     def render_template(
         self,
-        template_path: Union[str, Path],
-        variables: Optional[Dict[str, Any]] = None,
-        variant: Optional[Union[str, TemplateVariant]] = None,
+        template_path: str | Path,
+        variables: dict[str, Any] | None = None,
+        variant: str | TemplateVariant | None = None,
         strict: bool = True,
     ) -> str:
         """Render a template with the given variables and variant.
@@ -119,7 +119,8 @@ class TemplateRenderer:
             template = self._env.get_template(template_path)
         except jinja2.TemplateNotFound as e:
             if strict:
-                raise FileNotFoundError(f"Template not found: {template_path}") from e
+                msg = f"Template not found: {template_path}"
+                raise FileNotFoundError(msg) from e
             logger.warning(f"Template not found, using empty template: {template_path}")
             return ""
 
@@ -136,9 +137,10 @@ class TemplateRenderer:
             # Render the template with the provided variables
             return template.render(**variables)
         except Exception as e:
-            raise TemplateError(f"Failed to render template {template_path}: {e}") from e
+            msg = f"Failed to render template {template_path}: {e}"
+            raise TemplateError(msg) from e
 
-    def _apply_variant(self, variant: TemplateVariant, variables: Dict[str, Any]) -> Dict[str, Any]:
+    def _apply_variant(self, variant: TemplateVariant, variables: dict[str, Any]) -> dict[str, Any]:
         """Apply variant modifications to the variables.
 
         Args:
@@ -194,9 +196,9 @@ class TemplateRenderer:
     def render_template_metadata(
         self,
         template_metadata: TemplateMetadata,
-        variables: Optional[Dict[str, Any]] = None,
-        variant_name: Optional[str] = None,
-    ) -> Tuple[str, Dict[str, Any]]:
+        variables: dict[str, Any] | None = None,
+        variant_name: str | None = None,
+    ) -> tuple[str, dict[str, Any]]:
         """Render a template using its metadata.
 
         Args:

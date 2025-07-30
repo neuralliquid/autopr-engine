@@ -4,35 +4,35 @@ Tracks patterns, user preferences, and project context to improve decision-makin
 """
 
 import hashlib
-import json
 import os
+import pathlib
 import sqlite3
-from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional, Tuple
+from datetime import datetime
+from typing import Any
 
 from pydantic import BaseModel
 
 
 class MemoryInputs(BaseModel):
     action_type: str  # "record_fix", "record_preference", "get_patterns", "get_recommendations"
-    user_id: Optional[str] = None
-    file_path: Optional[str] = None
-    comment_type: Optional[str] = None
-    fix_applied: Optional[str] = None
-    success: Optional[bool] = None
-    context: Dict[str, Any] = {}
+    user_id: str | None = None
+    file_path: str | None = None
+    comment_type: str | None = None
+    fix_applied: str | None = None
+    success: bool | None = None
+    context: dict[str, Any] = {}
 
 
 class MemoryOutputs(BaseModel):
     success: bool
-    patterns: List[Dict[str, Any]] = []
-    recommendations: List[str] = []
-    confidence_scores: Dict[str, float] = {}
-    learned_preferences: Dict[str, Any] = {}
+    patterns: list[dict[str, Any]] = []
+    recommendations: list[str] = []
+    confidence_scores: dict[str, float] = {}
+    learned_preferences: dict[str, Any] = {}
 
 
 class LearningMemorySystem:
-    def __init__(self, db_path: Optional[str] = None) -> None:
+    def __init__(self, db_path: str | None = None) -> None:
         self.db_path: str = db_path or "autopr_memory.db"
         self.init_database()
 
@@ -161,17 +161,16 @@ class LearningMemorySystem:
 
             conn.commit()
             return True
-        except Exception as e:
-            print(f"Error recording fix pattern: {e}")
+        except Exception:
             return False
         finally:
             conn.close()
 
     def record_user_preference(
         self,
-        user_id: Optional[str] = None,
-        preference_type: Optional[str] = None,
-        preference_value: Optional[str] = None,
+        user_id: str | None = None,
+        preference_type: str | None = None,
+        preference_value: str | None = None,
         confidence: float = 1.0,
     ) -> bool:
         """Record user preferences for personalized responses."""
@@ -197,15 +196,14 @@ class LearningMemorySystem:
 
             conn.commit()
             return True
-        except Exception as e:
-            print(f"Error recording user preference: {e}")
+        except Exception:
             return False
         finally:
             conn.close()
 
     def get_fix_recommendations(
-        self, comment_type: Optional[str] = None, file_path: Optional[str] = None
-    ) -> List[Dict[str, Any]]:
+        self, comment_type: str | None = None, file_path: str | None = None
+    ) -> list[dict[str, Any]]:
         """Get fix recommendations based on learned patterns."""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
@@ -240,13 +238,12 @@ class LearningMemorySystem:
                 )
 
             return recommendations
-        except Exception as e:
-            print(f"Error getting recommendations: {e}")
+        except Exception:
             return []
         finally:
             conn.close()
 
-    def get_user_preferences(self, user_id: Optional[str] = None) -> Dict[str, Any]:
+    def get_user_preferences(self, user_id: str | None = None) -> dict[str, Any]:
         """Get learned preferences for a specific user."""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
@@ -267,13 +264,12 @@ class LearningMemorySystem:
                 preferences[pref_type] = {"value": pref_value, "confidence": confidence}
 
             return preferences
-        except Exception as e:
-            print(f"Error getting user preferences: {e}")
+        except Exception:
             return {}
         finally:
             conn.close()
 
-    def analyze_project_patterns(self, project_files: List[str]) -> Dict[str, Any]:
+    def analyze_project_patterns(self, project_files: list[str]) -> dict[str, Any]:
         """Analyze project-specific patterns and conventions."""
         project_hash = hashlib.md5(str(sorted(project_files)).encode()).hexdigest()[:8]
 
@@ -289,7 +285,7 @@ class LearningMemorySystem:
 
         return patterns
 
-    def _detect_coding_style(self, files: List[str]) -> Dict[str, Any]:
+    def _detect_coding_style(self, files: list[str]) -> dict[str, Any]:
         """Detect coding style preferences from project files."""
         style_indicators = {
             "semicolons": 0,
@@ -304,7 +300,7 @@ class LearningMemorySystem:
         for file_path in files[:10]:
             if file_path.endswith((".js", ".ts", ".tsx", ".jsx")):
                 try:
-                    with open(file_path, "r", encoding="utf-8") as f:
+                    with open(file_path, encoding="utf-8") as f:
                         content = f.read()
 
                     # Count style indicators
@@ -318,7 +314,7 @@ class LearningMemorySystem:
                             style_indicators["spaces"] += 1
                         elif line.startswith("\t"):
                             style_indicators["tabs"] += 1
-                except:
+                except (OSError, UnicodeDecodeError):
                     continue
 
         return {
@@ -334,7 +330,7 @@ class LearningMemorySystem:
             ),
         }
 
-    def _detect_naming_conventions(self, files: List[str]) -> Dict[str, str]:
+    def _detect_naming_conventions(self, files: list[str]) -> dict[str, str]:
         """Detect naming conventions used in the project."""
         conventions = {
             "files": "kebab-case",  # Default assumption
@@ -343,15 +339,15 @@ class LearningMemorySystem:
         }
 
         # Analyze file names
-        kebab_count = sum(1 for f in files if "-" in os.path.basename(f))
-        snake_count = sum(1 for f in files if "_" in os.path.basename(f))
+        kebab_count = sum(1 for f in files if "-" in pathlib.Path(f).name)
+        snake_count = sum(1 for f in files if "_" in pathlib.Path(f).name)
 
         if snake_count > kebab_count:
             conventions["files"] = "snake_case"
 
         return conventions
 
-    def _analyze_file_structure(self, files: List[str]) -> Dict[str, Any]:
+    def _analyze_file_structure(self, files: list[str]) -> dict[str, Any]:
         """Analyze project file structure patterns."""
         return {
             "has_components_dir": any("components" in f for f in files),
@@ -360,7 +356,7 @@ class LearningMemorySystem:
             "has_tests_colocated": any(".test." in f or ".spec." in f for f in files),
         }
 
-    def _find_common_patterns(self, files: List[str]) -> List[str]:
+    def _find_common_patterns(self, files: list[str]) -> list[str]:
         """Find common code patterns in the project."""
         patterns = []
 
@@ -374,7 +370,7 @@ class LearningMemorySystem:
 
         return patterns
 
-    def _store_project_context(self, project_hash: str, patterns: Dict[str, Any]) -> None:
+    def _store_project_context(self, project_hash: str, patterns: dict[str, Any]) -> None:
         """Store project context in database."""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
@@ -398,8 +394,8 @@ class LearningMemorySystem:
                 )
 
             conn.commit()
-        except Exception as e:
-            print(f"Error storing project context: {e}")
+        except Exception:
+            pass
         finally:
             conn.close()
 
@@ -412,7 +408,7 @@ def learning_memory_action(inputs: MemoryInputs) -> MemoryOutputs:
         success = memory_system.record_fix_pattern(inputs)
         return MemoryOutputs(success=success)
 
-    elif inputs.action_type == "record_preference":
+    if inputs.action_type == "record_preference":
         success = memory_system.record_user_preference(
             inputs.user_id,
             inputs.context.get("preference_type", ""),
@@ -420,7 +416,7 @@ def learning_memory_action(inputs: MemoryInputs) -> MemoryOutputs:
         )
         return MemoryOutputs(success=success)
 
-    elif inputs.action_type == "get_patterns":
+    if inputs.action_type == "get_patterns":
         recommendations = memory_system.get_fix_recommendations(
             inputs.comment_type, inputs.file_path
         )
@@ -431,7 +427,7 @@ def learning_memory_action(inputs: MemoryInputs) -> MemoryOutputs:
             confidence_scores=confidence_scores,
         )
 
-    elif inputs.action_type == "get_preferences":
+    if inputs.action_type == "get_preferences":
         preferences = memory_system.get_user_preferences(inputs.user_id)
         return MemoryOutputs(success=True, learned_preferences=preferences)
 

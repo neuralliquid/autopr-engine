@@ -30,13 +30,21 @@ class LabelPRBySize(Action[Inputs, Outputs]):
             # Example output: " 1 file changed, 10 insertions(+), 5 deletions(-)"
             insertions = int(
                 subprocess.run(
-                    ["grep", "-o", "[0-9]* insertions"], input=stats, capture_output=True, text=True
+                    ["grep", "-o", "[0-9]* insertions"],
+                    check=False,
+                    input=stats,
+                    capture_output=True,
+                    text=True,
                 ).stdout.split()[0]
                 or 0
             )
             deletions = int(
                 subprocess.run(
-                    ["grep", "-o", "[0-9]* deletions"], input=stats, capture_output=True, text=True
+                    ["grep", "-o", "[0-9]* deletions"],
+                    check=False,
+                    input=stats,
+                    capture_output=True,
+                    text=True,
                 ).stdout.split()[0]
                 or 0
             )

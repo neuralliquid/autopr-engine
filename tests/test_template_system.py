@@ -6,7 +6,7 @@ import logging
 import os
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 # Add the project root to the Python path
 project_root = Path(__file__).parent
@@ -92,8 +92,9 @@ def test_provider_fallback():
 
         # Create a failing AutoWeave provider
         class FailingAutoWeaveProvider(AutoWeaveProvider):
-            def get_template(self, template_id: str) -> Optional[Any]:
-                raise Exception("Simulated AutoWeave API failure")
+            def get_template(self, template_id: str) -> Any | None:
+                msg = "Simulated AutoWeave API failure"
+                raise Exception(msg)
 
         failing_autoweave = FailingAutoWeaveProvider(api_key="dummy_key")
 
@@ -167,7 +168,7 @@ def run_common_tests(template_system, provider_name: str):
 
     try:
         result = template_system.render_template(template_id, context)
-        logger.info(f"\nRendered template:\n{'-'*40}\n{result}\n{'-'*40}")
+        logger.info(f"\nRendered template:\n{'-' * 40}\n{result}\n{'-' * 40}")
     except Exception as e:
         logger.error(f"Error rendering template: {e}", exc_info=True)
         return False
@@ -195,7 +196,7 @@ def run_common_tests(template_system, provider_name: str):
             for result in results[:3]:  # Show first 3 results
                 logger.info(f"  - {result.template_id} ({result.title})")
         except Exception as e:
-            logger.error(f"Error searching for '{term}': {e}")
+            logger.exception(f"Error searching for '{term}': {e}")
             return False
 
     logger.info("\n✅ All common tests completed successfully!")

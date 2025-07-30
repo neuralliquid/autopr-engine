@@ -1,5 +1,5 @@
 import os
-from typing import List
+import pathlib
 
 import pydantic
 
@@ -8,7 +8,7 @@ from autopr.actions.base import Action
 
 class Inputs(pydantic.BaseModel):
     directory: str
-    exclude_patterns: List[str] = ["*.test.ts", "*.spec.ts", "index.ts"]
+    exclude_patterns: list[str] = ["*.test.ts", "*.spec.ts", "index.ts"]
 
 
 class Outputs(pydantic.BaseModel):
@@ -24,7 +24,7 @@ class GenerateBarrelFile(Action[Inputs, Outputs]):
     id = "generate_barrel_file"
 
     async def run(self, inputs: Inputs) -> Outputs:
-        if not os.path.isdir(inputs.directory):
+        if not pathlib.Path(inputs.directory).is_dir():
             return Outputs(created_file="", exports_count=0)
 
         exports = []
@@ -34,7 +34,7 @@ class GenerateBarrelFile(Action[Inputs, Outputs]):
             if any(item.endswith(p) for p in inputs.exclude_patterns):
                 continue
 
-            if os.path.isfile(item_path) and (item.endswith(".ts") or item.endswith(".tsx")):
+            if pathlib.Path(item_path).is_file() and (item.endswith((".ts", ".tsx"))):
                 module_name = item.rsplit(".", 1)[0]
                 exports.append(f"export * from './{module_name}';")
 
@@ -52,9 +52,9 @@ if __name__ == "__main__":
 
     # Create dummy files for testing
     os.makedirs("components/ui", exist_ok=True)
-    with open("components/ui/button.tsx", "w") as f:
+    with open("components/ui/button.tsx", "w", encoding="utf-8") as f:
         f.write("export const Button = () => {};")
-    with open("components/ui/card.tsx", "w") as f:
+    with open("components/ui/card.tsx", "w", encoding="utf-8") as f:
         f.write("export const Card = () => {};")
     asyncio.run(
         run_action_manually(

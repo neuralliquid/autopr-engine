@@ -29,7 +29,6 @@ class RunScript(Action[Inputs, Outputs]):
 
     async def run(self, inputs: Inputs) -> Outputs:
         # Log the command we are about to run
-        print(f"Running command: {inputs.command}")
 
         # Create a subprocess to run the command
         process = await asyncio.create_subprocess_shell(

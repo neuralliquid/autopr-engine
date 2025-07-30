@@ -10,10 +10,10 @@ from .file_analyzer import FileAnalyzer
 from .scoring import PlatformScoringEngine
 
 __all__ = [
+    "FileAnalyzer",
+    "PlatformConfigManager",
     "PlatformDetector",
     "PlatformDetectorInputs",
     "PlatformDetectorOutputs",
-    "PlatformConfigManager",
-    "FileAnalyzer",
     "PlatformScoringEngine",
 ]

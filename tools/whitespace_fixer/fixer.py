@@ -10,11 +10,8 @@ Automatically fixes:
 """
 
 import argparse
-import os
 import re
-import sys
 from pathlib import Path
-from typing import List, Optional, Set, Tuple
 
 
 class WhitespaceFixer:
@@ -119,7 +116,7 @@ class WhitespaceFixer:
         max_consecutive_blank_lines: int = 2,
         tab_size: int = 4,
         convert_tabs_to_spaces: bool = False,
-        extensions: Optional[Set[str]] = None,
+        extensions: set[str] | None = None,
     ):
         """
         Initialize the whitespace fixer.
@@ -184,12 +181,11 @@ class WhitespaceFixer:
 
         if crlf_count > lf_count and crlf_count > cr_count:
             return "\r\n"
-        elif cr_count > lf_count and cr_count > crlf_count:
+        if cr_count > lf_count and cr_count > crlf_count:
             return "\r"
-        else:
-            return "\n"
+        return "\n"
 
-    def fix_content(self, content: str, file_path: Path) -> Tuple[str, List[str]]:
+    def fix_content(self, content: str, file_path: Path) -> tuple[str, list[str]]:
         """
         Fix whitespace issues in content.
 
@@ -217,11 +213,10 @@ class WhitespaceFixer:
         consecutive_blank = 0
 
         for i, line in enumerate(lines):
-            original_line = line
 
             # Fix trailing whitespace
             if line.rstrip() != line:
-                issues_fixed.append(f"Line {i+1}: Removed trailing whitespace")
+                issues_fixed.append(f"Line {i + 1}: Removed trailing whitespace")
             line = line.rstrip()
 
             # Convert tabs to spaces if requested
@@ -229,7 +224,7 @@ class WhitespaceFixer:
                 spaces = " " * self.tab_size
                 new_line = line.replace("\t", spaces)
                 if new_line != line:
-                    issues_fixed.append(f"Line {i+1}: Converted tabs to spaces")
+                    issues_fixed.append(f"Line {i + 1}: Converted tabs to spaces")
                 line = new_line
 
             # Handle consecutive blank lines
@@ -238,7 +233,7 @@ class WhitespaceFixer:
                 if consecutive_blank <= self.max_consecutive_blank_lines:
                     fixed_lines.append(line)
                 else:
-                    issues_fixed.append(f"Line {i+1}: Removed excessive blank line")
+                    issues_fixed.append(f"Line {i + 1}: Removed excessive blank line")
             else:
                 consecutive_blank = 0
                 fixed_lines.append(line)
@@ -270,7 +265,7 @@ class WhitespaceFixer:
 
         return fixed_content, issues_fixed
 
-    def fix_file(self, file_path: Path, dry_run: bool = False) -> Tuple[bool, List[str]]:
+    def fix_file(self, file_path: Path, dry_run: bool = False) -> tuple[bool, list[str]]:
         """
         Fix whitespace issues in a single file.
 
@@ -282,19 +277,19 @@ class WhitespaceFixer:
 
         try:
             # Read file content
-            with open(file_path, "r", encoding="utf-8", newline="") as f:
+            with open(file_path, encoding="utf-8", newline="") as f:
                 original_content = f.read()
         except UnicodeDecodeError:
             # Try with different encodings
             for encoding in ["latin-1", "cp1252", "iso-8859-1"]:
                 try:
-                    with open(file_path, "r", encoding=encoding, newline="") as f:
+                    with open(file_path, encoding=encoding, newline="") as f:
                         original_content = f.read()
                     break
                 except UnicodeDecodeError:
                     continue
             else:
-                return False, [f"Could not decode file with any encoding"]
+                return False, ["Could not decode file with any encoding"]
         except (PermissionError, OSError) as e:
             return False, [f"Could not read file: {e}"]
 
@@ -316,7 +311,7 @@ class WhitespaceFixer:
         return True, issues_fixed
 
     def fix_directory(
-        self, directory: Path, dry_run: bool = False, exclude_patterns: Optional[List[str]] = None
+        self, directory: Path, dry_run: bool = False, exclude_patterns: list[str] | None = None
     ) -> dict:
         """
         Fix whitespace issues in all files in a directory recursively.
@@ -431,7 +426,6 @@ Examples:
         path = Path(path_str)
 
         if not path.exists():
-            print(f"Error: Path does not exist: {path}", file=sys.stderr)
             continue
 
         if path.is_file():
@@ -444,14 +438,11 @@ Examples:
                 total_issues += len(issues)
 
                 if args.verbose or args.dry_run:
-                    action = "Would fix" if args.dry_run else "Fixed"
-                    print(f"{action} {path}:")
-                    for issue in issues:
-                        print(f"  - {issue}")
+                    for _issue in issues:
+                        pass
             elif issues:  # Errors
-                print(f"Error processing {path}:")
-                for issue in issues:
-                    print(f"  - {issue}")
+                for _issue in issues:
+                    pass
 
         elif path.is_dir():
             # Process directory
@@ -461,26 +452,18 @@ Examples:
             total_issues += results["total_issues"]
 
             if args.verbose or args.dry_run:
-                action = "Would fix" if args.dry_run else "Fixed"
-                for file_path, issues in results["files_with_issues"].items():
-                    print(f"{action} {file_path}:")
-                    for issue in issues:
-                        print(f"  - {issue}")
+                for issues in results["files_with_issues"].values():
+                    for _issue in issues:
+                        pass
 
             if results["errors"]:
-                print("Errors:")
-                for error in results["errors"]:
-                    print(f"  - {error}")
+                for _error in results["errors"]:
+                    pass
 
     # Print summary
-    action = "Would fix" if args.dry_run else "Fixed"
-    print(f"\nSummary:")
-    print(f"  Files processed: {total_files_processed}")
-    print(f"  Files {action.lower()}: {total_files_modified}")
-    print(f"  Total issues {action.lower()}: {total_issues}")
 
     if args.dry_run and total_files_modified > 0:
-        print(f"\nRun without --dry-run to apply these fixes.")
+        pass
 
 
 if __name__ == "__main__":

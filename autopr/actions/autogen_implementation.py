@@ -6,12 +6,11 @@ Uses AutoGen for complex multi-agent development tasks
 import json
 import os
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from pydantic import BaseModel, Field
 
 try:
-    import autogen
     from autogen import ConversableAgent, GroupChat, GroupChatManager
 
     AUTOGEN_AVAILABLE = True
@@ -29,27 +28,28 @@ class AutoGenInputs(BaseModel):
         str  # "feature_development", "bug_fix", "security_review", "performance_optimization"
     )
     repository: str
-    file_paths: List[str] = []
-    requirements: Dict[str, Any] = {}
+    file_paths: list[str] = []
+    requirements: dict[str, Any] = {}
     complexity_level: str = "medium"  # "simple", "medium", "complex"
     max_agents: int = 4
 
 
 class AutoGenOutputs(BaseModel):
     implementation_plan: str
-    code_changes: Dict[str, str] = Field(default_factory=dict)  # file_path -> code_content
-    test_files: Dict[str, str] = Field(default_factory=dict)  # test_file_path -> test_content
+    code_changes: dict[str, str] = Field(default_factory=dict)  # file_path -> code_content
+    test_files: dict[str, str] = Field(default_factory=dict)  # test_file_path -> test_content
     documentation: str
-    agent_conversations: List[Dict[str, Any]] = Field(default_factory=list)
+    agent_conversations: list[dict[str, Any]] = Field(default_factory=list)
     quality_score: float
     success: bool
-    errors: List[str] = Field(default_factory=list)
+    errors: list[str] = Field(default_factory=list)
 
 
 class AutoGenImplementation:
     def __init__(self) -> None:
         if not AUTOGEN_AVAILABLE:
-            raise ImportError("AutoGen not installed. Install with: pip install pyautogen")
+            msg = "AutoGen not installed. Install with: pip install pyautogen"
+            raise ImportError(msg)
 
         self.llm_config = {
             "model": os.getenv("OPENAI_MODEL", "gpt-4"),
@@ -120,7 +120,7 @@ class AutoGenImplementation:
                 errors=[str(e)],
             )
 
-    def _create_agents(self, task_type: str, complexity_level: str) -> List[ConversableAgent]:
+    def _create_agents(self, task_type: str, complexity_level: str) -> list[ConversableAgent]:
         """Create specialized agents based on task requirements"""
 
         agents = []
@@ -202,7 +202,7 @@ Security focus areas:
             agents.append(security_agent)
 
         if (
-            task_type in ["feature_development", "performance_optimization"]
+            task_type in {"feature_development", "performance_optimization"}
             or complexity_level == "complex"
         ):
             qa_engineer = ConversableAgent(
@@ -260,8 +260,8 @@ Review criteria:
         return agents
 
     def _execute_conversation(
-        self, agents: List, manager: GroupChatManager, inputs: AutoGenInputs
-    ) -> Dict:
+        self, agents: list, manager: GroupChatManager, inputs: AutoGenInputs
+    ) -> dict:
         """Execute the multi-agent conversation"""
 
         # Prepare the initial task message
@@ -331,10 +331,10 @@ Please work together to create a complete, production-ready solution.
 
         return message.strip()
 
-    def _process_results(self, conversation_result: Dict, inputs: AutoGenInputs) -> AutoGenOutputs:
+    def _process_results(self, conversation_result: dict, inputs: AutoGenInputs) -> AutoGenOutputs:
         """Process the conversation results into structured output"""
 
-        if not conversation_result.get("success", False):
+        if not conversation_result.get("success"):
             return AutoGenOutputs(
                 implementation_plan="",
                 code_changes={},
@@ -373,7 +373,7 @@ Please work together to create a complete, production-ready solution.
             errors=[],
         )
 
-    def _extract_implementation_plan(self, conversation_history: List) -> str:
+    def _extract_implementation_plan(self, conversation_history: list) -> str:
         """Extract implementation plan from conversation"""
         plan_content = []
 
@@ -384,7 +384,7 @@ Please work together to create a complete, production-ready solution.
 
         return "\n\n".join(plan_content) if plan_content else "No implementation plan found"
 
-    def _extract_code_changes(self, conversation_history: List) -> Dict[str, str]:
+    def _extract_code_changes(self, conversation_history: list) -> dict[str, str]:
         """Extract code changes from conversation"""
         code_changes = {}
 
@@ -406,13 +406,13 @@ Please work together to create a complete, production-ready solution.
                     # Try to extract filename from context
                     filename = self._extract_filename_from_context(content, code_block)
                     if not filename:
-                        filename = f"generated_file_{i+1}.tsx"
+                        filename = f"generated_file_{i + 1}.tsx"
 
                     code_changes[filename] = code_block.strip()
 
         return code_changes
 
-    def _extract_test_files(self, conversation_history: List) -> Dict[str, str]:
+    def _extract_test_files(self, conversation_history: list) -> dict[str, str]:
         """Extract test files from conversation"""
         test_files = {}
 
@@ -434,12 +434,12 @@ Please work together to create a complete, production-ready solution.
                         or "describe" in code_block
                         or "it(" in code_block
                     ):
-                        filename = f"test_file_{i+1}.test.tsx"
+                        filename = f"test_file_{i + 1}.test.tsx"
                         test_files[filename] = code_block.strip()
 
         return test_files
 
-    def _extract_documentation(self, conversation_history: List) -> str:
+    def _extract_documentation(self, conversation_history: list) -> str:
         """Extract documentation from conversation"""
         doc_content = []
 
@@ -450,7 +450,7 @@ Please work together to create a complete, production-ready solution.
 
         return "\n\n".join(doc_content) if doc_content else "No documentation found"
 
-    def _extract_filename_from_context(self, content: str, code_block: str) -> Optional[str]:
+    def _extract_filename_from_context(self, content: str, code_block: str) -> str | None:
         """Try to extract filename from the context around a code block"""
         import re
 
@@ -478,7 +478,7 @@ Please work together to create a complete, production-ready solution.
         return None
 
     def _calculate_quality_score(
-        self, plan: str, code_changes: Dict, test_files: Dict, conversation: List
+        self, plan: str, code_changes: dict, test_files: dict, conversation: list
     ) -> float:
         """Calculate quality score based on various factors"""
         score = 0.0
@@ -523,20 +523,17 @@ Please work together to create a complete, production-ready solution.
 
         return min(score, max_score)
 
-    def _format_conversations(self, conversation_history: List) -> List[Dict]:
+    def _format_conversations(self, conversation_history: list) -> list[dict]:
         """Format conversation history for output"""
-        formatted = []
 
-        for message in conversation_history:
-            formatted.append(
-                {
-                    "agent": message.get("name", "Unknown"),
-                    "content": message.get("content", ""),
-                    "timestamp": datetime.now().isoformat(),
-                }
-            )
-
-        return formatted
+        return [
+            {
+                "agent": message.get("name", "Unknown"),
+                "content": message.get("content", ""),
+                "timestamp": datetime.now().isoformat(),
+            }
+            for message in conversation_history
+        ]
 
 
 # Entry point for AutoPR
@@ -565,4 +562,3 @@ if __name__ == "__main__":
     }
 
     result = run(sample_inputs)
-    print(json.dumps(result, indent=2))

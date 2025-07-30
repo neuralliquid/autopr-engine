@@ -1,24 +1,14 @@
 """Unit tests for the GitHub API client with retry logic and rate limiting."""
 
 import asyncio
-import os
 import time
-from datetime import datetime, timedelta, timezone
-from unittest import TestCase, mock
-from unittest.mock import AsyncMock, MagicMock, call, patch
+from unittest import TestCase
+from unittest.mock import AsyncMock, patch
 
 import pytest
-from aiohttp import ClientError, ClientResponseError, ClientSession, ClientTimeout
+from aiohttp import ClientError, ClientResponseError, ClientSession
 
-from autopr.clients.github_client import (
-    DEFAULT_BACKOFF_FACTOR,
-    DEFAULT_RETRIES,
-    DEFAULT_TIMEOUT,
-    GitHubClient,
-    GitHubConfig,
-    GitHubError,
-    RateLimitExceeded,
-)
+from autopr.clients.github_client import GitHubClient, GitHubConfig, GitHubError
 
 
 class TestGitHubClient(TestCase):
@@ -46,12 +36,12 @@ class TestGitHubClient(TestCase):
 
     def test_init_with_config(self):
         """Test initialization with a config object."""
-        self.assertEqual(self.client.config.token, self.token)
-        self.assertEqual(self.client.config.base_url, "https://api.github.com")
-        self.assertEqual(self.client.config.timeout, 30)
-        self.assertEqual(self.client.config.max_retries, 3)
-        self.assertEqual(self.client.config.backoff_factor, 0.1)
-        self.assertEqual(self.client.config.user_agent, "Test-Agent/1.0")
+        assert self.client.config.token == self.token
+        assert self.client.config.base_url == "https://api.github.com"
+        assert self.client.config.timeout == 30
+        assert self.client.config.max_retries == 3
+        assert self.client.config.backoff_factor == 0.1
+        assert self.client.config.user_agent == "Test-Agent/1.0"
 
     @pytest.mark.asyncio
     async def test_request_success(self):
@@ -79,15 +69,15 @@ class TestGitHubClient(TestCase):
             # Verify the request was made correctly
             mock_session.request.assert_called_once()
             args, kwargs = mock_session.request.call_args
-            self.assertEqual(args[0], "GET")
-            self.assertTrue(args[1].endswith(endpoint))
-            self.assertEqual(kwargs["params"], params)
+            assert args[0] == "GET"
+            assert args[1].endswith(endpoint)
+            assert kwargs["params"] == params
 
             # Verify the response was handled correctly
-            self.assertEqual(result, self.mock_response)
+            assert result == self.mock_response
 
             # Verify rate limit info was updated
-            self.assertEqual(self.client.rate_limit_remaining, 4999)
+            assert self.client.rate_limit_remaining == 4999
 
             # Verify session was used properly
             mock_get_session.assert_called_once()
@@ -119,9 +109,9 @@ class TestGitHubClient(TestCase):
                 result = await self.client.get(endpoint)
 
                 # Verify it retried
-                self.assertEqual(mock_session.request.call_count, 2)
+                assert mock_session.request.call_count == 2
                 mock_sleep.assert_called_once()
-                self.assertEqual(result, self.mock_response)
+                assert result == self.mock_response
 
     @pytest.mark.asyncio
     async def test_rate_limit_handling(self):
@@ -160,9 +150,9 @@ class TestGitHubClient(TestCase):
                 result = await self.client.get(endpoint)
 
                 # Verify it waited for rate limit and retried
-                self.assertEqual(mock_session.request.call_count, 2)
+                assert mock_session.request.call_count == 2
                 mock_sleep.assert_called_once()
-                self.assertEqual(result, self.mock_response)
+                assert result == self.mock_response
 
     @pytest.mark.asyncio
     async def test_max_retries_exceeded(self):
@@ -178,11 +168,11 @@ class TestGitHubClient(TestCase):
         with patch.object(self.client, "_get_session", return_value=mock_session):
             with patch("asyncio.sleep"):
                 # Make the request and expect it to fail
-                with self.assertRaises(ClientError):
+                with pytest.raises(ClientError):
                     await self.client.get(endpoint)
 
                 # Verify it retried the correct number of times
-                self.assertEqual(mock_session.request.call_count, self.config.max_retries + 1)
+                assert mock_session.request.call_count == self.config.max_retries + 1
 
     @pytest.mark.asyncio
     async def test_graphql_query(self):
@@ -207,7 +197,7 @@ class TestGitHubClient(TestCase):
             mock_post.assert_called_once_with("/graphql", data={"query": query, "variables": None})
 
             # Verify the result
-            self.assertEqual(result, expected_response["data"])
+            assert result == expected_response["data"]
 
     @pytest.mark.asyncio
     async def test_graphql_errors(self):
@@ -218,11 +208,11 @@ class TestGitHubClient(TestCase):
         # Mock the post method to return an error
         with patch.object(self.client, "post", return_value=error_response):
             # Execute the GraphQL query and expect an error
-            with self.assertRaises(GitHubError) as context:
+            with pytest.raises(GitHubError) as context:
                 await self.client.graphql(query)
 
             # Verify the error message
-            self.assertIn("Syntax Error", str(context.exception))
+            assert "Syntax Error" in str(context.value)
 
     @pytest.mark.asyncio
     async def test_post_success(self):
@@ -246,7 +236,7 @@ class TestGitHubClient(TestCase):
             )
 
             # Verify the response was handled correctly
-            self.assertEqual(result, self.mock_response)
+            assert result == self.mock_response
 
     @pytest.mark.asyncio
     async def test_http_error_handling(self):
@@ -258,9 +248,9 @@ class TestGitHubClient(TestCase):
             )
             mock_get.return_value.__aenter__.return_value = mock_resp
 
-            with self.assertRaises(ClientResponseError) as context:
+            with pytest.raises(ClientResponseError) as context:
                 await self.client._get("/nonexistent")
-            self.assertEqual(context.exception.status, 404)
+            assert context.value.status == 404
 
     @pytest.mark.asyncio
     async def test_get_repo(self):
@@ -275,7 +265,7 @@ class TestGitHubClient(TestCase):
             result = await self.client.get_repo(owner, repo)
 
             mock_get.assert_called_once_with(expected_url)
-            self.assertEqual(result, self.mock_response)
+            assert result == self.mock_response
 
     @pytest.mark.asyncio
     async def test_create_issue(self):
@@ -296,16 +286,16 @@ class TestGitHubClient(TestCase):
             result = await self.client.create_issue(owner, repo, title, body, labels, assignees)
 
             mock_post.assert_called_once_with(expected_url, data=expected_data)
-            self.assertEqual(result, self.mock_response)
+            assert result == self.mock_response
 
     @pytest.mark.asyncio
     async def test_context_manager(self):
         """Test client can be used as a context manager."""
         async with GitHubClient(token=self.token) as client:
-            self.assertIsInstance(client, GitHubClient)
-            self.assertIsInstance(client.session, ClientSession)
+            assert isinstance(client, GitHubClient)
+            assert isinstance(client.session, ClientSession)
         # Session should be closed after context manager exits
-        self.assertTrue(client.session.closed)
+        assert client.session.closed
 
     @pytest.mark.asyncio
     async def test_put_request(self):
@@ -329,12 +319,12 @@ class TestGitHubClient(TestCase):
             # Verify the request was made correctly
             mock_session.request.assert_called_once()
             args, kwargs = mock_session.request.call_args
-            self.assertEqual(args[0], "PUT")
-            self.assertTrue(args[1].endswith(endpoint))
-            self.assertEqual(kwargs["json"], data)
+            assert args[0] == "PUT"
+            assert args[1].endswith(endpoint)
+            assert kwargs["json"] == data
 
             # Verify the response was handled correctly
-            self.assertEqual(result, self.mock_response)
+            assert result == self.mock_response
 
     @pytest.mark.asyncio
     async def test_patch_request(self):
@@ -358,12 +348,12 @@ class TestGitHubClient(TestCase):
             # Verify the request was made correctly
             mock_session.request.assert_called_once()
             args, kwargs = mock_session.request.call_args
-            self.assertEqual(args[0], "PATCH")
-            self.assertTrue(args[1].endswith(endpoint))
-            self.assertEqual(kwargs["json"], data)
+            assert args[0] == "PATCH"
+            assert args[1].endswith(endpoint)
+            assert kwargs["json"] == data
 
             # Verify the response was handled correctly
-            self.assertEqual(result, self.mock_response)
+            assert result == self.mock_response
 
     @pytest.mark.asyncio
     async def test_delete_request(self):
@@ -386,11 +376,11 @@ class TestGitHubClient(TestCase):
             # Verify the request was made correctly
             mock_session.request.assert_called_once()
             args, _ = mock_session.request.call_args
-            self.assertEqual(args[0], "DELETE")
-            self.assertTrue(args[1].endswith(endpoint))
+            assert args[0] == "DELETE"
+            assert args[1].endswith(endpoint)
 
             # Verify the response was handled correctly
-            self.assertIsNone(result)
+            assert result is None
 
     @pytest.mark.asyncio
     async def test_request_with_timeout(self):
@@ -399,16 +389,16 @@ class TestGitHubClient(TestCase):
 
         # Create a mock session that never responds
         mock_session = AsyncMock()
-        mock_session.request.side_effect = asyncio.TimeoutError("Request timed out")
+        mock_session.request.side_effect = TimeoutError("Request timed out")
 
         # Patch _get_session
         with patch.object(self.client, "_get_session", return_value=mock_session):
             # Make the request and expect it to raise TimeoutError
-            with self.assertRaises(asyncio.TimeoutError):
+            with pytest.raises(asyncio.TimeoutError):
                 await self.client.get(endpoint, timeout=0.1)
 
             # Verify it didn't retry on timeout
-            self.assertEqual(mock_session.request.call_count, 1)
+            assert mock_session.request.call_count == 1
 
     @pytest.mark.asyncio
     async def test_custom_headers(self):
@@ -437,11 +427,11 @@ class TestGitHubClient(TestCase):
             _, kwargs = mock_session.request.call_args
 
             # Check that custom headers are included
-            self.assertEqual(kwargs["headers"]["X-Custom-Header"], "custom-value")
+            assert kwargs["headers"]["X-Custom-Header"] == "custom-value"
             # Check that default headers are still there
-            self.assertIn("Authorization", kwargs["headers"])
+            assert "Authorization" in kwargs["headers"]
             # Check that custom Accept header overrode the default
-            self.assertEqual(kwargs["headers"]["Accept"], "application/vnd.github.v4+json")
+            assert kwargs["headers"]["Accept"] == "application/vnd.github.v4+json"
 
             # Verify the response was handled correctly
-            self.assertEqual(result, self.mock_response)
+            assert result == self.mock_response

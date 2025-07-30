@@ -1,5 +1,4 @@
 import subprocess
-from typing import List
 
 import pydantic
 
@@ -11,7 +10,7 @@ class Inputs(pydantic.BaseModel):
 
 
 class Outputs(pydantic.BaseModel):
-    labels_to_add: List[str]
+    labels_to_add: list[str]
 
 
 class LabelPR(Action[Inputs, Outputs]):
@@ -38,7 +37,10 @@ class LabelPR(Action[Inputs, Outputs]):
         except subprocess.CalledProcessError:
             # Fallback for local testing where origin/main might not be set up
             changed_files_process = subprocess.run(
-                ["git", "diff", "--name-only", "HEAD~1"], capture_output=True, text=True
+                ["git", "diff", "--name-only", "HEAD~1"],
+                check=False,
+                capture_output=True,
+                text=True,
             )
             changed_files = changed_files_process.stdout.strip().split("\\n")
 

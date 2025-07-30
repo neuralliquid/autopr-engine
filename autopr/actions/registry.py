@@ -5,9 +5,8 @@ Registry for managing and discovering actions.
 """
 
 import logging
-from typing import Any, Callable, Dict, Generic, List, Optional, Type, TypeVar
-
-from typing_extensions import Protocol
+from collections.abc import Callable
+from typing import Any, Protocol, TypeVar
 
 from autopr.actions.base import Action
 
@@ -24,22 +23,22 @@ class ActionProtocol(Protocol):
 logger = logging.getLogger(__name__)
 
 
-class ActionRegistry(Generic[ActionT]):
+class ActionRegistry[ActionT: Action[Any, Any]]:
     """
     Registry for action classes with type safety.
     """
 
     def __init__(self) -> None:
         """Initialize the action registry."""
-        self._actions: Dict[str, Type[ActionT]] = {}
-        self._instances: Dict[str, ActionT] = {}
+        self._actions: dict[str, type[ActionT]] = {}
+        self._instances: dict[str, ActionT] = {}
 
         # Auto-register built-in actions
         self._register_builtin_actions()
 
         logger.info("Action registry initialized")
 
-    def register(self, name: str, action_cls: Type[ActionT]) -> None:
+    def register(self, name: str, action_cls: type[ActionT]) -> None:
         """Register an action class with type safety."""
         self._actions[name] = action_cls
         logger.info(f"Registered action: {name}")
@@ -59,11 +58,11 @@ class ActionRegistry(Generic[ActionT]):
 
         logger.info(f"Unregistered action: {action_name}")
 
-    def get(self, name: str) -> Optional[Type[ActionT]]:
+    def get(self, name: str) -> type[ActionT] | None:
         """Get an action class by name."""
         return self._actions.get(name)
 
-    def get_action(self, action_name: str) -> Optional[ActionT]:
+    def get_action(self, action_name: str) -> ActionT | None:
         """
         Get an action instance by name.
 
@@ -88,10 +87,10 @@ class ActionRegistry(Generic[ActionT]):
             self._instances[action_name] = instance
             return instance
         except Exception as e:
-            logger.error(f"Failed to create action instance '{action_name}': {e}")
+            logger.exception(f"Failed to create action instance '{action_name}': {e}")
             return None
 
-    def get_all_actions(self) -> List[str]:
+    def get_all_actions(self) -> list[str]:
         """
         Get list of all registered action names.
 
@@ -100,7 +99,7 @@ class ActionRegistry(Generic[ActionT]):
         """
         return list(self._actions.keys())
 
-    def get_actions_by_platform(self, platform: str) -> List[str]:
+    def get_actions_by_platform(self, platform: str) -> list[str]:
         """
         Get actions that support a specific platform.
 
@@ -119,7 +118,7 @@ class ActionRegistry(Generic[ActionT]):
 
         return supported_actions
 
-    def get_actions_metadata(self) -> Dict[str, Dict]:
+    def get_actions_metadata(self) -> dict[str, dict]:
         """
         Get metadata for all registered actions.
 
@@ -135,7 +134,7 @@ class ActionRegistry(Generic[ActionT]):
 
         return metadata
 
-    def search_actions(self, query: str) -> List[str]:
+    def search_actions(self, query: str) -> list[str]:
         """
         Search for actions by name or description.
 
@@ -174,9 +173,9 @@ class ActionRegistry(Generic[ActionT]):
         except ImportError as e:
             logger.warning(f"Some built-in actions could not be imported: {e}")
         except Exception as e:
-            logger.error(f"Failed to register built-in actions: {e}")
+            logger.exception(f"Failed to register built-in actions: {e}")
 
-    def validate_action_inputs(self, action_name: str, inputs: Dict) -> bool:
+    def validate_action_inputs(self, action_name: str, inputs: dict) -> bool:
         """
         Validate inputs for a specific action.
 
@@ -195,10 +194,10 @@ class ActionRegistry(Generic[ActionT]):
             # TODO: Implement JSON schema validation
             return True
         except Exception as e:
-            logger.error(f"Input validation failed for action '{action_name}': {e}")
+            logger.exception(f"Input validation failed for action '{action_name}': {e}")
             return False
 
-    def get_registry_stats(self) -> Dict[str, int]:
+    def get_registry_stats(self) -> dict[str, int]:
         """
         Get registry statistics.
 
@@ -212,7 +211,7 @@ class ActionRegistry(Generic[ActionT]):
             "gitlab_actions": len(self.get_actions_by_platform("gitlab")),
         }
 
-    def create(self, name: str, **kwargs: Any) -> Optional[ActionT]:
+    def create(self, name: str, **kwargs: Any) -> ActionT | None:
         action_cls = self.get(name)
         if action_cls is None:
             return None
@@ -222,7 +221,7 @@ class ActionRegistry(Generic[ActionT]):
 def register_action(name: str) -> Callable:
     """Decorator to register an action class."""
 
-    def decorator(cls: Type[ActionT]) -> Type[ActionT]:
+    def decorator(cls: type[ActionT]) -> type[ActionT]:
         registry.register(name, cls)
         return cls
 

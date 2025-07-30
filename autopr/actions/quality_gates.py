@@ -6,13 +6,17 @@ Validates fixes before committing, runs tests, checks quality metrics, and ensur
 import ast
 import json
 import os
+import pathlib
 import re
 import subprocess
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import TYPE_CHECKING, Any
 
 from pydantic import BaseModel, Field
 
 from autopr.actions.base import Action
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class QualityGateInputs(BaseModel):
@@ -20,7 +24,7 @@ class QualityGateInputs(BaseModel):
     original_content: str
     modified_content: str
     fix_type: str
-    project_standards: Dict[str, Any] = {}
+    project_standards: dict[str, Any] = {}
     run_tests: bool = True
     check_syntax: bool = True
     check_style: bool = True
@@ -28,16 +32,16 @@ class QualityGateInputs(BaseModel):
 
 class QualityGateOutputs(BaseModel):
     passed: bool
-    warnings: List[str] = Field(default_factory=list)
-    errors: List[str] = Field(default_factory=list)
-    test_results: Dict[str, Any] = Field(default_factory=dict)
+    warnings: list[str] = Field(default_factory=list)
+    errors: list[str] = Field(default_factory=list)
+    test_results: dict[str, Any] = Field(default_factory=dict)
     quality_score: float = 0.0
-    recommendations: List[str] = Field(default_factory=list)
+    recommendations: list[str] = Field(default_factory=list)
 
 
 class QualityGateValidator:
     def __init__(self) -> None:
-        self.quality_checks: Dict[str, Callable[[str, QualityGateInputs], Dict[str, Any]]] = {
+        self.quality_checks: dict[str, Callable[[str, QualityGateInputs], dict[str, Any]]] = {
             "syntax": self._check_syntax,
             "style": self._check_style,
             "complexity": self._check_complexity,
@@ -50,11 +54,11 @@ class QualityGateValidator:
 
     def validate_fix(self, inputs: QualityGateInputs) -> QualityGateOutputs:
         """Run comprehensive quality validation on the fix."""
-        warnings: List[str] = []
-        errors: List[str] = []
-        test_results: Dict[str, Any] = {}
-        quality_scores: List[float] = []
-        recommendations: List[str] = []
+        warnings: list[str] = []
+        errors: list[str] = []
+        test_results: dict[str, Any] = {}
+        quality_scores: list[float] = []
+        recommendations: list[str] = []
 
         # Write modified content to temporary file for testing
         temp_file = f"{inputs.file_path}.autopr_temp"
@@ -79,7 +83,7 @@ class QualityGateValidator:
                         recommendations.extend(result["recommendations"])
 
                 except Exception as e:
-                    warnings.append(f"{check_name} check failed: {str(e)}")
+                    warnings.append(f"{check_name} check failed: {e!s}")
 
             # Calculate overall quality score
             overall_quality = sum(quality_scores) / len(quality_scores) if quality_scores else 0.5
@@ -98,55 +102,55 @@ class QualityGateValidator:
 
         finally:
             # Clean up temp file
-            if os.path.exists(temp_file):
-                os.remove(temp_file)
+            if pathlib.Path(temp_file).exists():
+                pathlib.Path(temp_file).unlink()
 
-    def _check_syntax(self, file_path: str, inputs: QualityGateInputs) -> Dict[str, Any]:
+    def _check_syntax(self, file_path: str, inputs: QualityGateInputs) -> dict[str, Any]:
         """Check syntax validity of the modified file."""
         if not inputs.check_syntax:
             return {"quality_score": 1.0}
 
-        errors: List[str] = []
+        errors: list[str] = []
         file_ext = os.path.splitext(file_path)[1]
 
         try:
             if file_ext == ".py":
                 # Python syntax check
-                with open(file_path, "r") as f:
+                with open(file_path, encoding="utf-8") as f:
                     ast.parse(f.read())
 
-            elif file_ext in [".js", ".ts", ".tsx", ".jsx"]:
+            elif file_ext in {".js", ".ts", ".tsx", ".jsx"}:
                 # JavaScript/TypeScript syntax check using node
                 result = subprocess.run(
-                    ["node", "--check", file_path], capture_output=True, text=True
+                    ["node", "--check", file_path], check=False, capture_output=True, text=True
                 )
                 if result.returncode != 0:
                     errors.append(f"Syntax error: {result.stderr}")
 
-            elif file_ext in [".json"]:
+            elif file_ext == ".json":
                 # JSON syntax check
-                with open(file_path, "r") as f:
+                with open(file_path, encoding="utf-8") as f:
                     json.load(f)
 
         except SyntaxError as e:
-            errors.append(f"Syntax error: {str(e)}")
+            errors.append(f"Syntax error: {e!s}")
         except json.JSONDecodeError as e:
-            errors.append(f"JSON syntax error: {str(e)}")
+            errors.append(f"JSON syntax error: {e!s}")
         except Exception as e:
-            errors.append(f"Syntax check failed: {str(e)}")
+            errors.append(f"Syntax check failed: {e!s}")
 
         return {"errors": errors, "quality_score": 1.0 if not errors else 0.0}
 
-    def _check_style(self, file_path: str, inputs: QualityGateInputs) -> Dict[str, Any]:
+    def _check_style(self, file_path: str, inputs: QualityGateInputs) -> dict[str, Any]:
         """Check code style compliance."""
         if not inputs.check_style:
             return {"quality_score": 1.0}
 
-        warnings: List[str] = []
-        recommendations: List[str] = []
+        warnings: list[str] = []
+        recommendations: list[str] = []
         file_ext = os.path.splitext(file_path)[1]
 
-        with open(file_path, "r") as f:
+        with open(file_path, encoding="utf-8") as f:
             content = f.read()
 
         # Generic style checks
@@ -163,7 +167,7 @@ class QualityGateValidator:
             warnings.append(f"Trailing whitespace on lines: {trailing_ws_lines[:5]}")
 
         # Language-specific style checks
-        if file_ext in [".js", ".ts", ".tsx", ".jsx"]:
+        if file_ext in {".js", ".ts", ".tsx", ".jsx"}:
             # Check for console.log in non-dev files
             if "console.log" in content and "dev" not in file_path.lower():
                 warnings.append("Found console.log statements in production code")
@@ -180,12 +184,12 @@ class QualityGateValidator:
             "quality_score": quality_score,
         }
 
-    def _check_complexity(self, file_path: str, inputs: QualityGateInputs) -> Dict[str, Any]:
+    def _check_complexity(self, file_path: str, inputs: QualityGateInputs) -> dict[str, Any]:
         """Check code complexity metrics."""
-        warnings: List[str] = []
+        warnings: list[str] = []
         file_ext = os.path.splitext(file_path)[1]
 
-        with open(file_path, "r") as f:
+        with open(file_path, encoding="utf-8") as f:
             content = f.read()
 
         if file_ext == ".py":
@@ -195,10 +199,10 @@ class QualityGateValidator:
                 complexity_score = self._calculate_python_complexity(tree)
                 if complexity_score > 10:
                     warnings.append(f"High cyclomatic complexity: {complexity_score}")
-            except:
+            except (SyntaxError, ValueError):
                 pass
 
-        elif file_ext in [".js", ".ts", ".tsx", ".jsx"]:
+        elif file_ext in {".js", ".ts", ".tsx", ".jsx"}:
             # Simple complexity check for JS/TS
             function_count = len(re.findall(r"function\s+\w+|=>\s*{|\w+\s*\([^)]*\)\s*{", content))
             if function_count > 20:
@@ -213,12 +217,12 @@ class QualityGateValidator:
 
         return {"warnings": warnings, "quality_score": quality_score}
 
-    def _check_security(self, file_path: str, inputs: QualityGateInputs) -> Dict[str, Any]:
+    def _check_security(self, file_path: str, inputs: QualityGateInputs) -> dict[str, Any]:
         """Check for potential security issues."""
-        warnings: List[str] = []
+        warnings: list[str] = []
         file_ext = os.path.splitext(file_path)[1]
 
-        with open(file_path, "r") as f:
+        with open(file_path, encoding="utf-8") as f:
             content = f.read()
 
         # Generic security checks
@@ -234,7 +238,7 @@ class QualityGateValidator:
                 warnings.append(message)
 
         # JavaScript/TypeScript specific
-        if file_ext in [".js", ".ts", ".tsx", ".jsx"]:
+        if file_ext in {".js", ".ts", ".tsx", ".jsx"}:
             if "innerHTML" in content:
                 warnings.append("Use of innerHTML detected - potential XSS risk")
             if "dangerouslySetInnerHTML" in content:
@@ -246,16 +250,16 @@ class QualityGateValidator:
 
         return {"warnings": warnings, "quality_score": quality_score}
 
-    def _check_performance(self, file_path: str, inputs: QualityGateInputs) -> Dict[str, Any]:
+    def _check_performance(self, file_path: str, inputs: QualityGateInputs) -> dict[str, Any]:
         """Check for potential performance issues."""
-        warnings: List[str] = []
-        recommendations: List[str] = []
+        warnings: list[str] = []
+        recommendations: list[str] = []
         file_ext = os.path.splitext(file_path)[1]
 
-        with open(file_path, "r") as f:
+        with open(file_path, encoding="utf-8") as f:
             content = f.read()
 
-        if file_ext in [".js", ".ts", ".tsx", ".jsx"]:
+        if file_ext in {".js", ".ts", ".tsx", ".jsx"}:
             # Check for performance anti-patterns
             if re.search(r"useEffect\s*\([^,]*,\s*\[\]", content):
                 recommendations.append(
@@ -280,13 +284,13 @@ class QualityGateValidator:
             "quality_score": quality_score,
         }
 
-    def _check_accessibility(self, file_path: str, inputs: QualityGateInputs) -> Dict[str, Any]:
+    def _check_accessibility(self, file_path: str, inputs: QualityGateInputs) -> dict[str, Any]:
         """Check for accessibility issues."""
-        warnings: List[str] = []
+        warnings: list[str] = []
         file_ext = os.path.splitext(file_path)[1]
 
-        if file_ext in [".tsx", ".jsx"]:
-            with open(file_path, "r") as f:
+        if file_ext in {".tsx", ".jsx"}:
+            with open(file_path, encoding="utf-8") as f:
                 content = f.read()
 
             # Check for accessibility patterns
@@ -309,13 +313,13 @@ class QualityGateValidator:
 
         return {"warnings": warnings, "quality_score": quality_score}
 
-    def _run_tests(self, file_path: str, inputs: QualityGateInputs) -> Dict[str, Any]:
+    def _run_tests(self, file_path: str, inputs: QualityGateInputs) -> dict[str, Any]:
         """Run relevant tests for the modified file."""
         if not inputs.run_tests:
             return {"quality_score": 1.0}
 
-        test_results: Dict[str, Any] = {}
-        warnings: List[str] = []
+        test_results: dict[str, Any] = {}
+        warnings: list[str] = []
 
         try:
             # Try to find and run tests related to this file
@@ -329,7 +333,7 @@ class QualityGateValidator:
             ]
 
             existing_test_files = [
-                pattern for pattern in test_file_patterns if os.path.exists(pattern)
+                pattern for pattern in test_file_patterns if pathlib.Path(pattern).exists()
             ]
 
             if existing_test_files:
@@ -341,7 +345,7 @@ class QualityGateValidator:
                 warnings.append("No tests found for this file")
 
         except Exception as e:
-            warnings.append(f"Test execution failed: {str(e)}")
+            warnings.append(f"Test execution failed: {e!s}")
 
         # Calculate quality score based on test results
         if test_results:
@@ -357,13 +361,14 @@ class QualityGateValidator:
             "quality_score": quality_score,
         }
 
-    def _run_test_file(self, test_file: str) -> Dict[str, Any]:
+    def _run_test_file(self, test_file: str) -> dict[str, Any]:
         """Run a specific test file."""
         try:
             # Determine test runner based on file type
             if test_file.endswith(".py"):
                 result = subprocess.run(
                     ["python", "-m", "pytest", test_file, "-v"],
+                    check=False,
                     capture_output=True,
                     text=True,
                     timeout=30,
@@ -372,6 +377,7 @@ class QualityGateValidator:
                 # Assume npm test for JS/TS files
                 result = subprocess.run(
                     ["npm", "test", "--", test_file],
+                    check=False,
                     capture_output=True,
                     text=True,
                     timeout=30,
@@ -387,13 +393,13 @@ class QualityGateValidator:
         except Exception as e:
             return {"passed": False, "errors": str(e)}
 
-    def _check_dependencies(self, file_path: str, inputs: QualityGateInputs) -> Dict[str, Any]:
+    def _check_dependencies(self, file_path: str, inputs: QualityGateInputs) -> dict[str, Any]:
         """Check for dependency-related issues."""
-        warnings: List[str] = []
+        warnings: list[str] = []
         file_ext = os.path.splitext(file_path)[1]
 
-        if file_ext in [".js", ".ts", ".tsx", ".jsx"]:
-            with open(file_path, "r") as f:
+        if file_ext in {".js", ".ts", ".tsx", ".jsx"}:
+            with open(file_path, encoding="utf-8") as f:
                 content = f.read()
 
             # Check for unused imports (basic check)
@@ -417,11 +423,9 @@ class QualityGateValidator:
         complexity = 1  # Base complexity
 
         for node in ast.walk(tree):
-            if isinstance(node, (ast.If, ast.While, ast.For, ast.AsyncFor)):
-                complexity += 1
-            elif isinstance(node, ast.ExceptHandler):
-                complexity += 1
-            elif isinstance(node, (ast.And, ast.Or)):
+            if isinstance(
+                node, (ast.If, ast.While, ast.For, ast.AsyncFor, ast.ExceptHandler, ast.And, ast.Or)
+            ):
                 complexity += 1
 
         return complexity
@@ -436,7 +440,7 @@ class QualityGates(Action[QualityGateInputs, QualityGateOutputs]):
         )
 
     async def execute(
-        self, inputs: QualityGateInputs, context: Dict[str, Any]
+        self, inputs: QualityGateInputs, context: dict[str, Any]
     ) -> QualityGateOutputs:
         """Execute quality gates validation."""
         validator = QualityGateValidator()

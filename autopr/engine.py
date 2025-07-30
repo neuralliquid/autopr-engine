@@ -5,8 +5,7 @@ The main AutoPR engine that orchestrates AI-powered GitHub automation.
 """
 
 import logging
-from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from .actions.registry import ActionRegistry
 from .ai.providers.manager import LLMProviderManager
@@ -29,7 +28,7 @@ class AutoPREngine:
     - AI/LLM provider coordination
     """
 
-    def __init__(self, config: Optional[AutoPRConfig] = None):
+    def __init__(self, config: AutoPRConfig | None = None):
         """
         Initialize the AutoPR Engine.
 
@@ -52,8 +51,9 @@ class AutoPREngine:
             await self.llm_manager.initialize()
             logger.info("AutoPR Engine started successfully")
         except Exception as e:
-            logger.error(f"Failed to start AutoPR Engine: {e}")
-            raise AutoPRException(f"Engine startup failed: {e}")
+            logger.exception(f"Failed to start AutoPR Engine: {e}")
+            msg = f"Engine startup failed: {e}"
+            raise AutoPRException(msg)
 
     async def stop(self) -> None:
         """Stop the AutoPR Engine and cleanup resources."""
@@ -63,10 +63,11 @@ class AutoPREngine:
             await self.llm_manager.cleanup()
             logger.info("AutoPR Engine stopped successfully")
         except Exception as e:
-            logger.error(f"Error during engine shutdown: {e}")
-            raise AutoPRException(f"Engine shutdown failed: {e}")
+            logger.exception(f"Error during engine shutdown: {e}")
+            msg = f"Engine shutdown failed: {e}"
+            raise AutoPRException(msg)
 
-    async def process_event(self, event_type: str, event_data: Dict[str, Any]) -> Dict[str, Any]:
+    async def process_event(self, event_type: str, event_data: dict[str, Any]) -> dict[str, Any]:
         """
         Process an incoming event through the workflow engine.
 
@@ -82,10 +83,11 @@ class AutoPREngine:
             logger.info(f"Successfully processed {event_type} event")
             return result
         except Exception as e:
-            logger.error(f"Failed to process {event_type} event: {e}")
-            raise AutoPRException(f"Event processing failed: {e}")
+            logger.exception(f"Failed to process {event_type} event: {e}")
+            msg = f"Event processing failed: {e}"
+            raise AutoPRException(msg)
 
-    def get_status(self) -> Dict[str, Any]:
+    def get_status(self) -> dict[str, Any]:
         """
         Get the current status of the AutoPR Engine.
 

@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 """Setup script for the markdown-lint package."""
 
-import os
 
 from setuptools import find_packages, setup
 
 # Read the README file
-with open("README.md", "r", encoding="utf-8") as f:
+with open("README.md", encoding="utf-8") as f:
     long_description = f.read()
 
 # Read requirements
-with open("requirements.txt", "r", encoding="utf-8") as f:
+with open("requirements.txt", encoding="utf-8") as f:
     requirements = [line.strip() for line in f if line.strip() and not line.startswith("#")]
 
 setup(

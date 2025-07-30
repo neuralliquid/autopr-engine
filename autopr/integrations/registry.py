@@ -5,7 +5,7 @@ Registry for managing and discovering integrations.
 """
 
 import logging
-from typing import Any, Dict, List, Optional, Type
+from typing import Any
 
 from .base import Integration
 
@@ -21,12 +21,12 @@ class IntegrationRegistry:
 
     def __init__(self) -> None:
         """Initialize the integration registry."""
-        self._integrations: Dict[str, Type[Integration]] = {}
-        self._instances: Dict[str, Integration] = {}
+        self._integrations: dict[str, type[Integration]] = {}
+        self._instances: dict[str, Integration] = {}
 
         logger.info("Integration registry initialized")
 
-    def register_integration(self, integration_class: Type[Integration]) -> None:
+    def register_integration(self, integration_class: type[Integration]) -> None:
         """
         Register an integration class.
 
@@ -52,21 +52,21 @@ class IntegrationRegistry:
 
         if integration_name in self._instances:
             # Clean up instance
-            instance = self._instances[integration_name]
+            self._instances[integration_name]
             try:
                 # Note: This is synchronous, but cleanup might be async
                 # In a real implementation, you'd want to handle this properly
                 pass
             except Exception as e:
-                logger.error(f"Error cleaning up integration '{integration_name}': {e}")
+                logger.exception(f"Error cleaning up integration '{integration_name}': {e}")
 
             del self._instances[integration_name]
 
         logger.info(f"Unregistered integration: {integration_name}")
 
     async def get_integration(
-        self, integration_name: str, config: Optional[Dict[str, Any]] = None
-    ) -> Optional[Integration]:
+        self, integration_name: str, config: dict[str, Any] | None = None
+    ) -> Integration | None:
         """
         Get an integration instance by name.
 
@@ -100,10 +100,10 @@ class IntegrationRegistry:
             return instance
 
         except Exception as e:
-            logger.error(f"Failed to create integration instance '{integration_name}': {e}")
+            logger.exception(f"Failed to create integration instance '{integration_name}': {e}")
             return None
 
-    async def initialize(self, configs: Optional[Dict[str, Dict[str, Any]]] = None) -> None:
+    async def initialize(self, configs: dict[str, dict[str, Any]] | None = None) -> None:
         """
         Initialize all registered integrations.
 
@@ -119,7 +119,7 @@ class IntegrationRegistry:
                     await self.get_integration(integration_name, configs[integration_name])
                     logger.info(f"Initialized integration: {integration_name}")
                 except Exception as e:
-                    logger.error(f"Failed to initialize integration '{integration_name}': {e}")
+                    logger.exception(f"Failed to initialize integration '{integration_name}': {e}")
 
     async def cleanup(self) -> None:
         """Clean up all integration instances."""
@@ -128,11 +128,11 @@ class IntegrationRegistry:
                 await instance.cleanup()
                 logger.info(f"Cleaned up integration: {integration_name}")
             except Exception as e:
-                logger.error(f"Error cleaning up integration '{integration_name}': {e}")
+                logger.exception(f"Error cleaning up integration '{integration_name}': {e}")
 
         self._instances.clear()
 
-    def get_all_integrations(self) -> List[str]:
+    def get_all_integrations(self) -> list[str]:
         """
         Get list of all registered integration names.
 
@@ -141,7 +141,7 @@ class IntegrationRegistry:
         """
         return list(self._integrations.keys())
 
-    def get_initialized_integrations(self) -> List[str]:
+    def get_initialized_integrations(self) -> list[str]:
         """
         Get list of initialized integration names.
 
@@ -150,7 +150,7 @@ class IntegrationRegistry:
         """
         return [name for name, instance in self._instances.items() if instance.is_initialized]
 
-    def get_integrations_metadata(self) -> Dict[str, Dict]:
+    def get_integrations_metadata(self) -> dict[str, dict]:
         """
         Get metadata for all registered integrations.
 
@@ -170,12 +170,12 @@ class IntegrationRegistry:
                     temp_instance = integration_class(integration_name, "Temporary")
                     metadata[integration_name] = temp_instance.get_metadata()
                 except Exception as e:
-                    logger.error(f"Failed to get metadata for '{integration_name}': {e}")
+                    logger.exception(f"Failed to get metadata for '{integration_name}': {e}")
                     metadata[integration_name] = {"error": str(e)}
 
         return metadata
 
-    async def health_check_all(self) -> Dict[str, Dict]:
+    async def health_check_all(self) -> dict[str, dict]:
         """
         Perform health check on all initialized integrations.
 
@@ -196,7 +196,7 @@ class IntegrationRegistry:
 
         return health_status
 
-    def search_integrations(self, query: str) -> List[str]:
+    def search_integrations(self, query: str) -> list[str]:
         """
         Search for integrations by name or description.
 
@@ -217,14 +217,13 @@ class IntegrationRegistry:
                     or query_lower in instance.description.lower()
                 ):
                     matching_integrations.append(integration_name)
-            else:
-                # Check class name
-                if query_lower in integration_name.lower():
-                    matching_integrations.append(integration_name)
+            # Check class name
+            elif query_lower in integration_name.lower():
+                matching_integrations.append(integration_name)
 
         return matching_integrations
 
-    def get_registry_stats(self) -> Dict[str, int]:
+    def get_registry_stats(self) -> dict[str, int]:
         """
         Get registry statistics.
 

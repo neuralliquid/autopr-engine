@@ -1,16 +1,15 @@
 """Command-line interface for the markdown linter."""
 
 import argparse
-import json
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from linter import MarkdownLinter
 from models import IssueSeverity
 
 
-def parse_args(args: List[str]) -> argparse.Namespace:
+def parse_args(args: list[str]) -> argparse.Namespace:
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
         description="Lint and fix markdown files.",
@@ -164,14 +163,13 @@ def format_issue(issue, path: Path, verbose: int = 0) -> str:
 
     if verbose >= 1:
         return (
-            f"{str(path)}:{issue.line}:{issue.column}: {severity}: {issue.code}: {issue.message}\n"
+            f"{path!s}:{issue.line}:{issue.column}: {severity}: {issue.code}: {issue.message}\n"
             f"  {issue.context or ''}"
         )
-    else:
-        return f"{str(path)}:{issue.line}:{issue.column}: {severity}: {issue.message}"
+    return f"{path!s}:{issue.line}:{issue.column}: {severity}: {issue.message}"
 
 
-def print_report(reports: Dict[Path, Any], args: argparse.Namespace) -> int:
+def print_report(reports: dict[Path, Any], args: argparse.Namespace) -> int:
     """Print a report of all issues found."""
     issue_count = 0
     file_count = 0
@@ -200,7 +198,7 @@ def print_report(reports: Dict[Path, Any], args: argparse.Namespace) -> int:
                 )
 
         if output or args.verbose > 0:
-            print(json.dumps(output, indent=2))
+            pass
     else:
         # Text output
         for path, report in sorted(reports.items()):
@@ -208,13 +206,12 @@ def print_report(reports: Dict[Path, Any], args: argparse.Namespace) -> int:
                 file_count += 1
                 issue_count += len(report["issues"])
 
-                print(f"\n{path}:")
-                for issue in sorted(report["issues"], key=lambda x: x.line):
-                    print(f"  {format_issue(issue, path, args.verbose)}")
+                for _issue in sorted(report["issues"], key=lambda x: x.line):
+                    pass
 
         # Print summary
         if issue_count > 0 or args.verbose > 0:
-            print(f"\nFound {issue_count} issue(s) in {file_count} file(s)")
+            pass
 
     return 1 if issue_count > 0 else 0
 
@@ -249,7 +246,6 @@ def main() -> int:
         elif path.is_dir():
             linter.check_directory(path, exclude=args.exclude)
         else:
-            print(f"Error: {path} is not a file or directory", file=sys.stderr)
             return 1
 
     # Filter issues by severity
@@ -271,9 +267,8 @@ def main() -> int:
     if args.fix and not args.dry_run:
         fixed_count = linter.fix_files(dry_run=False)
         if fixed_count > 0:
-            print(f"Fixed issues in {fixed_count} file(s)")
+            pass
     elif args.dry_run:
-        print("The following files would be fixed:")
         linter.fix_files(dry_run=True)
 
     # Print report

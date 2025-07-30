@@ -5,7 +5,6 @@ Extracts structured data from PR comment events for processing.
 
 import json
 import os
-from typing import Any, Dict, Optional
 
 from pydantic import BaseModel
 
@@ -21,8 +20,8 @@ class ExtractPRCommentDataOutputs(BaseModel):
     repo_owner: str
     repo_name: str
     branch_name: str
-    file_path: Optional[str] = None
-    line_number: Optional[int] = None
+    file_path: str | None = None
+    line_number: int | None = None
     comment_url: str
     pr_url: str
 
@@ -38,9 +37,10 @@ def extract_pr_comment_data(inputs: ExtractPRCommentDataInputs) -> ExtractPRComm
     # Read GitHub event payload
     github_event_path = os.getenv("GITHUB_EVENT_PATH", "")
     if not github_event_path:
-        raise ValueError("No GitHub event payload found")
+        msg = "No GitHub event payload found"
+        raise ValueError(msg)
 
-    with open(github_event_path, "r") as f:
+    with open(github_event_path, encoding="utf-8") as f:
         event_data = json.load(f)
 
     # Extract comment data

@@ -3,9 +3,8 @@ AutoPR Action: Handle PR Comments
 Processes PR comments, attempts to fix issues, and creates GitHub issues for complex problems.
 """
 
-import os
 import re
-from typing import Any, Dict, Optional
+from typing import Any
 
 from pydantic import BaseModel
 
@@ -20,15 +19,15 @@ class HandlePRCommentInputs(BaseModel):
     repo_owner: str
     repo_name: str
     branch_name: str
-    file_path: Optional[str] = None
-    line_number: Optional[int] = None
+    file_path: str | None = None
+    line_number: int | None = None
 
 
 class HandlePRCommentOutputs(BaseModel):
     action_taken: str
     fix_applied: bool
     issue_created: bool
-    issue_number: Optional[int] = None
+    issue_number: int | None = None
     response_message: str
 
 
@@ -115,25 +114,25 @@ def is_complex_issue(comment: str) -> bool:
     return any(re.search(pattern, comment) for pattern in complex_patterns)
 
 
-def attempt_simple_fix(inputs: HandlePRCommentInputs) -> Dict[str, Any]:
+def attempt_simple_fix(inputs: HandlePRCommentInputs) -> dict[str, Any]:
     """Attempt to apply simple fixes based on comment content."""
     comment = inputs.comment_body.lower()
 
     # Example fixes (extend as needed)
     if "remove console.log" in comment and inputs.file_path:
         return remove_console_logs(inputs.file_path)
-    elif "trailing space" in comment and inputs.file_path:
+    if "trailing space" in comment and inputs.file_path:
         return fix_trailing_spaces(inputs.file_path)
-    elif "unused import" in comment and inputs.file_path:
+    if "unused import" in comment and inputs.file_path:
         return remove_unused_imports(inputs.file_path)
 
     return {"success": False, "description": "No automated fix available"}
 
 
-def remove_console_logs(file_path: str) -> Dict[str, Any]:
+def remove_console_logs(file_path: str) -> dict[str, Any]:
     """Remove console.log statements from file."""
     try:
-        with open(file_path, "r") as f:
+        with open(file_path, encoding="utf-8") as f:
             content = f.read()
 
         # Remove console.log lines
@@ -141,38 +140,38 @@ def remove_console_logs(file_path: str) -> Dict[str, Any]:
         filtered_lines = [line for line in lines if "console.log" not in line]
 
         if len(filtered_lines) < len(lines):
-            with open(file_path, "w") as f:
+            with open(file_path, "w", encoding="utf-8") as f:
                 f.write("\n".join(filtered_lines))
             return {
                 "success": True,
                 "description": f"Removed {len(lines) - len(filtered_lines)} console.log statements",
             }
     except Exception as e:
-        return {"success": False, "description": f"Error: {str(e)}"}
+        return {"success": False, "description": f"Error: {e!s}"}
 
     return {"success": False, "description": "No console.log statements found"}
 
 
-def fix_trailing_spaces(file_path: str) -> Dict[str, Any]:
+def fix_trailing_spaces(file_path: str) -> dict[str, Any]:
     """Remove trailing spaces from file."""
     try:
-        with open(file_path, "r") as f:
+        with open(file_path, encoding="utf-8") as f:
             content = f.read()
 
         lines = content.split("\n")
         cleaned_lines = [line.rstrip() for line in lines]
 
-        if any(line != cleaned for line, cleaned in zip(lines, cleaned_lines)):
-            with open(file_path, "w") as f:
+        if any(line != cleaned for line, cleaned in zip(lines, cleaned_lines, strict=False)):
+            with open(file_path, "w", encoding="utf-8") as f:
                 f.write("\n".join(cleaned_lines))
             return {"success": True, "description": "Removed trailing whitespace"}
     except Exception as e:
-        return {"success": False, "description": f"Error: {str(e)}"}
+        return {"success": False, "description": f"Error: {e!s}"}
 
     return {"success": False, "description": "No trailing spaces found"}
 
 
-def remove_unused_imports(file_path: str) -> Dict[str, Any]:
+def remove_unused_imports(file_path: str) -> dict[str, Any]:
     """Remove unused imports (basic implementation)."""
     # This would require more sophisticated AST parsing
     # For now, return not implemented
@@ -181,7 +180,6 @@ def remove_unused_imports(file_path: str) -> Dict[str, Any]:
 
 def create_github_issue(inputs: HandlePRCommentInputs) -> int:
     """Create a GitHub issue from PR comment."""
-    import json
     import subprocess
 
     # Extract issue title and body from comment
@@ -220,12 +218,11 @@ def create_github_issue(inputs: HandlePRCommentInputs) -> int:
         "autopr-generated,from-pr-comment",
     ]
 
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    result = subprocess.run(cmd, check=False, capture_output=True, text=True)
     if result.returncode == 0:
         # Extract issue number from output
         issue_url = result.stdout.strip()
-        issue_number = int(issue_url.split("/")[-1])
-        return issue_number
+        return int(issue_url.split("/")[-1])
 
     return 0  # Failed to create issue
 
@@ -244,14 +241,13 @@ def react_to_comment(repo_owner: str, repo_name: str, comment_id: int, reaction:
         f"content={reaction}",
     ]
 
-    subprocess.run(cmd, capture_output=True)
+    subprocess.run(cmd, check=False, capture_output=True)
 
 
 def resolve_comment(repo_owner: str, repo_name: str, comment_id: int) -> None:
     """Mark comment as resolved (if part of a review)."""
     # Note: This would require GitHub API to resolve review comments
     # Implementation depends on whether it's a regular comment or review comment
-    pass
 
 
 def git_commit_and_push(branch_name: str, message: str) -> None:
@@ -259,13 +255,13 @@ def git_commit_and_push(branch_name: str, message: str) -> None:
     import subprocess
 
     # Stage all changes
-    subprocess.run(["git", "add", "."])
+    subprocess.run(["git", "add", "."], check=False)
 
     # Commit with message
-    subprocess.run(["git", "commit", "-m", message])
+    subprocess.run(["git", "commit", "-m", message], check=False)
 
     # Push to branch
-    subprocess.run(["git", "push", "origin", branch_name])
+    subprocess.run(["git", "push", "origin", branch_name], check=False)
 
 
 class PRCommentHandler(Action[HandlePRCommentInputs, HandlePRCommentOutputs]):
@@ -279,7 +275,7 @@ class PRCommentHandler(Action[HandlePRCommentInputs, HandlePRCommentOutputs]):
         )
 
     async def execute(
-        self, inputs: HandlePRCommentInputs, context: Dict[str, Any]
+        self, inputs: HandlePRCommentInputs, context: dict[str, Any]
     ) -> HandlePRCommentOutputs:
         """Execute the PR comment handling."""
         return handle_pr_comment(inputs)

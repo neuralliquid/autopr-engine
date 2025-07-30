@@ -13,17 +13,18 @@ Features:
 """
 
 import re
+from collections.abc import Callable
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Set, Type, TypeVar, Union
+from typing import TYPE_CHECKING, Any
 
 # Forward reference types to avoid circular imports
 if TYPE_CHECKING:
-    from .validation_rules import ValidationRule, ValidationRuleSet
+    from .validation_rules import ValidationRule
 
 # Type variable for validator functions
-ValidatorFunc = Callable[[Dict[str, Any], Path, "ValidationRule"], List["ValidationIssue"]]
+ValidatorFunc = Callable[[dict[str, Any], Path, "ValidationRule"], list["ValidationIssue"]]
 
 
 class ValidationSeverity(Enum):
@@ -42,7 +43,7 @@ class ValidationIssue:
     category: str
     message: str
     location: str
-    suggestion: Optional[str] = None
+    suggestion: str | None = None
     rule_id: str = ""
 
 
@@ -51,32 +52,31 @@ class StructureValidator:
 
     @staticmethod
     def check_required_fields(
-        data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Check that all required fields are present."""
-        issues: List[ValidationIssue] = []
         required_fields = (rule.parameters or {}).get("required_fields", [])
 
-        for field in required_fields:
-            if field not in data:
-                issues.append(
-                    ValidationIssue(
-                        severity=ValidationSeverity.ERROR,
-                        category="structure",
-                        message=f"Missing required field: {field}",
-                        location=str(file_path),
-                        suggestion=f"Add the required '{field}' field to the template",
-                        rule_id=rule.rule_id,
-                    )
-                )
+        issues: list[ValidationIssue] = [
+            ValidationIssue(
+                severity=ValidationSeverity.ERROR,
+                category="structure",
+                message=f"Missing required field: {field}",
+                location=str(file_path),
+                suggestion=f"Add the required '{field}' field to the template",
+                rule_id=rule.rule_id,
+            )
+            for field in required_fields
+            if field not in data
+        ]
         return issues
 
     @staticmethod
     def check_field_types(
-        data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Check that fields have the correct types."""
-        issues: List[ValidationIssue] = []
+        issues: list[ValidationIssue] = []
         field_types = (rule.parameters or {}).get("field_types", {})
 
         for field, expected_type in field_types.items():
@@ -95,10 +95,10 @@ class StructureValidator:
 
     @staticmethod
     def check_version_field(
-        data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Check that the version field follows semantic versioning."""
-        issues: List[ValidationIssue] = []
+        issues: list[ValidationIssue] = []
         if "version" in data:
             version = str(data["version"])
             if not re.match(r"^\d+\.\d+\.\d+$", version):
@@ -120,10 +120,10 @@ class MetadataValidator:
 
     @staticmethod
     def check_name_quality(
-        data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Check name field quality."""
-        issues: List[ValidationIssue] = []
+        issues: list[ValidationIssue] = []
         if "name" not in data:
             return issues
 
@@ -154,10 +154,10 @@ class MetadataValidator:
 
     @staticmethod
     def check_description_quality(
-        data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Check description field quality."""
-        issues: List[ValidationIssue] = []
+        issues: list[ValidationIssue] = []
         if "description" not in data:
             return issues
 
@@ -188,10 +188,10 @@ class MetadataValidator:
 
     @staticmethod
     def check_category_validity(
-        data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Check category field validity."""
-        issues: List[ValidationIssue] = []
+        issues: list[ValidationIssue] = []
         if "category" not in data:
             return issues
 
@@ -217,10 +217,10 @@ class VariablesValidator:
 
     @staticmethod
     def check_variable_descriptions(
-        data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Check that variables have descriptions."""
-        issues: List[ValidationIssue] = []
+        issues: list[ValidationIssue] = []
         variables = data.get("variables", {})
 
         for var_name, var_config in variables.items():
@@ -242,10 +242,10 @@ class VariablesValidator:
 
     @staticmethod
     def check_variable_examples(
-        data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Check that variables have examples."""
-        issues: List[ValidationIssue] = []
+        issues: list[ValidationIssue] = []
         variables = data.get("variables", {})
 
         for var_name, var_config in variables.items():
@@ -267,10 +267,10 @@ class VariablesValidator:
 
     @staticmethod
     def check_required_variables(
-        data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Check that required variables are properly marked."""
-        issues: List[ValidationIssue] = []
+        issues: list[ValidationIssue] = []
         variables = data.get("variables", {})
 
         for var_name, var_config in variables.items():
@@ -299,10 +299,10 @@ class DocumentationValidator:
 
     @staticmethod
     def check_setup_instructions(
-        data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Check for setup instructions."""
-        issues: List[ValidationIssue] = []
+        issues: list[ValidationIssue] = []
 
         if not data.get("setup_instructions"):
             issues.append(
@@ -319,10 +319,10 @@ class DocumentationValidator:
 
     @staticmethod
     def check_best_practices(
-        data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Check for best practices documentation."""
-        issues: List[ValidationIssue] = []
+        issues: list[ValidationIssue] = []
 
         if not data.get("best_practices"):
             issues.append(
@@ -339,10 +339,10 @@ class DocumentationValidator:
 
     @staticmethod
     def check_troubleshooting(
-        data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Check for troubleshooting documentation."""
-        issues: List[ValidationIssue] = []
+        issues: list[ValidationIssue] = []
 
         if not data.get("troubleshooting"):
             issues.append(
@@ -363,10 +363,10 @@ class ExamplesValidator:
 
     @staticmethod
     def check_example_presence(
-        data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Check for presence of examples."""
-        issues: List[ValidationIssue] = []
+        issues: list[ValidationIssue] = []
 
         if not data.get("examples"):
             issues.append(
@@ -383,10 +383,10 @@ class ExamplesValidator:
 
     @staticmethod
     def check_example_quality(
-        data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Check quality of examples."""
-        issues: List[ValidationIssue] = []
+        issues: list[ValidationIssue] = []
         examples = data.get("examples", [])
 
         if not isinstance(examples, list):
@@ -415,10 +415,10 @@ class SecurityValidator:
 
     @staticmethod
     def check_hardcoded_secrets(
-        data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Check for hardcoded secrets or credentials."""
-        issues: List[ValidationIssue] = []
+        issues: list[ValidationIssue] = []
 
         def check_for_secrets(text: str, context: str = "") -> None:
             secrets_patterns = [
@@ -461,10 +461,10 @@ class SecurityValidator:
 
     @staticmethod
     def check_security_documentation(
-        data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Check for security documentation."""
-        issues: List[ValidationIssue] = []
+        issues: list[ValidationIssue] = []
 
         if not data.get("security_considerations"):
             issues.append(
@@ -485,10 +485,10 @@ class PerformanceValidator:
 
     @staticmethod
     def check_performance_documentation(
-        data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Check for performance documentation."""
-        issues: List[ValidationIssue] = []
+        issues: list[ValidationIssue] = []
 
         if not data.get("performance_considerations"):
             issues.append(
@@ -505,10 +505,10 @@ class PerformanceValidator:
 
     @staticmethod
     def check_resource_optimization(
-        data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Check for resource optimization considerations."""
-        issues: List[ValidationIssue] = []
+        issues: list[ValidationIssue] = []
 
         # This is a placeholder for more sophisticated resource optimization checks
         # In a real implementation, this would analyze the template for potential
@@ -550,13 +550,13 @@ class ValidatorRegistry:
             "check_resource_optimization": PerformanceValidator.check_resource_optimization,
         }
 
-    def get_validator(self, check_function: str) -> Optional[ValidatorFunc]:
+    def get_validator(self, check_function: str) -> ValidatorFunc | None:
         """Get a validator function by name."""
         return self._validators.get(check_function)
 
     def run_validation(
-        self, check_function: str, data: Dict[str, Any], file_path: Path, rule: "ValidationRule"
-    ) -> List[ValidationIssue]:
+        self, check_function: str, data: dict[str, Any], file_path: Path, rule: "ValidationRule"
+    ) -> list[ValidationIssue]:
         """Run a specific validation check."""
         validator = self.get_validator(check_function)
         if validator:
@@ -567,7 +567,7 @@ class ValidatorRegistry:
                     ValidationIssue(
                         severity=ValidationSeverity.ERROR,
                         category="validation",
-                        message=f"Error running validation '{check_function}': {str(e)}",
+                        message=f"Error running validation '{check_function}': {e!s}",
                         location=str(file_path),
                         suggestion="Check the validation implementation for issues",
                         rule_id=rule.rule_id,

@@ -3,7 +3,7 @@
 import json
 import os
 from unittest import TestCase, mock
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 from aiohttp import ClientResponseError, ClientSession
@@ -24,13 +24,13 @@ class TestLinearClient(TestCase):
         """Test initialization without an API key falls back to environment variable."""
         with mock.patch.dict(os.environ, {"LINEAR_API_KEY": "env_api_key"}):
             client = LinearClient()
-            self.assertEqual(client.headers["Authorization"], "Bearer env_api_key")
+            assert client.headers["Authorization"] == "Bearer env_api_key"
 
     def test_init_with_api_key(self):
         """Test initialization with an explicit API key."""
-        self.assertEqual(self.client.headers["Authorization"], f"Bearer {self.api_key}")
-        self.assertEqual(self.client.base_url, "https://api.linear.app/graphql")
-        self.assertEqual(self.client.headers["Content-Type"], "application/json")
+        assert self.client.headers["Authorization"] == f"Bearer {self.api_key}"
+        assert self.client.base_url == "https://api.linear.app/graphql"
+        assert self.client.headers["Content-Type"] == "application/json"
 
     @pytest.mark.asyncio
     async def test_query_success(self):
@@ -58,13 +58,13 @@ class TestLinearClient(TestCase):
 
             # Verify the request was made correctly
             mock_post.assert_called_once()
-            args, kwargs = mock_post.call_args
-            self.assertEqual(kwargs["url"], self.client.base_url)
-            self.assertEqual(kwargs["headers"], self.client.headers)
-            self.assertEqual(json.loads(kwargs["json"]["query"]), query.strip())
+            _args, kwargs = mock_post.call_args
+            assert kwargs["url"] == self.client.base_url
+            assert kwargs["headers"] == self.client.headers
+            assert json.loads(kwargs["json"]["query"]) == query.strip()
 
             # Verify the response was handled correctly
-            self.assertEqual(result, self.mock_response["data"])
+            assert result == self.mock_response["data"]
 
     @pytest.mark.asyncio
     async def test_query_with_variables(self):
@@ -89,8 +89,8 @@ class TestLinearClient(TestCase):
 
             # Verify variables were included in the request
             request_data = json.loads(mock_post.call_args[1]["json"])
-            self.assertEqual(request_data["variables"], variables)
-            self.assertEqual(result, self.mock_response["data"])
+            assert request_data["variables"] == variables
+            assert result == self.mock_response["data"]
 
     @pytest.mark.asyncio
     async def test_query_http_error(self):
@@ -102,7 +102,7 @@ class TestLinearClient(TestCase):
             )
             mock_post.return_value.__aenter__.return_value = mock_resp
 
-            with self.assertRaises(ClientResponseError):
+            with pytest.raises(ClientResponseError):
                 await self.client.query("query { test }")
 
     @pytest.mark.asyncio
@@ -116,16 +116,16 @@ class TestLinearClient(TestCase):
             mock_resp.json.return_value = error_response
             mock_post.return_value.__aenter__.return_value = mock_resp
 
-            with self.assertRaises(Exception) as context:
+            with pytest.raises(Exception) as context:
                 await self.client.query("query { invalid }")
 
-            self.assertIn("Linear API error: Unauthorized, Invalid query", str(context.exception))
+            assert "Linear API error: Unauthorized, Invalid query" in str(context.value)
 
     @pytest.mark.asyncio
     async def test_context_manager(self):
         """Test client can be used as a context manager."""
         async with LinearClient(api_key=self.api_key) as client:
-            self.assertIsInstance(client, LinearClient)
-            self.assertIsInstance(client.session, ClientSession)
+            assert isinstance(client, LinearClient)
+            assert isinstance(client.session, ClientSession)
         # Session should be closed after context manager exits
-        self.assertTrue(client.session.closed)
+        assert client.session.closed

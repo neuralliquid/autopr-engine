@@ -1,117 +1,37 @@
-# Simplified Pre-commit hooks configuration for AutoPR Engine
-# Optimized for cross-platform compatibility
-# See https://pre-commit.com for more information
+# AutoPR Pre-commit Configuration
+# Workflow for all quality checks
 
 repos:
-  # Local hooks for our custom fixers
-  - repo: local
-    hooks:
-      # Enhanced Whitespace and Line Ending Fixer
-      - id: whitespace-fixer
-        name: Fix whitespace and line endings
-        entry: python
-        args: ['tools/whitespace_fixer/pre-commit-hook.py']
-        language: system
-        types: [text]
-        exclude: |
-          (?x)^(
-            .*\.min\.(js|css)$|
-            .*\.lock$|
-            .*\.log$|
-            node_modules/.*|
-            \.git/.*|
-            htmlcov/.*|
-            .*\.egg-info/.*|
-            __pycache__/.*|
-            \.pytest_cache/.*
-          )$
-        stages: [pre-commit]
-
-      # Enhanced Markdown Linter
-      - id: markdown-linter
-        name: Lint and fix markdown files
-        entry: python
-        args: ['tools/markdown_lint/pre-commit-hook.py']
-        language: system
-        files: \.md$
-        exclude: |
-          (?x)^(
-            node_modules/.*|
-            \.git/.*|
-            htmlcov/.*|
-            .*\.egg-info/.*
-          )$
-        stages: [pre-commit]
-
-  # Pre-commit built-in hooks
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
-    hooks:
-      - id: check-yaml
-        args: [--unsafe]  # Allow custom YAML tags
-        exclude: |
-          (?x)^(
-            configs/workflows/.*|
-            templates/.*\.yml|
-            .*\.template\.ya?ml
-          )$
-      - id: check-toml
-      - id: check-json
-      - id: check-added-large-files
-        args: [--maxkb=1000]
-      - id: check-merge-conflict
-      - id: debug-statements
-      - id: mixed-line-ending
-        args: [--fix=lf]
-
-  # Python code formatting with Black
+  # Basic formatting (fast)
   - repo: https://github.com/psf/black
-    rev: 24.8.0
+    rev: 24.1.1
     hooks:
       - id: black
         args: [--line-length=100]
-        language_version: python3
 
-  # Python import sorting with isort
   - repo: https://github.com/pycqa/isort
     rev: 5.13.2
     hooks:
       - id: isort
-        args: [--profile=black, --line-length=100]
+        args: [--profile=black]
 
-  # Python linting with flake8
-  - repo: https://github.com/pycqa/flake8
-    rev: 7.1.1
+  # Prettier for JSON, YAML, Markdown formatting
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
     hooks:
-      - id: flake8
+      - id: prettier
+        types_or: [json, yaml, markdown]
+        args: [--prose-wrap=always, --print-width=100]
 
-# Configuration for specific hooks
-default_language_version:
-  python: python3
-
-# Exclude patterns
-exclude: |
-  (?x)^(
-    \.venv/|
-    \.git/|
-    \.mypy_cache/|
-    \.pytest_cache/|
-    __pycache__/|
-    \.coverage|
-    htmlcov/|
-    build/|
-    dist/|
-    \.eggs/|
-    .*\.egg-info/|
-    migrations/|
-    docs/_build/|
-    node_modules/|
-    site-packages/|
-    .*site-packages.*
-  )$
-
-# Fail fast - stop running hooks after first failure
-fail_fast: false
-
-# Minimum pre-commit version
-minimum_pre_commit_version: 3.4.0
+  # Quality Engine (replaces all other tools)
+  - repo: local
+    hooks:
+      - id: quality-engine
+        name: AutoPR Quality Engine
+        entry: python -m autopr.actions.quality_engine
+        language: system
+        types: [python]
+        args: [--mode=smart]
+        stages: [pre-commit]
+        verbose: true
+        pass_filenames: false
