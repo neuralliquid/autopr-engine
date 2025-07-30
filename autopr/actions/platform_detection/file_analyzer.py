@@ -5,11 +5,12 @@ This module provides backward compatibility for the old FileAnalyzer interface.
 New code should use the modular analyzer in autopr.actions.platform_detection.analysis
 """
 
+import json
+import re
 import warnings
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 
-from autopr.actions.platform_detection.analysis import FileAnalyzer as ModularFileAnalyzer
 from autopr.actions.platform_detection.analysis import create_file_analyzer
 from autopr.actions.platform_detection.analysis.patterns import ContentPattern, FilePattern
 
@@ -41,8 +42,8 @@ class FileAnalyzer:
         self._analyzer = create_file_analyzer(workspace_path)
 
     def scan_for_platform_files(
-        self, platform_configs: Dict[str, Dict[str, Any]]
-    ) -> Dict[str, List[str]]:
+        self, platform_configs: dict[str, dict[str, Any]]
+    ) -> dict[str, list[str]]:
         """Scan workspace for platform-specific files."""
         results = {}
 
@@ -52,9 +53,11 @@ class FileAnalyzer:
             for file_pattern in config.get("files", []):
                 # Convert glob patterns to the new format
                 pattern = FilePattern(platform, file_pattern, confidence=0.7)
-                for match in self._analyzer.analyze_directory():
-                    if pattern.matches(match.path):
-                        file_matches.append(str(match.path.relative_to(self.workspace_path)))
+                file_matches.extend(
+                    str(match.path.relative_to(self.workspace_path))
+                    for match in self._analyzer.analyze_directory()
+                    if pattern.matches(match.path)
+                )
 
             if file_matches:
                 results[platform] = list(set(file_matches))  # Remove duplicates
@@ -62,8 +65,8 @@ class FileAnalyzer:
         return results
 
     def scan_for_folder_patterns(
-        self, platform_configs: Dict[str, Dict[str, Any]]
-    ) -> Dict[str, List[str]]:
+        self, platform_configs: dict[str, dict[str, Any]]
+    ) -> dict[str, list[str]]:
         """Scan workspace for platform-specific folder patterns."""
         results = {}
 
@@ -71,34 +74,36 @@ class FileAnalyzer:
             folder_matches = []
             for folder_pattern in config.get("folder_patterns", []):
                 # Look for directories matching the pattern
-                for dir_path in self.workspace_path.glob(f"**/{folder_pattern}"):
-                    if dir_path.is_dir():
-                        folder_matches.append(str(dir_path.relative_to(self.workspace_path)))
+                folder_matches.extend(
+                    str(dir_path.relative_to(self.workspace_path))
+                    for dir_path in self.workspace_path.glob(f"**/{folder_pattern}")
+                    if dir_path.is_dir()
+                )
 
             if folder_matches:
                 results[platform] = list(set(folder_matches))  # Remove duplicates
 
         return results
 
-    def _find_files_by_pattern(self, pattern: str) -> List[str]:
+    def _find_files_by_pattern(self, pattern: str) -> list[str]:
         """Find files matching the given glob pattern."""
-        matches = []
-        for file_path in self.workspace_path.glob("**/" + pattern):
-            if file_path.is_file():
-                matches.append(str(file_path.relative_to(self.workspace_path)))
-        return matches
+        return [
+            str(file_path.relative_to(self.workspace_path))
+            for file_path in self.workspace_path.glob("**/" + pattern)
+            if file_path.is_file()
+        ]
 
-    def _find_folders_by_pattern(self, pattern: str) -> List[str]:
+    def _find_folders_by_pattern(self, pattern: str) -> list[str]:
         """Find folders matching the given glob pattern."""
-        matches = []
-        for dir_path in self.workspace_path.glob("**/" + pattern):
-            if dir_path.is_dir():
-                matches.append(str(dir_path.relative_to(self.workspace_path)))
-        return matches
+        return [
+            str(dir_path.relative_to(self.workspace_path))
+            for dir_path in self.workspace_path.glob("**/" + pattern)
+            if dir_path.is_dir()
+        ]
 
     def analyze_file_content(
-        self, file_path: str, platform_configs: Dict[str, Dict[str, Any]]
-    ) -> Dict[str, float]:
+        self, file_path: str, platform_configs: dict[str, dict[str, Any]]
+    ) -> dict[str, float]:
         """Analyze file content for platform indicators."""
         file_path_obj = Path(file_path)
         if not file_path_obj.exists() or not file_path_obj.is_file():
@@ -107,12 +112,12 @@ class FileAnalyzer:
         try:
             content = file_path_obj.read_text(encoding="utf-8", errors="ignore")
             return self._analyze_content(content, platform_configs)
-        except (IOError, UnicodeDecodeError):
+        except (OSError, UnicodeDecodeError):
             return {}
 
     def _analyze_content(
-        self, content: str, platform_configs: Dict[str, Dict[str, Any]]
-    ) -> Dict[str, float]:
+        self, content: str, platform_configs: dict[str, dict[str, Any]]
+    ) -> dict[str, float]:
         """Analyze content for platform indicators."""
         results = {}
         for platform, config in platform_configs.items():
@@ -129,8 +134,8 @@ class FileAnalyzer:
         return results
 
     def scan_for_platform_indicators(
-        self, platform_configs: Dict[str, Dict[str, Any]]
-    ) -> Dict[str, Dict[str, Any]]:
+        self, platform_configs: dict[str, dict[str, Any]]
+    ) -> dict[str, dict[str, Any]]:
         """
         Scan the workspace for platform indicators.
 
@@ -171,7 +176,7 @@ class FileAnalyzer:
 
         return results
 
-    def analyze_package_json(self) -> Dict[str, Any]:
+    def analyze_package_json(self) -> dict[str, Any]:
         """Analyze package.json for platform indicators."""
         package_json_path = self.workspace_path / "package.json"
 
@@ -179,7 +184,7 @@ class FileAnalyzer:
             return {}
 
         try:
-            with open(package_json_path, "r", encoding="utf-8") as f:
+            with open(package_json_path, encoding="utf-8") as f:
                 package_data = json.load(f)
 
             return {
@@ -189,10 +194,10 @@ class FileAnalyzer:
                 "name": package_data.get("name", ""),
                 "description": package_data.get("description", ""),
             }
-        except (json.JSONDecodeError, IOError):
+        except (OSError, json.JSONDecodeError):
             return {}
 
-    def analyze_requirements_txt(self) -> List[str]:
+    def analyze_requirements_txt(self) -> list[str]:
         """Analyze requirements.txt for Python dependencies."""
         requirements_path = self.workspace_path / "requirements.txt"
 
@@ -200,7 +205,7 @@ class FileAnalyzer:
             return []
 
         try:
-            with open(requirements_path, "r", encoding="utf-8") as f:
+            with open(requirements_path, encoding="utf-8") as f:
                 lines = f.readlines()
 
             dependencies = []
@@ -212,10 +217,10 @@ class FileAnalyzer:
                     dependencies.append(package_name)
 
             return dependencies
-        except IOError:
+        except OSError:
             return []
 
-    def analyze_dockerfile(self) -> Dict[str, Any]:
+    def analyze_dockerfile(self) -> dict[str, Any]:
         """Analyze Dockerfile for platform indicators."""
         dockerfile_path = self.workspace_path / "Dockerfile"
 
@@ -223,23 +228,22 @@ class FileAnalyzer:
             return {}
 
         try:
-            with open(dockerfile_path, "r", encoding="utf-8") as f:
+            with open(dockerfile_path, encoding="utf-8") as f:
                 content = f.read()
 
-            analysis = {
+            return {
                 "base_images": self._extract_base_images(content),
                 "exposed_ports": self._extract_exposed_ports(content),
                 "environment_vars": self._extract_env_vars(content),
                 "commands": self._extract_run_commands(content),
             }
 
-            return analysis
-        except IOError:
+        except OSError:
             return {}
 
     def scan_content_for_patterns(
-        self, platform_configs: Dict[str, Dict[str, Any]]
-    ) -> Dict[str, int]:
+        self, platform_configs: dict[str, dict[str, Any]]
+    ) -> dict[str, int]:
         """Scan file contents for platform-specific patterns."""
         pattern_matches = {}
 
@@ -255,7 +259,7 @@ class FileAnalyzer:
 
         return pattern_matches
 
-    def _find_files_by_pattern(self, pattern: str) -> List[str]:
+    def _find_files_by_pattern(self, pattern: str) -> list[str]:
         """Find files matching a specific pattern."""
         matches = []
 
@@ -273,7 +277,7 @@ class FileAnalyzer:
 
         return matches
 
-    def _find_folders_by_pattern(self, pattern: str) -> List[str]:
+    def _find_folders_by_pattern(self, pattern: str) -> list[str]:
         """Find folders matching a specific pattern."""
         matches = []
 
@@ -299,7 +303,7 @@ class FileAnalyzer:
             for file_path in self.workspace_path.rglob("*"):
                 if file_path.is_file() and self._is_text_file(file_path):
                     try:
-                        with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                        with open(file_path, encoding="utf-8", errors="ignore") as f:
                             content = f.read()
                             match_count += len(re.findall(pattern, content, re.IGNORECASE))
                     except Exception:
@@ -348,13 +352,12 @@ class FileAnalyzer:
             "readme",
         }
 
-    def _extract_base_images(self, dockerfile_content: str) -> List[str]:
+    def _extract_base_images(self, dockerfile_content: str) -> list[str]:
         """Extract base images from Dockerfile."""
         pattern = r"^FROM\s+([^\s]+)"
-        matches = re.findall(pattern, dockerfile_content, re.MULTILINE | re.IGNORECASE)
-        return matches
+        return re.findall(pattern, dockerfile_content, re.MULTILINE | re.IGNORECASE)
 
-    def _extract_exposed_ports(self, dockerfile_content: str) -> List[str]:
+    def _extract_exposed_ports(self, dockerfile_content: str) -> list[str]:
         """Extract exposed ports from Dockerfile."""
         pattern = r"^EXPOSE\s+(.+)"
         matches = re.findall(pattern, dockerfile_content, re.MULTILINE | re.IGNORECASE)
@@ -363,14 +366,12 @@ class FileAnalyzer:
             ports.extend(match.split())
         return ports
 
-    def _extract_env_vars(self, dockerfile_content: str) -> List[str]:
+    def _extract_env_vars(self, dockerfile_content: str) -> list[str]:
         """Extract environment variables from Dockerfile."""
         pattern = r"^ENV\s+([^=\s]+)"
-        matches = re.findall(pattern, dockerfile_content, re.MULTILINE | re.IGNORECASE)
-        return matches
+        return re.findall(pattern, dockerfile_content, re.MULTILINE | re.IGNORECASE)
 
-    def _extract_run_commands(self, dockerfile_content: str) -> List[str]:
+    def _extract_run_commands(self, dockerfile_content: str) -> list[str]:
         """Extract RUN commands from Dockerfile."""
         pattern = r"^RUN\s+(.+)"
-        matches = re.findall(pattern, dockerfile_content, re.MULTILINE | re.IGNORECASE)
-        return matches
+        return re.findall(pattern, dockerfile_content, re.MULTILINE | re.IGNORECASE)

@@ -7,26 +7,27 @@ Handles template report generation and export functionality.
 """
 
 import json
+import operator
 from collections import defaultdict
 from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
-from .template_models import TemplateInfo, TemplateReport
+from .template_models import TemplateInfo
 
 
 class TemplateReportGenerator:
     """Generates comprehensive reports about templates."""
 
-    def __init__(self, templates: List[TemplateInfo], platform_categories: Dict[str, Any]) -> None:
+    def __init__(self, templates: list[TemplateInfo], platform_categories: dict[str, Any]) -> None:
         """Initialize the report generator."""
         self.templates = templates
         self.platform_categories = platform_categories
 
-    def generate_template_report(self) -> Dict[str, Any]:
+    def generate_template_report(self) -> dict[str, Any]:
         """Generate a comprehensive report of all templates."""
-        report: Dict[str, Any] = {
+        report: dict[str, Any] = {
             "summary": {
                 "total_templates": len(self.templates),
                 "generated_at": datetime.now().isoformat(),
@@ -57,14 +58,14 @@ class TemplateReportGenerator:
             )
 
         # Count by platform
-        platform_counts: Dict[str, int] = defaultdict(int)
+        platform_counts: dict[str, int] = defaultdict(int)
         for template in self.templates:
             for platform in template.platforms:
                 platform_counts[platform] += 1
         report["summary"]["platforms"] = dict(platform_counts)
 
         # Complexity distribution
-        complexity_counts: Dict[str, int] = defaultdict(int)
+        complexity_counts: dict[str, int] = defaultdict(int)
         for template in self.templates:
             complexity_counts[template.complexity] += 1
         report["summary"]["complexity_distribution"] = dict(complexity_counts)
@@ -74,18 +75,18 @@ class TemplateReportGenerator:
             platform_templates = [t for t in self.templates if platform in t.platforms]
             report["platform_coverage"][platform] = {
                 "total_templates": len(platform_templates),
-                "categories": list(set(t.category for t in platform_templates)),
-                "use_cases": list(set(uc for t in platform_templates for uc in t.use_cases)),
+                "categories": list({t.category for t in platform_templates}),
+                "use_cases": list({uc for t in platform_templates for uc in t.use_cases}),
             }
 
         return report
 
-    def generate_platform_summary(self) -> Dict[str, Any]:
+    def generate_platform_summary(self) -> dict[str, Any]:
         """Generate a summary of platform coverage and capabilities."""
-        platform_summary: Dict[str, Any] = {}
+        platform_summary: dict[str, Any] = {}
 
         # Group templates by platform
-        platform_templates: Dict[str, List[TemplateInfo]] = defaultdict(list)
+        platform_templates: dict[str, list[TemplateInfo]] = defaultdict(list)
         for template in self.templates:
             for platform in template.platforms:
                 platform_templates[platform].append(template)
@@ -95,11 +96,11 @@ class TemplateReportGenerator:
                 continue
 
             # Calculate platform metrics
-            categories = list(set(t.category for t in templates))
-            use_cases = list(set(uc for t in templates for uc in t.use_cases))
-            features = list(set(f for t in templates for f in t.key_features))
+            categories = list({t.category for t in templates})
+            use_cases = list({uc for t in templates for uc in t.use_cases})
+            features = list({f for t in templates for f in t.key_features})
 
-            complexity_dist: Dict[str, int] = defaultdict(int)
+            complexity_dist: dict[str, int] = defaultdict(int)
             for template in templates:
                 complexity_dist[template.complexity] += 1
 
@@ -114,18 +115,18 @@ class TemplateReportGenerator:
 
         return platform_summary
 
-    def generate_category_analysis(self) -> Dict[str, Any]:
+    def generate_category_analysis(self) -> dict[str, Any]:
         """Generate analysis of template categories."""
-        category_analysis: Dict[str, Any] = {}
+        category_analysis: dict[str, Any] = {}
 
         # Group templates by category
-        category_templates: Dict[str, List[TemplateInfo]] = defaultdict(list)
+        category_templates: dict[str, list[TemplateInfo]] = defaultdict(list)
         for template in self.templates:
             category_templates[template.category].append(template)
 
         for category, templates in category_templates.items():
-            platforms = list(set(p for t in templates for p in t.platforms))
-            use_cases = list(set(uc for t in templates for uc in t.use_cases))
+            platforms = list({p for t in templates for p in t.platforms})
+            use_cases = list({uc for t in templates for uc in t.use_cases})
 
             category_analysis[category] = {
                 "template_count": len(templates),
@@ -138,7 +139,7 @@ class TemplateReportGenerator:
         return category_analysis
 
     def export_templates_json(
-        self, output_file: Optional[str] = None, templates_root: Optional[Path] = None
+        self, output_file: str | None = None, templates_root: Path | None = None
     ) -> str:
         """Export all template metadata to JSON format."""
         if output_file is None:
@@ -168,7 +169,7 @@ class TemplateReportGenerator:
         return output_file
 
     def export_templates_csv(
-        self, output_file: Optional[str] = None, templates_root: Optional[Path] = None
+        self, output_file: str | None = None, templates_root: Path | None = None
     ) -> str:
         """Export template metadata to CSV format."""
         if output_file is None:
@@ -215,7 +216,7 @@ class TemplateReportGenerator:
 
         return output_file
 
-    def _calculate_avg_complexity(self, templates: List[TemplateInfo]) -> float:
+    def _calculate_avg_complexity(self, templates: list[TemplateInfo]) -> float:
         """Calculate average complexity score for templates."""
         if not templates:
             return 0.0
@@ -235,15 +236,15 @@ class TemplateReportGenerator:
         return total_score / len(templates)
 
     def _get_most_common_features(
-        self, templates: List[TemplateInfo], limit: int = 10
-    ) -> List[str]:
+        self, templates: list[TemplateInfo], limit: int = 10
+    ) -> list[str]:
         """Get most common features across templates."""
-        feature_counts: Dict[str, int] = defaultdict(int)
+        feature_counts: dict[str, int] = defaultdict(int)
 
         for template in templates:
             for feature in template.key_features:
                 feature_counts[feature.lower()] += 1
 
         # Sort by frequency and return top features
-        sorted_features = sorted(feature_counts.items(), key=lambda x: x[1], reverse=True)
+        sorted_features = sorted(feature_counts.items(), key=operator.itemgetter(1), reverse=True)
         return [feature for feature, _ in sorted_features[:limit]]

@@ -4,12 +4,10 @@ Template Utilities Module
 Provides template management and rendering functionality.
 """
 
-import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any
 
 import jinja2
-import yaml
 
 from autopr.actions.prototype_enhancement.template_metadata import (
     TemplateMetadata,
@@ -41,7 +39,7 @@ class TemplateManager:
             searchpath=str(self.templates_dir), encoding="utf-8", followlinks=True
         )
 
-        env = jinja2.Environment(
+        return jinja2.Environment(
             loader=loader,
             autoescape=True,
             trim_blocks=True,
@@ -52,14 +50,12 @@ class TemplateManager:
         # Add custom filters and globals here if needed
         # env.filters['custom_filter'] = custom_filter_function
 
-        return env
-
     def render(
         self,
         template_key: str,
-        variables: Optional[Dict[str, Any]] = None,
-        variants: Optional[List[str]] = None,
-    ) -> Optional[str]:
+        variables: dict[str, Any] | None = None,
+        variants: list[str] | None = None,
+    ) -> str | None:
         """Render a template with the given variables and variants.
 
         Args:
@@ -96,7 +92,7 @@ class TemplateManager:
         return template_content
 
     def _apply_variants(
-        self, template_meta: TemplateMetadata, variants: List[str]
+        self, template_meta: TemplateMetadata, variants: list[str]
     ) -> TemplateMetadata:
         """Apply variants to a template metadata.
 

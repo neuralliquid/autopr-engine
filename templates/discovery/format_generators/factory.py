@@ -6,10 +6,10 @@ Format Generator Factory Module
 Factory for creating format generators and convenience functions.
 """
 
-from typing import List, Optional
 
-from ..content_analyzer import TemplateAnalysis
-from ..template_loader import TemplateLoader
+from discovery.content_analyzer import TemplateAnalysis
+from discovery.template_loader import TemplateLoader
+
 from .base import BaseFormatGenerator
 from .config import DocumentationConfig
 from .html import HTMLGenerator
@@ -44,8 +44,8 @@ class FormatGeneratorFactory:
 def generate_platform_guide(
     analysis: TemplateAnalysis,
     format_type: str = "markdown",
-    config: Optional[DocumentationConfig] = None,
-    template_loader: Optional[TemplateLoader] = None,
+    config: DocumentationConfig | None = None,
+    template_loader: TemplateLoader | None = None,
 ) -> str:
     """Generate a platform guide in the specified format."""
     if config is None:
@@ -58,10 +58,10 @@ def generate_platform_guide(
 
 
 def generate_documentation_index(
-    analyses: List[TemplateAnalysis],
+    analyses: list[TemplateAnalysis],
     format_type: str = "markdown",
-    config: Optional[DocumentationConfig] = None,
-    template_loader: Optional[TemplateLoader] = None,
+    config: DocumentationConfig | None = None,
+    template_loader: TemplateLoader | None = None,
 ) -> str:
     """Generate a documentation index in the specified format."""
     if config is None:
@@ -74,5 +74,4 @@ def generate_documentation_index(
     # Handle JSON format specially for summary data
     if format_type.lower() == "json" and hasattr(generator, "generate_summary_data"):
         return generator.generate_summary_data(analyses)  # type: ignore
-    else:
-        return generator.generate_main_index(analyses)
+    return generator.generate_main_index(analyses)

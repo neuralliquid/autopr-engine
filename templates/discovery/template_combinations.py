@@ -6,7 +6,7 @@ Template Combinations Module
 Handles template combinations and use case recommendations.
 """
 
-from typing import Any, Dict, List
+from typing import Any
 
 from .template_models import TemplateCombination, TemplateInfo
 
@@ -14,13 +14,13 @@ from .template_models import TemplateCombination, TemplateInfo
 class TemplateCombinationEngine:
     """Generates template combinations for specific use cases."""
 
-    def __init__(self, templates: List[TemplateInfo]) -> None:
+    def __init__(self, templates: list[TemplateInfo]) -> None:
         """Initialize the combination engine."""
         self.templates = templates
 
-    def get_template_combinations(self, use_case: str) -> List[Dict[str, Any]]:
+    def get_template_combinations(self, use_case: str) -> list[dict[str, Any]]:
         """Get recommended template combinations for a specific use case."""
-        combinations: List[Dict[str, Any]] = []
+        combinations: list[dict[str, Any]] = []
 
         # Find use case templates
         use_case_templates = [
@@ -72,12 +72,12 @@ class TemplateCombinationEngine:
 
         return combinations
 
-    def get_integration_recommendations(self, template: TemplateInfo) -> List[TemplateInfo]:
+    def get_integration_recommendations(self, template: TemplateInfo) -> list[TemplateInfo]:
         """Get integration recommendations for a specific template."""
         if not template:
             return []
 
-        recommendations: List[TemplateInfo] = []
+        recommendations: list[TemplateInfo] = []
         integration_templates = [t for t in self.templates if t.category == "integration"]
 
         for integration in integration_templates:
@@ -89,12 +89,12 @@ class TemplateCombinationEngine:
 
         return recommendations[:5]  # Return top 5 recommendations
 
-    def get_workflow_templates(self, main_template: TemplateInfo) -> List[TemplateInfo]:
+    def get_workflow_templates(self, main_template: TemplateInfo) -> list[TemplateInfo]:
         """Get workflow templates that complement the main template."""
         if not main_template:
             return []
 
-        workflow_templates: List[TemplateInfo] = []
+        workflow_templates: list[TemplateInfo] = []
 
         # Find templates in the same category or related categories
         for template in self.templates:
@@ -108,7 +108,7 @@ class TemplateCombinationEngine:
         return workflow_templates[:3]  # Return top 3 workflow templates
 
     def create_template_combination(
-        self, main_template: TemplateInfo, integrations: List[TemplateInfo], platform: str
+        self, main_template: TemplateInfo, integrations: list[TemplateInfo], platform: str
     ) -> TemplateCombination:
         """Create a structured template combination."""
         integration_names = [t.name for t in integrations]
@@ -181,7 +181,7 @@ class TemplateCombinationEngine:
         return False
 
     def _estimate_total_time(
-        self, main_template: TemplateInfo, integrations: List[TemplateInfo]
+        self, main_template: TemplateInfo, integrations: list[TemplateInfo]
     ) -> str:
         """Estimate total time for template combination."""
         # Simple time estimation logic
@@ -206,11 +206,10 @@ class TemplateCombinationEngine:
 
         if total_score <= 2:
             return "1-2 hours"
-        elif total_score <= 4:
+        if total_score <= 4:
             return "3-6 hours"
-        elif total_score <= 6:
+        if total_score <= 6:
             return "1-2 days"
-        elif total_score <= 8:
+        if total_score <= 8:
             return "3-5 days"
-        else:
-            return "1-2 weeks"
+        return "1-2 weeks"

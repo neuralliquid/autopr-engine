@@ -17,4 +17,4 @@ from .linter import YAMLLinter
 from .models import FileReport, IssueSeverity, LintIssue
 
 __version__ = "0.1.0"
-__all__ = ["YAMLLinter", "FileReport", "LintIssue", "IssueSeverity"]
+__all__ = ["FileReport", "IssueSeverity", "LintIssue", "YAMLLinter"]

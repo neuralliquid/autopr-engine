@@ -24,12 +24,6 @@ class CreateGithubRelease(Action[Inputs, Outputs]):
     id = "create_github_release"
 
     async def run(self, inputs: Inputs) -> Outputs:
-        print("--- Create GitHub Release ---")
-        print(f"Tag: {inputs.tag_name}")
-        print(f"Name: {inputs.name}")
-        print(f"Draft: {inputs.is_draft}")
-        print(f"Prerelease: {inputs.is_prerelease}")
-        print(f"Body:\\n{inputs.body}")
 
         simulated_url = f"https://github.com/example/repo/releases/tag/{inputs.tag_name}"
 

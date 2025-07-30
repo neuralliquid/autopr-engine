@@ -5,7 +5,7 @@ Base classes for template providers.
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 
 @dataclass
@@ -17,48 +17,43 @@ class TemplateMetadata:
     description: str
     version: str
     author: str
-    tags: List[str]
+    tags: list[str]
     category: str
-    platforms: List[str]
-    variables: Dict[str, Any]
-    variants: Dict[str, Dict[str, Any]] = None
+    platforms: list[str]
+    variables: dict[str, Any]
+    variants: dict[str, dict[str, Any]] = None
     documentation: str = ""
-    discovery: Dict[str, Any] = None
+    discovery: dict[str, Any] = None
 
 
 class TemplateProvider(ABC):
     """Base class for template providers."""
 
     @abstractmethod
-    def get_template(self, template_id: str) -> Optional[TemplateMetadata]:
+    def get_template(self, template_id: str) -> TemplateMetadata | None:
         """Get template metadata by ID."""
-        pass
 
     @abstractmethod
-    def get_all_templates(self) -> List[TemplateMetadata]:
+    def get_all_templates(self) -> list[TemplateMetadata]:
         """Get all available templates."""
-        pass
 
     @abstractmethod
-    def search_templates(self, query: str) -> List[TemplateMetadata]:
+    def search_templates(self, query: str) -> list[TemplateMetadata]:
         """Search for templates matching the query."""
-        pass
 
     @abstractmethod
     def render_template(
-        self, template_id: str, context: Dict[str, Any], variant: Optional[str] = None
+        self, template_id: str, context: dict[str, Any], variant: str | None = None
     ) -> str:
         """Render a template with the given context and optional variant."""
-        pass
 
     @abstractmethod
     def render_to_file(
         self,
         template_id: str,
-        output_path: Union[str, Path],
-        context: Dict[str, Any],
-        variant: Optional[str] = None,
+        output_path: str | Path,
+        context: dict[str, Any],
+        variant: str | None = None,
         **kwargs,
     ) -> None:
         """Render a template to a file."""
-        pass

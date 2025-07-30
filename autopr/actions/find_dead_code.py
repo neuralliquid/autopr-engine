@@ -1,6 +1,3 @@
-import subprocess
-from typing import List
-
 import pydantic
 
 from autopr.actions.base import Action
@@ -12,7 +9,7 @@ class Inputs(pydantic.BaseModel):
 
 class Outputs(pydantic.BaseModel):
     dead_code_report: str
-    dead_exports: List[str]
+    dead_exports: list[str]
 
 
 class FindDeadCode(Action[Inputs, Outputs]):
@@ -23,7 +20,6 @@ class FindDeadCode(Action[Inputs, Outputs]):
     id = "find_dead_code"
 
     async def run(self, inputs: Inputs) -> Outputs:
-        print("--- Finding Dead Code ---")
         # In a real implementation, you would run 'npx ts-prune' or 'npx knip'
         # For simulation, return a fake report
         report = "Found 2 unused exports:\n- shared/utils.ts: unusedFunction\n- components/old/UnusedComponent.tsx: UnusedComponent"

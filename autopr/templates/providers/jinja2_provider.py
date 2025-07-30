@@ -5,7 +5,7 @@ Jinja2 template provider implementation.
 import logging
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 import yaml
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
@@ -45,7 +45,6 @@ class Jinja2TemplateProvider(TemplateProvider):
 
     def _add_custom_filters(self):
         """Add custom Jinja2 filters."""
-        from datetime import datetime
 
         def datetime_format(value, format_str="%Y-%m-%d %H:%M:%S"):
             """Format a datetime object."""
@@ -63,17 +62,17 @@ class Jinja2TemplateProvider(TemplateProvider):
 
         self.env.globals.update({"now": datetime.now, "env": os.environ.get})
 
-    def _load_template_metadata(self, template_dir: Path) -> Optional[Dict[str, Any]]:
+    def _load_template_metadata(self, template_dir: Path) -> dict[str, Any] | None:
         """Load template metadata from a directory."""
         metadata_file = template_dir / f"{template_dir.name}.meta.yaml"
         if not metadata_file.exists():
             return None
 
         try:
-            with open(metadata_file, "r", encoding="utf-8") as f:
+            with open(metadata_file, encoding="utf-8") as f:
                 return yaml.safe_load(f)
         except Exception as e:
-            logger.error(f"Error loading metadata from {metadata_file}: {e}")
+            logger.exception(f"Error loading metadata from {metadata_file}: {e}")
             return None
 
     def _load_all_templates(self):
@@ -133,39 +132,37 @@ class Jinja2TemplateProvider(TemplateProvider):
             return True
 
         except Exception as e:
-            logger.error(f"Error loading template {template_id}: {e}")
+            logger.exception(f"Error loading template {template_id}: {e}")
             return False
 
-    def get_template(self, template_id: str) -> Optional[TemplateMetadata]:
+    def get_template(self, template_id: str) -> TemplateMetadata | None:
         """Get template metadata by ID."""
         return self.metadata_cache.get(template_id)
 
-    def get_all_templates(self) -> List[TemplateMetadata]:
+    def get_all_templates(self) -> list[TemplateMetadata]:
         """Get all available templates."""
         return list(self.metadata_cache.values())
 
-    def search_templates(self, query: str) -> List[TemplateMetadata]:
+    def search_templates(self, query: str) -> list[TemplateMetadata]:
         """Search for templates matching the query."""
         query = query.lower()
-        results = []
 
-        for metadata in self.metadata_cache.values():
-            if (
-                query in metadata.template_id.lower()
-                or query in metadata.title.lower()
-                or query in metadata.description.lower()
-                or any(query in tag.lower() for tag in metadata.tags)
-            ):
-                results.append(metadata)
-
-        return results
+        return [
+            metadata
+            for metadata in self.metadata_cache.values()
+            if query in metadata.template_id.lower()
+            or query in metadata.title.lower()
+            or query in metadata.description.lower()
+            or any(query in tag.lower() for tag in metadata.tags)
+        ]
 
     def render_template(
-        self, template_id: str, context: Dict[str, Any], variant: Optional[str] = None
+        self, template_id: str, context: dict[str, Any], variant: str | None = None
     ) -> str:
         """Render a template with the given context and optional variant."""
         if template_id not in self.template_cache:
-            raise ValueError(f"Template not found: {template_id}")
+            msg = f"Template not found: {template_id}"
+            raise ValueError(msg)
 
         # Get template info
         template_info = self.template_cache[template_id]
@@ -191,15 +188,15 @@ class Jinja2TemplateProvider(TemplateProvider):
             return template.render(**context)
 
         except Exception as e:
-            logger.error(f"Error rendering template {template_id}: {e}")
+            logger.exception(f"Error rendering template {template_id}: {e}")
             raise
 
     def render_to_file(
         self,
         template_id: str,
-        output_path: Union[str, Path],
-        context: Dict[str, Any],
-        variant: Optional[str] = None,
+        output_path: str | Path,
+        context: dict[str, Any],
+        variant: str | None = None,
         **kwargs,
     ) -> None:
         """Render a template to a file."""

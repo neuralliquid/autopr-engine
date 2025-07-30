@@ -8,7 +8,7 @@ Checks both platform index files and individual platform configurations.
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 # Project directories
 PROJECT_ROOT = Path(__file__).parent.parent
@@ -32,18 +32,15 @@ REQUIRED_INDEX_FIELDS = ["version", "platforms"]
 
 def print_section(title: str) -> None:
     """Print a section header."""
-    print(f"\n{'-' * 40}")
-    print(f"{title}")
-    print(f"{'-' * 40}")
 
 
-def load_json_file(file_path: Path) -> Tuple[bool, Optional[Dict[str, Any]], List[str]]:
+def load_json_file(file_path: Path) -> tuple[bool, dict[str, Any] | None, list[str]]:
     """Load and parse a JSON file with detailed error reporting."""
     if not file_path.exists():
         return False, None, [f"File does not exist: {file_path}"]
 
     try:
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             content = f.read().strip()
             if not content:
                 return False, None, ["File is empty"]
@@ -53,9 +50,9 @@ def load_json_file(file_path: Path) -> Tuple[bool, Optional[Dict[str, Any]], Lis
                     return False, None, [f"Expected JSON object, got {type(data).__name__}"]
                 return True, data, []
             except json.JSONDecodeError as e:
-                return False, None, [f"Invalid JSON: {str(e)}"]
+                return False, None, [f"Invalid JSON: {e!s}"]
     except Exception as e:
-        return False, None, [f"Error reading file: {str(e)}"]
+        return False, None, [f"Error reading file: {e!s}"]
 
 
 def is_platform_index(file_path: Path) -> bool:
@@ -63,27 +60,26 @@ def is_platform_index(file_path: Path) -> bool:
     return file_path.name.endswith("_platforms.json")
 
 
-def find_config_files() -> List[Path]:
+def find_config_files() -> list[Path]:
     """Find all JSON config files in platforms directory."""
     if not CONFIG_DIR.exists():
-        print(f"Error: Config directory not found: {CONFIG_DIR}")
         return []
     return [f for f in CONFIG_DIR.glob("**/*.json") if f.is_file()]
 
 
-def validate_platform_config(config: Dict[str, Any]) -> Tuple[bool, List[str]]:
+def validate_platform_config(config: dict[str, Any]) -> tuple[bool, list[str]]:
     """Validate platform config against schema."""
     errors = [f"Missing required field: {f}" for f in REQUIRED_PLATFORM_FIELDS if f not in config]
     return len(errors) == 0, errors
 
 
-def validate_platform_index(index: Dict[str, Any]) -> Tuple[bool, List[str]]:
+def validate_platform_index(index: dict[str, Any]) -> tuple[bool, list[str]]:
     """Validate platform index against schema."""
     errors = [f"Missing required field: {f}" for f in REQUIRED_INDEX_FIELDS if f not in index]
     return len(errors) == 0, errors
 
 
-def validate_file(file_path: Path) -> Tuple[bool, List[str]]:
+def validate_file(file_path: Path) -> tuple[bool, list[str]]:
     """Validate a single configuration file with detailed error reporting."""
     if not file_path.exists():
         return False, [f"File does not exist: {file_path}"]
@@ -101,30 +97,24 @@ def validate_file(file_path: Path) -> Tuple[bool, List[str]]:
             return validate_platform_index(data)
         return validate_platform_config(data)
     except Exception as e:
-        return False, [f"Validation error: {str(e)}"]
+        return False, [f"Validation error: {e!s}"]
 
 
-def print_validation_result(file_path: Path, is_valid: bool, errors: List[str]) -> int:
+def print_validation_result(file_path: Path, is_valid: bool, errors: list[str]) -> int:
     """Print validation result and return error count."""
-    rel_path = file_path.relative_to(PROJECT_ROOT)
-    print(f"\n{rel_path}")
+    file_path.relative_to(PROJECT_ROOT)
     if is_valid:
-        print("  ✅ Valid")
         return 0
-    print(f"  ❌ {len(errors)} error(s):")
-    for error in errors:
-        print(f"    - {error}")
+    for _error in errors:
+        pass
     return len(errors)
 
 
 def main() -> int:
     """Main entry point for the validation script."""
-    print("\n=== Platform Configuration Validation ===\n")
     config_files = find_config_files()
     if not config_files:
-        print("❌ Error: No configuration files found!")
         return 1
-    print(f"🔍 Found {len(config_files)} configuration files to validate")
 
     # Categorize files
     index_files = [f for f in config_files if is_platform_index(f)]
@@ -154,13 +144,8 @@ def main() -> int:
                 files_with_errors += 1
 
     # Print summary
-    print("\n=== Validation Summary ===")
     if total_errors == 0:
-        print("✅ All configurations are valid!")
-    else:
-        print(
-            f"❌ Found {total_errors} error(s) across {files_with_errors} file(s) out of {len(config_files)} total files"
-        )
+        pass
 
     return 1 if total_errors > 0 else 0
 

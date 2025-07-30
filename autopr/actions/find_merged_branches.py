@@ -1,6 +1,3 @@
-import subprocess
-from typing import List
-
 import pydantic
 
 from autopr.actions.base import Action
@@ -11,7 +8,7 @@ class Inputs(pydantic.BaseModel):
 
 
 class Outputs(pydantic.BaseModel):
-    merged_branches: List[str]
+    merged_branches: list[str]
 
 
 class FindMergedBranches(Action[Inputs, Outputs]):
@@ -22,7 +19,6 @@ class FindMergedBranches(Action[Inputs, Outputs]):
     id = "find_merged_branches"
 
     async def run(self, inputs: Inputs) -> Outputs:
-        print("--- Finding Merged Branches ---")
         # In a real implementation, you would run git commands to fetch, prune, and find merged branches
         # For simulation, return a fake list
         branches = ["feature/old-feature-1", "fix/old-bug-2"]

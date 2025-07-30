@@ -10,9 +10,9 @@ Centralized configuration management system with:
 """
 
 import os
+import pathlib
 import warnings
 from dataclasses import dataclass, field
-from pathlib import Path
 from typing import Any, Dict, Optional
 
 import yaml
@@ -39,14 +39,14 @@ class AutoPRConfig:
     """
 
     # GitHub configuration
-    github_token: Optional[str] = None
-    github_app_id: Optional[str] = None
-    github_private_key: Optional[str] = None
-    github_webhook_secret: Optional[str] = None
+    github_token: str | None = None
+    github_app_id: str | None = None
+    github_private_key: str | None = None
+    github_webhook_secret: str | None = None
 
     # AI/LLM configuration
-    openai_api_key: Optional[str] = None
-    anthropic_api_key: Optional[str] = None
+    openai_api_key: str | None = None
+    anthropic_api_key: str | None = None
     default_llm_provider: str = "openai"
 
     # Engine configuration
@@ -55,11 +55,11 @@ class AutoPRConfig:
     enable_debug_logging: bool = False
 
     # Database configuration
-    database_url: Optional[str] = None
-    redis_url: Optional[str] = None
+    database_url: str | None = None
+    redis_url: str | None = None
 
     # Additional settings
-    custom_settings: Dict[str, Any] = field(default_factory=dict)
+    custom_settings: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         """Load configuration from environment variables after initialization."""
@@ -87,14 +87,14 @@ class AutoPRConfig:
             env_value = os.getenv(env_var)
             if env_value is not None:
                 # Handle type conversion
-                if attr_name in ["max_concurrent_workflows", "workflow_timeout"]:
+                if attr_name in {"max_concurrent_workflows", "workflow_timeout"}:
                     setattr(self, attr_name, int(env_value))
                 elif attr_name == "enable_debug_logging":
-                    setattr(self, attr_name, env_value.lower() in ("true", "1", "yes", "on"))
+                    setattr(self, attr_name, env_value.lower() in {"true", "1", "yes", "on"})
                 else:
                     setattr(self, attr_name, env_value)
 
-    def _load_from_file(self, config_path: Optional[str] = None) -> None:
+    def _load_from_file(self, config_path: str | None = None) -> None:
         """Load configuration from YAML file."""
         if config_path is None:
             # Look for config file in common locations
@@ -103,18 +103,18 @@ class AutoPRConfig:
                 "autopr.yml",
                 ".autopr.yaml",
                 ".autopr.yml",
-                os.path.expanduser("~/.autopr.yaml"),
-                os.path.expanduser("~/.autopr.yml"),
+                pathlib.Path("~/.autopr.yaml").expanduser(),
+                pathlib.Path("~/.autopr.yml").expanduser(),
             ]
 
             for path in possible_paths:
-                if os.path.exists(path):
+                if pathlib.Path(path).exists():
                     config_path = path
                     break
 
-        if config_path and os.path.exists(config_path):
+        if config_path and pathlib.Path(config_path).exists():
             try:
-                with open(config_path, "r", encoding="utf-8") as f:
+                with open(config_path, encoding="utf-8") as f:
                     config_data = yaml.safe_load(f)
 
                 if config_data:
@@ -129,7 +129,7 @@ class AutoPRConfig:
 
                 logging.warning(f"Failed to load config from {config_path}: {e}")
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert configuration to dictionary."""
         result = {}
         for field_name in self.__dataclass_fields__:
@@ -157,10 +157,7 @@ class AutoPRConfig:
             return False
 
         # Ensure we have at least one LLM provider configured
-        if not any([self.openai_api_key, self.anthropic_api_key]):
-            return False
-
-        return True
+        return any([self.openai_api_key, self.anthropic_api_key])
 
     @classmethod
     def from_file(cls, config_path: str) -> "AutoPRConfig":
@@ -201,16 +198,16 @@ def get_config() -> AutoPRConfig:
 __all__ = [
     # Legacy configuration (deprecated)
     "AutoPRConfig",
-    "get_config",
     # New centralized configuration system
     "AutoPRSettings",
     "Environment",
     "LLMProvider",
+    "check_environment_variables",
+    "generate_config_report",
+    "get_config",
     "get_settings",
     "reload_settings",
     "set_settings",
     # Validation utilities
     "validate_configuration",
-    "check_environment_variables",
-    "generate_config_report",
 ]

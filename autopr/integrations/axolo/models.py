@@ -2,7 +2,6 @@
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import List
 
 
 @dataclass
@@ -14,5 +13,5 @@ class AxoloPRChannel:
     pr_number: int
     repository: str
     created_at: datetime
-    participants: List[str]
+    participants: list[str]
     status: str  # 'active', 'archived', 'closed'

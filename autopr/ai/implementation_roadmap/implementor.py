@@ -3,12 +3,11 @@ Main Implementation Roadmap Orchestrator
 Coordinates all modular components and maintains backward compatibility
 """
 
-import asyncio
 import logging
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from .phase_manager import PhaseManager
 from .report_generator import ReportGenerator
@@ -43,7 +42,7 @@ class Phase1ExtensionImplementor:
 
     async def run_implementation(
         self, phase: str = "immediate", dry_run: bool = False
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Run implementation for a specific phase
 
@@ -65,20 +64,19 @@ class Phase1ExtensionImplementor:
                     "summary": self.get_implementation_status(),
                     "next_steps": self.phase_manager.get_next_steps(),
                 }
-            else:
-                result = await self.phase_manager.execute_phase(phase, dry_run)
-                return {
-                    "status": result.status,
-                    "phase": phase,
-                    "completed_tasks": result.completed_tasks,
-                    "failed_tasks": result.failed_tasks,
-                    "duration": result.duration,
-                    "summary": self.get_implementation_status(),
-                    "next_steps": self.phase_manager.get_next_steps(),
-                }
+            result = await self.phase_manager.execute_phase(phase, dry_run)
+            return {
+                "status": result.status,
+                "phase": phase,
+                "completed_tasks": result.completed_tasks,
+                "failed_tasks": result.failed_tasks,
+                "duration": result.duration,
+                "summary": self.get_implementation_status(),
+                "next_steps": self.phase_manager.get_next_steps(),
+            }
 
         except Exception as e:
-            logger.error(f"Implementation failed for phase {phase}: {e}")
+            logger.exception(f"Implementation failed for phase {phase}: {e}")
             return {
                 "status": "error",
                 "phase": phase,
@@ -86,7 +84,7 @@ class Phase1ExtensionImplementor:
                 "summary": self.get_implementation_status(),
             }
 
-    async def run_all_phases(self, dry_run: bool = False) -> Dict[str, Any]:
+    async def run_all_phases(self, dry_run: bool = False) -> dict[str, Any]:
         """
         Run all implementation phases in sequence
 
@@ -98,7 +96,7 @@ class Phase1ExtensionImplementor:
         """
         return await self.run_implementation("all", dry_run)
 
-    async def run_specific_task(self, task_name: str, dry_run: bool = False) -> Dict[str, Any]:
+    async def run_specific_task(self, task_name: str, dry_run: bool = False) -> dict[str, Any]:
         """
         Run a specific implementation task
 
@@ -122,12 +120,12 @@ class Phase1ExtensionImplementor:
                 "error": execution.error_message,
             }
         except Exception as e:
-            logger.error(f"Task execution failed for {task_name}: {e}")
+            logger.exception(f"Task execution failed for {task_name}: {e}")
             return {"status": "error", "task_name": task_name, "error": str(e)}
 
     # Status and progress methods
 
-    def get_implementation_status(self) -> Dict[str, Any]:
+    def get_implementation_status(self) -> dict[str, Any]:
         """
         Get current implementation status across all phases
 
@@ -136,7 +134,7 @@ class Phase1ExtensionImplementor:
         """
         return self.phase_manager.get_overall_progress()
 
-    def get_phase_status(self, phase_name: str) -> Dict[str, Any]:
+    def get_phase_status(self, phase_name: str) -> dict[str, Any]:
         """
         Get status for a specific phase
 
@@ -158,7 +156,7 @@ class Phase1ExtensionImplementor:
         status = self.get_implementation_status()
         return status["overall_progress_percentage"]
 
-    def get_next_steps(self) -> List[Dict[str, Any]]:
+    def get_next_steps(self) -> list[dict[str, Any]]:
         """
         Get recommended next steps based on current progress
 
@@ -169,7 +167,7 @@ class Phase1ExtensionImplementor:
 
     # Task and phase management
 
-    def list_available_tasks(self, phase: Optional[str] = None) -> List[Dict[str, Any]]:
+    def list_available_tasks(self, phase: str | None = None) -> list[dict[str, Any]]:
         """
         List all available tasks, optionally filtered by phase
 
@@ -205,7 +203,7 @@ class Phase1ExtensionImplementor:
 
         return tasks
 
-    def list_available_phases(self) -> List[Dict[str, Any]]:
+    def list_available_phases(self) -> list[dict[str, Any]]:
         """
         List all available implementation phases
 
@@ -229,7 +227,7 @@ class Phase1ExtensionImplementor:
 
         return phases
 
-    def get_task_details(self, task_name: str) -> Optional[Dict[str, Any]]:
+    def get_task_details(self, task_name: str) -> dict[str, Any] | None:
         """
         Get detailed information about a specific task
 
@@ -290,7 +288,7 @@ class Phase1ExtensionImplementor:
 
     # Reporting methods
 
-    def generate_implementation_report(self, report_type: str = "detailed") -> Dict[str, Any]:
+    def generate_implementation_report(self, report_type: str = "detailed") -> dict[str, Any]:
         """
         Generate implementation report
 
@@ -302,19 +300,19 @@ class Phase1ExtensionImplementor:
         """
         if report_type == "executive":
             return self.report_generator.generate_executive_summary()
-        elif report_type == "detailed":
+        if report_type == "detailed":
             return self.report_generator.generate_detailed_report()
-        else:  # summary
-            return {
-                "report_type": "summary",
-                "generated_at": datetime.now().isoformat(),
-                "status": self.get_implementation_status(),
-                "next_steps": self.get_next_steps(),
-                "phase_summary": self.phase_manager.get_phase_summary(),
-            }
+        # summary
+        return {
+            "report_type": "summary",
+            "generated_at": datetime.now().isoformat(),
+            "status": self.get_implementation_status(),
+            "next_steps": self.get_next_steps(),
+            "phase_summary": self.phase_manager.get_phase_summary(),
+        }
 
     def save_implementation_report(
-        self, output_path: Optional[str] = None, format: str = "html"
+        self, output_path: str | None = None, format: str = "html"
     ) -> str:
         """
         Save implementation report to file
@@ -332,21 +330,21 @@ class Phase1ExtensionImplementor:
 
         if format == "html":
             return self.report_generator.generate_html_report(output_path)
-        else:  # json
-            report_data = self.generate_implementation_report("detailed")
-            output_file = Path(output_path)
-            output_file.parent.mkdir(parents=True, exist_ok=True)
+        # json
+        report_data = self.generate_implementation_report("detailed")
+        output_file = Path(output_path)
+        output_file.parent.mkdir(parents=True, exist_ok=True)
 
-            import json
+        import json
 
-            with open(output_file, "w", encoding="utf-8") as f:
-                json.dump(report_data, f, indent=2, default=str)
+        with open(output_file, "w", encoding="utf-8") as f:
+            json.dump(report_data, f, indent=2, default=str)
 
-            return str(output_file)
+        return str(output_file)
 
     # Utility methods
 
-    def validate_environment(self) -> Dict[str, Any]:
+    def validate_environment(self) -> dict[str, Any]:
         """
         Validate the environment for implementation
 
@@ -356,11 +354,6 @@ class Phase1ExtensionImplementor:
         validation_results = {"valid": True, "issues": [], "warnings": [], "recommendations": []}
 
         # Check Python version
-        if sys.version_info < (3, 13):
-            validation_results["issues"].append(
-                f"Python version {sys.version} is below minimum requirement (3.9+)"
-            )
-            validation_results["valid"] = False
 
         # Check project structure
         required_dirs = ["autopr", "autopr/actions", "autopr/ai"]
@@ -390,7 +383,7 @@ class Phase1ExtensionImplementor:
 
         return validation_results
 
-    def get_implementation_metrics(self) -> Dict[str, Any]:
+    def get_implementation_metrics(self) -> dict[str, Any]:
         """
         Get comprehensive implementation metrics
 
@@ -399,7 +392,7 @@ class Phase1ExtensionImplementor:
         """
         return self.report_generator._calculate_performance_metrics()
 
-    def export_configuration(self) -> Dict[str, Any]:
+    def export_configuration(self) -> dict[str, Any]:
         """
         Export current configuration for backup or sharing
 
@@ -431,11 +424,11 @@ class Phase1ExtensionImplementor:
 
     # Legacy method aliases for backward compatibility
 
-    async def implement_phase(self, phase: str, dry_run: bool = False) -> Dict[str, Any]:
+    async def implement_phase(self, phase: str, dry_run: bool = False) -> dict[str, Any]:
         """Legacy alias for run_implementation"""
         return await self.run_implementation(phase, dry_run)
 
-    def get_status(self) -> Dict[str, Any]:
+    def get_status(self) -> dict[str, Any]:
         """Legacy alias for get_implementation_status"""
         return self.get_implementation_status()
 
@@ -445,7 +438,7 @@ class Phase1ExtensionImplementor:
 
 
 # Factory function for global instance management
-_global_implementor: Optional[Phase1ExtensionImplementor] = None
+_global_implementor: Phase1ExtensionImplementor | None = None
 
 
 def get_phase1_implementor() -> Phase1ExtensionImplementor:

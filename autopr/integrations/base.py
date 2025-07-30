@@ -6,7 +6,7 @@ Base classes and interfaces for integration implementation.
 
 import logging
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -31,35 +31,32 @@ class Integration(ABC):
         self.description = description
         self.version = version
         self.is_initialized = False
-        self.config: Dict[str, Any] = {}
-        self.required_config_keys: List[str] = []
+        self.config: dict[str, Any] = {}
+        self.required_config_keys: list[str] = []
 
     @abstractmethod
-    async def initialize(self, config: Dict[str, Any]) -> None:
+    async def initialize(self, config: dict[str, Any]) -> None:
         """
         Initialize the integration with configuration.
 
         Args:
             config: Integration configuration
         """
-        pass
 
     @abstractmethod
     async def cleanup(self) -> None:
         """Clean up integration resources."""
-        pass
 
     @abstractmethod
-    async def health_check(self) -> Dict[str, Any]:
+    async def health_check(self) -> dict[str, Any]:
         """
         Perform health check on the integration.
 
         Returns:
             Health status dictionary
         """
-        pass
 
-    def validate_config(self, config: Dict[str, Any]) -> bool:
+    def validate_config(self, config: dict[str, Any]) -> bool:
         """
         Validate integration configuration.
 
@@ -75,7 +72,7 @@ class Integration(ABC):
                 return False
         return True
 
-    def get_metadata(self) -> Dict[str, Any]:
+    def get_metadata(self) -> dict[str, Any]:
         """
         Get integration metadata.
 
@@ -107,12 +104,13 @@ class GitHubIntegration(Integration):
     def __init__(self, name: str, description: str = "", version: str = "1.0.0") -> None:
         super().__init__(name, description, version)
         self.required_config_keys.extend(["github_token"])
-        self.github_client: Optional[Dict[str, Any]] = None
+        self.github_client: dict[str, Any] | None = None
 
-    async def initialize(self, config: Dict[str, Any]) -> None:
+    async def initialize(self, config: dict[str, Any]) -> None:
         """Initialize GitHub integration."""
         if not self.validate_config(config):
-            raise ValueError(f"Invalid configuration for GitHub integration '{self.name}'")
+            msg = f"Invalid configuration for GitHub integration '{self.name}'"
+            raise ValueError(msg)
 
         self.config = config
 
@@ -126,7 +124,7 @@ class GitHubIntegration(Integration):
             logger.info(f"GitHub integration '{self.name}' initialized successfully")
 
         except Exception as e:
-            logger.error(f"Failed to initialize GitHub integration '{self.name}': {e}")
+            logger.exception(f"Failed to initialize GitHub integration '{self.name}': {e}")
             raise
 
     async def cleanup(self) -> None:
@@ -135,7 +133,7 @@ class GitHubIntegration(Integration):
         self.is_initialized = False
         logger.info(f"GitHub integration '{self.name}' cleaned up")
 
-    async def health_check(self) -> Dict[str, Any]:
+    async def health_check(self) -> dict[str, Any]:
         """Perform GitHub API health check."""
         if not self.is_initialized:
             return {"status": "unhealthy", "message": "Integration not initialized"}
@@ -161,13 +159,14 @@ class LLMIntegration(Integration):
     def __init__(self, name: str, description: str = "", version: str = "1.0.0") -> None:
         super().__init__(name, description, version)
         self.required_config_keys.extend(["api_key"])
-        self.client: Optional[Dict[str, Any]] = None
+        self.client: dict[str, Any] | None = None
         self.model_name = "default"
 
-    async def initialize(self, config: Dict[str, Any]) -> None:
+    async def initialize(self, config: dict[str, Any]) -> None:
         """Initialize LLM integration."""
         if not self.validate_config(config):
-            raise ValueError(f"Invalid configuration for LLM integration '{self.name}'")
+            msg = f"Invalid configuration for LLM integration '{self.name}'"
+            raise ValueError(msg)
 
         self.config = config
         self.model_name = config.get("model_name", "default")
@@ -182,7 +181,7 @@ class LLMIntegration(Integration):
             logger.info(f"LLM integration '{self.name}' initialized successfully")
 
         except Exception as e:
-            logger.error(f"Failed to initialize LLM integration '{self.name}': {e}")
+            logger.exception(f"Failed to initialize LLM integration '{self.name}': {e}")
             raise
 
     async def cleanup(self) -> None:
@@ -191,7 +190,7 @@ class LLMIntegration(Integration):
         self.is_initialized = False
         logger.info(f"LLM integration '{self.name}' cleaned up")
 
-    async def health_check(self) -> Dict[str, Any]:
+    async def health_check(self) -> dict[str, Any]:
         """Perform LLM provider health check."""
         if not self.is_initialized:
             return {"status": "unhealthy", "message": "Integration not initialized"}
@@ -200,7 +199,7 @@ class LLMIntegration(Integration):
             # TODO: Perform actual LLM provider health check
             return {
                 "status": "healthy",
-                "message": f"LLM provider accessible",
+                "message": "LLM provider accessible",
                 "model": self.model_name,
             }
         except Exception as e:
@@ -221,7 +220,8 @@ class LLMIntegration(Integration):
             Generated text
         """
         if not self.is_initialized:
-            raise RuntimeError(f"LLM integration '{self.name}' not initialized")
+            msg = f"LLM integration '{self.name}' not initialized"
+            raise RuntimeError(msg)
 
         # TODO: Implement actual LLM completion
         return f"Generated response for prompt: {prompt[:50]}..."

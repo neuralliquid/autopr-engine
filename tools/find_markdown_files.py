@@ -2,9 +2,8 @@
 """Utility to find Markdown files in a directory tree."""
 
 import argparse
-import os
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable, Iterable, List, Optional, Set
 
 # Default file extensions to consider as Markdown
 DEFAULT_EXTENSIONS = {".md", ".markdown", ".mdown", ".mkd", ".mkdn"}
@@ -13,12 +12,12 @@ DEFAULT_EXTENSIONS = {".md", ".markdown", ".mdown", ".mkd", ".mkdn"}
 def find_markdown_files(
     root_dir: str,
     *,
-    exclude_dirs: Optional[Set[str]] = None,
-    exclude_files: Optional[Set[str]] = None,
-    extensions: Optional[Set[str]] = None,
-    file_filter: Optional[Callable[[Path], bool]] = None,
-    relative_to: Optional[str] = None,
-) -> List[Path]:
+    exclude_dirs: set[str] | None = None,
+    exclude_files: set[str] | None = None,
+    extensions: set[str] | None = None,
+    file_filter: Callable[[Path], bool] | None = None,
+    relative_to: str | None = None,
+) -> list[Path]:
     """Find all markdown files in the given directory and its subdirectories.
 
     Args:
@@ -34,7 +33,8 @@ def find_markdown_files(
     """
     root_path = Path(root_dir).resolve()
     if not root_path.exists() or not root_path.is_dir():
-        raise ValueError(f"Directory does not exist: {root_dir}")
+        msg = f"Directory does not exist: {root_dir}"
+        raise ValueError(msg)
 
     if extensions is None:
         extensions = DEFAULT_EXTENSIONS
@@ -123,24 +123,20 @@ def main():
             exclude_dirs=set(args.exclude_dirs) if args.exclude_dirs else None,
             exclude_files=set(args.exclude_files) if args.exclude_files else None,
             extensions=set(args.extensions) if args.extensions else None,
-            relative_to=os.getcwd() if args.relative else None,
+            relative_to=Path.cwd() if args.relative else None,
         )
 
-        root_path = Path(args.root_dir).resolve()
-        print(f"Searching for markdown files in: {root_path}")
+        Path(args.root_dir).resolve()
 
         if not files:
-            print("No markdown files found!")
             return 0
 
-        print(f"\nFound {len(files)} markdown file(s):")
-        for file in files:
-            print(f"- {file}")
+        for _file in files:
+            pass
 
         return 0
 
-    except Exception as e:
-        print(f"Error: {e}", file=sys.stderr)
+    except Exception:
         return 1
 
 

@@ -8,10 +8,11 @@ Abstract base class for format generators.
 
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Any, List
+from typing import Any
 
-from ..content_analyzer import TemplateAnalysis
-from ..template_loader import TemplateLoader
+from discovery.content_analyzer import TemplateAnalysis
+from discovery.template_loader import TemplateLoader
+
 from .config import DocumentationConfig
 
 
@@ -34,24 +35,19 @@ class BaseFormatGenerator(ABC):
     @abstractmethod
     def generate_platform_guide(self, analysis: TemplateAnalysis) -> str:
         """Generate platform guide documentation."""
-        pass
 
     @abstractmethod
     def generate_use_case_guide(self, analysis: TemplateAnalysis) -> str:
         """Generate use case guide documentation."""
-        pass
 
     @abstractmethod
     def generate_integration_guide(self, analysis: TemplateAnalysis) -> str:
         """Generate integration guide documentation."""
-        pass
 
     @abstractmethod
-    def generate_main_index(self, analyses: List[TemplateAnalysis]) -> str:
+    def generate_main_index(self, analyses: list[TemplateAnalysis]) -> str:
         """Generate main documentation index."""
-        pass
 
     @abstractmethod
-    def generate_comparison_guide(self, platform_analyses: List[TemplateAnalysis]) -> str:
+    def generate_comparison_guide(self, platform_analyses: list[TemplateAnalysis]) -> str:
         """Generate platform comparison guide."""
-        pass

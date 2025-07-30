@@ -3,13 +3,13 @@ Base types, enums, and data classes for LLM providers.
 """
 
 from dataclasses import dataclass
-from enum import Enum
-from typing import Any, Dict, List, Optional
+from enum import StrEnum
+from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
-class MessageRole(str, Enum):
+class MessageRole(StrEnum):
     """Role of a message in a chat conversation."""
 
     SYSTEM = "system"
@@ -23,12 +23,12 @@ class Message(BaseModel):
 
     role: MessageRole
     content: str
-    name: Optional[str] = None
-    tool_calls: Optional[List[Dict[str, Any]]] = None
-    tool_call_id: Optional[str] = None
+    name: str | None = None
+    tool_calls: list[dict[str, Any]] | None = None
+    tool_call_id: str | None = None
 
 
-class LLMProviderType(str, Enum):
+class LLMProviderType(StrEnum):
     """Supported LLM providers."""
 
     GROQ = "groq"
@@ -44,14 +44,14 @@ class LLMConfig(BaseModel):
 
     provider: LLMProviderType
     model: str
-    api_key: Optional[str] = None
-    base_url: Optional[str] = None
+    api_key: str | None = None
+    base_url: str | None = None
     temperature: float = 0.7
-    max_tokens: Optional[int] = None
+    max_tokens: int | None = None
     top_p: float = 1.0
     frequency_penalty: float = 0.0
     presence_penalty: float = 0.0
-    stop: Optional[List[str]] = None
+    stop: list[str] | None = None
 
 
 @dataclass
@@ -61,8 +61,8 @@ class LLMResponse:
     content: str
     model: str
     finish_reason: str
-    usage: Optional[Dict[str, int]] = None
-    error: Optional[str] = None
+    usage: dict[str, int] | None = None
+    error: str | None = None
 
     @classmethod
     def from_error(cls, error: str, model: str = "unknown") -> "LLMResponse":

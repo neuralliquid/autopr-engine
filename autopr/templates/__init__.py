@@ -9,7 +9,7 @@ with the AutoWeave template service.
 import logging
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Type, Union
+from typing import Any, Dict, List, Optional, Union
 
 from .base import TemplateMetadata, TemplateProvider
 from .providers.autoweave_provider import AutoWeaveProvider
@@ -41,7 +41,7 @@ class TemplateSystem:
                           If None, uses default template directories.
             default_provider: Default provider to use ('jinja2' or 'autoweave')
         """
-        self.providers: Dict[str, TemplateProvider] = {}
+        self.providers: dict[str, TemplateProvider] = {}
         self.default_provider = default_provider
 
         # Initialize default providers
@@ -72,7 +72,8 @@ class TemplateSystem:
             provider: TemplateProvider instance
         """
         if not isinstance(provider, TemplateProvider):
-            raise ValueError("Provider must be an instance of TemplateProvider")
+            msg = "Provider must be an instance of TemplateProvider"
+            raise ValueError(msg)
         self.providers[name] = provider
         logger.info(f"Added template provider: {name}")
 
@@ -91,7 +92,7 @@ class TemplateSystem:
             return True
         return False
 
-    def get_provider(self, name: str = None) -> TemplateProvider:
+    def get_provider(self, name: str | None = None) -> TemplateProvider:
         """Get a template provider by name.
 
         Args:
@@ -105,10 +106,13 @@ class TemplateSystem:
         """
         name = name or self.default_provider
         if name not in self.providers:
-            raise ValueError(f"Template provider not found: {name}")
+            msg = f"Template provider not found: {name}"
+            raise ValueError(msg)
         return self.providers[name]
 
-    def get_template(self, template_id: str, provider: str = None) -> Optional[TemplateMetadata]:
+    def get_template(
+        self, template_id: str, provider: str | None = None
+    ) -> TemplateMetadata | None:
         """Get template metadata by ID.
 
         Args:
@@ -120,7 +124,7 @@ class TemplateSystem:
         """
         return self.get_provider(provider).get_template(template_id)
 
-    def get_all_templates(self, provider: str = None) -> List[TemplateMetadata]:
+    def get_all_templates(self, provider: str | None = None) -> list[TemplateMetadata]:
         """Get all available templates.
 
         Args:
@@ -131,7 +135,7 @@ class TemplateSystem:
         """
         return self.get_provider(provider).get_all_templates()
 
-    def search_templates(self, query: str, provider: str = None) -> List[TemplateMetadata]:
+    def search_templates(self, query: str, provider: str | None = None) -> list[TemplateMetadata]:
         """Search for templates matching the query.
 
         Args:
@@ -146,9 +150,9 @@ class TemplateSystem:
     def render_template(
         self,
         template_id: str,
-        context: Dict[str, Any],
-        variant: Optional[str] = None,
-        provider: str = None,
+        context: dict[str, Any],
+        variant: str | None = None,
+        provider: str | None = None,
     ) -> str:
         """Render a template with the given context and optional variant.
 
@@ -169,10 +173,10 @@ class TemplateSystem:
     def render_to_file(
         self,
         template_id: str,
-        output_path: Union[str, Path],
-        context: Dict[str, Any],
-        variant: Optional[str] = None,
-        provider: str = None,
+        output_path: str | Path,
+        context: dict[str, Any],
+        variant: str | None = None,
+        provider: str | None = None,
         **kwargs,
     ) -> None:
         """Render a template to a file.
@@ -195,10 +199,10 @@ default_template_system = TemplateSystem()
 
 # Export public API
 __all__ = [
-    "TemplateSystem",
-    "TemplateProvider",
-    "TemplateMetadata",
-    "default_template_system",
-    "Jinja2TemplateProvider",
     "AutoWeaveProvider",
+    "Jinja2TemplateProvider",
+    "TemplateMetadata",
+    "TemplateProvider",
+    "TemplateSystem",
+    "default_template_system",
 ]

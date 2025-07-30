@@ -1,5 +1,6 @@
 import asyncio
 import os
+import pathlib
 
 import pydantic
 
@@ -29,7 +30,7 @@ class RunDBMigrations(Action[Inputs, Outputs]):
         logs = []
         success = True
 
-        if not os.path.isdir(inputs.migrations_path):
+        if not pathlib.Path(inputs.migrations_path).is_dir():
             return Outputs(
                 success=False,
                 log=f"Error: Migrations directory '{inputs.migrations_path}' not found.",
@@ -70,9 +71,9 @@ if __name__ == "__main__":
 
     # Create dummy migration files for testing
     os.makedirs("migrations", exist_ok=True)
-    with open("migrations/01_init.sql", "w") as f:
+    with open("migrations/01_init.sql", "w", encoding="utf-8") as f:
         f.write("CREATE TABLE users;")
-    with open("migrations/02_add_col.sql", "w") as f:
+    with open("migrations/02_add_col.sql", "w", encoding="utf-8") as f:
         f.write("ALTER TABLE users ADD COLUMN name;")
     asyncio.run(
         run_action_manually(

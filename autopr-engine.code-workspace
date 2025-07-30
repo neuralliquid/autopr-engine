@@ -79,9 +79,11 @@
     "codegpt.query.maxTokens": 1000,
     "workbench.colorTheme": "GitHub Dark Default",
     "workbench.iconTheme": "material-icon-theme",
-    "git.enableSmartCommit": true,
+    "git.enableSmartCommit": false,
     "git.confirmSync": false,
-    "git.autofetch": true,
+    "git.autofetch": false,
+    "git.showPushSuccessNotification": false,
+    "git.showCommitInput": false,
     "dockerView.autoRefresh": true,
     "thunder-client.saveToWorkspace": true,
     "rest-client.environmentVariables": {
@@ -101,8 +103,11 @@
     "cSpell.words": [
       "Alertmanager",
       "FINRA",
+      "FURB",
       "PKCE",
-      "SPIFFE"
+      "retryable",
+      "SPIFFE",
+      "temporalio"
     ]
   },
   "tasks": {

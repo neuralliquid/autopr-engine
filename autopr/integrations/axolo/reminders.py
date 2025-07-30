@@ -3,10 +3,9 @@
 import asyncio
 import logging
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Dict
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from .client import AxoloIntegration
     from .config import AxoloConfig
     from .messaging import AxoloMessaging
 
@@ -52,8 +51,8 @@ class AxoloReminderService:
 
             except Exception as e:
                 # Add proper error logging
-                error_msg = f"Error in background reminder service: {str(e)}"
-                logger.error(error_msg)
+                error_msg = f"Error in background reminder service: {e!s}"
+                logger.exception(error_msg)
                 await asyncio.sleep(60)  # Sleep before retrying
 
     async def send_daily_standup_summary(self) -> None:
@@ -106,7 +105,7 @@ class AxoloReminderService:
         """Send end of day summary."""
         logger.info("Sending end of day summary")
 
-    async def generate_daily_pr_summary(self) -> Dict[str, Any]:
+    async def generate_daily_pr_summary(self) -> dict[str, Any]:
         """Generate daily PR summary for standups."""
         # This would gather PR data and generate summary
         return {

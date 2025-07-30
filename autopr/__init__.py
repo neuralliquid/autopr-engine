@@ -1,11 +1,11 @@
 """
-AutoPR Engine - AI-Powered GitHub PR Automation and Issue Management
+AutoPR Engine - AI-Powered GitHub PR Automation and Issue Management.
 
 A comprehensive platform for intelligent GitHub pull request analysis,
 automated issue creation, and multi-agent AI collaboration.
 """
 
-from typing import Any, Dict, List, Optional, Union, cast
+from typing import Any, cast
 
 __version__ = "1.0.0"
 __author__ = "VeritasVault Team"
@@ -36,33 +36,33 @@ from .workflows.engine import WorkflowEngine
 
 # Public API exports
 __all__ = [
-    # Core
-    "AutoPREngine",
-    "AutoPRConfig",
-    # Exceptions
-    "AutoPRException",
-    "ConfigurationError",
-    "IntegrationError",
     # Actions
     "Action",
     "ActionInputs",
     "ActionOutputs",
     "ActionRegistry",
+    "AutoPRConfig",
+    # Core
+    "AutoPREngine",
+    # Exceptions
+    "AutoPRException",
+    "ConfigurationError",
     # Integrations
     "Integration",
+    "IntegrationError",
     "IntegrationRegistry",
     # AI/LLM
     "LLMProvider",
     "LLMProviderManager",
+    "Workflow",
     # Workflows
     "WorkflowEngine",
-    "Workflow",
-    # Version info
-    "__version__",
     "__author__",
     "__email__",
     "__license__",
     "__url__",
+    # Version info
+    "__version__",
 ]
 
 # Package metadata
@@ -110,15 +110,9 @@ __package_info__ = {
 # Compatibility check
 import sys
 
-if sys.version_info < (3, 8):
-    raise RuntimeError(
-        f"AutoPR Engine requires Python 3.8 or higher. "
-        f"Current version: {sys.version_info.major}.{sys.version_info.minor}"
-    )
-
 # Optional dependency warnings
 try:
-    import pyautogen as autogen
+    pass
 except ImportError:
     import warnings
 
@@ -132,7 +126,7 @@ except ImportError:
 # Mem0 is an optional dependency for advanced memory features
 mem0 = None
 try:
-    import mem0
+    pass
 except ImportError:
     import warnings
 
@@ -145,7 +139,6 @@ except ImportError:
 
 # Setup logging defaults
 import logging
-from typing import Any, Optional, cast
 
 # Import structlog with error handling
 STRUCTLOG_AVAILABLE: bool
@@ -153,7 +146,7 @@ try:
     import structlog
 
     STRUCTLOG_AVAILABLE = True
-    structlog_module = cast(Any, structlog)
+    structlog_module = cast("Any", structlog)
 except ImportError:
     STRUCTLOG_AVAILABLE = False
     structlog_module = None

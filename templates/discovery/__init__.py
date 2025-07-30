@@ -43,32 +43,32 @@ from .template_loader import TemplateLoader
 from .validation_rules import ValidationRuleLoader
 
 __all__ = [
-    # Template loading and analysis
-    "TemplateLoader",
-    "ContentAnalyzer",
     # Format generators
     "BaseFormatGenerator",
-    "MarkdownGenerator",
-    "HTMLGenerator",
-    "JSONGenerator",
+    "ContentAnalyzer",
     "FormatGeneratorFactory",
-    # Validation system
-    "ValidationIssue",
-    "ValidationSeverity",
-    "ValidatorRegistry",
-    "ValidationRuleLoader",
-    # Quality metrics
-    "QualityMetrics",
-    "QualityAnalyzer",
-    "QualityScorer",
+    "HTMLGenerator",
+    "HTMLReportGenerator",
+    "JSONGenerator",
     # Report generators
     "JSONReportGenerator",
+    "MarkdownGenerator",
     "MarkdownReportGenerator",
-    "HTMLReportGenerator",
     "QAReportGeneratorFactory",
+    "QualityAnalyzer",
     # Main systems
     "QualityAssuranceFramework",
-    "TemplateDocumentationGenerator",
+    # Quality metrics
+    "QualityMetrics",
+    "QualityScorer",
     "TemplateBrowser",
+    "TemplateDocumentationGenerator",
     "TemplateInfo",
+    # Template loading and analysis
+    "TemplateLoader",
+    # Validation system
+    "ValidationIssue",
+    "ValidationRuleLoader",
+    "ValidationSeverity",
+    "ValidatorRegistry",
 ]

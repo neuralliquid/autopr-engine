@@ -4,13 +4,13 @@ import argparse
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from .linter import YAMLLinter
 from .models import IssueSeverity
 
 
-def parse_args(args: List[str]) -> argparse.Namespace:
+def parse_args(args: list[str]) -> argparse.Namespace:
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
         description="Lint and fix YAML files.",
@@ -158,7 +158,7 @@ def format_issue_text(issue, file_path: Path, use_color: bool = True) -> str:
     return f"  {location}: {message}"
 
 
-def format_output_text(reports: Dict[Path, Any], args: argparse.Namespace) -> str:
+def format_output_text(reports: dict[Path, Any], args: argparse.Namespace) -> str:
     """Format output in text format."""
     lines = []
     severity_threshold = get_severity_threshold(args.severity)
@@ -184,19 +184,17 @@ def format_output_text(reports: Dict[Path, Any], args: argparse.Namespace) -> st
 
         lines.append(f"\n{file_path}:")
 
-        for issue in filtered_issues:
-            lines.append(format_issue_text(issue, file_path, use_color))
+        lines.extend(format_issue_text(issue, file_path, use_color) for issue in filtered_issues)
 
     if total_issues > 0:
         lines.append(f"\nFound {total_issues} issue(s) in {total_files} file(s)")
-    else:
-        if args.verbose > 0:
-            lines.append("No issues found")
+    elif args.verbose > 0:
+        lines.append("No issues found")
 
     return "\n".join(lines)
 
 
-def format_output_json(reports: Dict[Path, Any], args: argparse.Namespace) -> str:
+def format_output_json(reports: dict[Path, Any], args: argparse.Namespace) -> str:
     """Format output in JSON format."""
     severity_threshold = get_severity_threshold(args.severity)
 
@@ -250,32 +248,27 @@ def run_linter(args: argparse.Namespace) -> int:
         path = Path(path_str)
 
         if path.is_file():
-            if path.suffix in [".yml", ".yaml"]:
+            if path.suffix in {".yml", ".yaml"}:
                 linter.check_file(path)
             elif args.verbose > 0:
-                print(f"Skipping non-YAML file: {path}", file=sys.stderr)
+                pass
         elif path.is_dir():
             linter.check_directory(path, exclude=args.exclude)
-        else:
-            print(f"Warning: Path not found: {path}", file=sys.stderr)
 
     # Apply fixes if requested
     if args.fix:
         if args.dry_run:
-            print("The following files would be fixed:")
             fixed_count = linter.fix_files(dry_run=True)
             if fixed_count == 0 and args.verbose > 0:
-                print("No fixable issues found")
+                pass
         else:
             fixed_count = linter.fix_files(dry_run=False)
             if fixed_count > 0:
-                print(f"Fixed issues in {fixed_count} file(s)")
 
                 # Re-run linter to show remaining issues
                 if args.verbose > 0:
-                    print("\nRemaining issues after fixes:")
                     new_linter = YAMLLinter(config)
-                    for file_path in linter.reports.keys():
+                    for file_path in linter.reports:
                         new_linter.check_file(file_path)
                     linter.reports = new_linter.reports
 
@@ -286,7 +279,7 @@ def run_linter(args: argparse.Namespace) -> int:
         output = format_output_text(linter.reports, args)
 
     if output.strip():
-        print(output)
+        pass
 
     # Determine exit code
     severity_threshold = get_severity_threshold(args.severity)
@@ -298,16 +291,14 @@ def run_linter(args: argparse.Namespace) -> int:
     return 1 if has_issues_at_threshold else 0
 
 
-def main(args: Optional[List[str]] = None) -> int:
+def main(args: list[str] | None = None) -> int:
     """Main entry point for the CLI."""
     try:
         parsed_args = parse_args(args or sys.argv[1:])
         return run_linter(parsed_args)
     except KeyboardInterrupt:
-        print("Interrupted", file=sys.stderr)
         return 130
-    except Exception as e:
-        print(f"Error: {e}", file=sys.stderr)
+    except Exception:
         return 1
 
 

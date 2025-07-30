@@ -1,9 +1,9 @@
 """Core YAML linter implementation with auto-fixing."""
 
 import re
-import sys
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Pattern, Set, Union
+from typing import Any
 
 try:
     import yaml
@@ -29,17 +29,17 @@ class YAMLLinter:
         "allow_non_breakable_inline_mappings": False,
     }
 
-    def __init__(self, config: Optional[Dict[str, Any]] = None):
+    def __init__(self, config: dict[str, Any] | None = None):
         """Initialize the YAML linter with configuration."""
         self.config = {**self.DEFAULT_CONFIG, **(config or {})}
-        self.reports: Dict[Path, FileReport] = {}
+        self.reports: dict[Path, FileReport] = {}
 
-    def check_file(self, file_path: Union[str, Path]) -> FileReport:
+    def check_file(self, file_path: str | Path) -> FileReport:
         """Check a single YAML file for issues."""
         file_path = Path(file_path)
 
         try:
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8") as f:
                 content = f.read()
         except Exception as e:
             report = FileReport(file_path)
@@ -245,35 +245,33 @@ class YAMLLinter:
                     )
                 )
 
-    def _check_document_issues(self, report: FileReport, content: str, lines: List[str]) -> None:
+    def _check_document_issues(self, report: FileReport, content: str, lines: list[str]) -> None:
         """Check document-level issues."""
         # Check for document start marker
-        if self.config["enforce_document_start"]:
-            if not content.startswith("---"):
-                report.add_issue(
-                    LintIssue(
-                        line=1,
-                        message="Document should start with '---'",
-                        code="YML040",
-                        severity=IssueSeverity.STYLE,
-                        fix=lambda l: "---\n" + l if l.strip() else "---\n",
-                        fixable=True,
-                    )
+        if self.config["enforce_document_start"] and not content.startswith("---"):
+            report.add_issue(
+                LintIssue(
+                    line=1,
+                    message="Document should start with '---'",
+                    code="YML040",
+                    severity=IssueSeverity.STYLE,
+                    fix=lambda l: "---\n" + l if l.strip() else "---\n",
+                    fixable=True,
                 )
+            )
 
         # Check for document end marker
-        if self.config["enforce_document_end"]:
-            if not content.rstrip().endswith("..."):
-                report.add_issue(
-                    LintIssue(
-                        line=len(lines),
-                        message="Document should end with '...'",
-                        code="YML041",
-                        severity=IssueSeverity.STYLE,
-                        fix=lambda l: l.rstrip() + "\n...\n",
-                        fixable=True,
-                    )
+        if self.config["enforce_document_end"] and not content.rstrip().endswith("..."):
+            report.add_issue(
+                LintIssue(
+                    line=len(lines),
+                    message="Document should end with '...'",
+                    code="YML041",
+                    severity=IssueSeverity.STYLE,
+                    fix=lambda l: l.rstrip() + "\n...\n",
+                    fixable=True,
                 )
+            )
 
         # Check for empty values (but be smart about workflow files)
         if self.config["check_empty_values"]:
@@ -366,10 +364,10 @@ class YAMLLinter:
                                     if prev_line == "services:" and prev_indent >= 4:
                                         context_section = "services:"
                                         break
-                                    elif prev_line == "inputs:" and prev_indent == 4:
+                                    if prev_line == "inputs:" and prev_indent == 4:
                                         context_section = "inputs:"
                                         break
-                                    elif prev_line == "jobs:" and prev_indent == 0:
+                                    if prev_line == "jobs:" and prev_indent == 0:
                                         context_section = "jobs:"
                                         break
 
@@ -379,7 +377,7 @@ class YAMLLinter:
                                 should_skip = True
                             elif context_section == "services:":
                                 # Service names - can be at various indents depending on nesting
-                                if current_indent == 6 or current_indent == 4:
+                                if current_indent in {6, 4}:
                                     should_skip = True
                             elif context_section == "inputs:" and current_indent >= 4:
                                 # Input parameter names
@@ -397,7 +395,7 @@ class YAMLLinter:
                             ):
                                 # Search extensively for jobs: section - it should be at line 26
                                 jobs_found_above = False
-                                for i in range(0, line_num - 1):
+                                for i in range(line_num - 1):
                                     if prev_lines[i].strip() == "jobs:":
                                         jobs_found_above = True
                                         break
@@ -455,16 +453,12 @@ class YAMLLinter:
                             )
                         )
 
-    def _get_line_length_fix(self, line: str) -> Optional[Callable[[str], str]]:
+    def _get_line_length_fix(self, line: str) -> Callable[[str], str] | None:
         """Determine if and how to fix a long line."""
         stripped = line.strip()
 
         # Don't auto-fix certain types of lines
-        if (
-            stripped.startswith("#")  # Comments
-            or "http" in stripped  # URLs
-            or stripped.startswith("- ")
-        ):  # List items (complex)
+        if stripped.startswith(("#", "- ")) or "http" in stripped:  # List items (complex)
             return None
 
         # Can fix simple key-value pairs
@@ -496,7 +490,7 @@ class YAMLLinter:
 
         return line  # Can't fix safely
 
-    def _apply_fixes(self, content: str, issues: List[LintIssue]) -> List[str]:
+    def _apply_fixes(self, content: str, issues: list[LintIssue]) -> list[str]:
         """Apply all fixes to the content and return the fixed lines."""
         lines = content.splitlines(keepends=True)
 
@@ -513,15 +507,15 @@ class YAMLLinter:
 
         # Handle file-level fixes (line 0 or document-wide)
         for issue in issues:
-            if issue.fix and issue.line <= 1 and issue.code in ["YML040"]:  # Document start
+            if issue.fix and issue.line <= 1 and issue.code == "YML040":  # Document start
                 if lines and not "".join(lines).startswith("---"):
                     lines.insert(0, "---\n")
 
         return lines
 
     def check_directory(
-        self, directory: Union[str, Path], exclude: Optional[List[str]] = None
-    ) -> Dict[Path, FileReport]:
+        self, directory: str | Path, exclude: list[str] | None = None
+    ) -> dict[Path, FileReport]:
         """Check all YAML files in a directory."""
         directory = Path(directory).resolve()
         exclude = exclude or []
@@ -557,10 +551,6 @@ class YAMLLinter:
                 continue
 
             if dry_run:
-                print(
-                    f"Would fix {len([i for i in report.issues if i.fixable])} "
-                    f"issues in {file_path}"
-                )
                 continue
 
             if report.fixed_content is not None:
@@ -568,11 +558,7 @@ class YAMLLinter:
                     with open(file_path, "w", encoding="utf-8") as f:
                         f.writelines(report.fixed_content)
                     fixed_count += 1
-                    print(
-                        f"Fixed {len([i for i in report.issues if i.fixable])} "
-                        f"issues in {file_path}"
-                    )
-                except Exception as e:
-                    print(f"Error fixing {file_path}: {e}", file=sys.stderr)
+                except Exception:
+                    pass
 
         return fixed_count

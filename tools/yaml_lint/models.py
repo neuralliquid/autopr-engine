@@ -1,9 +1,9 @@
 """Data models for the YAML linter."""
 
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from enum import Enum, auto
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
 
 
 class IssueSeverity(Enum):
@@ -24,7 +24,7 @@ class LintIssue:
     message: str = ""
     severity: IssueSeverity = IssueSeverity.WARNING
     fixable: bool = False
-    fix: Optional[Callable[[str], str]] = None
+    fix: Callable[[str], str] | None = None
     context: str = ""
 
     def __str__(self) -> str:
@@ -37,8 +37,8 @@ class FileReport:
     """Collection of lint issues for a single file."""
 
     path: Path
-    issues: List[LintIssue] = field(default_factory=list)
-    fixed_content: Optional[List[str]] = None
+    issues: list[LintIssue] = field(default_factory=list)
+    fixed_content: list[str] | None = None
 
     @property
     def has_issues(self) -> bool:
@@ -64,6 +64,6 @@ class FileReport:
         """Add an issue to the report."""
         self.issues.append(issue)
 
-    def get_issues_by_severity(self, severity: IssueSeverity) -> List[LintIssue]:
+    def get_issues_by_severity(self, severity: IssueSeverity) -> list[LintIssue]:
         """Get all issues with the given severity."""
         return [issue for issue in self.issues if issue.severity == severity]

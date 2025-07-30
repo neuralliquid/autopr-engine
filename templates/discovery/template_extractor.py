@@ -11,7 +11,7 @@ import json
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import yaml
 
@@ -23,11 +23,11 @@ class TemplateInfo:
     name: str
     description: str
     category: str
-    platforms: List[str]
+    platforms: list[str]
     file_path: Path
-    variables: Dict[str, Any]
-    platform_info: Dict[str, Any]
-    metadata: Dict[str, Any]
+    variables: dict[str, Any]
+    platform_info: dict[str, Any]
+    metadata: dict[str, Any]
 
 
 class TemplateExtractor:
@@ -40,10 +40,10 @@ class TemplateExtractor:
             templates_root: Root directory containing templates
         """
         self.templates_root = Path(templates_root)
-        self.templates: List[TemplateInfo] = []
-        self.categories: Dict[str, List[TemplateInfo]] = defaultdict(list)
+        self.templates: list[TemplateInfo] = []
+        self.categories: dict[str, list[TemplateInfo]] = defaultdict(list)
 
-    def discover_templates(self) -> List[TemplateInfo]:
+    def discover_templates(self) -> list[TemplateInfo]:
         """Discover all YAML templates in the directory structure.
 
         Returns:
@@ -57,8 +57,6 @@ class TemplateExtractor:
         for pattern in ["**/*.yml", "**/*.yaml"]:
             yaml_files.extend(self.templates_root.glob(pattern))
 
-        print(f"Found {len(yaml_files)} YAML files")
-
         # Parse each template
         for yaml_file in yaml_files:
             try:
@@ -66,14 +64,12 @@ class TemplateExtractor:
                 if template_info:
                     self.templates.append(template_info)
                     self.categories[template_info.category].append(template_info)
-            except Exception as e:
-                print(f"Error parsing {yaml_file}: {e}")
+            except Exception:
                 continue
 
-        print(f"Successfully parsed {len(self.templates)} templates")
         return self.templates
 
-    def _parse_template(self, yaml_file: Path) -> Optional[TemplateInfo]:
+    def _parse_template(self, yaml_file: Path) -> TemplateInfo | None:
         """Parse a single YAML template file.
 
         Args:
@@ -83,7 +79,7 @@ class TemplateExtractor:
             TemplateInfo object or None if parsing fails
         """
         try:
-            with open(yaml_file, "r", encoding="utf-8") as f:
+            with open(yaml_file, encoding="utf-8") as f:
                 data = yaml.safe_load(f)
 
             if not data or not isinstance(data, dict):
@@ -102,14 +98,14 @@ class TemplateExtractor:
                 k: v
                 for k, v in data.items()
                 if k
-                not in [
+                not in {
                     "name",
                     "description",
                     "category",
                     "platforms",
                     "variables",
                     "platform_info",
-                ]
+                }
             }
 
             return TemplateInfo(
@@ -123,11 +119,10 @@ class TemplateExtractor:
                 metadata=metadata,
             )
 
-        except Exception as e:
-            print(f"Error parsing {yaml_file}: {e}")
+        except Exception:
             return None
 
-    def get_templates_by_category(self) -> Dict[str, List[TemplateInfo]]:
+    def get_templates_by_category(self) -> dict[str, list[TemplateInfo]]:
         """Get templates grouped by category.
 
         Returns:
@@ -135,7 +130,7 @@ class TemplateExtractor:
         """
         return dict(self.categories)
 
-    def get_templates_by_platform(self) -> Dict[str, List[TemplateInfo]]:
+    def get_templates_by_platform(self) -> dict[str, list[TemplateInfo]]:
         """Get templates grouped by platform.
 
         Returns:
@@ -147,7 +142,7 @@ class TemplateExtractor:
                 platform_templates[platform].append(template)
         return dict(platform_templates)
 
-    def search_templates(self, query: str) -> List[TemplateInfo]:
+    def search_templates(self, query: str) -> list[TemplateInfo]:
         """Search templates by name or description.
 
         Args:
@@ -157,17 +152,14 @@ class TemplateExtractor:
             List of matching templates
         """
         query_lower = query.lower()
-        matches = []
 
-        for template in self.templates:
-            if (
-                query_lower in template.name.lower()
-                or query_lower in template.description.lower()
-                or any(query_lower in platform.lower() for platform in template.platforms)
-            ):
-                matches.append(template)
-
-        return matches
+        return [
+            template
+            for template in self.templates
+            if query_lower in template.name.lower()
+            or query_lower in template.description.lower()
+            or any(query_lower in platform.lower() for platform in template.platforms)
+        ]
 
     def export_template_catalog(self, output_file: Path, format: str = "json") -> None:
         """Export template catalog to file.
@@ -183,7 +175,8 @@ class TemplateExtractor:
         elif format == "markdown":
             self._export_markdown(output_file)
         else:
-            raise ValueError(f"Unsupported format: {format}")
+            msg = f"Unsupported format: {format}"
+            raise ValueError(msg)
 
     def _export_json(self, output_file: Path) -> None:
         """Export catalog as JSON."""
@@ -260,7 +253,7 @@ Categories: {len(self.categories)}
         with open(output_file, "w", encoding="utf-8") as f:
             f.write(content)
 
-    def get_template_statistics(self) -> Dict[str, Any]:
+    def get_template_statistics(self) -> dict[str, Any]:
         """Get comprehensive template statistics.
 
         Returns:
@@ -336,41 +329,25 @@ def main():
 
     if args.search:
         filtered_templates = extractor.search_templates(args.search)
-        print(f"Found {len(filtered_templates)} templates matching '{args.search}'")
 
     if args.category:
         filtered_templates = [t for t in filtered_templates if t.category == args.category]
-        print(f"Found {len(filtered_templates)} templates in category '{args.category}'")
 
     if args.platform:
         filtered_templates = [t for t in filtered_templates if args.platform in t.platforms]
-        print(f"Found {len(filtered_templates)} templates for platform '{args.platform}'")
 
     # Display results
     if not args.output:
         # Print to console
-        for template in filtered_templates:
-            print(f"\n{template.name}")
-            print(f"  Category: {template.category}")
-            print(f"  Platforms: {', '.join(template.platforms)}")
-            print(f"  Description: {template.description}")
-            print(f"  Variables: {len(template.variables)}")
-            print(f"  File: {template.file_path}")
+        for _template in filtered_templates:
+            pass
     else:
         # Export to file
         extractor.templates = filtered_templates  # Update templates list for export
         extractor.export_template_catalog(Path(args.output), args.format)
-        print(f"Exported {len(filtered_templates)} templates to {args.output}")
 
     # Show statistics
-    stats = extractor.get_template_statistics()
-    print(f"\n=== Template Statistics ===")
-    print(f"Total templates: {stats['total_templates']}")
-    print(f"Categories: {len(stats['categories'])}")
-    print(f"Platforms: {len(stats['platforms'])}")
-    print(
-        f"Average variables per template: {stats['variables_stats']['avg_variables_per_template']:.1f}"
-    )
+    extractor.get_template_statistics()
 
 
 if __name__ == "__main__":

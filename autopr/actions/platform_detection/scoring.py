@@ -4,8 +4,8 @@ Scoring Engine Module
 Handles confidence calculation and platform ranking for detection results.
 """
 
-import re
-from typing import Any, Dict, List, Tuple
+import operator
+from typing import Any
 
 
 class PlatformScoringEngine:
@@ -22,12 +22,12 @@ class PlatformScoringEngine:
         }
 
     def calculate_platform_scores(
-        self, platform_configs: Dict[str, Dict[str, Any]], detection_results: Dict[str, Any]
-    ) -> Dict[str, float]:
+        self, platform_configs: dict[str, dict[str, Any]], detection_results: dict[str, Any]
+    ) -> dict[str, float]:
         """Calculate confidence scores for all platforms."""
         scores = {}
 
-        for platform in platform_configs.keys():
+        for platform in platform_configs:
             score = self._calculate_single_platform_score(
                 platform, platform_configs[platform], detection_results
             )
@@ -37,8 +37,8 @@ class PlatformScoringEngine:
         return self._normalize_scores(scores)
 
     def rank_platforms(
-        self, scores: Dict[str, float], threshold: float = 0.1
-    ) -> Tuple[str, List[str]]:
+        self, scores: dict[str, float], threshold: float = 0.1
+    ) -> tuple[str, list[str]]:
         """Rank platforms by confidence score."""
         # Filter platforms above threshold
         valid_platforms = {k: v for k, v in scores.items() if v >= threshold}
@@ -47,14 +47,14 @@ class PlatformScoringEngine:
             return "unknown", []
 
         # Sort by score descending
-        sorted_platforms = sorted(valid_platforms.items(), key=lambda x: x[1], reverse=True)
+        sorted_platforms = sorted(valid_platforms.items(), key=operator.itemgetter(1), reverse=True)
 
         primary_platform = sorted_platforms[0][0]
         secondary_platforms = [platform for platform, _ in sorted_platforms[1:]]
 
         return primary_platform, secondary_platforms
 
-    def determine_workflow_type(self, scores: Dict[str, float]) -> str:
+    def determine_workflow_type(self, scores: dict[str, float]) -> str:
         """Determine the type of workflow based on platform scores."""
         high_confidence_platforms = [platform for platform, score in scores.items() if score >= 0.7]
         medium_confidence_platforms = [
@@ -63,16 +63,15 @@ class PlatformScoringEngine:
 
         if len(high_confidence_platforms) == 1 and len(medium_confidence_platforms) == 0:
             return "single_platform"
-        elif len(high_confidence_platforms) >= 1 and len(medium_confidence_platforms) >= 1:
+        if len(high_confidence_platforms) >= 1 and len(medium_confidence_platforms) >= 1:
             return "hybrid_workflow"
-        elif len(high_confidence_platforms) + len(medium_confidence_platforms) >= 2:
+        if len(high_confidence_platforms) + len(medium_confidence_platforms) >= 2:
             return "multi_platform"
-        else:
-            return "single_platform"
+        return "single_platform"
 
     def analyze_hybrid_workflow(
-        self, scores: Dict[str, float], platform_configs: Dict[str, Dict[str, Any]]
-    ) -> Dict[str, Any]:
+        self, scores: dict[str, float], platform_configs: dict[str, dict[str, Any]]
+    ) -> dict[str, Any]:
         """Analyze hybrid workflow patterns."""
         categories = {
             "rapid_prototyping": ["replit", "lovable", "bolt", "cursor", "v0"],
@@ -103,10 +102,10 @@ class PlatformScoringEngine:
     def generate_recommendations(
         self,
         primary_platform: str,
-        secondary_platforms: List[str],
-        scores: Dict[str, float],
+        secondary_platforms: list[str],
+        scores: dict[str, float],
         workflow_type: str,
-    ) -> List[str]:
+    ) -> list[str]:
         """Generate enhancement recommendations based on detection results."""
         recommendations = []
 
@@ -170,8 +169,8 @@ class PlatformScoringEngine:
         return recommendations
 
     def identify_migration_opportunities(
-        self, scores: Dict[str, float], platform_configs: Dict[str, Dict[str, Any]]
-    ) -> List[str]:
+        self, scores: dict[str, float], platform_configs: dict[str, dict[str, Any]]
+    ) -> list[str]:
         """Identify potential migration opportunities."""
         opportunities = []
 
@@ -187,9 +186,8 @@ class PlatformScoringEngine:
                 opportunities.append(message)
 
         # Check for platform synergies
-        if "replit" in scores and scores["replit"] > 0.5:
-            if "vercel" not in scores:
-                opportunities.append("Consider Vercel for production deployment from Replit")
+        if "replit" in scores and scores["replit"] > 0.5 and "vercel" not in scores:
+            opportunities.append("Consider Vercel for production deployment from Replit")
 
         if "github_copilot" in scores and "cursor" not in scores:
             opportunities.append("Consider Cursor IDE for enhanced AI-assisted development")
@@ -197,7 +195,7 @@ class PlatformScoringEngine:
         return opportunities
 
     def _calculate_single_platform_score(
-        self, platform: str, platform_config: Dict[str, Any], detection_results: Dict[str, Any]
+        self, platform: str, platform_config: dict[str, Any], detection_results: dict[str, Any]
     ) -> float:
         """Calculate confidence score for a single platform.
 
@@ -265,7 +263,7 @@ class PlatformScoringEngine:
 
         return score
 
-    def _normalize_scores(self, scores: Dict[str, float]) -> Dict[str, float]:
+    def _normalize_scores(self, scores: dict[str, float]) -> dict[str, float]:
         """Normalize scores to 0-1 range."""
         if not scores:
             return {}
@@ -284,7 +282,7 @@ class PlatformScoringEngine:
 
         return normalized
 
-    def _identify_integration_opportunities(self, detected_categories: Dict[str, Any]) -> List[str]:
+    def _identify_integration_opportunities(self, detected_categories: dict[str, Any]) -> list[str]:
         """Identify integration opportunities between detected platforms."""
         opportunities = []
 

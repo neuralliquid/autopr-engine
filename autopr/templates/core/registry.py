@@ -7,12 +7,13 @@ Manages template discovery, loading, and caching.
 import logging
 import os
 from pathlib import Path
-from typing import Dict, Iterator, List, Optional, Set, Tuple, Type, TypeVar
+from typing import Any, Self, TypeVar
 
 from autopr.templates.models import (
     TemplateMetadata,
     TemplateType,
     TemplateVariable,
+    TemplateVariableType,
     TemplateVariant,
 )
 
@@ -24,18 +25,18 @@ T = TypeVar("T", bound="TemplateRegistry")
 class TemplateRegistry:
     """Registry for managing template discovery, loading, and caching."""
 
-    def __init__(self, template_dirs: Optional[List[Path]] = None):
+    def __init__(self, template_dirs: list[Path] | None = None):
         """Initialize the template registry.
 
         Args:
             template_dirs: List of directories to search for templates.
         """
         self.template_dirs = template_dirs or []
-        self._templates: Dict[str, TemplateMetadata] = {}
+        self._templates: dict[str, TemplateMetadata] = {}
         self._loaded = False
 
     @classmethod
-    def from_config(cls: Type[T], config: Dict[str, Any]) -> T:
+    def from_config(cls, config: dict[str, Any]) -> Self:
         """Create a TemplateRegistry instance from a configuration dictionary."""
         template_dirs = [Path(d) for d in config.get("template_dirs", [])]
         return cls(template_dirs=template_dirs)
@@ -83,7 +84,7 @@ class TemplateRegistry:
         """Load template metadata from a YAML file."""
         import yaml
 
-        with open(metadata_path, "r", encoding="utf-8") as f:
+        with open(metadata_path, encoding="utf-8") as f:
             metadata_dict = yaml.safe_load(f) or {}
 
         # Calculate template ID and source path
@@ -121,7 +122,7 @@ class TemplateRegistry:
 
         self._templates[template_id] = template
 
-    def _parse_variables(self, variables_dict: Dict) -> Dict[str, TemplateVariable]:
+    def _parse_variables(self, variables_dict: dict) -> dict[str, TemplateVariable]:
         """Parse template variables from a dictionary."""
         variables = {}
 
@@ -153,8 +154,8 @@ class TemplateRegistry:
         return variables
 
     def _parse_variants(
-        self, variants_dict: Dict, base_variables: Dict[str, TemplateVariable]
-    ) -> Dict[str, TemplateVariant]:
+        self, variants_dict: dict, base_variables: dict[str, TemplateVariable]
+    ) -> dict[str, TemplateVariant]:
         """Parse template variants from a dictionary."""
         variants = {}
 
@@ -178,7 +179,7 @@ class TemplateRegistry:
 
         return variants
 
-    def get_template(self, template_id: str) -> Optional[TemplateMetadata]:
+    def get_template(self, template_id: str) -> TemplateMetadata | None:
         """Get a template by ID."""
         if not self._loaded:
             self.load_all()
@@ -186,12 +187,12 @@ class TemplateRegistry:
 
     def find_templates(
         self,
-        search: Optional[str] = None,
-        template_type: Optional[TemplateType] = None,
-        category: Optional[str] = None,
-        tags: Optional[List[str]] = None,
-        platform: Optional[str] = None,
-    ) -> List[TemplateMetadata]:
+        search: str | None = None,
+        template_type: TemplateType | None = None,
+        category: str | None = None,
+        tags: list[str] | None = None,
+        platform: str | None = None,
+    ) -> list[TemplateMetadata]:
         """Find templates matching the given criteria."""
         if not self._loaded:
             self.load_all()
@@ -226,7 +227,7 @@ class TemplateRegistry:
 
         return results
 
-    def get_all_templates(self) -> List[TemplateMetadata]:
+    def get_all_templates(self) -> list[TemplateMetadata]:
         """Get all available templates."""
         if not self._loaded:
             self.load_all()

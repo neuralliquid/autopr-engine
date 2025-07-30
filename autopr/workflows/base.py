@@ -6,7 +6,7 @@ Base classes and interfaces for workflow implementation.
 
 import logging
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -31,10 +31,10 @@ class Workflow(ABC):
         self.name = name
         self.description = description
         self.version = version
-        self.supported_events: List[str] = []
+        self.supported_events: list[str] = []
 
     @abstractmethod
-    async def execute(self, context: Dict[str, Any]) -> Dict[str, Any]:
+    async def execute(self, context: dict[str, Any]) -> dict[str, Any]:
         """
         Execute the workflow with given context.
 
@@ -44,9 +44,8 @@ class Workflow(ABC):
         Returns:
             Workflow execution result
         """
-        pass
 
-    async def validate_inputs(self, context: Dict[str, Any]) -> None:
+    async def validate_inputs(self, context: dict[str, Any]) -> None:
         """
         Validate workflow inputs.
 
@@ -57,9 +56,8 @@ class Workflow(ABC):
             ValidationError: If inputs are invalid
         """
         # Default implementation - can be overridden
-        pass
 
-    async def validate_outputs(self, result: Dict[str, Any]) -> None:
+    async def validate_outputs(self, result: dict[str, Any]) -> None:
         """
         Validate workflow outputs.
 
@@ -70,7 +68,6 @@ class Workflow(ABC):
             ValidationError: If outputs are invalid
         """
         # Default implementation - can be overridden
-        pass
 
     def handles_event(self, event_type: str) -> bool:
         """
@@ -94,7 +91,7 @@ class Workflow(ABC):
         if event_type not in self.supported_events:
             self.supported_events.append(event_type)
 
-    def get_metadata(self) -> Dict[str, Any]:
+    def get_metadata(self) -> dict[str, Any]:
         """
         Get workflow metadata.
 
@@ -123,7 +120,7 @@ class YAMLWorkflow(Workflow):
     configuration files instead of writing Python code.
     """
 
-    def __init__(self, name: str, yaml_config: Dict[str, Any]) -> None:
+    def __init__(self, name: str, yaml_config: dict[str, Any]) -> None:
         """
         Initialize YAML-based workflow.
 
@@ -140,7 +137,7 @@ class YAMLWorkflow(Workflow):
         self.supported_events = yaml_config.get("triggers", {}).get("events", [])
         self.steps = yaml_config.get("steps", [])
 
-    async def execute(self, context: Dict[str, Any]) -> Dict[str, Any]:
+    async def execute(self, context: dict[str, Any]) -> dict[str, Any]:
         """
         Execute YAML-defined workflow steps.
 
@@ -177,7 +174,7 @@ class YAMLWorkflow(Workflow):
                     workflow_context.update(step_result)
 
             except Exception as e:
-                logger.error(f"Step {step_name} failed: {e}")
+                logger.exception(f"Step {step_name} failed: {e}")
                 results.append(
                     {"step": step_name, "type": step_type, "status": "error", "error": str(e)}
                 )
@@ -193,7 +190,7 @@ class YAMLWorkflow(Workflow):
             "final_context": workflow_context,
         }
 
-    async def _execute_step(self, step: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
+    async def _execute_step(self, step: dict[str, Any], context: dict[str, Any]) -> dict[str, Any]:
         """
         Execute a single workflow step.
 
@@ -208,19 +205,18 @@ class YAMLWorkflow(Workflow):
 
         if step_type == "action":
             return await self._execute_action_step(step, context)
-        elif step_type == "condition":
+        if step_type == "condition":
             return await self._execute_condition_step(step, context)
-        elif step_type == "parallel":
+        if step_type == "parallel":
             return await self._execute_parallel_step(step, context)
-        elif step_type == "delay":
+        if step_type == "delay":
             return await self._execute_delay_step(step, context)
-        else:
-            # For now, return a placeholder result
-            return {"message": f"Step type '{step_type}' not implemented yet"}
+        # For now, return a placeholder result
+        return {"message": f"Step type '{step_type}' not implemented yet"}
 
     async def _execute_action_step(
-        self, step: Dict[str, Any], context: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self, step: dict[str, Any], context: dict[str, Any]
+    ) -> dict[str, Any]:
         """Execute an action step."""
         action_name = step.get("action")
         action_inputs = step.get("inputs", {})
@@ -233,8 +229,8 @@ class YAMLWorkflow(Workflow):
         }
 
     async def _execute_condition_step(
-        self, step: Dict[str, Any], context: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self, step: dict[str, Any], context: dict[str, Any]
+    ) -> dict[str, Any]:
         """Execute a conditional step."""
         condition = step.get("condition")
 
@@ -246,8 +242,8 @@ class YAMLWorkflow(Workflow):
         }
 
     async def _execute_parallel_step(
-        self, step: Dict[str, Any], context: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self, step: dict[str, Any], context: dict[str, Any]
+    ) -> dict[str, Any]:
         """Execute parallel steps."""
         parallel_steps = step.get("steps", [])
 
@@ -258,8 +254,8 @@ class YAMLWorkflow(Workflow):
         }
 
     async def _execute_delay_step(
-        self, step: Dict[str, Any], context: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self, step: dict[str, Any], context: dict[str, Any]
+    ) -> dict[str, Any]:
         """Execute a delay step."""
         import asyncio
 

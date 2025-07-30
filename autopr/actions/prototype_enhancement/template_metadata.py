@@ -2,11 +2,9 @@
 Template Metadata Management for Hybrid YAML + Template Approach
 """
 
-import json
-import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 import yaml
 
@@ -17,7 +15,7 @@ class TemplateVariable:
 
     name: str
     type: str
-    default: Optional[Union[str, int, bool]] = None
+    default: str | int | bool | None = None
     required: bool = False
     description: str = ""
 
@@ -28,14 +26,14 @@ class TemplateVariant:
 
     name: str
     description: str
-    modifications: List[Dict[str, Any]]
+    modifications: list[dict[str, Any]]
 
 
 @dataclass
 class TemplateMetadata:
     """Comprehensive template metadata from YAML files."""
 
-    def __init__(self, metadata: Dict[str, Any], yaml_path: Path):
+    def __init__(self, metadata: dict[str, Any], yaml_path: Path):
         self.yaml_path = yaml_path
         self.name = metadata.get("name", "")
         self.description = metadata.get("description", "")
@@ -81,7 +79,7 @@ class TemplateRegistry:
 
     def __init__(self, templates_dir: str = "templates"):
         self.templates_dir = Path(templates_dir)
-        self.metadata_cache: Dict[str, TemplateMetadata] = {}
+        self.metadata_cache: dict[str, TemplateMetadata] = {}
         self._load_all_metadata()
 
     def _load_all_metadata(self) -> None:
@@ -92,14 +90,14 @@ class TemplateRegistry:
         for yaml_file in self.templates_dir.rglob("*.yml"):
             try:
                 template_key = self._get_template_key(yaml_file)
-                with open(yaml_file, "r", encoding="utf-8") as f:
+                with open(yaml_file, encoding="utf-8") as f:
                     metadata_dict = yaml.safe_load(f)
                     if metadata_dict:
                         self.metadata_cache[template_key] = TemplateMetadata(
                             metadata_dict, yaml_file
                         )
-            except Exception as e:
-                print(f"Warning: Failed to load template metadata from {yaml_file}: {e}")
+            except Exception:
+                pass
 
     def _get_template_key(self, yaml_path: Path) -> str:
         """Generate template key from YAML file path."""
@@ -107,13 +105,11 @@ class TemplateRegistry:
         # Remove .yml extension and convert to key
         return str(relative_path.with_suffix(""))
 
-    def get_metadata(self, template_key: str) -> Optional[TemplateMetadata]:
+    def get_metadata(self, template_key: str) -> TemplateMetadata | None:
         """Get metadata for a specific template."""
         return self.metadata_cache.get(template_key)
 
-    def list_templates(
-        self, platform: Optional[str] = None, category: Optional[str] = None
-    ) -> List[str]:
+    def list_templates(self, platform: str | None = None, category: str | None = None) -> list[str]:
         """List available templates, optionally filtered."""
         templates = []
         for key, metadata in self.metadata_cache.items():
@@ -124,7 +120,7 @@ class TemplateRegistry:
             templates.append(key)
         return templates
 
-    def get_template_content(self, template_key: str) -> Optional[str]:
+    def get_template_content(self, template_key: str) -> str | None:
         """Get the raw content of a template file."""
         metadata = self.get_metadata(template_key)
         if not metadata:
@@ -135,7 +131,7 @@ class TemplateRegistry:
             return None
 
         try:
-            with open(template_path, "r", encoding="utf-8") as f:
+            with open(template_path, encoding="utf-8") as f:
                 return f.read()
         except Exception:
             return None
@@ -143,9 +139,9 @@ class TemplateRegistry:
     def generate_template(
         self,
         template_key: str,
-        variables: Optional[Dict[str, Any]] = None,
-        variants: Optional[List[str]] = None,
-    ) -> Optional[str]:
+        variables: dict[str, Any] | None = None,
+        variants: list[str] | None = None,
+    ) -> str | None:
         """Generate template content with variables and variants applied."""
         metadata = self.get_metadata(template_key)
         if not metadata:
@@ -166,7 +162,7 @@ class TemplateRegistry:
         return content
 
     def _apply_variables(
-        self, content: str, metadata: TemplateMetadata, variables: Dict[str, Any]
+        self, content: str, metadata: TemplateMetadata, variables: dict[str, Any]
     ) -> str:
         """Apply variable substitutions to template content."""
         # Merge with defaults and validate
@@ -178,7 +174,8 @@ class TemplateRegistry:
             elif var_config.default is not None:
                 final_vars[var_name] = var_config.default
             elif var_config.required:
-                raise ValueError(f"Required variable missing: {var_name}")
+                msg = f"Required variable missing: {var_name}"
+                raise ValueError(msg)
 
         # Apply substitutions using {{variable_name}} format
         for var_name, value in final_vars.items():
@@ -187,7 +184,7 @@ class TemplateRegistry:
 
         return content
 
-    def _apply_variants(self, content: str, metadata: TemplateMetadata, variants: List[str]) -> str:
+    def _apply_variants(self, content: str, metadata: TemplateMetadata, variants: list[str]) -> str:
         """Apply variant modifications to template content."""
         lines = content.split("\n")
 
@@ -218,28 +215,33 @@ class TemplateRegistry:
 
         return "\n".join(lines)
 
-    def validate_template_structure(self, template_data: Dict[str, Any]) -> None:
+    def validate_template_structure(self, template_data: dict[str, Any]) -> None:
         """Validate template structure."""
         required_keys = ["name", "description", "category", "platforms", "file_extension"]
         for key in required_keys:
             if key not in template_data:
-                raise ValueError(f"Missing required key: {key}")
+                msg = f"Missing required key: {key}"
+                raise ValueError(msg)
 
         if "variables" in template_data:
             for var_name, var_config in template_data["variables"].items():
                 if not isinstance(var_config, dict):
-                    raise ValueError(f"Invalid variable configuration: {var_name}")
+                    msg = f"Invalid variable configuration: {var_name}"
+                    raise ValueError(msg)
                 if "type" not in var_config:
-                    raise ValueError(f"Missing variable type: {var_name}")
+                    msg = f"Missing variable type: {var_name}"
+                    raise ValueError(msg)
 
         if "variants" in template_data:
             for variant_name, variant_config in template_data["variants"].items():
                 if not isinstance(variant_config, dict):
-                    raise ValueError(f"Invalid variant configuration: {variant_name}")
+                    msg = f"Invalid variant configuration: {variant_name}"
+                    raise ValueError(msg)
                 if "modifications" not in variant_config:
-                    raise ValueError(f"Missing variant modifications: {variant_name}")
+                    msg = f"Missing variant modifications: {variant_name}"
+                    raise ValueError(msg)
 
-    def get_template_info(self, template_key: str) -> Dict[str, Any]:
+    def get_template_info(self, template_key: str) -> dict[str, Any]:
         """Get comprehensive information about a template."""
         metadata = self.get_metadata(template_key)
         if not metadata:

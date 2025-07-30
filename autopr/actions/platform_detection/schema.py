@@ -11,14 +11,16 @@ This module contains schemas for:
 from __future__ import annotations
 
 import json
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field
 from datetime import datetime
-from enum import Enum
-from pathlib import Path
-from typing import Any, ClassVar, Dict, List, Literal, Optional, TypedDict, Union
+from enum import StrEnum
+from typing import TYPE_CHECKING, Any, ClassVar, TypedDict
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
-class PlatformType(str, Enum):
+class PlatformType(StrEnum):
     """Types of platforms we support."""
 
     IDE = "ide"
@@ -31,7 +33,7 @@ class PlatformType(str, Enum):
     GENERAL = "general"
 
 
-class PlatformSource(str, Enum):
+class PlatformSource(StrEnum):
     """Source of the platform configuration."""
 
     OFFICIAL = "official"
@@ -39,7 +41,7 @@ class PlatformSource(str, Enum):
     THIRD_PARTY = "third_party"
 
 
-class PlatformStatus(str, Enum):
+class PlatformStatus(StrEnum):
     """Status of the platform support."""
 
     ACTIVE = "active"
@@ -51,13 +53,13 @@ class PlatformStatus(str, Enum):
 class DetectionRules(TypedDict, total=False):
     """Configuration for platform detection rules."""
 
-    files: List[str]
-    dependencies: List[str]
-    folder_patterns: List[str]
-    commit_patterns: List[str]
-    content_patterns: List[str]
-    package_scripts: List[str]
-    confidence_weights: Dict[str, float]
+    files: list[str]
+    dependencies: list[str]
+    folder_patterns: list[str]
+    commit_patterns: list[str]
+    content_patterns: list[str]
+    package_scripts: list[str]
+    confidence_weights: dict[str, float]
 
 
 class PlatformReference(TypedDict):
@@ -78,8 +80,8 @@ class PlatformIndex(TypedDict):
     version: str
     last_updated: str
     description: str
-    platforms: List[PlatformReference]
-    metadata: Dict[str, Any]
+    platforms: list[PlatformReference]
+    metadata: dict[str, Any]
 
 
 class ProjectConfig(TypedDict, total=False):
@@ -87,10 +89,10 @@ class ProjectConfig(TypedDict, total=False):
 
     primary_language: str
     framework: str
-    deployment_targets: List[str]
-    common_files: List[str]
-    features: List[str]
-    configuration_files: List[str]
+    deployment_targets: list[str]
+    common_files: list[str]
+    features: list[str]
+    configuration_files: list[str]
 
 
 @dataclass
@@ -119,17 +121,17 @@ class PlatformConfig:
     is_active: bool = True
     is_beta: bool = False
     is_deprecated: bool = False
-    deprecation_message: Optional[str] = None
+    deprecation_message: str | None = None
 
     # Categorization
     type: PlatformType = PlatformType.GENERAL
     subcategory: str = ""
-    tags: List[str] = field(default_factory=list)
+    tags: list[str] = field(default_factory=list)
 
     # Integration
-    supported_languages: List[str] = field(default_factory=list)
-    supported_frameworks: List[str] = field(default_factory=list)
-    integrations: List[str] = field(default_factory=list)
+    supported_languages: list[str] = field(default_factory=list)
+    supported_frameworks: list[str] = field(default_factory=list)
+    integrations: list[str] = field(default_factory=list)
 
     # Documentation
     documentation_url: str = ""
@@ -143,19 +145,19 @@ class PlatformConfig:
 
     # Technical metadata
     min_autopr_version: str = "0.1.0"
-    dependencies: Dict[str, str] = field(default_factory=dict)
-    compatibility: Dict[str, Any] = field(default_factory=dict)
+    dependencies: dict[str, str] = field(default_factory=dict)
+    compatibility: dict[str, Any] = field(default_factory=dict)
 
     # Nested configurations
-    detection: DetectionRules = field(default_factory=lambda: {})
-    project_config: ProjectConfig = field(default_factory=lambda: {})
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    detection: DetectionRules = field(default_factory=dict)
+    project_config: ProjectConfig = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
     # Class variables
     _required_fields: ClassVar[list] = ["id", "name", "category", "description"]
 
     @classmethod
-    def from_dict(cls, platform_id: str, data: dict) -> "PlatformConfig":
+    def from_dict(cls, platform_id: str, data: dict) -> PlatformConfig:
         """
         Create a PlatformConfig from a dictionary, with validation.
 
@@ -172,7 +174,8 @@ class PlatformConfig:
         # Validate required fields
         missing_fields = [f for f in cls._required_fields if f not in data]
         if missing_fields:
-            raise ValueError(f"Missing required fields: {', '.join(missing_fields)}")
+            msg = f"Missing required fields: {', '.join(missing_fields)}"
+            raise ValueError(msg)
 
         # Handle enums and special types
         status = PlatformStatus(data.get("status", "active")) if "status" in data else None
@@ -194,10 +197,10 @@ class PlatformConfig:
             status=status
             or (
                 PlatformStatus.BETA
-                if data.get("is_beta", False)
+                if data.get("is_beta")
                 else (
                     PlatformStatus.DEPRECATED
-                    if data.get("is_deprecated", False)
+                    if data.get("is_deprecated")
                     else PlatformStatus.ACTIVE
                 )
             ),
@@ -232,18 +235,19 @@ class PlatformConfig:
         )
 
     @classmethod
-    def from_file(cls, file_path: Path) -> "PlatformConfig":
+    def from_file(cls, file_path: Path) -> PlatformConfig:
         """Load a platform configuration from a JSON file."""
         try:
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8") as f:
                 data = json.load(f)
 
             # Use the filename (without .json) as the ID if not specified
             platform_id = data.get("id", file_path.stem)
             return cls.from_dict(platform_id, data)
 
-        except (json.JSONDecodeError, IOError) as e:
-            raise ValueError(f"Error loading platform config {file_path}: {e}")
+        except (OSError, json.JSONDecodeError) as e:
+            msg = f"Error loading platform config {file_path}: {e}"
+            raise ValueError(msg)
 
     def to_dict(self) -> dict:
         """Convert the configuration to a dictionary."""

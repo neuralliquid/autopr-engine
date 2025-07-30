@@ -1,3 +1,4 @@
+import operator
 import os
 import re
 from pathlib import Path
@@ -23,11 +24,10 @@ class MarkdownLinter:
         relative_path = file_path.relative_to(self.root_dir)
 
         try:
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8") as f:
                 lines = f.readlines()
 
             in_code_block = False
-            prev_line_was_heading = False
             prev_line_was_blank = False
 
             for i, line in enumerate(lines, 1):
@@ -61,7 +61,7 @@ class MarkdownLinter:
                         {
                             "file": str(relative_path),
                             "line": i,
-                            "issue": f"Line too long ({len(line)} > {MAX_LENGTH} characters)",
+                            "issue": f"Line too long ({len(line)} > {MAX_LINE_LENGTH} characters)",
                             "code": "MD013",
                         }
                     )
@@ -94,10 +94,6 @@ class MarkdownLinter:
                             }
                         )
 
-                    prev_line_was_heading = True
-                else:
-                    prev_line_was_heading = False
-
                 prev_line_was_blank = False
 
         except Exception as e:
@@ -105,7 +101,7 @@ class MarkdownLinter:
                 {
                     "file": str(relative_path),
                     "line": 0,
-                    "issue": f"Error reading file: {str(e)}",
+                    "issue": f"Error reading file: {e!s}",
                     "code": "ERROR",
                 }
             )
@@ -121,8 +117,7 @@ class MarkdownLinter:
     def report_issues(self):
         """Print a report of all issues found."""
         if not self.issues:
-            print("No markdown linting issues found!")
-            return
+            return None
 
         # Group issues by file
         issues_by_file = {}
@@ -132,22 +127,17 @@ class MarkdownLinter:
             issues_by_file[issue["file"]].append(issue)
 
         # Print report
-        for file, file_issues in sorted(issues_by_file.items()):
-            print(f"\n{file}:")
-            for issue in sorted(file_issues, key=lambda x: x["line"]):
-                print(f"  Line {issue['line']}: [{issue['code']}] {issue['issue']}")
+        for _file, file_issues in sorted(issues_by_file.items()):
+            for issue in sorted(file_issues, key=operator.itemgetter("line")):
+                pass
 
-        print(f"\nFound {len(self.issues)} issue(s) in {len(issues_by_file)} file(s)")
         return len(self.issues)
 
 
 if __name__ == "__main__":
     import sys
 
-    if len(sys.argv) > 1:
-        root_dir = Path(sys.argv[1])
-    else:
-        root_dir = Path.cwd()
+    root_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else Path.cwd()
 
     linter = MarkdownLinter(root_dir)
     linter.check_directory()

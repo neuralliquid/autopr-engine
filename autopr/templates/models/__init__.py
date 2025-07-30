@@ -5,12 +5,12 @@ This module defines the core data models for the template system.
 """
 
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import Enum, StrEnum
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 
-class TemplateType(str, Enum):
+class TemplateType(StrEnum):
     """Enumeration of template types."""
 
     FILE = "file"
@@ -20,7 +20,7 @@ class TemplateType(str, Enum):
     INTEGRATION = "integration"
 
 
-class TemplateVariableType(str, Enum):
+class TemplateVariableType(StrEnum):
     """Supported template variable types."""
 
     STRING = "string"
@@ -39,12 +39,12 @@ class TemplateVariable:
     name: str
     type: TemplateVariableType
     description: str = ""
-    default: Optional[Any] = None
+    default: Any | None = None
     required: bool = False
-    choices: Optional[List[Any]] = None
-    min_length: Optional[int] = None
-    max_length: Optional[int] = None
-    pattern: Optional[str] = None
+    choices: list[Any] | None = None
+    min_length: int | None = None
+    max_length: int | None = None
+    pattern: str | None = None
 
     def validate(self, value: Any) -> bool:
         """Validate a value against the variable's constraints."""
@@ -57,10 +57,10 @@ class TemplateVariable:
                 int(value)
             elif self.type == TemplateVariableType.BOOLEAN:
                 if not isinstance(value, bool):
-                    value = str(value).lower() in ("true", "1", "t", "y", "yes")
-            elif self.type == TemplateVariableType.LIST and not isinstance(value, list):
-                return False
-            elif self.type == TemplateVariableType.DICT and not isinstance(value, dict):
+                    value = str(value).lower() in {"true", "1", "t", "y", "yes"}
+            elif (self.type == TemplateVariableType.LIST and not isinstance(value, list)) or (
+                self.type == TemplateVariableType.DICT and not isinstance(value, dict)
+            ):
                 return False
         except (ValueError, TypeError):
             return False
@@ -80,10 +80,7 @@ class TemplateVariable:
                 return False
 
         # Choices validation
-        if self.choices is not None and value not in self.choices:
-            return False
-
-        return True
+        return not (self.choices is not None and value not in self.choices)
 
 
 @dataclass
@@ -92,8 +89,8 @@ class TemplateVariant:
 
     name: str
     description: str
-    modifications: List[Dict[str, Any]] = field(default_factory=list)
-    variables: Dict[str, TemplateVariable] = field(default_factory=dict)
+    modifications: list[dict[str, Any]] = field(default_factory=list)
+    variables: dict[str, TemplateVariable] = field(default_factory=dict)
 
 
 @dataclass
@@ -108,27 +105,27 @@ class TemplateMetadata:
 
     # Template configuration
     category: str = ""
-    tags: List[str] = field(default_factory=list)
-    platforms: List[str] = field(default_factory=list)
-    dependencies: Dict[str, str] = field(default_factory=dict)
+    tags: list[str] = field(default_factory=list)
+    platforms: list[str] = field(default_factory=list)
+    dependencies: dict[str, str] = field(default_factory=dict)
 
     # Variables and variants
-    variables: Dict[str, TemplateVariable] = field(default_factory=dict)
-    variants: Dict[str, TemplateVariant] = field(default_factory=dict)
+    variables: dict[str, TemplateVariable] = field(default_factory=dict)
+    variants: dict[str, TemplateVariant] = field(default_factory=dict)
 
     # Versioning
     version: str = "1.0.0"
-    min_auto_pr_version: Optional[str] = None
+    min_auto_pr_version: str | None = None
 
     # Documentation
-    examples: List[Dict[str, Any]] = field(default_factory=list)
-    notes: List[str] = field(default_factory=list)
+    examples: list[dict[str, Any]] = field(default_factory=list)
+    notes: list[str] = field(default_factory=list)
 
-    def get_variable(self, name: str) -> Optional[TemplateVariable]:
+    def get_variable(self, name: str) -> TemplateVariable | None:
         """Get a variable by name, including variant variables."""
         return self.variables.get(name)
 
-    def validate_variables(self, variables: Dict[str, Any]) -> Dict[str, str]:
+    def validate_variables(self, variables: dict[str, Any]) -> dict[str, str]:
         """Validate template variables and return any errors."""
         errors = {}
 

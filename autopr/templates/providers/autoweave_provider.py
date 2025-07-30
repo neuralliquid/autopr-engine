@@ -5,7 +5,7 @@ This is a placeholder for future integration with the AutoWeave template service
 
 import logging
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from ..base import TemplateMetadata, TemplateProvider
 
@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 class AutoWeaveProvider(TemplateProvider):
     """Template provider that integrates with the AutoWeave template service."""
 
-    def __init__(self, api_key: str = None, endpoint: str = None):
+    def __init__(self, api_key: str | None = None, endpoint: str | None = None):
         """Initialize the AutoWeave template provider.
 
         Args:
@@ -35,56 +35,63 @@ class AutoWeaveProvider(TemplateProvider):
         self.initialized = True
         logger.info("AutoWeave provider initialized (placeholder implementation)")
 
-    def get_template(self, template_id: str) -> Optional[TemplateMetadata]:
+    def get_template(self, template_id: str) -> TemplateMetadata | None:
         """Get template metadata by ID from AutoWeave."""
         if not self.initialized:
-            raise RuntimeError("AutoWeave provider not initialized")
+            msg = "AutoWeave provider not initialized"
+            raise RuntimeError(msg)
 
         # TODO: Implement actual API call to AutoWeave
         logger.warning("AutoWeave get_template not implemented yet")
         return None
 
-    def get_all_templates(self) -> List[TemplateMetadata]:
+    def get_all_templates(self) -> list[TemplateMetadata]:
         """Get all available templates from AutoWeave."""
         if not self.initialized:
-            raise RuntimeError("AutoWeave provider not initialized")
+            msg = "AutoWeave provider not initialized"
+            raise RuntimeError(msg)
 
         # TODO: Implement actual API call to AutoWeave
         logger.warning("AutoWeave get_all_templates not implemented yet")
         return []
 
-    def search_templates(self, query: str) -> List[TemplateMetadata]:
+    def search_templates(self, query: str) -> list[TemplateMetadata]:
         """Search for templates in AutoWeave matching the query."""
         if not self.initialized:
-            raise RuntimeError("AutoWeave provider not initialized")
+            msg = "AutoWeave provider not initialized"
+            raise RuntimeError(msg)
 
         # TODO: Implement actual API call to AutoWeave
         logger.warning("AutoWeave search_templates not implemented yet")
         return []
 
     def render_template(
-        self, template_id: str, context: Dict[str, Any], variant: Optional[str] = None
+        self, template_id: str, context: dict[str, Any], variant: str | None = None
     ) -> str:
         """Render a template using AutoWeave."""
         if not self.initialized:
-            raise RuntimeError("AutoWeave provider not initialized")
+            msg = "AutoWeave provider not initialized"
+            raise RuntimeError(msg)
 
         # TODO: Implement actual API call to AutoWeave
         logger.warning("AutoWeave render_template not implemented yet")
-        raise NotImplementedError("AutoWeave provider not fully implemented")
+        msg = "AutoWeave provider not fully implemented"
+        raise NotImplementedError(msg)
 
     def render_to_file(
         self,
         template_id: str,
-        output_path: Union[str, Path],
-        context: Dict[str, Any],
-        variant: Optional[str] = None,
+        output_path: str | Path,
+        context: dict[str, Any],
+        variant: str | None = None,
         **kwargs,
     ) -> None:
         """Render a template to a file using AutoWeave."""
         if not self.initialized:
-            raise RuntimeError("AutoWeave provider not initialized")
+            msg = "AutoWeave provider not initialized"
+            raise RuntimeError(msg)
 
         # TODO: Implement actual API call to AutoWeave
         logger.warning("AutoWeave render_to_file not implemented yet")
-        raise NotImplementedError("AutoWeave provider not fully implemented")
+        msg = "AutoWeave provider not fully implemented"
+        raise NotImplementedError(msg)

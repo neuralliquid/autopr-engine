@@ -7,7 +7,7 @@ Data models and structures for template discovery and browsing system.
 """
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List
+from typing import Any
 
 
 @dataclass
@@ -17,15 +17,15 @@ class TemplateInfo:
     name: str
     description: str
     category: str
-    platforms: List[str]
+    platforms: list[str]
     file_path: str
     complexity: str = "medium"
     estimated_time: str = "unknown"
-    use_cases: List[str] = field(default_factory=list)
-    key_features: List[str] = field(default_factory=list)
-    variables: Dict[str, Any] = field(default_factory=dict)
-    variants: Dict[str, Any] = field(default_factory=dict)
-    dependencies: List[str] = field(default_factory=list)
+    use_cases: list[str] = field(default_factory=list)
+    key_features: list[str] = field(default_factory=list)
+    variables: dict[str, Any] = field(default_factory=dict)
+    variants: dict[str, Any] = field(default_factory=dict)
+    dependencies: list[str] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         """Post-initialization processing."""
@@ -51,7 +51,7 @@ class PlatformRequirements:
     technical_expertise: str
     budget: str
     timeline: str
-    features: List[str] = field(default_factory=list)
+    features: list[str] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         """Post-initialization processing."""
@@ -81,7 +81,7 @@ class TemplateCombination:
 
     platform: str
     main_template: str
-    recommended_integrations: List[str] = field(default_factory=list)
+    recommended_integrations: list[str] = field(default_factory=list)
     estimated_total_time: str = "unknown"
     complexity_score: int = 1
 
@@ -97,10 +97,10 @@ class TemplateCombination:
 class TemplateReport:
     """Comprehensive template report structure."""
 
-    summary: Dict[str, Any] = field(default_factory=dict)
-    templates_by_category: Dict[str, List[Dict[str, Any]]] = field(default_factory=dict)
-    platform_coverage: Dict[str, Dict[str, Any]] = field(default_factory=dict)
-    recommendations: Dict[str, Any] = field(default_factory=dict)
+    summary: dict[str, Any] = field(default_factory=dict)
+    templates_by_category: dict[str, list[dict[str, Any]]] = field(default_factory=dict)
+    platform_coverage: dict[str, dict[str, Any]] = field(default_factory=dict)
+    recommendations: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         """Post-initialization processing."""

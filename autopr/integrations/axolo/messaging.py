@@ -1,7 +1,7 @@
 """Message formatting and posting utilities for Axolo integration."""
 
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import aiohttp
 
@@ -13,11 +13,11 @@ logger = logging.getLogger(__name__)
 class AxoloMessaging:
     """Handles message formatting and posting to Slack via Axolo."""
 
-    def __init__(self, config: AxoloConfig, session: Optional[aiohttp.ClientSession] = None):
+    def __init__(self, config: AxoloConfig, session: aiohttp.ClientSession | None = None):
         self.config = config
         self.session = session
 
-    def format_analysis_summary(self, analysis_result: Dict[str, Any]) -> str:
+    def format_analysis_summary(self, analysis_result: dict[str, Any]) -> str:
         """Format analysis results into a readable summary."""
         summary_parts = []
 
@@ -32,7 +32,7 @@ class AxoloMessaging:
 
         return " | ".join(summary_parts)
 
-    def create_issues_block(self, issues: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def create_issues_block(self, issues: list[dict[str, Any]]) -> dict[str, Any]:
         """Create Slack block for displaying issues."""
         issues_text = []
         for issue in issues[:5]:  # Limit to first 5 issues
@@ -45,10 +45,10 @@ class AxoloMessaging:
 
         return {
             "type": "section",
-            "text": {"type": "mrkdwn", "text": f"*Issues Found:*\n" + "\n".join(issues_text)},
+            "text": {"type": "mrkdwn", "text": "*Issues Found:*\n" + "\n".join(issues_text)},
         }
 
-    def create_next_steps_block(self, next_steps: List[str]) -> Dict[str, Any]:
+    def create_next_steps_block(self, next_steps: list[str]) -> dict[str, Any]:
         """Create Slack block for displaying next steps."""
         steps_text = []
         for i, step in enumerate(next_steps[:3], 1):  # Limit to first 3 steps
@@ -58,11 +58,11 @@ class AxoloMessaging:
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": f"*Recommended Next Steps:*\n" + "\n".join(steps_text),
+                "text": "*Recommended Next Steps:*\n" + "\n".join(steps_text),
             },
         }
 
-    async def post_slack_message(self, message: Dict[str, Any]) -> None:
+    async def post_slack_message(self, message: dict[str, Any]) -> None:
         """Post message to Slack via Axolo or direct API"""
 
         try:
@@ -71,7 +71,7 @@ class AxoloMessaging:
                     if response.status != 200:
                         logger.error(f"Failed to post Slack message - status: {response.status}")
         except Exception as e:
-            logger.error(f"Error posting Slack message: {str(e)}")
+            logger.exception(f"Error posting Slack message: {e!s}")
 
     async def post_slack_response(self, channel_id: str, text: str) -> None:
         """Post simple text response to Slack"""

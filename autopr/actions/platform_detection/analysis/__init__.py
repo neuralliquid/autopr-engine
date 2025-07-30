@@ -4,8 +4,7 @@ File Analysis Module
 Provides a modular system for analyzing files and directories to detect platform-specific patterns.
 """
 
-from pathlib import Path
-from typing import Dict, List, Optional, Protocol, Set, Type, TypeVar, runtime_checkable
+from typing import Dict, Optional, Type
 
 from autopr.actions.platform_detection.analysis.base import FileAnalysisResult, FileAnalyzer
 from autopr.actions.platform_detection.analysis.handlers import (
@@ -25,12 +24,12 @@ from autopr.actions.platform_detection.analysis.patterns import (
 )
 
 __all__ = [
-    "FileAnalyzer",
-    "FileAnalysisResult",
-    "FileHandler",
-    "FilePattern",
     "ContentPattern",
     "DirectoryPattern",
+    "FileAnalysisResult",
+    "FileAnalyzer",
+    "FileHandler",
+    "FilePattern",
 ]
 
 # Default file handlers for common file types
@@ -48,7 +47,7 @@ DEFAULT_HANDLERS = {
 
 def create_file_analyzer(
     workspace_path: str = ".",
-    handlers: Optional[Dict[str, Type[FileHandler]]] = None,
+    handlers: dict[str, type[FileHandler]] | None = None,
 ) -> FileAnalyzer:
     """
     Create a configured FileAnalyzer instance with default handlers.

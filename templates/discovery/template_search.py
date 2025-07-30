@@ -6,8 +6,8 @@ Template Search Module
 Handles template search, filtering, and discovery functionality.
 """
 
-import re
-from typing import Any, Dict, List, Optional
+
+import operator
 
 from .template_models import TemplateInfo
 
@@ -15,18 +15,18 @@ from .template_models import TemplateInfo
 class TemplateSearchEngine:
     """Handles template search and filtering operations."""
 
-    def __init__(self, templates: List[TemplateInfo]) -> None:
+    def __init__(self, templates: list[TemplateInfo]) -> None:
         """Initialize the search engine with templates."""
         self.templates = templates
 
     def search_templates(
         self,
-        query: Optional[str] = None,
-        category: Optional[str] = None,
-        platform: Optional[str] = None,
-        complexity: Optional[str] = None,
-        use_case: Optional[str] = None,
-    ) -> List[TemplateInfo]:
+        query: str | None = None,
+        category: str | None = None,
+        platform: str | None = None,
+        complexity: str | None = None,
+        use_case: str | None = None,
+    ) -> list[TemplateInfo]:
         """Search templates based on various criteria."""
         results = self.templates.copy()
 
@@ -66,13 +66,13 @@ class TemplateSearchEngine:
 
         return results
 
-    def search_by_features(self, required_features: List[str]) -> List[TemplateInfo]:
+    def search_by_features(self, required_features: list[str]) -> list[TemplateInfo]:
         """Search templates that have all required features."""
         if not required_features:
             return self.templates.copy()
 
         required_lower = [f.lower() for f in required_features]
-        results: List[TemplateInfo] = []
+        results: list[TemplateInfo] = []
 
         for template in self.templates:
             template_features_lower = [f.lower() for f in template.key_features]
@@ -81,13 +81,13 @@ class TemplateSearchEngine:
 
         return results
 
-    def search_by_dependencies(self, dependencies: List[str]) -> List[TemplateInfo]:
+    def search_by_dependencies(self, dependencies: list[str]) -> list[TemplateInfo]:
         """Search templates that have specific dependencies."""
         if not dependencies:
             return self.templates.copy()
 
         deps_lower = [d.lower() for d in dependencies]
-        results: List[TemplateInfo] = []
+        results: list[TemplateInfo] = []
 
         for template in self.templates:
             template_deps_lower = [d.lower() for d in template.dependencies]
@@ -96,9 +96,9 @@ class TemplateSearchEngine:
 
         return results
 
-    def get_templates_by_category(self) -> Dict[str, List[TemplateInfo]]:
+    def get_templates_by_category(self) -> dict[str, list[TemplateInfo]]:
         """Group templates by category."""
-        categories: Dict[str, List[TemplateInfo]] = {}
+        categories: dict[str, list[TemplateInfo]] = {}
 
         for template in self.templates:
             if template.category not in categories:
@@ -107,9 +107,9 @@ class TemplateSearchEngine:
 
         return categories
 
-    def get_templates_by_platform(self) -> Dict[str, List[TemplateInfo]]:
+    def get_templates_by_platform(self) -> dict[str, list[TemplateInfo]]:
         """Group templates by platform."""
-        platforms: Dict[str, List[TemplateInfo]] = {}
+        platforms: dict[str, list[TemplateInfo]] = {}
 
         for template in self.templates:
             for platform in template.platforms:
@@ -119,9 +119,9 @@ class TemplateSearchEngine:
 
         return platforms
 
-    def get_templates_by_complexity(self) -> Dict[str, List[TemplateInfo]]:
+    def get_templates_by_complexity(self) -> dict[str, list[TemplateInfo]]:
         """Group templates by complexity level."""
-        complexity_groups: Dict[str, List[TemplateInfo]] = {}
+        complexity_groups: dict[str, list[TemplateInfo]] = {}
 
         for template in self.templates:
             complexity = template.complexity
@@ -131,12 +131,12 @@ class TemplateSearchEngine:
 
         return complexity_groups
 
-    def find_similar_templates(self, template: TemplateInfo, limit: int = 5) -> List[TemplateInfo]:
+    def find_similar_templates(self, template: TemplateInfo, limit: int = 5) -> list[TemplateInfo]:
         """Find templates similar to the given template."""
         if not template:
             return []
 
-        similar: List[tuple[TemplateInfo, float]] = []
+        similar: list[tuple[TemplateInfo, float]] = []
 
         for other in self.templates:
             if other.name == template.name:
@@ -147,7 +147,7 @@ class TemplateSearchEngine:
                 similar.append((other, similarity_score))
 
         # Sort by similarity score (descending) and return top results
-        similar.sort(key=lambda x: x[1], reverse=True)
+        similar.sort(key=operator.itemgetter(1), reverse=True)
         return [t for t, _ in similar[:limit]]
 
     def _calculate_similarity(self, template1: TemplateInfo, template2: TemplateInfo) -> float:

@@ -1,16 +1,13 @@
 """GitHub API client for AutoPR with retry logic and rate limiting."""
 
 import asyncio
-import json
 import logging
-import os
 import random
 import time
 from dataclasses import dataclass
-from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional, Type, TypeVar, Union, cast
+from datetime import UTC, datetime
+from typing import Any, TypeVar, Union
 
-import aiohttp
 from aiohttp import ClientError, ClientResponse, ClientResponseError, ClientSession, ClientTimeout
 
 # Default configuration constants
@@ -27,8 +24,8 @@ class GitHubError(Exception):
     """Base exception for GitHub API errors."""
 
     message: str
-    status_code: Optional[int] = None
-    response: Optional[Any] = None
+    status_code: int | None = None
+    response: Any | None = None
 
     def __str__(self) -> str:
         if self.status_code:
@@ -42,12 +39,12 @@ class RateLimitExceeded(GitHubError):
     def __init__(
         self,
         message: str = "GitHub API rate limit exceeded",
-        status_code: Optional[int] = 403,
-        response: Optional[Any] = None,
-        reset_time: Optional[datetime] = None,
+        status_code: int | None = 403,
+        response: Any | None = None,
+        reset_time: datetime | None = None,
     ) -> None:
         super().__init__(message, status_code, response)
-        self.reset_time = reset_time or datetime.now(timezone.utc)
+        self.reset_time = reset_time or datetime.now(UTC)
 
 
 class GitHubConfig:
@@ -76,7 +73,7 @@ class GitHubConfig:
 
 
 # Type variable for JSON-serializable data
-JSONType = Union[Dict[str, Any], list[Any], str, int, float, bool, None]
+JSONType = Union[dict[str, Any], list[Any], str, int, float, bool, None]
 T = TypeVar("T", bound=JSONType)
 
 
@@ -94,7 +91,7 @@ class GitHubClient:
     def __init__(
         self,
         config: GitHubConfig,
-        session: Optional[ClientSession] = None,
+        session: ClientSession | None = None,
     ) -> None:
         self.config = config
         self._session = session
@@ -147,7 +144,7 @@ class GitHubClient:
             self.logger.warning(f"Approaching rate limit. Waiting {sleep_time:.1f}s until reset")
             await asyncio.sleep(sleep_time)
 
-    async def _request(self, method: str, endpoint: str, **kwargs) -> Dict[str, Any]:
+    async def _request(self, method: str, endpoint: str, **kwargs) -> dict[str, Any]:
         """Make an HTTP request with retry logic and rate limit handling.
 
         Args:
@@ -198,7 +195,7 @@ class GitHubClient:
                         content_type = response.headers.get("Content-Type", "")
                         if "application/json" in content_type:
                             return await response.json()
-                        elif content_type.startswith("text/"):
+                        if content_type.startswith("text/"):
                             return {"text": await response.text()}
                         return {}
 
@@ -220,7 +217,7 @@ class GitHubClient:
                 if 400 <= (e.status or 0) < 500 and e.status != 429:
                     break
 
-            except (ClientError, asyncio.TimeoutError) as e:
+            except (TimeoutError, ClientError) as e:
                 last_error = e
 
             # If we have retries left, wait before retrying
@@ -235,9 +232,10 @@ class GitHubClient:
         # If we get here, all retries failed
         if last_error:
             raise last_error
-        raise GitHubError("Request failed after all retries")
+        msg = "Request failed after all retries"
+        raise GitHubError(msg)
 
-    async def get(self, endpoint: str, **kwargs) -> Dict[str, Any]:
+    async def get(self, endpoint: str, **kwargs) -> dict[str, Any]:
         """Make a GET request to the GitHub API.
 
         Args:
@@ -250,8 +248,8 @@ class GitHubClient:
         return await self._request("GET", endpoint, **kwargs)
 
     async def post(
-        self, endpoint: str, data: Optional[Dict[str, Any]] = None, **kwargs
-    ) -> Dict[str, Any]:
+        self, endpoint: str, data: dict[str, Any] | None = None, **kwargs
+    ) -> dict[str, Any]:
         """Make a POST request to the GitHub API.
 
         Args:
@@ -267,8 +265,8 @@ class GitHubClient:
         return await self._request("POST", endpoint, **kwargs)
 
     async def put(
-        self, endpoint: str, data: Optional[Dict[str, Any]] = None, **kwargs
-    ) -> Dict[str, Any]:
+        self, endpoint: str, data: dict[str, Any] | None = None, **kwargs
+    ) -> dict[str, Any]:
         """Make a PUT request to the GitHub API.
 
         Args:
@@ -284,8 +282,8 @@ class GitHubClient:
         return await self._request("PUT", endpoint, **kwargs)
 
     async def patch(
-        self, endpoint: str, data: Optional[Dict[str, Any]] = None, **kwargs
-    ) -> Dict[str, Any]:
+        self, endpoint: str, data: dict[str, Any] | None = None, **kwargs
+    ) -> dict[str, Any]:
         """Make a PATCH request to the GitHub API.
 
         Args:
@@ -317,8 +315,8 @@ class GitHubClient:
         return response.get("status", 0) == 204
 
     async def graphql(
-        self, query: str, variables: Optional[Dict[str, Any]] = None, **kwargs
-    ) -> Dict[str, Any]:
+        self, query: str, variables: dict[str, Any] | None = None, **kwargs
+    ) -> dict[str, Any]:
         """Execute a GraphQL query against the GitHub API.
 
         Args:
@@ -332,7 +330,7 @@ class GitHubClient:
         Raises:
             GitHubError: If the request fails or contains errors
         """
-        payload: Dict[str, Any] = {"query": query}
+        payload: dict[str, Any] = {"query": query}
         if variables:
             payload["variables"] = variables
 
@@ -341,7 +339,8 @@ class GitHubClient:
         if "errors" in response:
             errors = response.get("errors", [])
             error_messages = [e.get("message", "Unknown error") for e in errors]
-            raise GitHubError(f"GraphQL errors: {', '.join(error_messages)}", response=response)
+            msg = f"GraphQL errors: {', '.join(error_messages)}"
+            raise GitHubError(msg, response=response)
 
         return response.get("data", {})
 

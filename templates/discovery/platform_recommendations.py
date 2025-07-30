@@ -6,22 +6,23 @@ Platform Recommendations Module
 Handles platform recommendations based on project requirements.
 """
 
-from typing import Any, Dict, List, Set, Tuple
+import operator
+from typing import Any
 
-from .template_models import PlatformRecommendation, PlatformRequirements, TemplateInfo
+from .template_models import PlatformRequirements, TemplateInfo
 
 
 class PlatformRecommendationEngine:
     """Generates platform recommendations based on requirements."""
 
-    def __init__(self, templates: List[TemplateInfo], platform_categories: Dict[str, Any]) -> None:
+    def __init__(self, templates: list[TemplateInfo], platform_categories: dict[str, Any]) -> None:
         """Initialize the recommendation engine."""
         self.templates = templates
         self.platform_categories = platform_categories
 
     def get_platform_recommendations(
-        self, requirements: Dict[str, Any]
-    ) -> List[Tuple[str, float, str]]:
+        self, requirements: dict[str, Any]
+    ) -> list[tuple[str, float, str]]:
         """Get platform recommendations based on project requirements."""
         # Convert dict to PlatformRequirements for type safety
         req = PlatformRequirements(
@@ -33,8 +34,8 @@ class PlatformRecommendationEngine:
             features=requirements.get("features", []),
         )
 
-        platform_scores: Dict[str, float] = {}
-        platform_reasoning: Dict[str, List[str]] = {}
+        platform_scores: dict[str, float] = {}
+        platform_reasoning: dict[str, list[str]] = {}
 
         # Get all unique platforms from templates
         all_platforms = set()
@@ -50,9 +51,9 @@ class PlatformRecommendationEngine:
             platform_reasoning[platform] = reasons
 
         # Sort by score and return top recommendations
-        sorted_platforms = sorted(platform_scores.items(), key=lambda x: x[1], reverse=True)
+        sorted_platforms = sorted(platform_scores.items(), key=operator.itemgetter(1), reverse=True)
 
-        recommendations: List[Tuple[str, float, str]] = []
+        recommendations: list[tuple[str, float, str]] = []
         for platform, score in sorted_platforms[:5]:  # Top 5 recommendations
             reasoning = "; ".join(platform_reasoning[platform])
             recommendations.append((platform, score, reasoning))
@@ -61,10 +62,10 @@ class PlatformRecommendationEngine:
 
     def _score_platform(
         self, platform: str, requirements: PlatformRequirements
-    ) -> Tuple[float, List[str]]:
+    ) -> tuple[float, list[str]]:
         """Score a platform based on requirements."""
         score = 0.0
-        reasons: List[str] = []
+        reasons: list[str] = []
 
         # Get platform templates
         platform_templates = [t for t in self.templates if platform in t.platforms]
@@ -129,7 +130,7 @@ class PlatformRecommendationEngine:
         return min(10.0, score), reasons  # Cap at 10.0
 
     def _score_project_type(
-        self, platform: str, project_type: str, templates: List[TemplateInfo]
+        self, platform: str, project_type: str, templates: list[TemplateInfo]
     ) -> float:
         """Score platform based on project type compatibility."""
         type_mapping = {
@@ -200,13 +201,13 @@ class PlatformRecommendationEngine:
         return timeline_mapping.get(timeline.lower(), 0.5)
 
     def _score_features(
-        self, platform: str, required_features: List[str], templates: List[TemplateInfo]
+        self, platform: str, required_features: list[str], templates: list[TemplateInfo]
     ) -> float:
         """Score platform based on feature availability."""
         if not required_features:
             return 0.5
 
-        available_features: Set[str] = set()
+        available_features: set[str] = set()
         for template in templates:
             available_features.update(f.lower() for f in template.key_features)
 

@@ -6,7 +6,7 @@ Provides the same interface as the original Phase1ExtensionImplementor while usi
 
 import logging
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from .phase_manager import PhaseManager
 from .report_generator import ReportGenerator
@@ -24,9 +24,9 @@ class Phase1ExtensionImplementor:
 
     def __init__(self) -> None:
         self.project_root = Path.cwd()
-        self.implementation_log: List[Dict[str, Any]] = []
-        self.current_phase: Optional[str] = None
-        self.tasks: Dict[str, Task] = {}
+        self.implementation_log: list[dict[str, Any]] = []
+        self.current_phase: str | None = None
+        self.tasks: dict[str, Task] = {}
 
         # Initialize modular components
         self.task_executor = TaskExecutor(self.project_root)
@@ -97,7 +97,7 @@ class Phase1ExtensionImplementor:
                 )
 
         except Exception as e:
-            logger.error(f"Implementation failed for phase {phase}: {e}")
+            logger.exception(f"Implementation failed for phase {phase}: {e}")
             self._log_implementation_event(
                 {
                     "event": "phase_error",
@@ -106,7 +106,7 @@ class Phase1ExtensionImplementor:
                     "timestamp": self._get_timestamp(),
                 }
             )
-            raise e
+            raise
 
     async def run_all_phases(self, dry_run: bool = False) -> None:
         """Run all implementation phases in order."""
@@ -144,7 +144,7 @@ class Phase1ExtensionImplementor:
             )
 
         except Exception as e:
-            logger.error(f"Full implementation failed: {e}")
+            logger.exception(f"Full implementation failed: {e}")
             self._log_implementation_event(
                 {
                     "event": "full_implementation_error",
@@ -152,9 +152,9 @@ class Phase1ExtensionImplementor:
                     "timestamp": self._get_timestamp(),
                 }
             )
-            raise e
+            raise
 
-    def get_implementation_status(self) -> Dict[str, Any]:
+    def get_implementation_status(self) -> dict[str, Any]:
         """Get current implementation status."""
         overall_status = self.phase_manager.get_overall_status()
         execution_summary = self.task_executor.get_execution_summary()
@@ -168,20 +168,20 @@ class Phase1ExtensionImplementor:
             "next_steps": self.phase_manager.get_next_steps(),
         }
 
-    def generate_implementation_report(self) -> Dict[str, Any]:
+    def generate_implementation_report(self) -> dict[str, Any]:
         """Generate comprehensive implementation report."""
         return self.report_generator.generate_progress_report()
 
-    def save_implementation_report(self, filename: Optional[str] = None) -> Path:
+    def save_implementation_report(self, filename: str | None = None) -> Path:
         """Save implementation report to file."""
         report = self.generate_implementation_report()
         return self.report_generator.save_report(report, filename)
 
-    def get_phase_status(self, phase_id: str) -> Dict[str, Any]:
+    def get_phase_status(self, phase_id: str) -> dict[str, Any]:
         """Get status of a specific phase."""
         return self.phase_manager.get_phase_status(phase_id)
 
-    def get_task_status(self, task_id: str) -> Dict[str, Any]:
+    def get_task_status(self, task_id: str) -> dict[str, Any]:
         """Get status of a specific task."""
         if task_id in self.task_executor.executions:
             execution = self.task_executor.executions[task_id]
@@ -197,21 +197,20 @@ class Phase1ExtensionImplementor:
                 "output": execution.output,
                 "logs": execution.logs,
             }
-        else:
-            return {
-                "task_id": task_id,
-                "status": "not_started",
-                "message": "Task has not been executed yet",
-            }
+        return {
+            "task_id": task_id,
+            "status": "not_started",
+            "message": "Task has not been executed yet",
+        }
 
-    def pause_implementation(self, phase_id: Optional[str] = None) -> bool:
+    def pause_implementation(self, phase_id: str | None = None) -> bool:
         """Pause implementation of a specific phase or current phase."""
         target_phase = phase_id or self.current_phase
         if target_phase:
             return self.phase_manager.pause_phase(target_phase)
         return False
 
-    def resume_implementation(self, phase_id: Optional[str] = None) -> bool:
+    def resume_implementation(self, phase_id: str | None = None) -> bool:
         """Resume implementation of a specific phase or current phase."""
         target_phase = phase_id or self.current_phase
         if target_phase:
@@ -222,7 +221,7 @@ class Phase1ExtensionImplementor:
         """Reset a phase to allow re-execution."""
         return self.phase_manager.reset_phase(phase_id)
 
-    def get_available_tasks(self) -> List[Dict[str, Any]]:
+    def get_available_tasks(self) -> list[dict[str, Any]]:
         """Get list of all available tasks."""
         task_definitions = TaskRegistry.get_task_definitions()
         return [
@@ -238,7 +237,7 @@ class Phase1ExtensionImplementor:
             for task_id, task_info in task_definitions.items()
         ]
 
-    def get_available_phases(self) -> List[Dict[str, Any]]:
+    def get_available_phases(self) -> list[dict[str, Any]]:
         """Get list of all available phases."""
         return [
             {
@@ -253,11 +252,11 @@ class Phase1ExtensionImplementor:
             for phase_id, phase_info in self.implementation_phases.items()
         ]
 
-    def get_dependency_graph(self) -> Dict[str, List[str]]:
+    def get_dependency_graph(self) -> dict[str, list[str]]:
         """Get the complete task dependency graph."""
         return TaskRegistry.get_dependency_graph()
 
-    def validate_dependencies(self, task_ids: List[str]) -> Dict[str, Any]:
+    def validate_dependencies(self, task_ids: list[str]) -> dict[str, Any]:
         """Validate that task dependencies can be satisfied."""
         dependency_graph = self.get_dependency_graph()
         issues = []
@@ -271,14 +270,14 @@ class Phase1ExtensionImplementor:
 
         return {"valid": len(issues) == 0, "issues": issues}
 
-    def _get_next_steps(self) -> List[Dict[str, Any]]:
+    def _get_next_steps(self) -> list[dict[str, Any]]:
         """
         Get recommended next steps based on current progress.
         Maintains backward compatibility with original method.
         """
         return self.phase_manager.get_next_steps()
 
-    def _log_implementation_event(self, event: Dict[str, Any]) -> None:
+    def _log_implementation_event(self, event: dict[str, Any]) -> None:
         """Log an implementation event."""
         self.implementation_log.append(event)
 
@@ -310,7 +309,7 @@ class Phase1ExtensionImplementor:
         overall_status = self.phase_manager.get_overall_status()
         return overall_status.get("overall_progress_percentage", 0.0) if overall_status else 0.0
 
-    def get_implementation_summary(self) -> Dict[str, Any]:
+    def get_implementation_summary(self) -> dict[str, Any]:
         """
         Get implementation summary (backward compatibility).
         This method maintains the same interface as the original implementation.

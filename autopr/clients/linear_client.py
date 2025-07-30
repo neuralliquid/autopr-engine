@@ -2,7 +2,7 @@
 
 import logging
 import os
-from typing import Any, Dict, Optional
+from typing import Any
 
 import aiohttp
 
@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 class LinearClient:
     """Simple Linear API client for AutoPR."""
 
-    def __init__(self, api_key: Optional[str] = None):
+    def __init__(self, api_key: str | None = None):
         """Initialize the Linear client.
 
         Args:
@@ -30,7 +30,7 @@ class LinearClient:
             "Content-Type": "application/json",
         }
 
-    async def query(self, query: str, variables: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    async def query(self, query: str, variables: dict[str, Any] | None = None) -> dict[str, Any]:
         """Execute a GraphQL query against the Linear API."""
         data = {"query": query, "variables": variables or {}}
 
@@ -43,7 +43,8 @@ class LinearClient:
                     error_messages = [
                         e.get("message", "Unknown error") for e in result.get("errors", [])
                     ]
-                    raise Exception(f"Linear API error: {', '.join(error_messages)}")
+                    msg = f"Linear API error: {', '.join(error_messages)}"
+                    raise Exception(msg)
 
                 return result.get("data", {})
 

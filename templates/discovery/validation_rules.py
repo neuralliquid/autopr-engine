@@ -12,11 +12,10 @@ Features:
 - Rule management and organization
 """
 
-import json
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import yaml
 
@@ -32,7 +31,7 @@ class ValidationRule:
     check_function: str
     weight: float = 1.0
     enabled: bool = True
-    parameters: Optional[Dict[str, Any]] = None
+    parameters: dict[str, Any] | None = None
 
     def __post_init__(self) -> None:
         if self.parameters is None:
@@ -43,15 +42,15 @@ class ValidationRule:
 class ValidationRuleSet:
     """Collection of validation rules organized by category."""
 
-    structure_rules: List[ValidationRule]
-    metadata_rules: List[ValidationRule]
-    variables_rules: List[ValidationRule]
-    documentation_rules: List[ValidationRule]
-    examples_rules: List[ValidationRule]
-    security_rules: List[ValidationRule]
-    performance_rules: List[ValidationRule]
+    structure_rules: list[ValidationRule]
+    metadata_rules: list[ValidationRule]
+    variables_rules: list[ValidationRule]
+    documentation_rules: list[ValidationRule]
+    examples_rules: list[ValidationRule]
+    security_rules: list[ValidationRule]
+    performance_rules: list[ValidationRule]
 
-    def get_all_rules(self) -> List[ValidationRule]:
+    def get_all_rules(self) -> list[ValidationRule]:
         """Get all rules as a flat list."""
         return (
             self.structure_rules
@@ -63,7 +62,7 @@ class ValidationRuleSet:
             + self.performance_rules
         )
 
-    def get_rules_by_category(self, category: str) -> List[ValidationRule]:
+    def get_rules_by_category(self, category: str) -> list[ValidationRule]:
         """Get rules for a specific category."""
         category_map = {
             "structure": self.structure_rules,
@@ -80,7 +79,7 @@ class ValidationRuleSet:
 class ValidationRuleLoader:
     """Loads and manages validation rules from configuration files."""
 
-    def __init__(self, rules_root: Optional[Path] = None):
+    def __init__(self, rules_root: Path | None = None):
         """Initialize the rule loader."""
         if rules_root is None:
             self.rules_root = Path(__file__).parent / "validation_rules"
@@ -107,7 +106,7 @@ class ValidationRuleLoader:
         if not rules_file.exists():
             return self._load_default_rules()
 
-        with open(rules_file, "r", encoding="utf-8") as f:
+        with open(rules_file, encoding="utf-8") as f:
             rules_data = yaml.safe_load(f)
 
         return ValidationRuleSet(
@@ -120,7 +119,7 @@ class ValidationRuleLoader:
             performance_rules=self._parse_rules(rules_data.get("performance", [])),
         )
 
-    def _parse_rules(self, rules_data: List[Dict[str, Any]]) -> List[ValidationRule]:
+    def _parse_rules(self, rules_data: list[dict[str, Any]]) -> list[ValidationRule]:
         """Parse rule data into ValidationRule objects."""
         rules = []
         for rule_data in rules_data:
@@ -328,7 +327,7 @@ class ValidationRuleLoader:
 
         return str(template_file)
 
-    def _rule_to_dict(self, rule: ValidationRule) -> Dict[str, Any]:
+    def _rule_to_dict(self, rule: ValidationRule) -> dict[str, Any]:
         """Convert ValidationRule to dictionary for serialization."""
         return {
             "rule_id": rule.rule_id,
@@ -343,7 +342,7 @@ class ValidationRuleLoader:
 
 
 # Global rule loader instance
-_rule_loader: Optional[ValidationRuleLoader] = None
+_rule_loader: ValidationRuleLoader | None = None
 
 
 def get_validation_rules() -> ValidationRuleSet:

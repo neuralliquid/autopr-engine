@@ -7,7 +7,7 @@ for different platforms and deployment targets.
 
 import logging
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from .base_generator import BaseGenerator
 
@@ -19,7 +19,7 @@ class DeploymentGenerator(BaseGenerator):
     Generates deployment configuration files for various platforms.
     """
 
-    def __init__(self, template_dir: Optional[Path] = None):
+    def __init__(self, template_dir: Path | None = None):
         """
         Initialize the deployment generator.
 
@@ -33,8 +33,8 @@ class DeploymentGenerator(BaseGenerator):
         self,
         platform: str,
         output_dir: Path,
-        context: Optional[Dict[str, Any]] = None,
-    ) -> List[Path]:
+        context: dict[str, Any] | None = None,
+    ) -> list[Path]:
         """
         Generate deployment configuration files.
 
@@ -55,15 +55,14 @@ class DeploymentGenerator(BaseGenerator):
         # Generate platform-specific deployment files
         if platform == "replit":
             return self._generate_replit_deployment(output_dir, context)
-        elif platform == "vercel":
+        if platform == "vercel":
             return self._generate_vercel_deployment(output_dir, context)
-        elif platform == "render":
+        if platform == "render":
             return self._generate_render_deployment(output_dir, context)
-        else:
-            logger.warning(f"Unsupported deployment platform: {platform}")
-            return []
+        logger.warning(f"Unsupported deployment platform: {platform}")
+        return []
 
-    def _generate_replit_deployment(self, output_dir: Path, context: Dict[str, Any]) -> List[Path]:
+    def _generate_replit_deployment(self, output_dir: Path, context: dict[str, Any]) -> list[Path]:
         """Generate Replit-specific deployment files."""
         generated_files = []
 
@@ -84,7 +83,7 @@ class DeploymentGenerator(BaseGenerator):
 
         return generated_files
 
-    def _generate_vercel_deployment(self, output_dir: Path, context: Dict[str, Any]) -> List[Path]:
+    def _generate_vercel_deployment(self, output_dir: Path, context: dict[str, Any]) -> list[Path]:
         """Generate Vercel deployment configuration."""
         generated_files = []
 
@@ -97,7 +96,7 @@ class DeploymentGenerator(BaseGenerator):
 
         return generated_files
 
-    def _generate_render_deployment(self, output_dir: Path, context: Dict[str, Any]) -> List[Path]:
+    def _generate_render_deployment(self, output_dir: Path, context: dict[str, Any]) -> list[Path]:
         """Generate Render deployment configuration."""
         generated_files = []
 

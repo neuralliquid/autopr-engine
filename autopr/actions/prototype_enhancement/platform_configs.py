@@ -5,7 +5,7 @@ Centralized platform definitions and enhancement configurations for prototype en
 """
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List
+from typing import Any
 
 
 @dataclass
@@ -17,8 +17,8 @@ class PlatformConfig:
     description: str
     primary_language: str
     framework: str
-    deployment_targets: List[str] = field(default_factory=list)
-    common_files: List[str] = field(default_factory=list)
+    deployment_targets: list[str] = field(default_factory=list)
+    common_files: list[str] = field(default_factory=list)
     package_manager: str = "npm"
     build_command: str = "npm run build"
     start_command: str = "npm start"
@@ -29,7 +29,7 @@ class PlatformRegistry:
     """Registry for all supported platforms and their configurations."""
 
     @staticmethod
-    def get_platform_configs() -> Dict[str, PlatformConfig]:
+    def get_platform_configs() -> dict[str, PlatformConfig]:
         """Get all platform configurations."""
         return {
             "replit": PlatformConfig(
@@ -122,7 +122,7 @@ class PlatformRegistry:
         }
 
     @staticmethod
-    def get_enhancement_packages() -> Dict[str, Dict[str, List[str]]]:
+    def get_enhancement_packages() -> dict[str, dict[str, list[str]]]:
         """Get enhancement packages by category and platform."""
         return {
             "security": {
@@ -181,7 +181,7 @@ class PlatformRegistry:
         }
 
     @staticmethod
-    def get_production_checklists() -> Dict[str, List[str]]:
+    def get_production_checklists() -> dict[str, list[str]]:
         """Get production readiness checklists by platform."""
         return {
             "replit": [
@@ -247,7 +247,7 @@ class PlatformRegistry:
         }
 
     @staticmethod
-    def get_deployment_configs() -> Dict[str, Dict[str, Any]]:
+    def get_deployment_configs() -> dict[str, dict[str, Any]]:
         """Get deployment configurations by platform."""
         return {
             "replit": {
@@ -341,7 +341,7 @@ class PlatformRegistry:
         }
 
     @staticmethod
-    def get_next_steps() -> Dict[str, Dict[str, List[str]]]:
+    def get_next_steps() -> dict[str, dict[str, list[str]]]:
         """Get next steps by platform and enhancement type."""
         return {
             "replit": {
@@ -496,5 +496,6 @@ class PlatformRegistry:
         """Get configuration for a specific platform."""
         configs = PlatformRegistry.get_platform_configs()
         if platform not in configs:
-            raise ValueError(f"Unsupported platform: {platform}")
+            msg = f"Unsupported platform: {platform}"
+            raise ValueError(msg)
         return configs[platform]
