@@ -247,7 +247,7 @@ template: |
   if [ "$DRY_RUN" != "true" ]; then
       echo "💾 Creating pre-restore backup..."
       PRE_RESTORE_TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-      
+
       # Check if database exists and create backup
       {% if database_url %}
       if [ ! -z "${{{ database_url }}}" ]; then
@@ -268,7 +268,7 @@ template: |
   if [[ "$BASENAME" == *.sql ]]; then
       # Database restore
       echo "🗄️  Restoring database..."
-      
+
       if [ "$DRY_RUN" = "true" ]; then
           echo "🔍 DRY RUN: Would restore database from $BACKUP_FILE"
           {% if database_url %}
@@ -280,7 +280,7 @@ template: |
               echo "❌ Error: {{ database_url }} environment variable not set"
               exit 1
           fi
-          
+
           {% if database_type == "postgresql" or database_type == "auto" %}
           # Try PostgreSQL first
           if psql "${{{ database_url }}}" -c '\q' 2>/dev/null; then
@@ -309,7 +309,7 @@ template: |
       {% if restore_files %}
       # File restore
       echo "📁 Restoring files..."
-      
+
       if [ "$DRY_RUN" = "true" ]; then
           echo "🔍 DRY RUN: Would extract $BACKUP_FILE to {{ files_destination }}"
           if [[ "$BASENAME" == *.tar.gz ]]; then
@@ -320,7 +320,7 @@ template: |
       else
           # Create destination directory
           mkdir -p "{{ files_destination }}"
-          
+
           # Extract files
           if [[ "$BASENAME" == *.tar.gz ]]; then
               tar -xzf "$BACKUP_FILE" -C "{{ files_destination }}" --strip-components=1
@@ -337,10 +337,10 @@ template: |
       {% if restore_config %}
       # Configuration file restore
       echo "⚙️  Restoring configuration..."
-      
+
       # Extract original filename from backup name
       ORIGINAL_NAME=$(echo "$BASENAME" | sed 's/_backup_[0-9]*_[0-9]*$//')
-      
+
       if [ "$DRY_RUN" = "true" ]; then
           echo "🔍 DRY RUN: Would restore $BACKUP_FILE to $ORIGINAL_NAME"
       else

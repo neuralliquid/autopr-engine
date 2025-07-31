@@ -2,7 +2,10 @@
 
 ## Overview
 
-AutoWeave is a sophisticated templating system designed to streamline the creation, management, and deployment of code templates across various platforms and frameworks. This document outlines the comprehensive requirements, architecture, and implementation details for the AutoWeave templating system, including its modular architecture and integration with the AutoPR Engine.
+AutoWeave is a sophisticated templating system designed to streamline the creation, management, and deployment of code
+templates across various platforms and frameworks. This document outlines the comprehensive requirements, architecture,
+and implementation details for the AutoWeave templating system, including its modular architecture and integration with
+the AutoPR Engine.
 
 ## Problem Statement
 
@@ -19,6 +22,7 @@ The current template ecosystem faces several challenges:
 ## Goals & Objectives
 
 ### Business Goals
+
 1. **Accelerate Development**: Reduce setup and configuration time for new projects by 70%
 2. **Improve Quality**: Enforce best practices and security standards across all projects
 3. **Enhance Consistency**: Ensure uniform project structures and coding standards
@@ -26,6 +30,7 @@ The current template ecosystem faces several challenges:
 5. **Increase Adoption**: Make the template system intuitive and valuable for all user personas
 
 ### Technical Objectives
+
 1. **Standardization**: Create a consistent structure and format for all templates
 2. **Modularity**: Enable composition of templates from reusable components
 3. **Extensibility**: Support easy addition of new template types and categories
@@ -36,6 +41,7 @@ The current template ecosystem faces several challenges:
 ## Scope
 
 ### In Scope
+
 - Template definition language and structure
 - Template loading, caching, and rendering system
 - Variable interpolation and template inheritance
@@ -48,6 +54,7 @@ The current template ecosystem faces several challenges:
 - Template versioning and dependency management
 
 ### Out of Scope
+
 - Visual template editor (future consideration)
 - Real-time collaboration features
 - Template marketplace (future consideration)
@@ -57,6 +64,7 @@ The current template ecosystem faces several challenges:
 ## User Personas
 
 ### 1. Integration Specialist
+
 - **Role**: Implements and configures templates for specific projects
 - **Goals**:
   - Quickly set up new projects with best practices
@@ -68,6 +76,7 @@ The current template ecosystem faces several challenges:
   - Difficult debugging of template issues
 
 ### 2. Template Developer
+
 - **Role**: Creates and maintains template libraries
 - **Goals**:
   - Develop reusable, well-documented templates
@@ -79,6 +88,7 @@ The current template ecosystem faces several challenges:
   - Communicating template usage
 
 ### 3. Solution Architect
+
 - **Role**: Designs system architectures and technology stacks
 - **Goals**:
   - Standardize project structures
@@ -90,6 +100,7 @@ The current template ecosystem faces several challenges:
   - Technical debt accumulation
 
 ### 4. Business Stakeholder
+
 - **Role**: Owns business outcomes and ROI
 - **Goals**:
   - Accelerate time-to-market
@@ -101,6 +112,7 @@ The current template ecosystem faces several challenges:
   - Security vulnerabilities
 
 ### 5. DevOps Engineer
+
 - **Role**: Manages deployment and infrastructure
 - **Goals**:
   - Standardize deployment processes
@@ -112,6 +124,7 @@ The current template ecosystem faces several challenges:
   - Difficult troubleshooting
 
 ### 6. Compliance Officer
+
 - **Role**: Ensures regulatory compliance
 - **Goals**:
   - Enforce security policies
@@ -127,7 +140,9 @@ The current template ecosystem faces several challenges:
 ### 1. Template Structure
 
 #### 1.1 Template Directory Structure
-```
+
+```text
+
 templates/
   ├── docker/                 # Docker configurations
   │   ├── base.dockerfile.yml
@@ -159,6 +174,7 @@ templates/
 ```
 
 #### 1.2 Template Metadata
+
 Each template file should include metadata in YAML frontmatter:
 
 ```yaml
@@ -183,6 +199,7 @@ variables:
 ### 2. Template Rendering System
 
 #### 2.1 Core Components
+
 - **Template Loader**: Discovers and loads templates from filesystem or remote sources
 - **Template Parser**: Parses template syntax and extracts variables
 - **Variable Resolver**: Handles variable interpolation and default values
@@ -190,6 +207,7 @@ variables:
 - **Validator**: Ensures template syntax and structure are correct
 
 #### 2.2 Template Syntax
+
 - Variables: `{{ variable }}`
 - Default values: `{{ variable|default("value") }}`
 - Conditionals: `{% if condition %}...{% endif %}`
@@ -200,7 +218,9 @@ variables:
 ### 3. Template Management
 
 #### 3.1 CLI Commands
+
 ```bash
+
 # List available templates
 autopr template list [--category=CATEGORY]
 
@@ -218,6 +238,7 @@ autopr template package PATH
 ```
 
 #### 3.2 Template Discovery
+
 - Search templates by name, category, tags
 - List available variables for a template
 - Show template documentation and examples
@@ -226,12 +247,14 @@ autopr template package PATH
 ## Non-Functional Requirements
 
 ### 1. Performance
+
 - Template loading: < 100ms for 95th percentile
 - Template rendering: < 50ms for 95th percentile
 - Support for template caching
 - Efficient memory usage for large template sets
 
 ### 2. Security
+
 - Sandboxed template execution
 - Input validation and sanitization
 - No arbitrary code execution in templates
@@ -239,6 +262,7 @@ autopr template package PATH
 - Role-based access control for sensitive operations
 
 ### 3. Maintainability
+
 - Comprehensive test coverage (>90%)
 - TypeScript and Python type definitions
 - API documentation with examples
@@ -246,6 +270,7 @@ autopr template package PATH
 - Automated code quality checks
 
 ### 4. Compatibility
+
 - **Python 3.9+** (3.13.5 recommended)
 - Node.js 18+ (for JavaScript/TypeScript templates)
 - Support for both ESM and CommonJS
@@ -257,12 +282,14 @@ autopr template package PATH
 ### 1. Core Components
 
 #### 1.1 Template Engine
+
 - **Template Parser**: Converts template syntax to an abstract syntax tree (AST)
 - **Variable Resolver**: Handles scoping and variable lookup
 - **Renderer**: Processes the AST to generate output
 - **Cache Manager**: Caches parsed templates for performance
 
 #### 1.2 Package Management
+
 - **Dependency Resolution**: Handles template dependencies
 - **Version Management**: Supports semantic versioning for templates
 - **Registry Integration**: Connects to template registries
@@ -270,11 +297,13 @@ autopr template package PATH
 ### 2. Integration Points
 
 #### 2.1 AutoPR Engine
+
 - **Workflow Integration**: Templates can be used in AutoPR workflows
 - **Action Templates**: Predefined actions for common tasks
 - **Event Handlers**: Respond to repository events with templates
 
 #### 2.2 CI/CD Pipelines
+
 - **GitHub Actions**: Native integration for GitHub workflows
 - **Azure Pipelines**: Support for Azure DevOps
 - **Custom Runners**: Extensible runner system for other CI/CD platforms
@@ -282,6 +311,7 @@ autopr template package PATH
 ## Implementation Roadmap
 
 ### Phase 1: Core Functionality (MVP)
+
 1. Basic template engine with variable substitution
 2. File system template loader
 3. CLI for template management
@@ -289,6 +319,7 @@ autopr template package PATH
 5. Documentation
 
 ### Phase 2: Advanced Features
+
 1. Template inheritance and composition
 2. Conditional logic and loops
 3. Built-in template functions
@@ -296,6 +327,7 @@ autopr template package PATH
 5. Performance optimizations
 
 ### Phase 3: Integration & Scaling
+
 1. AutoPR Engine integration
 2. CI/CD pipeline support
 3. Template registry
@@ -305,6 +337,7 @@ autopr template package PATH
 ## Success Metrics
 
 ### Quantitative
+
 - 70% reduction in project setup time
 - 90% reduction in configuration-related bugs
 - 80% of projects using standardized templates
@@ -312,6 +345,7 @@ autopr template package PATH
 - > 90% test coverage
 
 ### Qualitative
+
 - Positive developer feedback on template usability
 - Reduced onboarding time for new team members
 - Consistent project structures across the organization
@@ -320,33 +354,43 @@ autopr template package PATH
 ## Open Questions & Risks
 
 ### Open Questions
+
 1. How to handle template versioning across different projects?
 2. What's the best way to handle template deprecation?
 3. How to manage template compatibility with different AutoPR versions?
 
 ### Risks & Mitigations
+
 1. **Risk**: Performance degradation with complex templates
+
    **Mitigation**: Implement aggressive caching and performance testing
-2. **Risk**: Security vulnerabilities in template execution
+
+1. **Risk**: Security vulnerabilities in template execution
+
    **Mitigation**: Sandbox execution and strict input validation
-3. **Risk**: Poor adoption due to complexity
+
+1. **Risk**: Poor adoption due to complexity
+
    **Mitigation**: Comprehensive documentation and examples
 
 ## Appendix
 
 ### A. Template Authoring Guide
+
 1. Template structure and organization
 2. Best practices for template design
 3. Testing and validation
 4. Documentation standards
 
 ### B. Integration Guide
+
 1. Using templates in AutoPR workflows
 2. Custom template development
 3. Extending the template system
 4. Troubleshooting common issues
 
 ### C. Security Considerations
+
 1. Secure template authoring
 2. Input validation and sanitization
 3. Access control and permissions

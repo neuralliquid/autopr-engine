@@ -3,19 +3,17 @@ AutoPR Action: Issue Creator
 Creates GitHub issues and Linear tickets based on AI analysis
 """
 
-import json
 import os
-from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import requests
 from pydantic import BaseModel, Field
 
 
 class IssueCreatorInputs(BaseModel):
-    github_issues: List[Dict[str, Any]] = Field(default_factory=list)
-    linear_tickets: List[Dict[str, Any]] = Field(default_factory=list)
-    ai_assignments: Dict[str, str] = Field(default_factory=dict)
+    github_issues: list[dict[str, Any]] = Field(default_factory=list)
+    linear_tickets: list[dict[str, Any]] = Field(default_factory=list)
+    ai_assignments: dict[str, str] = Field(default_factory=dict)
     repository: str
     create_github: bool = True
     create_linear: bool = True
@@ -23,10 +21,10 @@ class IssueCreatorInputs(BaseModel):
 
 
 class IssueCreatorOutputs(BaseModel):
-    github_issues_created: List[Dict[str, Any]] = Field(default_factory=list)
-    linear_tickets_created: List[Dict[str, Any]] = Field(default_factory=list)
-    ai_notifications_sent: List[Dict[str, Any]] = Field(default_factory=list)
-    errors: List[str] = Field(default_factory=list)
+    github_issues_created: list[dict[str, Any]] = Field(default_factory=list)
+    linear_tickets_created: list[dict[str, Any]] = Field(default_factory=list)
+    ai_notifications_sent: list[dict[str, Any]] = Field(default_factory=list)
+    errors: list[str] = Field(default_factory=list)
     success_count: int
 
 
@@ -51,7 +49,7 @@ class IssueCreator:
                     created_issue = self._create_github_issue(issue_data, inputs.repository)
                     github_created.append(created_issue)
                 except Exception as e:
-                    errors.append(f"Failed to create GitHub issue: {str(e)}")
+                    errors.append(f"Failed to create GitHub issue: {e!s}")
 
         # Create Linear tickets
         if inputs.create_linear and inputs.linear_tickets:
@@ -60,7 +58,7 @@ class IssueCreator:
                     created_ticket = self._create_linear_ticket(ticket_data)
                     linear_created.append(created_ticket)
                 except Exception as e:
-                    errors.append(f"Failed to create Linear ticket: {str(e)}")
+                    errors.append(f"Failed to create Linear ticket: {e!s}")
 
         # Send AI notifications
         if inputs.notify_ai_tools and inputs.ai_assignments:
@@ -71,7 +69,7 @@ class IssueCreator:
                     )
                     ai_notifications.append(notification)
                 except Exception as e:
-                    errors.append(f"Failed to notify {ai_tool}: {str(e)}")
+                    errors.append(f"Failed to notify {ai_tool}: {e!s}")
 
         return IssueCreatorOutputs(
             github_issues_created=github_created,
@@ -81,7 +79,7 @@ class IssueCreator:
             success_count=len(github_created) + len(linear_created),
         )
 
-    def _create_github_issue(self, issue_data: Dict, repository: str) -> Dict:
+    def _create_github_issue(self, issue_data: dict, repository: str) -> dict:
         """Create a GitHub issue"""
         url = f"https://api.github.com/repos/{repository}/issues"
 
@@ -113,7 +111,7 @@ class IssueCreator:
             "created_at": created_issue["created_at"],
         }
 
-    def _create_linear_ticket(self, ticket_data: Dict) -> Dict:
+    def _create_linear_ticket(self, ticket_data: dict) -> dict:
         """Create a Linear ticket"""
         url = "https://api.linear.app/graphql"
 
@@ -164,7 +162,8 @@ class IssueCreator:
         result = response.json()
 
         if result.get("errors"):
-            raise Exception(f"Linear API error: {result['errors']}")
+            msg = f"Linear API error: {result['errors']}"
+            raise Exception(msg)
 
         issue = result["data"]["issueCreate"]["issue"]
 
@@ -182,7 +181,7 @@ class IssueCreator:
             "labels": [label["name"] for label in issue["labels"]["nodes"]],
         }
 
-    def _add_ai_specific_comments(self, github_issue: Dict, issue_data: Dict) -> None:
+    def _add_ai_specific_comments(self, github_issue: dict, issue_data: dict) -> None:
         """Add AI-specific comments to GitHub issues"""
         issue_number = github_issue["number"]
         repository = github_issue["repository_url"].split("/")[-2:]
@@ -286,9 +285,9 @@ A Linear ticket has been created for autonomous resolution.
         self,
         assignment_key: str,
         ai_tool: str,
-        github_issues: List,
-        linear_tickets: List,
-    ) -> Dict:
+        github_issues: list,
+        linear_tickets: list,
+    ) -> dict:
         """Send notifications to AI tools about new assignments"""
 
         notification_methods = {
@@ -301,16 +300,15 @@ A Linear ticket has been created for autonomous resolution.
 
         if ai_tool in notification_methods:
             return notification_methods[ai_tool](assignment_key, github_issues, linear_tickets)
-        else:
-            return {
-                "ai_tool": ai_tool,
-                "status": "no_notification_method",
-                "message": f"No notification method configured for {ai_tool}",
-            }
+        return {
+            "ai_tool": ai_tool,
+            "status": "no_notification_method",
+            "message": f"No notification method configured for {ai_tool}",
+        }
 
     def _notify_charlie(
-        self, assignment_key: str, github_issues: List, linear_tickets: List
-    ) -> Dict:
+        self, assignment_key: str, github_issues: list, linear_tickets: list
+    ) -> dict:
         """Notify CharlieHelps about TypeScript assignments"""
 
         # Find relevant Linear tickets for Charlie
@@ -357,7 +355,7 @@ A Linear ticket has been created for autonomous resolution.
             "message": "Charlie notified via Slack and Linear comments",
         }
 
-    def _notify_snyk(self, assignment_key: str, github_issues: List, linear_tickets: List) -> Dict:
+    def _notify_snyk(self, assignment_key: str, github_issues: list, linear_tickets: list) -> dict:
         """Notify Snyk about security issues"""
 
         security_issues = [
@@ -378,8 +376,8 @@ A Linear ticket has been created for autonomous resolution.
         }
 
     def _notify_azure_sre(
-        self, assignment_key: str, github_issues: List, linear_tickets: List
-    ) -> Dict:
+        self, assignment_key: str, github_issues: list, linear_tickets: list
+    ) -> dict:
         """Notify Azure SRE about performance/infrastructure issues"""
 
         infra_issues = [
@@ -400,8 +398,8 @@ A Linear ticket has been created for autonomous resolution.
         }
 
     def _notify_promptless(
-        self, assignment_key: str, github_issues: List, linear_tickets: List
-    ) -> Dict:
+        self, assignment_key: str, github_issues: list, linear_tickets: list
+    ) -> dict:
         """Notify Promptless about documentation issues"""
 
         doc_issues = [
@@ -419,8 +417,8 @@ A Linear ticket has been created for autonomous resolution.
         }
 
     def _notify_testim(
-        self, assignment_key: str, github_issues: List, linear_tickets: List
-    ) -> Dict:
+        self, assignment_key: str, github_issues: list, linear_tickets: list
+    ) -> dict:
         """Notify Testim about testing issues"""
 
         test_issues = [issue for issue in github_issues if "testing" in issue.get("labels", [])]
@@ -435,7 +433,7 @@ A Linear ticket has been created for autonomous resolution.
             "message": "Testim test generation queued for detected issues",
         }
 
-    def _send_slack_notification(self, message: Dict) -> None:
+    def _send_slack_notification(self, message: dict) -> None:
         """Send notification to Slack"""
         if self.slack_webhook:
             response = requests.post(self.slack_webhook, json=message)
@@ -454,7 +452,7 @@ A Linear ticket has been created for autonomous resolution.
         }
         return team_ids.get(team_name, "team_dev_id")
 
-    def _get_label_ids(self, label_names: List[str]) -> List[str]:
+    def _get_label_ids(self, label_names: list[str]) -> list[str]:
         """Get Linear label IDs by names"""
         # This would query Linear API to get label IDs
         # For now, return mock IDs
@@ -502,4 +500,3 @@ if __name__ == "__main__":
     }
 
     result = run(sample_inputs)
-    print(json.dumps(result, indent=2))

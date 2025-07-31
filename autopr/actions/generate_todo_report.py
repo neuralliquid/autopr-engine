@@ -1,6 +1,5 @@
 import os
 import re
-from typing import List
 
 import pydantic
 
@@ -9,7 +8,7 @@ from autopr.actions.base import Action
 
 class Inputs(pydantic.BaseModel):
     scan_path: str = "."
-    exclude_paths: List[str] = ["node_modules", ".next", "autopr"]
+    exclude_paths: list[str] = ["node_modules", ".next", "autopr"]
 
 
 class Outputs(pydantic.BaseModel):
@@ -34,7 +33,7 @@ class GenerateTodoReport(Action[Inputs, Outputs]):
             for file in files:
                 filepath = os.path.join(root, file)
                 try:
-                    with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
+                    with open(filepath, encoding="utf-8", errors="ignore") as f:
                         for i, line in enumerate(f, 1):
                             match = todo_pattern.search(line)
                             if match:
@@ -62,7 +61,7 @@ if __name__ == "__main__":
     from autopr.tests.utils import run_action_manually
 
     # Create a dummy file with a TODO for testing
-    with open("dummy_todo_file.ts", "w") as f:
+    with open("dummy_todo_file.ts", "w", encoding="utf-8") as f:
         f.write("// TODO: Refactor this later")
     asyncio.run(
         run_action_manually(

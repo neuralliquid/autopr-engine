@@ -15,7 +15,7 @@ platform_info:
   pricing_model: "Free open-source with optional paid tiers"
   target_audience: "Developers, DevOps engineers, terminal power users, automation enthusiasts"
   primary_use_cases: ["Terminal workflow automation", "Code assistance and debugging", "File manipulation", "Command execution", "Development productivity"]
-  
+
   key_features:
     - "Free open-source (Apache 2.0 license) AI agent"
     - "Direct terminal integration for developers"

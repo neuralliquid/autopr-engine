@@ -5,11 +5,13 @@ Orchestrates platform detection using modular components for better maintainabil
 """
 
 import re
-from typing import Any, Dict, List, Optional
+from typing import Any
 
-from .config import PlatformConfig
+from .config import PlatformConfigManager
 from .file_analyzer import FileAnalyzer
 from .inputs import PlatformDetectorInputs, PlatformDetectorOutputs
+
+__all__ = ["PlatformDetector", "PlatformDetectorInputs", "PlatformDetectorOutputs"]
 from .scoring import PlatformScoringEngine
 
 
@@ -17,7 +19,7 @@ class PlatformDetector:
     """Platform detector with modular architecture."""
 
     def __init__(self) -> None:
-        self.config = PlatformConfig()
+        self.config = PlatformConfigManager()
         self.scoring_engine = PlatformScoringEngine()
 
     async def run(self, inputs: PlatformDetectorInputs) -> PlatformDetectorOutputs:
@@ -58,7 +60,7 @@ class PlatformDetector:
 
         # Analyze hybrid workflows if applicable
         hybrid_analysis = None
-        if workflow_type in ["hybrid_workflow", "multi_platform"]:
+        if workflow_type in {"hybrid_workflow", "multi_platform"}:
             hybrid_analysis = self.scoring_engine.analyze_hybrid_workflow(
                 confidence_scores, platform_configs
             )
@@ -82,9 +84,9 @@ class PlatformDetector:
     async def _perform_detection_analysis(
         self,
         file_analyzer: FileAnalyzer,
-        platform_configs: Dict[str, Dict[str, Any]],
+        platform_configs: dict[str, dict[str, Any]],
         inputs: PlatformDetectorInputs,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Perform comprehensive detection analysis."""
 
         # File-based detection
@@ -121,8 +123,8 @@ class PlatformDetector:
         }
 
     def _analyze_commit_messages(
-        self, commit_messages: List[str], platform_configs: Dict[str, Dict[str, Any]]
-    ) -> Dict[str, int]:
+        self, commit_messages: list[str], platform_configs: dict[str, dict[str, Any]]
+    ) -> dict[str, int]:
         """Analyze commit messages for platform indicators."""
         commit_matches = {}
 
@@ -143,13 +145,13 @@ class PlatformDetector:
     def _extract_platform_configs(
         self,
         primary_platform: str,
-        secondary_platforms: List[str],
-        detection_results: Dict[str, Any],
-    ) -> Dict[str, Any]:
+        secondary_platforms: list[str],
+        detection_results: dict[str, Any],
+    ) -> dict[str, Any]:
         """Extract platform-specific configuration details."""
         configs = {}
 
-        all_platforms = [primary_platform] + secondary_platforms
+        all_platforms = [primary_platform, *secondary_platforms]
 
         for platform in all_platforms:
             platform_config = {}
@@ -170,9 +172,7 @@ class PlatformDetector:
             )
 
             for dep in all_deps:
-                for pattern in platform_patterns:
-                    if pattern in dep:
-                        platform_deps.append(dep)
+                platform_deps.extend(dep for pattern in platform_patterns if pattern in dep)
 
             if platform_deps:
                 platform_config["dependencies"] = platform_deps

@@ -24,7 +24,7 @@ platform_info:
     - "Built-in Supabase database integration"
     - "GitHub sync with full code ownership"
     - "Frontend and backend management"
-  
+
   vibe_coding_specialization:
     - "Fastest development cycle in vibe coding"
     - "Minimal manual input required"
@@ -39,35 +39,35 @@ variables:
     required: true
     description: "Name of your web application"
     examples: ["EcommerceStore", "ProjectManager", "SocialFeed"]
-  
+
   app_description:
     type: "string"
     required: true
     description: "Detailed description of your app's functionality"
-    examples: 
+    examples:
       - "A project management tool with kanban boards, team collaboration, and time tracking"
       - "An e-commerce platform with product catalog, shopping cart, and payment processing"
-  
+
   design_source:
     type: "string"
     default: "ai_generated"
     description: "Source of the app's design"
     examples: ["ai_generated", "figma_import", "custom_description"]
-  
+
   figma_url:
     type: "string"
     required: false
     description: "Figma design URL (if importing from Figma)"
     examples: ["https://www.figma.com/file/abc123/MyAppDesign"]
-  
+
   database_needs:
     type: "array"
     required: true
     description: "Types of data your app will manage"
-    examples: 
+    examples:
       - ["users", "projects", "tasks", "comments"]
       - ["products", "orders", "customers", "inventory"]
-  
+
   authentication_type:
     type: "string"
     default: "email_password"
@@ -82,7 +82,7 @@ variants:
       - line: 15
         action: "add_after"
         content: "- GitHub repository creation and sync\n- Full source code access and ownership\n- Version control and collaboration\n- Custom deployment options"
-  
+
   with_advanced_database:
     name: "With Advanced Database Features"
     description: "Includes complex database relationships and real-time features"
@@ -90,7 +90,7 @@ variants:
       - line: 20
         action: "add_after"
         content: "- Complex database relationships\n- Real-time data synchronization\n- Advanced querying capabilities\n- Data validation and constraints"
-  
+
   with_payments:
     name: "With Payment Integration"
     description: "Includes Stripe payment processing capabilities"
@@ -124,7 +124,7 @@ prompt_engineering_best_practices:
     - "Break down complex features into smaller requests"
     - "Be specific about user interactions and workflows"
     - "Describe data relationships and business logic"
-  
+
   examples:
     basic_request: |
       "Create a task management app where users can:
@@ -132,7 +132,7 @@ prompt_engineering_best_practices:
       - Add tasks to projects with due dates and priorities
       - Mark tasks as complete
       - Filter tasks by status and priority"
-    
+
     detailed_request: |
       "Build an e-commerce product page that includes:
       - Product image gallery with zoom functionality
@@ -147,7 +147,7 @@ figma_integration:
     - "Layout and styling preservation"
     - "Interactive element identification"
     - "Responsive design adaptation"
-  
+
   best_practices:
     - "Use consistent naming conventions in Figma"
     - "Organize components and frames clearly"
@@ -158,11 +158,11 @@ database_design_patterns:
   user_management:
     tables: ["users", "profiles", "sessions"]
     relationships: "One-to-one between users and profiles"
-  
+
   content_management:
     tables: ["posts", "categories", "tags", "post_tags"]
     relationships: "Many-to-many between posts and tags"
-  
+
   ecommerce:
     tables: ["products", "orders", "order_items", "customers"]
     relationships: "One-to-many from orders to order_items"
@@ -172,7 +172,7 @@ dependencies:
     - "Lovable account and subscription"
     - "Clear app requirements and user stories"
     - "Database structure planning"
-  
+
   optional:
     - "Figma designs for visual reference"
     - "GitHub account for code ownership"
@@ -185,13 +185,13 @@ best_practices:
     - "Provide examples of similar apps or features"
     - "Iterate in small, focused requests"
     - "Test each feature before adding complexity"
-  
+
   design:
     - "Start with core functionality before visual polish"
     - "Consider mobile responsiveness from the beginning"
     - "Use consistent design patterns throughout"
     - "Plan for different user states and error handling"
-  
+
   database:
     - "Design your data structure before building"
     - "Consider data relationships and constraints"
@@ -224,7 +224,7 @@ examples:
       - Track time spent on tasks
       - View project analytics and progress reports
       - Comment on tasks and receive notifications"
-  
+
   ecommerce_store:
     name: "Online Store Platform"
     description: "E-commerce platform with product management and payments"
@@ -244,7 +244,7 @@ examples:
       - Order checkout with shipping information
       - Admin panel for product and order management
       - Stripe payment integration for secure transactions"
-  
+
   social_platform:
     name: "Community Social App"
     description: "Social platform with user-generated content and interactions"

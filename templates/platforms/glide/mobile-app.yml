@@ -24,25 +24,25 @@ variables:
     type: "string"
     required: true
     description: "Name of your mobile application"
-  
+
   data_source:
     type: "string"
     default: "google_sheets"
     description: "Primary data source for your app"
     examples: ["google_sheets", "airtable", "excel_online"]
-  
+
   app_category:
     type: "string"
     required: true
     description: "Type of mobile app you're building"
     examples: ["directory", "catalog", "tracker", "dashboard", "social", "marketplace"]
-  
+
   target_users:
     type: "string"
     required: true
     description: "Who will use this mobile app"
     examples: ["employees", "customers", "students", "community_members", "team_members"]
-  
+
   key_features:
     type: "array"
     required: true
@@ -59,7 +59,7 @@ variants:
       - line: 15
         action: "add_after"
         content: "- User registration and login\n- Profile customization\n- User-specific data views"
-  
+
   with_submissions:
     name: "With Data Submissions"
     description: "Allows users to add and edit data through the app"
@@ -67,7 +67,7 @@ variants:
       - line: 20
         action: "add_after"
         content: "- Add new entries form\n- Edit existing data\n- Photo and file uploads\n- Data validation"
-  
+
   with_location:
     name: "With Location Features"
     description: "Includes GPS, maps, and location-based functionality"
@@ -98,11 +98,11 @@ data_structure_examples:
   employee_directory:
     columns: ["Name", "Department", "Email", "Phone", "Photo", "Office Location", "Bio"]
     features: ["Search by name/department", "Contact directly", "Office maps"]
-  
+
   product_catalog:
     columns: ["Product Name", "Category", "Price", "Description", "Images", "Availability", "Supplier"]
     features: ["Browse by category", "Search products", "Price filtering", "Supplier contact"]
-  
+
   event_tracker:
     columns: ["Event Name", "Date", "Location", "Description", "Organizer", "RSVP Count", "Status"]
     features: ["Upcoming events", "RSVP functionality", "Location maps", "Calendar sync"]
@@ -113,7 +113,7 @@ spreadsheet_best_practices:
     - "Keep data consistent within columns"
     - "Use separate sheets for different data types"
     - "Include image URLs for photos"
-  
+
   formatting:
     - "Format dates consistently (YYYY-MM-DD)"
     - "Use dropdown lists for categories"
@@ -125,7 +125,7 @@ dependencies:
     - "Glide account and subscription"
     - "Google Sheets or Airtable account"
     - "Organized data structure"
-  
+
   optional:
     - "Custom domain for app distribution"
     - "Google Analytics for app tracking"
@@ -137,13 +137,13 @@ best_practices:
     - "Use data validation to prevent errors"
     - "Regular backup of your data source"
     - "Plan for data growth and scalability"
-  
+
   app_design:
     - "Design for mobile-first experience"
     - "Use high-quality images and icons"
     - "Keep navigation simple and intuitive"
     - "Test on different screen sizes"
-  
+
   user_experience:
     - "Minimize the number of taps to key information"
     - "Use search and filtering effectively"
@@ -170,7 +170,7 @@ examples:
     variants: ["with_submissions"]
     data_structure:
       columns: ["Item Name", "Category", "Price", "Description", "Photo URL", "Allergens", "Available"]
-  
+
   team_directory:
     name: "Company Team Directory"
     description: "Employee contact and information app"

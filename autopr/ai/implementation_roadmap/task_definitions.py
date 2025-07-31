@@ -4,7 +4,6 @@ Centralized definitions for all implementation tasks and phases
 """
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List
 
 
 @dataclass
@@ -16,9 +15,9 @@ class Task:
     category: str
     complexity: str  # "low", "medium", "high"
     estimated_hours: int
-    dependencies: List[str] = field(default_factory=list)
-    files_created: List[str] = field(default_factory=list)
-    packages_required: List[str] = field(default_factory=list)
+    dependencies: list[str] = field(default_factory=list)
+    files_created: list[str] = field(default_factory=list)
+    packages_required: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -28,9 +27,9 @@ class Phase:
     name: str
     display_name: str
     duration_days: int
-    tasks: List[str]
-    depends_on: List[str] = field(default_factory=list)
-    success_criteria: List[str] = field(default_factory=list)
+    tasks: list[str]
+    depends_on: list[str] = field(default_factory=list)
+    success_criteria: list[str] = field(default_factory=list)
 
 
 class TaskRegistry:
@@ -39,7 +38,7 @@ class TaskRegistry:
     def __init__(self) -> None:
         self._tasks = self._initialize_tasks()
 
-    def _initialize_tasks(self) -> Dict[str, Task]:
+    def _initialize_tasks(self) -> dict[str, Task]:
         """Initialize all task definitions"""
         return {
             # Immediate Priority Tasks
@@ -258,18 +257,19 @@ class TaskRegistry:
     def get_task(self, task_name: str) -> Task:
         """Get task definition by name"""
         if task_name not in self._tasks:
-            raise ValueError(f"Unknown task: {task_name}")
+            msg = f"Unknown task: {task_name}"
+            raise ValueError(msg)
         return self._tasks[task_name]
 
-    def get_all_tasks(self) -> Dict[str, Task]:
+    def get_all_tasks(self) -> dict[str, Task]:
         """Get all task definitions"""
         return self._tasks.copy()
 
-    def get_tasks_by_category(self, category: str) -> List[Task]:
+    def get_tasks_by_category(self, category: str) -> list[Task]:
         """Get all tasks in a specific category"""
         return [task for task in self._tasks.values() if task.category == category]
 
-    def get_tasks_by_complexity(self, complexity: str) -> List[Task]:
+    def get_tasks_by_complexity(self, complexity: str) -> list[Task]:
         """Get all tasks with specific complexity"""
         return [task for task in self._tasks.values() if task.complexity == complexity]
 
@@ -280,7 +280,7 @@ class ImplementationPhases:
     def __init__(self) -> None:
         self._phases = self._initialize_phases()
 
-    def _initialize_phases(self) -> Dict[str, Phase]:
+    def _initialize_phases(self) -> dict[str, Phase]:
         """Initialize all phase definitions"""
         return {
             "immediate": Phase(
@@ -345,27 +345,25 @@ class ImplementationPhases:
     def get_phase(self, phase_name: str) -> Phase:
         """Get phase definition by name"""
         if phase_name not in self._phases:
-            raise ValueError(f"Unknown phase: {phase_name}")
+            msg = f"Unknown phase: {phase_name}"
+            raise ValueError(msg)
         return self._phases[phase_name]
 
-    def get_all_phases(self) -> Dict[str, Phase]:
+    def get_all_phases(self) -> dict[str, Phase]:
         """Get all phase definitions"""
         return self._phases.copy()
 
-    def get_phase_order(self) -> List[str]:
+    def get_phase_order(self) -> list[str]:
         """Get phases in dependency order"""
         return ["immediate", "medium", "strategic"]
 
-    def validate_phase_dependencies(self, phase_name: str) -> List[str]:
+    def validate_phase_dependencies(self, phase_name: str) -> list[str]:
         """Validate that phase dependencies are met"""
         phase = self.get_phase(phase_name)
-        missing_deps = []
 
-        for dep_phase in phase.depends_on:
-            if not self._is_phase_completed(dep_phase):
-                missing_deps.append(dep_phase)
-
-        return missing_deps
+        return [
+            dep_phase for dep_phase in phase.depends_on if not self._is_phase_completed(dep_phase)
+        ]
 
     def _is_phase_completed(self, phase_name: str) -> bool:
         """Check if a phase has been completed"""

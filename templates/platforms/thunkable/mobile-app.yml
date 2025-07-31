@@ -26,48 +26,48 @@ variables:
     required: true
     description: "Name of your mobile application"
     examples: ["FitnessTracker", "ExpenseManager", "LocalEvents"]
-  
+
   app_description:
     type: "string"
     required: true
     description: "Detailed description of your app's functionality"
-    examples: 
+    examples:
       - "A fitness tracking app with workout logging, progress charts, and social sharing"
       - "An expense management app with receipt scanning, budget tracking, and spending analytics"
-  
+
   target_platforms:
     type: "array"
     default: ["ios", "android"]
     description: "Target mobile platforms"
     examples: [["ios"], ["android"], ["ios", "android"]]
-  
+
   app_category:
     type: "string"
     required: true
     description: "Primary app category"
     examples: ["productivity", "fitness", "finance", "social", "education", "entertainment", "business"]
-  
+
   data_storage:
     type: "string"
     default: "cloud_database"
     description: "Data storage approach"
     examples: ["local_storage", "cloud_database", "hybrid"]
-  
+
   authentication_required:
     type: "boolean"
     default: true
     description: "Whether the app requires user authentication"
-  
+
   offline_functionality:
     type: "boolean"
     default: false
     description: "Whether the app should work offline"
-  
+
   push_notifications:
     type: "boolean"
     default: false
     description: "Whether the app needs push notifications"
-  
+
   device_features:
     type: "array"
     default: []
@@ -82,7 +82,7 @@ variants:
       - line: 15
         action: "add_after"
         content: "- Advanced chart and graph components\n- Interactive maps integration\n- Smooth animations and transitions\n- Custom UI component library"
-  
+
   with_ai_features:
     name: "With AI Integration"
     description: "Includes AI-powered features like image recognition and text analysis"
@@ -90,7 +90,7 @@ variants:
       - line: 20
         action: "add_after"
         content: "- AI image recognition and classification\n- Natural language processing\n- Machine learning model integration\n- Intelligent recommendations"
-  
+
   with_monetization:
     name: "With Monetization Features"
     description: "Includes in-app purchases and advertising capabilities"
@@ -124,25 +124,25 @@ component_categories:
     - "Stack and Scroll views"
     - "Tab and Drawer navigators"
     - "Screen and Modal components"
-  
+
   input:
     - "Text Input and Text Area"
     - "Button and Icon Button"
     - "Switch and Checkbox"
     - "Slider and Picker components"
-  
+
   display:
     - "Text and Image components"
     - "List and Grid views"
     - "Chart and Graph components"
     - "Map and WebView components"
-  
+
   media:
     - "Camera and Image Picker"
     - "Audio Player and Recorder"
     - "Video Player component"
     - "File Upload component"
-  
+
   data:
     - "Cloud Database (Airtable, Firebase)"
     - "Local Storage variables"
@@ -155,13 +155,13 @@ design_best_practices:
     - "Maintain consistent color scheme and typography"
     - "Use appropriate spacing and component sizing"
     - "Ensure touch targets are properly sized"
-  
+
   user_experience:
     - "Design intuitive navigation flows"
     - "Provide clear feedback for user actions"
     - "Handle loading states and error conditions"
     - "Optimize for different screen sizes"
-  
+
   performance:
     - "Minimize the number of components per screen"
     - "Optimize image sizes and formats"
@@ -173,12 +173,12 @@ data_integration:
     setup: "Connect Airtable base with API key"
     operations: ["Create", "Read", "Update", "Delete"]
     best_practices: "Structure data with proper field types and relationships"
-  
+
   firebase:
     setup: "Configure Firebase project with authentication"
     operations: ["Real-time database", "Cloud Firestore", "Authentication"]
     best_practices: "Set up proper security rules and data structure"
-  
+
   custom_api:
     setup: "Configure API endpoints with proper authentication"
     operations: ["GET", "POST", "PUT", "DELETE requests"]
@@ -188,11 +188,11 @@ testing_strategies:
   live_preview:
     description: "Test app in real-time on your device"
     benefits: ["Immediate feedback", "Real device performance", "Touch interaction testing"]
-  
+
   thunkable_live:
     description: "Use Thunkable Live app for testing"
     benefits: ["Quick iteration", "No app installation needed", "Easy sharing with testers"]
-  
+
   device_testing:
     description: "Test on multiple devices and screen sizes"
     considerations: ["Performance variations", "Screen size differences", "OS version compatibility"]
@@ -203,14 +203,14 @@ publishing_process:
     - "Prepare app store assets (icons, screenshots, descriptions)"
     - "Set up developer accounts (Apple, Google)"
     - "Configure app metadata and privacy settings"
-  
+
   app_store_requirements:
     ios:
       - "Apple Developer Program membership ($99/year)"
       - "App Store Connect account setup"
       - "App Review Guidelines compliance"
       - "Privacy policy and terms of service"
-    
+
     android:
       - "Google Play Console account ($25 one-time fee)"
       - "Play Console app setup"
@@ -222,7 +222,7 @@ dependencies:
     - "Thunkable account and subscription"
     - "Clear app concept and user flow"
     - "Data structure planning"
-  
+
   optional:
     - "Airtable or Firebase account for data storage"
     - "Custom API endpoints for advanced functionality"
@@ -236,13 +236,13 @@ best_practices:
     - "Use consistent naming conventions for components"
     - "Test frequently on actual devices"
     - "Keep component hierarchy organized and logical"
-  
+
   design:
     - "Follow platform-specific design patterns"
     - "Ensure accessibility with proper contrast and sizing"
     - "Design for both portrait and landscape orientations"
     - "Consider different screen densities and sizes"
-  
+
   performance:
     - "Limit the number of components on each screen"
     - "Optimize images and media files"
@@ -278,7 +278,7 @@ examples:
       - "Progress tracking with photos and measurements"
       - "Social feed for sharing achievements"
       - "Goal setting and milestone tracking"
-  
+
   expense_manager:
     name: "Smart Expense Manager"
     description: "Personal finance management with receipt scanning"
@@ -299,7 +299,7 @@ examples:
       - "Expense categorization and tagging"
       - "Budget setup and monitoring"
       - "Analytics and spending reports"
-  
+
   local_events:
     name: "Local Events Discovery"
     description: "Discover and share local events and activities"

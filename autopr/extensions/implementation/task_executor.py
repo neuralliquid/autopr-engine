@@ -9,9 +9,12 @@ import logging
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Set, Union
+from typing import TYPE_CHECKING, Any
 
-from .task_definitions import Task, TaskRegistry
+from .task_definitions import TaskRegistry
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 logger = logging.getLogger(__name__)
 
@@ -21,13 +24,13 @@ class TaskExecution:
     """Represents a task execution instance."""
 
     task_id: str
-    start_time: Optional[datetime] = None
-    end_time: Optional[datetime] = None
+    start_time: datetime | None = None
+    end_time: datetime | None = None
     status: str = "pending"  # pending, running, completed, failed, skipped
-    error_message: Optional[str] = None
-    output: Dict[str, Any] = field(default_factory=dict)
-    duration: Optional[timedelta] = None
-    logs: List[str] = field(default_factory=list)
+    error_message: str | None = None
+    output: dict[str, Any] = field(default_factory=dict)
+    duration: timedelta | None = None
+    logs: list[str] = field(default_factory=list)
 
     @property
     def is_completed(self) -> bool:
@@ -45,8 +48,8 @@ class TaskExecutor:
 
     def __init__(self, project_root: Path) -> None:
         self.project_root = project_root
-        self.executions: Dict[str, TaskExecution] = {}
-        self.task_handlers: Dict[str, Callable] = {}
+        self.executions: dict[str, TaskExecution] = {}
+        self.task_handlers: dict[str, Callable] = {}
         self._setup_task_handlers()
 
     def _setup_task_handlers(self) -> None:
@@ -105,7 +108,7 @@ class TaskExecutor:
                 execution.status = "failed"
                 execution.error_message = str(e)
                 execution.end_time = datetime.now()
-                logger.error(f"Task {task_id} failed: {e}")
+                logger.exception(f"Task {task_id} failed: {e}")
 
         # Calculate duration
         if execution.start_time and execution.end_time:
@@ -114,12 +117,12 @@ class TaskExecutor:
         return execution
 
     async def execute_tasks_with_dependencies(
-        self, task_ids: List[str], dry_run: bool = False
-    ) -> Dict[str, TaskExecution]:
+        self, task_ids: list[str], dry_run: bool = False
+    ) -> dict[str, TaskExecution]:
         """Execute multiple tasks respecting dependencies."""
         dependency_graph = TaskRegistry.get_dependency_graph()
-        completed_tasks: Set[str] = set()
-        failed_tasks: Set[str] = set()
+        completed_tasks: set[str] = set()
+        failed_tasks: set[str] = set()
 
         async def can_execute_task(task_id: str) -> bool:
             """Check if task dependencies are satisfied."""
@@ -153,7 +156,7 @@ class TaskExecutor:
             tasks = [self.execute_task(task_id, dry_run) for task_id in ready_tasks]
             executions = await asyncio.gather(*tasks, return_exceptions=True)
 
-            for task_id, result in zip(ready_tasks, executions):
+            for task_id, result in zip(ready_tasks, executions, strict=False):
                 if isinstance(result, Exception):
                     logger.error(f"Task {task_id} raised exception: {result}")
                     failed_tasks.add(task_id)
@@ -171,7 +174,7 @@ class TaskExecutor:
 
         return self.executions
 
-    def get_execution_summary(self) -> Dict[str, Any]:
+    def get_execution_summary(self) -> dict[str, Any]:
         """Get summary of all task executions."""
         total_tasks = len(self.executions)
         completed = sum(1 for e in self.executions.values() if e.is_completed)
@@ -201,7 +204,7 @@ class TaskExecutor:
 
     # Task Implementation Methods
 
-    async def _setup_sentry_monitoring(self) -> Dict[str, Any]:
+    async def _setup_sentry_monitoring(self) -> dict[str, Any]:
         """Set up Sentry monitoring."""
         config_content = '''"""
 Sentry Configuration for AutoPR Engine
@@ -236,7 +239,7 @@ def configure_sentry():
             "status": "completed",
         }
 
-    async def _implement_structured_logging(self) -> Dict[str, Any]:
+    async def _implement_structured_logging(self) -> dict[str, Any]:
         """Implement structured logging."""
         logging_config = '''"""
 Structured Logging Configuration
@@ -284,7 +287,7 @@ def setup_structured_logging():
             "status": "completed",
         }
 
-    async def _setup_redis_caching(self) -> Dict[str, Any]:
+    async def _setup_redis_caching(self) -> dict[str, Any]:
         """Set up Redis caching."""
         redis_config = '''"""
 Redis Caching Configuration
@@ -331,7 +334,7 @@ class CacheManager:
             "status": "completed",
         }
 
-    async def _create_health_checks(self) -> Dict[str, Any]:
+    async def _create_health_checks(self) -> dict[str, Any]:
         """Create health check endpoints."""
         health_checks = '''"""
 Health Check Implementation
@@ -383,7 +386,7 @@ class HealthChecker:
 
         return {"files_created": ["health_checks.py"], "status": "completed"}
 
-    async def _implement_circuit_breakers(self) -> Dict[str, Any]:
+    async def _implement_circuit_breakers(self) -> dict[str, Any]:
         """Implement circuit breaker pattern."""
         circuit_breaker = '''"""
 Circuit Breaker Implementation
@@ -455,36 +458,34 @@ class CircuitBreaker:
         }
 
     # Placeholder implementations for other tasks
-    async def _setup_postgresql_integration(self) -> Dict[str, Any]:
+    async def _setup_postgresql_integration(self) -> dict[str, Any]:
         return {"status": "completed", "message": "PostgreSQL integration configured"}
 
-    async def _implement_prometheus_metrics(self) -> Dict[str, Any]:
+    async def _implement_prometheus_metrics(self) -> dict[str, Any]:
         return {"status": "completed", "message": "Prometheus metrics implemented"}
 
-    async def _setup_oauth2_authentication(self) -> Dict[str, Any]:
+    async def _setup_oauth2_authentication(self) -> dict[str, Any]:
         return {"status": "completed", "message": "OAuth2 authentication configured"}
 
-    async def _implement_advanced_llm_routing(self) -> Dict[str, Any]:
+    async def _implement_advanced_llm_routing(self) -> dict[str, Any]:
         return {"status": "completed", "message": "Advanced LLM routing implemented"}
 
-    async def _create_comprehensive_testing(self) -> Dict[str, Any]:
+    async def _create_comprehensive_testing(self) -> dict[str, Any]:
         return {"status": "completed", "message": "Comprehensive testing framework created"}
 
-    async def _implement_rag_system(self) -> Dict[str, Any]:
+    async def _implement_rag_system(self) -> dict[str, Any]:
         return {"status": "completed", "message": "RAG system implemented"}
 
-    async def _create_analytics_dashboard(self) -> Dict[str, Any]:
+    async def _create_analytics_dashboard(self) -> dict[str, Any]:
         return {"status": "completed", "message": "Analytics dashboard created"}
 
-    async def _setup_fine_tuned_models(self) -> Dict[str, Any]:
+    async def _setup_fine_tuned_models(self) -> dict[str, Any]:
         return {"status": "completed", "message": "Fine-tuned models configured"}
 
-    async def _implement_multi_cloud_deployment(self) -> Dict[str, Any]:
+    async def _implement_multi_cloud_deployment(self) -> dict[str, Any]:
         return {"status": "completed", "message": "Multi-cloud deployment implemented"}
 
-    async def _execute_task_implementation(
-        self, task_id: str
-    ) -> Union[TaskExecution, BaseException]:
+    async def _execute_task_implementation(self, task_id: str) -> TaskExecution | BaseException:
         """Execute task implementation."""
         handler = self.task_handlers.get(task_id)
         if handler:

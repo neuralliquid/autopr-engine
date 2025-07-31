@@ -7,11 +7,9 @@ Handles loading and caching of documentation templates from external files.
 Provides a clean interface for template management and supports multiple formats.
 """
 
-import logging
-import os
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 import yaml
 
@@ -39,7 +37,7 @@ except ImportError:
 class TemplateLoader:
     """Loads and manages documentation templates."""
 
-    def __init__(self, templates_root: Optional[Path] = None) -> None:
+    def __init__(self, templates_root: Path | None = None) -> None:
         """Initialize the template loader."""
         if templates_root is None:
             current_dir = Path(__file__).parent
@@ -50,13 +48,13 @@ class TemplateLoader:
 
         # Initialize Jinja2 environment if available
         if JINJA2_AVAILABLE and self.doc_templates_dir.exists():
-            self.jinja_env: Optional[Environment] = Environment(
+            self.jinja_env: Environment | None = Environment(
                 loader=FileSystemLoader(str(self.doc_templates_dir)),
                 trim_blocks=True,
                 lstrip_blocks=True,
             )
         else:
-            self.jinja_env: Optional[Environment] = None
+            self.jinja_env: Environment | None = None
 
     @lru_cache(maxsize=32)
     def load_template(self, template_name: str) -> str:
@@ -73,10 +71,9 @@ class TemplateLoader:
             template_path = self.doc_templates_dir / f"{template_name}{ext}"
             if template_path.exists():
                 try:
-                    with open(template_path, "r", encoding="utf-8") as f:
+                    with open(template_path, encoding="utf-8") as f:
                         return f.read()
-                except Exception as e:
-                    print(f"Warning: Failed to load template {template_name}: {e}")
+                except Exception:
                     continue
 
         # Return fallback template
@@ -99,10 +96,10 @@ class TemplateLoader:
                     try:
                         template = self.jinja_env.get_template(f"{template_name}{ext}")
                         return template.render(**kwargs)
-                    except:
+                    except Exception:
                         continue
-            except Exception as e:
-                print(f"Warning: Jinja2 rendering failed for {template_name}: {e}")
+            except Exception:
+                pass
 
         # Fallback to simple string replacement
         template_content = self.load_template(template_name)
@@ -110,7 +107,7 @@ class TemplateLoader:
         return template.render(**kwargs)
 
     @lru_cache(maxsize=16)
-    def load_template_metadata(self, template_name: str) -> Dict[str, Any]:
+    def load_template_metadata(self, template_name: str) -> dict[str, Any]:
         """Load metadata from a template file.
 
         Args:
@@ -123,11 +120,11 @@ class TemplateLoader:
             metadata_path = self.doc_templates_dir / f"{template_name}_metadata{ext}"
             if metadata_path.exists():
                 try:
-                    with open(metadata_path, "r", encoding="utf-8") as f:
+                    with open(metadata_path, encoding="utf-8") as f:
                         metadata = yaml.safe_load(f)
                         return metadata if isinstance(metadata, dict) else {}
-                except Exception as e:
-                    print(f"Warning: Failed to load metadata for {template_name}: {e}")
+                except Exception:
+                    pass
 
         return {}
 
@@ -227,7 +224,7 @@ Template content not available.
 *Template not found: {template_name}*""",
         )
 
-    def get_available_templates(self) -> List[str]:
+    def get_available_templates(self) -> list[str]:
         """Get list of available template files.
 
         Returns:
@@ -237,14 +234,17 @@ Template content not available.
             return []
 
         templates = set()
-        for template_file in self.doc_templates_dir.glob("*.md"):
-            templates.add(template_file.stem)
-        for template_file in self.doc_templates_dir.glob("*.html"):
-            templates.add(template_file.stem)
-        for template_file in self.doc_templates_dir.glob("*.txt"):
-            templates.add(template_file.stem)
+        templates.update(
+            template_file.stem for template_file in self.doc_templates_dir.glob("*.md")
+        )
+        templates.update(
+            template_file.stem for template_file in self.doc_templates_dir.glob("*.html")
+        )
+        templates.update(
+            template_file.stem for template_file in self.doc_templates_dir.glob("*.txt")
+        )
 
-        return sorted(list(templates))
+        return sorted(templates)
 
     def template_exists(self, template_name: str) -> bool:
         """Check if a template file exists.
@@ -263,15 +263,13 @@ Template content not available.
 
 
 # Convenience functions for backward compatibility
-def load_template(template_name: str, templates_root: Optional[Path] = None) -> str:
+def load_template(template_name: str, templates_root: Path | None = None) -> str:
     """Load a template file content."""
     loader = TemplateLoader(templates_root)
     return loader.load_template(template_name)
 
 
-def render_template(
-    template_name: str, templates_root: Optional[Path] = None, **kwargs: Any
-) -> str:
+def render_template(template_name: str, templates_root: Path | None = None, **kwargs: Any) -> str:
     """Render a template with variables."""
     loader = TemplateLoader(templates_root)
     return loader.render_template(template_name, **kwargs)

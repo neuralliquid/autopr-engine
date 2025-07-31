@@ -109,14 +109,14 @@ template: |
   {% if enable_accessibility %}
   import 'jest-axe/extend-expect';
   {% endif %}
-  
+
   {% if testing_framework == "vitest" or testing_framework == "both" %}
   // Cleanup after each test
   afterEach(() => {
     cleanup();
   });
   {% endif %}
-  
+
   {% if enable_mocks %}
   // Global mocks
   {% if testing_framework == "vitest" or testing_framework == "both" %}
@@ -126,14 +126,14 @@ template: |
     disconnect: vi.fn(),
     unobserve: vi.fn()
   }));
-  
+
   // Mock ResizeObserver
   global.ResizeObserver = vi.fn(() => ({
     observe: vi.fn(),
     disconnect: vi.fn(),
     unobserve: vi.fn()
   }));
-  
+
   // Mock matchMedia
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
@@ -148,10 +148,10 @@ template: |
       dispatchEvent: vi.fn(),
     })),
   });
-  
+
   // Mock scrollTo
   global.scrollTo = vi.fn();
-  
+
   // Mock localStorage
   const localStorageMock = {
     getItem: vi.fn(),
@@ -160,7 +160,7 @@ template: |
     clear: vi.fn(),
   };
   global.localStorage = localStorageMock;
-  
+
   // Mock sessionStorage
   const sessionStorageMock = {
     getItem: vi.fn(),
@@ -176,14 +176,14 @@ template: |
     disconnect: jest.fn(),
     unobserve: jest.fn()
   }));
-  
+
   // Mock ResizeObserver
   global.ResizeObserver = jest.fn(() => ({
     observe: jest.fn(),
     disconnect: jest.fn(),
     unobserve: jest.fn()
   }));
-  
+
   // Mock matchMedia
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
@@ -198,10 +198,10 @@ template: |
       dispatchEvent: jest.fn(),
     })),
   });
-  
+
   // Mock scrollTo
   global.scrollTo = jest.fn();
-  
+
   // Mock localStorage
   const localStorageMock = {
     getItem: jest.fn(),
@@ -210,7 +210,7 @@ template: |
     clear: jest.fn(),
   };
   global.localStorage = localStorageMock;
-  
+
   // Mock sessionStorage
   const sessionStorageMock = {
     getItem: jest.fn(),
@@ -221,7 +221,7 @@ template: |
   global.sessionStorage = sessionStorageMock;
   {% endif %}
   {% endif %}
-  
+
   {% if enable_dom_testing %}
   // Configure jsdom environment
   {% if testing_framework == "vitest" or testing_framework == "both" %}
@@ -240,7 +240,7 @@ template: |
     writable: true
   });
   {% endif %}
-  
+
   // Mock console methods for cleaner test output
   const originalError = console.error;
   beforeAll(() => {
@@ -254,46 +254,46 @@ template: |
       originalError.call(console, ...args);
     };
   });
-  
+
   afterAll(() => {
     console.error = originalError;
   });
   {% endif %}
-  
+
   {% if enable_accessibility %}
   // Accessibility testing utilities
   import { axe, toHaveNoViolations } from 'jest-axe';
-  
+
   expect.extend(toHaveNoViolations);
-  
+
   // Global accessibility test helper
   global.testA11y = async (component) => {
     const results = await axe(component);
     expect(results).toHaveNoViolations();
   };
   {% endif %}
-  
+
   // Custom test utilities
   export const createMockProps = (overrides = {}) => ({
     // Default mock props
     ...overrides
   });
-  
-  export const waitForLoadingToFinish = () => 
+
+  export const waitForLoadingToFinish = () =>
     waitFor(() => expect(screen.queryByTestId('loading')).not.toBeInTheDocument());
-  
+
   // Custom render function with providers
   import { render } from '@testing-library/react';
   import { BrowserRouter } from 'react-router-dom';
-  
+
   export const renderWithRouter = (ui, options = {}) => {
     const Wrapper = ({ children }) => (
       <BrowserRouter>{children}</BrowserRouter>
     );
-    
+
     return render(ui, { wrapper: Wrapper, ...options });
   };
-  
+
   // Test data factories
   export const createMockUser = (overrides = {}) => ({
     id: '1',
@@ -301,7 +301,7 @@ template: |
     email: 'test@example.com',
     ...overrides
   });
-  
+
   export const createMockApiResponse = (data, overrides = {}) => ({
     data,
     status: 200,

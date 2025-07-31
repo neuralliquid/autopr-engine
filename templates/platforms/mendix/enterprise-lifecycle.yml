@@ -13,7 +13,7 @@ platform_info:
   pricing_model: "Subscription-based with Free Tier"
   target_audience: "Enterprise developers, IT departments, business analysts"
   primary_use_cases: ["Enterprise applications", "Digital transformation", "Legacy modernization", "Multi-channel apps"]
-  
+
   key_features:
     - "Mendix Studio Pro IDE for advanced development"
     - "AI co-developer for accelerated development"

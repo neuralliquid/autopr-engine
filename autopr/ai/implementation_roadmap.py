@@ -6,22 +6,23 @@ Automated setup script for production-grade enhancements
 
 import asyncio
 import json
-import os
 import subprocess
-import sys
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class Phase1ExtensionImplementor:
     def __init__(self) -> None:
         self.project_root: Path = Path.cwd()
-        self.implementation_log: List[Dict[str, Any]] = []
-        self.current_phase: Optional[str] = None
+        self.implementation_log: list[dict[str, Any]] = []
+        self.current_phase: str | None = None
 
         # Implementation phases with dependencies
-        self.implementation_phases: Dict[str, Dict[str, Any]] = {
+        self.implementation_phases: dict[str, dict[str, Any]] = {
             "immediate": {
                 "name": "Immediate Priority (Week 1-2)",
                 "duration_days": 10,
@@ -61,16 +62,12 @@ class Phase1ExtensionImplementor:
     async def run_implementation(self, phase: str = "immediate", dry_run: bool = False) -> None:
         """Run implementation for specified phase"""
 
-        print(f"🚀 Starting AutoPR Phase 1 Extensions Implementation")
-        print(f"📋 Phase: {phase}")
-        print(f"🔍 Dry Run: {dry_run}")
-        print("=" * 60)
-
         self.current_phase = phase
 
         # Validate phase exists
         if phase not in self.implementation_phases:
-            raise ValueError(f"Unknown phase: {phase}")
+            msg = f"Unknown phase: {phase}"
+            raise ValueError(msg)
 
         # Check dependencies
         await self._check_dependencies(phase)
@@ -79,25 +76,17 @@ class Phase1ExtensionImplementor:
         phase_config = self.implementation_phases[phase]
         tasks = phase_config["tasks"]
 
-        print(f"📅 Estimated Duration: {phase_config['duration_days']} days")
-        print(f"🎯 Tasks to Complete: {len(tasks)}")
-        print()
-
         # Execute tasks
-        for i, task in enumerate(tasks, 1):
-            print(f"[{i}/{len(tasks)}] Executing: {task}")
+        for task in tasks:
 
             if dry_run:
-                print(f"    🔍 DRY RUN: Would execute {task}")
                 continue
 
             try:
                 await self._execute_task(task)
                 self._log_success(task)
-                print(f"    ✅ Completed: {task}")
             except Exception as e:
                 self._log_error(task, str(e))
-                print(f"    ❌ Failed: {task} - {str(e)}")
 
                 # Ask user if they want to continue
                 if not await self._ask_continue_on_error(task):
@@ -105,9 +94,6 @@ class Phase1ExtensionImplementor:
 
         # Generate implementation report
         await self._generate_implementation_report()
-
-        print("\n🎉 Phase 1 Extensions Implementation Complete!")
-        print(f"📊 View detailed report: implementation_report_{phase}.json")
 
     async def _check_dependencies(self, phase: str) -> None:
         """Check if phase dependencies are met"""
@@ -117,14 +103,13 @@ class Phase1ExtensionImplementor:
 
         for dep_phase in dependencies:
             if not await self._is_phase_completed(dep_phase):
-                raise Exception(f"Dependency not met: {dep_phase} must be completed before {phase}")
-
-        print(f"✅ All dependencies satisfied for phase: {phase}")
+                msg = f"Dependency not met: {dep_phase} must be completed before {phase}"
+                raise Exception(msg)
 
     async def _execute_task(self, task: str) -> None:
         """Execute individual implementation task"""
 
-        task_methods: Dict[str, Callable] = {
+        task_methods: dict[str, Callable] = {
             "setup_sentry_monitoring": self._setup_sentry_monitoring,
             "implement_structured_logging": self._implement_structured_logging,
             "setup_redis_caching": self._setup_redis_caching,
@@ -142,7 +127,8 @@ class Phase1ExtensionImplementor:
         }
 
         if task not in task_methods:
-            raise ValueError(f"Unknown task: {task}")
+            msg = f"Unknown task: {task}"
+            raise ValueError(msg)
 
         await task_methods[task]()
 
@@ -195,9 +181,6 @@ ENVIRONMENT=development
         """
 
         await self._append_file(".env.example", env_template)
-
-        print("    📝 Created Sentry configuration")
-        print("    🔧 Added environment variables template")
 
     async def _implement_structured_logging(self) -> None:
         """Implement structured JSON logging"""
@@ -252,9 +235,6 @@ def log_ai_api_call(model, tokens, cost):
         """
 
         await self._write_file("tools/autopr/logging/structured_logging.py", logging_config)
-
-        print("    📝 Created structured logging configuration")
-        print("    🔍 Added correlation ID tracking")
 
     async def _setup_redis_caching(self) -> None:
         """Setup Redis caching for LLM responses and API calls"""
@@ -350,9 +330,6 @@ def cache_llm_response(cache_type='llm_response'):
 REDIS_URL=redis://localhost:6379
         """
         await self._append_file(".env.example", redis_env)
-
-        print("    📝 Created Redis cache manager")
-        print("    🚀 Added LLM response caching decorators")
 
     async def _create_health_checks(self) -> None:
         """Create comprehensive health check endpoints"""
@@ -549,9 +526,6 @@ async def quick_health_check():
 
         await self._write_file("tools/autopr/health/health_checker.py", health_checks)
 
-        print("    📝 Created comprehensive health checks")
-        print("    🔍 Added system resource monitoring")
-
     async def _implement_basic_circuit_breakers(self) -> None:
         """Implement circuit breaker pattern for external API calls"""
 
@@ -662,9 +636,6 @@ async def analyze_code_with_ai(code: str):
 
         await self._write_file("tools/autopr/resilience/circuit_breaker.py", circuit_breaker)
 
-        print("    📝 Created circuit breaker manager")
-        print("    🛡️ Added automatic retry logic with exponential backoff")
-
     # Medium Priority Tasks
     async def _setup_postgresql_integration(self) -> None:
         """Setup PostgreSQL integration for data persistence"""
@@ -701,7 +672,6 @@ class DatabaseManager:
 """
 
         await self._write_file("autopr/database/manager.py", db_config)
-        print("    ✅ PostgreSQL integration configured")
 
     async def _implement_prometheus_metrics(self) -> None:
         """Implement Prometheus metrics collection"""
@@ -766,7 +736,6 @@ class MetricsCollector:
 """
 
         await self._write_file("autopr/monitoring/metrics.py", metrics_config)
-        print("    📊 Prometheus metrics implemented")
 
     async def _setup_oauth2_authentication(self) -> None:
         """Setup OAuth 2.0 authentication"""
@@ -823,7 +792,6 @@ class OAuth2Manager:
 """
 
         await self._write_file("autopr/auth/oauth.py", oauth_config)
-        print("    🔐 OAuth 2.0 authentication configured")
 
     async def _implement_advanced_llm_routing(self) -> None:
         """Implement advanced LLM routing and load balancing"""
@@ -899,7 +867,6 @@ class LLMRouter:
 """
 
         await self._write_file("autopr/ai/routing.py", routing_config)
-        print("    🔄 Advanced LLM routing implemented")
 
     async def _create_comprehensive_testing(self) -> None:
         """Create comprehensive testing framework"""
@@ -984,7 +951,6 @@ asyncio_mode = auto
 """
 
         await self._write_file("pytest.ini", pytest_config)
-        print("    🧪 Comprehensive testing framework created")
 
     # Strategic Priority Tasks
     async def _implement_rag_system(self) -> None:
@@ -1035,7 +1001,6 @@ class RAGSystem:
 """
 
         await self._write_file("autopr/rag/system.py", rag_config)
-        print("    🔍 RAG system implemented")
 
     async def _create_analytics_dashboard(self) -> None:
         """Create analytics dashboard"""
@@ -1115,7 +1080,6 @@ if __name__ == "__main__":
 """
 
         await self._write_file("dashboard/analytics.py", dashboard_config)
-        print("    📊 Analytics dashboard created")
 
     async def _setup_fine_tuned_models(self) -> None:
         """Setup fine-tuned model training and deployment"""
@@ -1182,7 +1146,6 @@ class FineTuningManager:
 '''
 
         await self._write_file("autopr/ai/finetuning.py", finetuning_config)
-        print("    🎯 Fine-tuning system configured")
 
     async def _implement_multi_cloud_deployment(self) -> None:
         """Implement multi-cloud deployment configuration"""
@@ -1296,30 +1259,30 @@ resource "google_container_cluster" "autopr_gcp" {
 """
 
         await self._write_file("terraform/main.tf", terraform_config)
-        print("    ☁️ Multi-cloud deployment configured")
 
     # Helper methods
-    async def _run_command(self, command: List[str]) -> str:
+    async def _run_command(self, command: list[str]) -> str:
         """Run shell command and return output"""
         try:
             result = subprocess.run(command, capture_output=True, text=True, check=True)
             return result.stdout
         except subprocess.CalledProcessError as e:
-            raise Exception(f"Command failed: {' '.join(command)}\nError: {e.stderr}")
+            msg = f"Command failed: {' '.join(command)}\nError: {e.stderr}"
+            raise Exception(msg)
 
     async def _write_file(self, file_path: str, content: str) -> None:
         """Write content to file, creating directories as needed"""
         path = Path(file_path)
         path.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(path, "w") as f:
+        with open(path, "w", encoding="utf-8") as f:
             f.write(content.strip())
 
     async def _append_file(self, file_path: str, content: str) -> None:
         """Append content to file"""
         path = Path(file_path)
 
-        with open(path, "a") as f:
+        with open(path, "a", encoding="utf-8") as f:
             f.write("\n" + content.strip() + "\n")
 
     def _log_success(self, task: str) -> None:
@@ -1348,7 +1311,7 @@ resource "google_container_cluster" "autopr_gcp" {
     async def _ask_continue_on_error(self, task: str) -> bool:
         """Ask user if they want to continue after error"""
         response = input(f"\n❌ Task '{task}' failed. Continue with next task? (y/N): ")
-        return response.lower() in ["y", "yes"]
+        return response.lower() in {"y", "yes"}
 
     async def _is_phase_completed(self, phase: str) -> bool:
         """Check if a phase has been completed"""
@@ -1375,14 +1338,14 @@ resource "google_container_cluster" "autopr_gcp" {
 
         report_file = f"implementation_report_{self.current_phase}.json"
 
-        with open(report_file, "w") as f:
+        with open(report_file, "w", encoding="utf-8") as f:
             json.dump(report, f, indent=2)
 
         # Mark phase as complete
         completion_file = self.project_root / f".autopr_phase_{self.current_phase}_complete"
         completion_file.touch()
 
-    def _get_next_steps(self) -> List[str]:
+    def _get_next_steps(self) -> list[str]:
         """Get recommended next steps based on current phase"""
 
         next_steps = {

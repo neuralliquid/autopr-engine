@@ -3,7 +3,7 @@ LLM Provider Manager - Manages multiple LLM providers with fallback support.
 """
 
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from .base import BaseLLMProvider
 from .providers import (
@@ -14,6 +14,7 @@ from .providers import (
     PerplexityProvider,
     TogetherAIProvider,
 )
+from .providers.azure_openai import AzureOpenAIProvider
 from .types import LLMResponse
 
 logger = logging.getLogger(__name__)
@@ -22,22 +23,30 @@ logger = logging.getLogger(__name__)
 class LLMProviderManager:
     """Manages multiple LLM providers with fallback support."""
 
-    def __init__(self, config: Dict[str, Any]) -> None:
-        self.providers: Dict[str, BaseLLMProvider] = {}
-        self.fallback_order: List[str] = config.get(
-            "fallback_order", ["openai", "anthropic", "mistral"]
+    def __init__(self, config: dict[str, Any], display=None) -> None:
+        self.providers: dict[str, BaseLLMProvider] = {}
+        self.fallback_order: list[str] = config.get(
+            "fallback_order", ["azure_openai", "openai", "anthropic", "mistral"]
         )
-        self.default_provider: str = config.get("default_provider", "openai")
+        self.default_provider: str = config.get("default_provider", "azure_openai")
+        self.display = display
 
         # Initialize providers based on configuration
-        provider_configs: Dict[str, Dict[str, Any]] = config.get("providers", {})
+        provider_configs: dict[str, dict[str, Any]] = config.get("providers", {})
 
         # Default provider configurations
-        default_configs: Dict[str, Dict[str, Any]] = {
+        default_configs: dict[str, dict[str, Any]] = {
             "openai": {
                 "api_key_env": "OPENAI_API_KEY",
                 "default_model": "gpt-4",
                 "base_url": None,
+            },
+            "azure_openai": {
+                "api_key_env": "AZURE_OPENAI_API_KEY",
+                "default_model": "gpt-35-turbo",
+                "azure_endpoint": "https://dev-saf-openai-phoenixvc-ai.openai.azure.com/",
+                "api_version": "2024-02-01",
+                "deployment_name": "gpt-35-turbo",
             },
             "anthropic": {
                 "api_key_env": "ANTHROPIC_API_KEY",
@@ -68,13 +77,15 @@ class LLMProviderManager:
 
         # Merge user configs with defaults
         for provider_name, default_config in default_configs.items():
-            user_config: Dict[str, Any] = provider_configs.get(provider_name, {})
-            merged_config: Dict[str, Any] = {**default_config, **user_config}
+            user_config: dict[str, Any] = provider_configs.get(provider_name, {})
+            merged_config: dict[str, Any] = {**default_config, **user_config}
 
             # Initialize provider
             try:
                 if provider_name == "openai":
                     self.providers[provider_name] = OpenAIProvider(merged_config)
+                elif provider_name == "azure_openai":
+                    self.providers[provider_name] = AzureOpenAIProvider(merged_config)
                 elif provider_name == "anthropic":
                     self.providers[provider_name] = AnthropicProvider(merged_config)
                 elif provider_name == "mistral":
@@ -86,9 +97,20 @@ class LLMProviderManager:
                 elif provider_name == "together":
                     self.providers[provider_name] = TogetherAIProvider(merged_config)
             except Exception as e:
-                logger.warning(f"Failed to initialize {provider_name} provider: {e}")
+                # Log the error for debugging
+                logger.debug(f"Failed to initialize {provider_name} provider: {e}")
 
-    def get_provider(self, provider_name: str) -> Optional[BaseLLMProvider]:
+                # Only show warning if this provider is in the fallback order or is the default
+                if provider_name in self.fallback_order or provider_name == self.default_provider:
+                    if self.display:
+                        self.display.error.show_warning(
+                            f"Provider {provider_name} not available: {e!s}"
+                        )
+                    else:
+                        # Fallback to logger if no display is available
+                        logger.warning(f"Failed to initialize {provider_name} provider: {e}")
+
+    def get_provider(self, provider_name: str) -> BaseLLMProvider | None:
         """
         Get a provider by name.
 
@@ -103,7 +125,7 @@ class LLMProviderManager:
             return provider
         return None
 
-    def complete(self, request: Dict[str, Any]) -> LLMResponse:
+    def complete(self, request: dict[str, Any]) -> LLMResponse:
         """
         Complete a chat conversation using the specified or default provider with fallback.
 
@@ -161,17 +183,17 @@ class LLMProviderManager:
             # Call the provider's complete method
             return provider.complete(request)
         except Exception as e:
-            error_msg = f"Error calling provider '{provider_name}': {str(e)}"
+            error_msg = f"Error calling provider '{provider_name}': {e!s}"
             logger.exception(error_msg)
             return LLMResponse.from_error(error_msg, request.get("model") or "unknown")
 
-    def get_available_providers(self) -> List[str]:
+    def get_available_providers(self) -> list[str]:
         """Get list of available providers."""
         return [name for name, provider in self.providers.items() if provider.is_available()]
 
-    def get_provider_info(self) -> Dict[str, Any]:
+    def get_provider_info(self) -> dict[str, Any]:
         """Get information about all providers."""
-        info: Dict[str, Any] = {
+        info: dict[str, Any] = {
             "available_providers": self.get_available_providers(),
             "default_provider": self.default_provider,
             "fallback_order": self.fallback_order,

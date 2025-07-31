@@ -1,6 +1,4 @@
 import asyncio
-import json
-from typing import List
 
 import pydantic
 
@@ -16,7 +14,7 @@ class Outputs(pydantic.BaseModel):
     success: bool
     report: str
     violations_count: int
-    violations: List[dict]
+    violations: list[dict]
 
 
 class RunAccessibilityAudit(Action[Inputs, Outputs]):

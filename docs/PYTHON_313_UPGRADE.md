@@ -2,7 +2,8 @@
 
 ## Overview
 
-This document outlines the upgrade of the AutoPR Engine project from Python 3.8+ to Python 3.13.5, including all necessary configuration changes, dependency updates, and compatibility considerations.
+This document outlines the upgrade of the AutoPR Engine project from Python 3.8+ to Python 3.13.5, including all
+necessary configuration changes, dependency updates, and compatibility considerations.
 
 ## What Changed
 
@@ -14,14 +15,14 @@ This document outlines the upgrade of the AutoPR Engine project from Python 3.8+
 
 ### 2. Configuration Files Updated
 
-#### pyproject.toml
+#### Pyproject.toml
 
 - Updated `requires-python = ">=3.9"`
 - Added Python 3.13 classifier
 - Updated Black target version to `py313`
 - Updated all core dependencies to Python 3.13 compatible versions
 
-#### setup.py
+#### Setup.py
 
 - Updated `python_requires=">=3.9"`
 
@@ -31,7 +32,7 @@ This document outlines the upgrade of the AutoPR Engine project from Python 3.8+
 - Set `language_version: python3.13` for Black hook
 - Updated `default_language_version` to `python3.13`
 
-#### requirements-dev.txt
+#### Requirements-dev.txt
 
 - Updated all development dependencies to latest Python 3.13 compatible versions
 
@@ -62,7 +63,7 @@ pytest-cov>=5.0.0,<6.0.0          # Was: 4.1.0
 black>=24.8.0,<25.0.0             # Was: 23.7.0
 flake8>=7.0.0,<8.0.0              # Was: 6.0.0
 mypy>=1.11.0,<2.0.0               # Was: 1.5.0
-pre-commit>=4.0.0,<5.0.0          # Was: 3.4.0
+pre-commit>=3.0.0,<4.0.0          # Was: 3.4.0, updated to use available versions
 
 # Documentation
 sphinx>=8.1.0,<9.0.0              # Was: 7.1.0
@@ -217,6 +218,7 @@ pre-commit run mypy --all-files
 ```
 
 ## Rollback Plan
+
 If issues arise, you can rollback to Python 3.11:
 
 ### 1. Revert Configuration Files
@@ -277,11 +279,13 @@ pre-commit install
 ### Common Issues
 
 1. **Import errors**: Some packages may need updates
+
    ```cmd
    pip install --upgrade package-name
    ```
 
-2. **Type checking errors**: Update type annotations
+1. **Type checking errors**: Update type annotations
+
    ```python
    # Old (Python 3.8)
    from typing import List, Dict
@@ -292,7 +296,8 @@ pre-commit install
        pass
    ```
 
-3. **Pre-commit failures**: Update hook versions
+1. **Pre-commit failures**: Update hook versions
+
    ```cmd
    pre-commit autoupdate
    pre-commit run --all-files
@@ -306,6 +311,9 @@ pre-commit install
 
 ## Conclusion
 
-The upgrade to Python 3.13.5 provides significant performance improvements, enhanced developer experience, and future-proofing for the AutoPR Engine project. All dependencies have been updated to compatible versions, and the migration process is straightforward.
+The upgrade to Python 3.13.5 provides significant performance improvements, enhanced developer experience, and
+future-proofing for the AutoPR Engine project. All dependencies have been updated to compatible versions, and the
+migration process is straightforward.
 
-The project now benefits from the latest Python features while maintaining backward compatibility with existing code and configurations.
+The project now benefits from the latest Python features while maintaining backward compatibility with existing code
+and configurations.

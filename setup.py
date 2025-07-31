@@ -4,10 +4,8 @@ AutoPR Engine - AI-Powered GitHub PR Automation and Issue Management
 Setup configuration for Python packaging and distribution
 """
 
-import os
 import re
 from pathlib import Path
-from typing import List
 
 from setuptools import find_packages, setup
 
@@ -16,7 +14,7 @@ from setuptools import find_packages, setup
 def get_version() -> str:
     init_file = Path(__file__).parent / "autopr" / "__init__.py"
     if init_file.exists():
-        with open(init_file, "r", encoding="utf-8") as f:
+        with open(init_file, encoding="utf-8") as f:
             content = f.read()
             match = re.search(r'__version__ = ["\']([^"\']+)["\']', content)
             if match:
@@ -28,25 +26,25 @@ def get_version() -> str:
 def get_long_description() -> str:
     readme_file = Path(__file__).parent / "README.md"
     if readme_file.exists():
-        with open(readme_file, "r", encoding="utf-8") as f:
+        with open(readme_file, encoding="utf-8") as f:
             return f.read()
     return "AI-Powered GitHub PR Automation and Issue Management"
 
 
 # Read requirements from requirements.txt
-def get_requirements() -> List[str]:
+def get_requirements() -> list[str]:
     requirements_file = Path(__file__).parent / "requirements.txt"
     if requirements_file.exists():
-        with open(requirements_file, "r", encoding="utf-8") as f:
+        with open(requirements_file, encoding="utf-8") as f:
             return [line.strip() for line in f if line.strip() and not line.startswith("#")]
     return []
 
 
 # Read development requirements
-def get_dev_requirements() -> List[str]:
+def get_dev_requirements() -> list[str]:
     dev_requirements_file = Path(__file__).parent / "requirements-dev.txt"
     if dev_requirements_file.exists():
-        with open(dev_requirements_file, "r", encoding="utf-8") as f:
+        with open(dev_requirements_file, encoding="utf-8") as f:
             return [line.strip() for line in f if line.strip() and not line.startswith("#")]
     return []
 
@@ -152,6 +150,7 @@ setup(
     install_requires=[
         # Core dependencies
         "pydantic>=2.0.0,<3.0.0",
+        "pydantic_settings>=2.0.0,<3.0.0",
         "aiohttp>=3.8.0,<4.0.0",
         "structlog>=22.0.0,<24.0.0",
         "click>=8.0.0,<9.0.0",

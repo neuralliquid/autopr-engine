@@ -22,18 +22,18 @@ from .markdown import MarkdownGenerator
 
 # Main exports
 __all__ = [
-    # Configuration
-    "DocumentationConfig",
     # Base class
     "BaseFormatGenerator",
-    # Format generators
-    "MarkdownGenerator",
-    "HTMLGenerator",
-    "JSONGenerator",
+    # Configuration
+    "DocumentationConfig",
     # Factory and utilities
     "FormatGeneratorFactory",
-    "generate_platform_guide",
+    "HTMLGenerator",
+    "JSONGenerator",
+    # Format generators
+    "MarkdownGenerator",
     "generate_documentation_index",
+    "generate_platform_guide",
 ]
 
 # Version and metadata

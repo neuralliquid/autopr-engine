@@ -4,12 +4,11 @@ Comprehensive system for tracking performance, accuracy, and user satisfaction m
 """
 
 import json
-import os
 import sqlite3
 import statistics
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 from pydantic import BaseModel
 
@@ -19,7 +18,7 @@ class MetricPoint:
     timestamp: datetime
     metric_name: str
     value: float
-    metadata: Dict[str, Any]
+    metadata: dict[str, Any]
 
 
 class EvaluationMetrics(BaseModel):
@@ -132,10 +131,10 @@ class MetricsCollector:
         self,
         metric_name: str,
         value: float,
-        metadata: Optional[Dict[str, Any]] = None,
-        session_id: Optional[str] = None,
-        user_id: Optional[str] = None,
-        comment_id: Optional[str] = None,
+        metadata: dict[str, Any] | None = None,
+        session_id: str | None = None,
+        user_id: str | None = None,
+        comment_id: str | None = None,
     ) -> None:
         """Record a single metric point."""
         conn = sqlite3.connect(self.db_path)
@@ -162,12 +161,12 @@ class MetricsCollector:
     def record_event(
         self,
         event_type: str,
-        event_data: Dict[str, Any],
+        event_data: dict[str, Any],
         success: bool,
-        duration_ms: Optional[int] = None,
-        user_id: Optional[str] = None,
-        comment_id: Optional[str] = None,
-        pr_number: Optional[int] = None,
+        duration_ms: int | None = None,
+        user_id: str | None = None,
+        comment_id: str | None = None,
+        pr_number: int | None = None,
     ) -> None:
         """Record a detailed event."""
         conn = sqlite3.connect(self.db_path)
@@ -196,10 +195,10 @@ class MetricsCollector:
         self,
         user_id: str,
         rating: int,
-        feedback_text: Optional[str] = None,
-        category: Optional[str] = None,
-        autopr_action: Optional[str] = None,
-        comment_id: Optional[str] = None,
+        feedback_text: str | None = None,
+        category: str | None = None,
+        autopr_action: str | None = None,
+        comment_id: str | None = None,
     ) -> None:
         """Record user feedback."""
         conn = sqlite3.connect(self.db_path)
@@ -230,9 +229,9 @@ class MetricsCollector:
         expected_result: str,
         actual_result: str,
         success: bool,
-        duration_ms: Optional[int] = None,
-        provider: Optional[str] = None,
-        model: Optional[str] = None,
+        duration_ms: int | None = None,
+        provider: str | None = None,
+        model: str | None = None,
     ) -> None:
         """Record benchmark test results."""
         conn = sqlite3.connect(self.db_path)
@@ -312,8 +311,8 @@ class MetricsCollector:
         )
 
     def get_benchmark_results(
-        self, benchmark_name: Optional[str] = None, timeframe: str = "30d"
-    ) -> Dict[str, Any]:
+        self, benchmark_name: str | None = None, timeframe: str = "30d"
+    ) -> dict[str, Any]:
         """Get benchmark test results."""
         start_time = self._get_start_time(timeframe)
 
@@ -328,7 +327,7 @@ class MetricsCollector:
             FROM benchmarks
             WHERE timestamp >= ?
         """
-        params: List[Any] = [start_time]
+        params: list[Any] = [start_time]
 
         if benchmark_name:
             query += " AND benchmark_name = ?"
@@ -354,7 +353,7 @@ class MetricsCollector:
         conn.close()
         return benchmark_data
 
-    def get_trend_analysis(self, metric_name: str, timeframe: str = "30d") -> Dict[str, Any]:
+    def get_trend_analysis(self, metric_name: str, timeframe: str = "30d") -> dict[str, Any]:
         """Get trend analysis for a specific metric."""
         start_time = self._get_start_time(timeframe)
 
@@ -408,7 +407,7 @@ class MetricsCollector:
             "worst_value": min(values) if values else 0,
         }
 
-    def generate_report(self, timeframe: str = "7d") -> Dict[str, Any]:
+    def generate_report(self, timeframe: str = "7d") -> dict[str, Any]:
         """Generate comprehensive evaluation report."""
         metrics = self.get_metrics_summary(timeframe)
         benchmarks = self.get_benchmark_results(timeframe=timeframe)
@@ -445,14 +444,13 @@ class MetricsCollector:
         if timeframe.endswith("d"):
             days = int(timeframe[:-1])
             return now - timedelta(days=days)
-        elif timeframe.endswith("h"):
+        if timeframe.endswith("h"):
             hours = int(timeframe[:-1])
             return now - timedelta(hours=hours)
-        elif timeframe.endswith("m"):
+        if timeframe.endswith("m"):
             minutes = int(timeframe[:-1])
             return now - timedelta(minutes=minutes)
-        else:
-            return now - timedelta(days=7)  # Default to 7 days
+        return now - timedelta(days=7)  # Default to 7 days
 
     def _calculate_fix_success_rate(self, cursor: sqlite3.Cursor, start_time: datetime) -> float:
         """Calculate the rate of successful automated fixes."""
@@ -483,7 +481,7 @@ class MetricsCollector:
         )
 
         result = cursor.fetchone()
-        return result[0] if result[0] else 0.0
+        return result[0] or 0.0
 
     def _calculate_false_positive_rate(self, cursor: sqlite3.Cursor, start_time: datetime) -> float:
         """Calculate false positive rate for automated actions."""
@@ -512,7 +510,7 @@ class MetricsCollector:
         )
 
         result = cursor.fetchone()
-        return result[0] if result[0] else 0.0
+        return result[0] or 0.0
 
     def _calculate_avg_response_time(self, cursor: sqlite3.Cursor, start_time: datetime) -> float:
         """Calculate average response time in seconds."""
@@ -525,7 +523,7 @@ class MetricsCollector:
         )
 
         result = cursor.fetchone()
-        avg_ms = result[0] if result[0] else 0
+        avg_ms = result[0] or 0
         return avg_ms / 1000.0  # Convert to seconds
 
     def _calculate_avg_resolution_time(self, cursor: sqlite3.Cursor, start_time: datetime) -> float:
@@ -539,7 +537,7 @@ class MetricsCollector:
         )
 
         result = cursor.fetchone()
-        avg_ms = result[0] if result[0] else 0
+        avg_ms = result[0] or 0
         return avg_ms / 1000.0  # Convert to seconds
 
     def _calculate_api_cost(self, cursor: sqlite3.Cursor, start_time: datetime) -> float:
@@ -553,7 +551,7 @@ class MetricsCollector:
         )
 
         result = cursor.fetchone()
-        return result[0] if result[0] else 0.0
+        return result[0] or 0.0
 
     def _calculate_coverage_rate(self, cursor: sqlite3.Cursor, start_time: datetime) -> float:
         """Calculate percentage of comments handled automatically."""
@@ -583,7 +581,7 @@ class MetricsCollector:
         )
 
         result = cursor.fetchone()
-        return result[0] if result[0] else 0.0
+        return result[0] or 0.0
 
     def _calculate_test_pass_rate(self, cursor: sqlite3.Cursor, start_time: datetime) -> float:
         """Calculate test pass rate for automated fixes."""
@@ -612,7 +610,7 @@ class MetricsCollector:
         )
 
         result = cursor.fetchone()
-        return result[0] if result[0] else 0.0
+        return result[0] or 0.0
 
     def _calculate_maintainability_index(
         self, cursor: sqlite3.Cursor, start_time: datetime
@@ -627,7 +625,7 @@ class MetricsCollector:
         )
 
         result = cursor.fetchone()
-        return result[0] if result[0] else 0.0
+        return result[0] or 0.0
 
     def _calculate_uptime(self, cursor: sqlite3.Cursor, start_time: datetime) -> float:
         """Calculate system uptime percentage."""
@@ -692,7 +690,7 @@ class MetricsCollector:
         )
 
         result = cursor.fetchone()
-        return result[0] if result[0] else 0.0
+        return result[0] or 0.0
 
     def _calculate_health_score(self, metrics: EvaluationMetrics) -> float:
         """Calculate overall system health score (0-100)."""
@@ -711,7 +709,7 @@ class MetricsCollector:
         for metric, weight in weights.items():
             value = getattr(metrics, metric, 0.0)
             if metric == "user_satisfaction_score":
-                value = value / 5.0  # Normalize to 0-1 scale
+                value /= 5.0  # Normalize to 0-1 scale
             elif metric == "error_rate":
                 value = 1.0 - value  # Invert error rate
 
@@ -720,8 +718,8 @@ class MetricsCollector:
         return min(max(score * 100, 0), 100)  # Clamp to 0-100
 
     def _generate_recommendations(
-        self, metrics: EvaluationMetrics, trends: Dict[str, Any]
-    ) -> List[str]:
+        self, metrics: EvaluationMetrics, trends: dict[str, Any]
+    ) -> list[str]:
         """Generate actionable recommendations based on metrics."""
         recommendations = []
 

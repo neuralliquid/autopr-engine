@@ -1,6 +1,7 @@
 # AutoPR Template System
 
-This directory contains the comprehensive template system for the AutoPR engine, supporting **no-code**, **vibe coding**, and **AI agent builder** platforms with a hybrid YAML + template approach.
+This directory contains the comprehensive template system for the AutoPR engine, supporting **no-code**, **vibe
+coding**, and **AI agent builder** platforms with a hybrid YAML + template approach.
 
 ## Template System Overview
 

@@ -1,9 +1,13 @@
 # Authentication System Documentation
 
 ## Overview
-The Tezos Liquidity Management platform implements a version-aware authentication system that supports both standard and corporate user flows. The system is built on Supabase Auth and includes route protection, social login options, and version-specific redirects.
+
+The Tezos Liquidity Management platform implements a version-aware authentication system that supports both standard
+and corporate user flows. The system is built on Supabase Auth and includes route protection, social login options, and
+version-specific redirects.
 
 ## Table of Contents
+
 - [Architecture](#architecture)
 - [Setup Instructions](#setup-instructions)
 - [Authentication Flow](#authentication-flow)
@@ -15,6 +19,7 @@ The Tezos Liquidity Management platform implements a version-aware authenticatio
 - [Extending the System](#extending-the-system)
 
 ## Architecture
+
 The authentication system consists of several key components:
 
 - **Auth Service**: Handles login, registration, and social authentication
@@ -26,36 +31,44 @@ The authentication system consists of several key components:
 ## Setup Instructions
 
 ### Prerequisites
+
 - Supabase project with Auth enabled
 - Environment variables configured
 
 ### Environment Variables
+
 Add the following environment variables to your project:
+
 ```txt
+
 NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ```
 
 ### Social Login Configuration
+
 1. Configure OAuth providers in your Supabase dashboard
-2. Add the callback URL: `https://your-domain.com/auth/callback`
+2. Add the callback URL: `<https://your-domain.com/auth/callback`>
 3. Update the allowed redirect URLs in your OAuth provider settings
 
 ## Authentication Flow
 
 ### Login Process
+
 1. User visits a protected route
 2. Middleware checks authentication status
 3. If not authenticated, user is redirected to the version-specific login page
 4. After successful login, user is redirected to the original URL
 
 ### Registration Process
+
 1. User completes registration form
 2. Account is created with version-specific metadata
 3. User is redirected to the appropriate dashboard
 
 ### Version-Specific Redirects
+
 The system automatically detects which version (standard/corporate) the user is using and redirects accordingly:
 
 - Standard users → `/standard/dashboard`
@@ -64,6 +77,7 @@ The system automatically detects which version (standard/corporate) the user is 
 ## Protected Routes
 
 ### Route Protection Configuration
+
 Protected routes are defined in `lib/auth/auth-middleware.ts`:
 
 ```typescript
@@ -111,12 +125,13 @@ const publicRoutes = [
 ## Version-Aware Components
 
 ### Login Form
+
 The `VersionAwareLoginForm` component adapts its styling and behavior based on the version:
 
 ```tsx
-<VersionAwareLoginForm 
-  version="corporate" 
-  redirectTo="/corporate/dashboard" 
+<VersionAwareLoginForm
+  version="corporate"
+  redirectTo="/corporate/dashboard"
 />
 ```
 
@@ -125,19 +140,20 @@ The `VersionAwareLoginForm` component adapts its styling and behavior based on t
 The `VersionAwareSocialLogins` component provides social login options with version-specific redirects:
 
 ```tsx
-<VersionAwareSocialLogins 
-  version="standard" 
-  redirectTo="/standard/dashboard" 
+<VersionAwareSocialLogins
+  version="standard"
+  redirectTo="/standard/dashboard"
 />
 ```
 
 ### Register Form
+
 The `VersionAwareRegisterForm` component adapts its styling and behavior based on the version:
 
 ```tsx
-<VersionAwareRegisterForm 
-  version="corporate" 
-  redirectTo="/corporate/dashboard" 
+<VersionAwareRegisterForm
+  version="corporate"
+  redirectTo="/corporate/dashboard"
 />
 ```
 
@@ -160,6 +176,7 @@ signInWithEmail(email, password, {
 ```
 
 ### Protected Route Component Options
+
 The `ProtectedRoute` component accepts a custom redirect URL:
 
 ```tsx
@@ -198,7 +215,8 @@ The system includes a callback handler at `/auth/callback/route.ts` that process
 
 **Symptom**: User is caught in a redirect loop between login and dashboard
 
-**Solution**: Check that the middleware is correctly identifying authenticated users. Verify that cookies are being properly set and read.
+**Solution**: Check that the middleware is correctly identifying authenticated users. Verify that cookies are being
+properly set and read.
 
 #### Social Login Failure
 
@@ -210,7 +228,8 @@ The system includes a callback handler at `/auth/callback/route.ts` that process
 
 **Symptom**: Unauthenticated users can access protected routes
 
-**Solution**: Verify that the route is included in the `protectedPatterns` array and that the middleware is running on that route.
+**Solution**: Verify that the route is included in the `protectedPatterns` array and that the middleware is running on
+that route.
 
 #### Version-Specific Styling Not Applied
 
@@ -256,8 +275,8 @@ To add MFA support:
 
 ## Additional Resources
 
-- [Supabase Auth Documentation](https://supabase.io/docs/guides/auth)
-- [Next.js Middleware Documentation](https://nextjs.org/docs/advanced-features/middleware)
-- [OAuth 2.0 Flow Explained](https://auth0.com/docs/authorization/flows)
+- [Supabase Auth Documentation](<https://supabase.io/docs/guides/auth)>
+- [Next.js Middleware Documentation](<https://nextjs.org/docs/advanced-features/middleware)>
+- [OAuth 2.0 Flow Explained](<https://auth0.com/docs/authorization/flows)>
 
 For further assistance, contact the development team at [support@example.com](mailto:support@example.com).

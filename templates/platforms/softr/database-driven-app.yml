@@ -13,7 +13,7 @@ platform_info:
   pricing_model: "Freemium with Generous Free Tier"
   target_audience: "Designers, entrepreneurs, small businesses, agencies"
   primary_use_cases: ["Client portals", "Internal tools", "Lightweight CRMs", "Project management", "Directory websites"]
-  
+
   key_features:
     - "Drag-and-drop interface for rapid development"
     - "Native Airtable integration with real-time sync"

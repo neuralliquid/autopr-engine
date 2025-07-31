@@ -1,7 +1,5 @@
 """Configuration classes for Axolo integration."""
 
-from typing import Dict, List, Optional
-
 from pydantic import BaseModel, Field
 
 
@@ -13,7 +11,7 @@ class AxoloConfig(BaseModel):
     timeout: int = Field(30, description="Request timeout in seconds")
     max_retries: int = Field(3, description="Maximum number of retries for failed requests")
     retry_delay: float = Field(1.0, description="Delay between retries in seconds")
-    reminder_schedule: Dict[str, str] = Field(
+    reminder_schedule: dict[str, str] = Field(
         default_factory=lambda: {
             "daily_standup": "10:00",
             "stale_pr_reminder": "15:00",
@@ -21,14 +19,14 @@ class AxoloConfig(BaseModel):
         },
         description="Schedule for automated reminders",
     )
-    workspace_url: Optional[str] = Field(None, description="Axolo workspace URL")
-    slack_webhook: Optional[str] = Field(None, description="Slack webhook URL")
-    github_repos: List[str] = Field(
+    workspace_url: str | None = Field(None, description="Axolo workspace URL")
+    slack_webhook: str | None = Field(None, description="Slack webhook URL")
+    github_repos: list[str] = Field(
         default_factory=list, description="GitHub repositories to monitor"
     )
-    ai_tool_mentions: Dict[str, str] = Field(
+    ai_tool_mentions: dict[str, str] = Field(
         default_factory=dict, description="AI tool mention mappings"
     )
-    custom_commands: Dict[str, str] = Field(
+    custom_commands: dict[str, str] = Field(
         default_factory=dict, description="Custom command mappings"
     )

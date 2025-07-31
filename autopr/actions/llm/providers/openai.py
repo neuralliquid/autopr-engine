@@ -2,19 +2,16 @@
 OpenAI GPT provider implementation.
 """
 
-from typing import TYPE_CHECKING, Any, Dict
+from typing import Any
 
-from ..base import BaseLLMProvider
-from ..types import LLMResponse
-
-if TYPE_CHECKING:
-    import openai
+from autopr.actions.llm.base import BaseLLMProvider
+from autopr.actions.llm.types import LLMResponse
 
 
 class OpenAIProvider(BaseLLMProvider):
     """OpenAI GPT provider."""
 
-    def __init__(self, config: Dict[str, Any]) -> None:
+    def __init__(self, config: dict[str, Any]) -> None:
         super().__init__(config)
         try:
             import openai
@@ -24,7 +21,7 @@ class OpenAIProvider(BaseLLMProvider):
         except ImportError:
             self.available = False
 
-    def complete(self, request: Dict[str, Any]) -> LLMResponse:
+    def complete(self, request: dict[str, Any]) -> LLMResponse:
         try:
             # Ensure all messages have non-empty content (additional robustness)
             filtered_messages = [msg for msg in request["messages"] if msg["content"].strip()]

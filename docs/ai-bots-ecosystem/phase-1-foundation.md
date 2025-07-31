@@ -33,7 +33,7 @@ class PRReviewAnalyzer:
             'medium': 2,
             'low': 1
         }
-        
+
         self.ai_routing_rules = {
             'typescript': 'charlie',
             'security': 'snyk',
@@ -44,34 +44,34 @@ class PRReviewAnalyzer:
 
     def analyze_pr_review(self, inputs: PRReviewInputs) -> PRReviewOutputs:
         """Main analysis function for PR reviews"""
-        
+
         # Parse review data from multiple sources
         coderabbit_findings = self._parse_coderabbit_review(inputs.review_data.get('coderabbit', {}))
         copilot_suggestions = self._parse_copilot_review(inputs.review_data.get('copilot', {}))
         typescript_issues = self._parse_typescript_check(inputs.review_data.get('typescript_check', {}))
-        
+
         # Combine all findings
         all_issues = coderabbit_findings + copilot_suggestions + typescript_issues
-        
+
         # Filter by severity threshold
         filtered_issues = self._filter_by_severity(all_issues, inputs.severity_threshold)
-        
+
         # Generate recommendations
         recommendations = self._generate_recommendations(filtered_issues)
-        
+
         # Create issues and tickets
         github_issues = []
         linear_tickets = []
         ai_assignments = {}
-        
+
         if inputs.auto_assign:
             github_issues, linear_tickets, ai_assignments = self._create_assignments(
                 filtered_issues, inputs.pr_number, inputs.repository
             )
-        
+
         # Determine if merge should be blocked
         should_block = self._should_block_merge(filtered_issues, inputs.severity_threshold)
-        
+
         return PRReviewOutputs(
             analysis_summary=self._generate_summary(filtered_issues),
             issues_found=filtered_issues,
@@ -85,7 +85,7 @@ class PRReviewAnalyzer:
     def _parse_coderabbit_review(self, coderabbit_data: Dict) -> List[Dict]:
         """Parse CodeRabbit review findings"""
         findings = []
-        
+
         for finding in coderabbit_data.get('findings', []):
             findings.append({
                 'source': 'coderabbit',
@@ -99,13 +99,13 @@ class PRReviewAnalyzer:
                 'confidence': finding.get('confidence', 0.8),
                 'tags': finding.get('tags', [])
             })
-        
+
         return findings
 
     def _parse_copilot_review(self, copilot_data: Dict) -> List[Dict]:
         """Parse GitHub Copilot Chat suggestions"""
         suggestions = []
-        
+
         for suggestion in copilot_data.get('suggestions', []):
             suggestions.append({
                 'source': 'copilot',
@@ -118,13 +118,13 @@ class PRReviewAnalyzer:
                 'confidence': 0.7,
                 'tags': ['enhancement']
             })
-        
+
         return suggestions
 
     def _parse_typescript_check(self, ts_data: Dict) -> List[Dict]:
         """Parse AI TypeScript Check results"""
         issues = []
-        
+
         for error in ts_data.get('errors', []):
             issues.append({
                 'source': 'typescript_check',
@@ -138,13 +138,13 @@ class PRReviewAnalyzer:
                 'confidence': 0.9,
                 'tags': ['typescript', 'type-safety']
             })
-        
+
         return issues
 
     def _filter_by_severity(self, issues: List[Dict], threshold: str) -> List[Dict]:
         """Filter issues by severity threshold"""
         threshold_level = self.severity_levels.get(threshold, 2)
-        
+
         return [
             issue for issue in issues
             if self.severity_levels.get(issue['severity'], 1) >= threshold_level
@@ -153,7 +153,7 @@ class PRReviewAnalyzer:
     def _generate_recommendations(self, issues: List[Dict]) -> List[str]:
         """Generate action recommendations based on issues"""
         recommendations = []
-        
+
         # Group issues by type
         issue_types = {}
         for issue in issues:
@@ -161,7 +161,7 @@ class PRReviewAnalyzer:
             if issue_type not in issue_types:
                 issue_types[issue_type] = []
             issue_types[issue_type].append(issue)
-        
+
         for issue_type, type_issues in issue_types.items():
             count = len(type_issues)
             if issue_type == 'typescript':
@@ -172,7 +172,7 @@ class PRReviewAnalyzer:
                 recommendations.append(f"Investigate {count} performance issues with monitoring tools")
             else:
                 recommendations.append(f"Create GitHub issues for {count} {issue_type} problems")
-        
+
         return recommendations
 
     def _create_assignments(self, issues: List[Dict], pr_number: int, repository: str) -> tuple:
@@ -180,21 +180,21 @@ class PRReviewAnalyzer:
         github_issues = []
         linear_tickets = []
         ai_assignments = {}
-        
+
         for issue in issues:
             if self._should_create_github_issue(issue):
                 github_issue = self._create_github_issue(issue, pr_number, repository)
                 github_issues.append(github_issue)
-                
+
             if self._should_create_linear_ticket(issue):
                 linear_ticket = self._create_linear_ticket(issue, pr_number)
                 linear_tickets.append(linear_ticket)
-                
+
             # Assign to AI if applicable
             ai_tool = self._get_ai_assignment(issue)
             if ai_tool:
                 ai_assignments[f"{issue['type']}_{issue.get('file_path', 'unknown')}"] = ai_tool
-        
+
         return github_issues, linear_tickets, ai_assignments
 
     def _should_create_github_issue(self, issue: Dict) -> bool:
@@ -217,12 +217,15 @@ class PRReviewAnalyzer:
 **Severity**: {issue['severity']}
 
 ## Issue Description
+
 {issue['description']}
 
 ## Suggested Fix
+
 {issue['suggested_fix']}
 
 ## AI Confidence Score
+
 {issue['confidence']:.1%}
             """.strip(),
             'labels': [
@@ -245,16 +248,20 @@ class PRReviewAnalyzer:
 **Type**: {issue['type']}
 
 ## Current Implementation
+
 File: {issue['file_path']}
 Line: {issue['line_number']}
 
 ## Suggested Improvement
+
 {issue['description']}
 
 ## Implementation Guide
+
 {issue['suggested_fix']}
 
 ## AI Confidence
+
 {issue['confidence']:.1%}
             """.strip(),
             'labels': ['ai-suggested', issue['type']],
@@ -308,33 +315,34 @@ Line: {issue['line_number']}
         """Generate analysis summary"""
         if not issues:
             return "No significant issues found. PR is ready for review."
-        
+
         total_issues = len(issues)
         severity_counts = {}
         type_counts = {}
-        
+
         for issue in issues:
             severity = issue['severity']
             issue_type = issue['type']
-            
+
             severity_counts[severity] = severity_counts.get(severity, 0) + 1
             type_counts[issue_type] = type_counts.get(issue_type, 0) + 1
-        
+
         summary = f"Found {total_issues} issues:\n"
-        
+
         # Severity breakdown
         for severity, count in sorted(severity_counts.items(), key=lambda x: self.severity_levels.get(x[0], 0), reverse=True):
             summary += f"- {severity.title()}: {count}\n"
-        
+
         summary += "\nIssue types:\n"
-        
+
         # Type breakdown
         for issue_type, count in sorted(type_counts.items()):
             summary += f"- {issue_type.title()}: {count}\n"
-        
+
         return summary
 
 # Entry point for AutoPR
+
 def run(inputs_dict: dict) -> dict:
     """AutoPR entry point"""
     inputs = PRReviewInputs(**inputs_dict)
@@ -364,6 +372,6 @@ if __name__ == "__main__":
             }
         }
     }
-    
+
     result = run(sample_inputs)
-    print(json.dumps(result, indent=2)) 
+    print(json.dumps(result, indent=2))

@@ -16,9 +16,14 @@ Features:
 
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from autopr.quality.template_metrics import QualityMetrics, get_quality_analyzer, get_quality_scorer
+from templates.discovery.template_validators import (
+    ValidationIssue,
+    ValidationSeverity,
+    get_validator_registry,
+)
 
 from .report_generators import (
     ReportGeneratorFactory,
@@ -26,7 +31,6 @@ from .report_generators import (
     generate_report,
     save_report,
 )
-from .template_validators import ValidationIssue, ValidationSeverity, get_validator_registry
 
 # Import modular components
 from .validation_rules import get_validation_rules
@@ -47,7 +51,7 @@ class TemplateValidator:
 
         try:
             # Load template data
-            with open(template_file, "r", encoding="utf-8") as f:
+            with open(template_file, encoding="utf-8") as f:
                 template_data = yaml.safe_load(f)
 
             if template_data is None:
@@ -91,13 +95,9 @@ class TemplateValidator:
             all_issues.extend(issues)
 
         # Calculate quality metrics using modular scorer
-        metrics = self.quality_scorer.calculate_metrics(
-            all_issues, total_checks, str(template_file)
-        )
+        return self.quality_scorer.calculate_metrics(all_issues, total_checks, str(template_file))
 
-        return metrics
-
-    def validate_templates_batch(self, template_files: List[Path]) -> List[QualityMetrics]:
+    def validate_templates_batch(self, template_files: list[Path]) -> list[QualityMetrics]:
         """Validate multiple template files in batch."""
         results = []
 
@@ -126,7 +126,7 @@ class TemplateValidator:
 class QualityAssuranceFramework:
     """Main QA framework orchestrator using modular components."""
 
-    def __init__(self, templates_root: Optional[str] = None):
+    def __init__(self, templates_root: str | None = None):
         """Initialize the QA framework with modular architecture."""
         if templates_root is None:
             self.templates_root = Path(__file__).parent.parent
@@ -144,11 +144,11 @@ class QualityAssuranceFramework:
 
     def run_qa_suite(
         self,
-        template_path: Optional[Union[str, Path]] = None,
+        template_path: str | Path | None = None,
         output_format: str = "markdown",
         save_report_flag: bool = True,
-        report_path: Optional[str] = None,
-    ) -> Dict[str, Any]:
+        report_path: str | None = None,
+    ) -> dict[str, Any]:
         """Run complete QA suite using modular components."""
 
         # Determine templates to validate
@@ -165,7 +165,8 @@ class QualityAssuranceFramework:
                     template_path.rglob("*.yaml")
                 )
             else:
-                raise ValueError(f"Template path does not exist: {template_path}")
+                msg = f"Template path does not exist: {template_path}"
+                raise ValueError(msg)
 
         if not template_files:
             return {"error": "No template files found", "template_count": 0, "results": []}
@@ -193,11 +194,10 @@ class QualityAssuranceFramework:
                     self.templates_root / f"qa_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
                 )
 
-            saved_path = save_report(report_content, Path(report_path), output_format)
-            print(f"QA report saved to: {saved_path}")
+            save_report(report_content, Path(report_path), output_format)
 
         # Prepare results
-        results = {
+        return {
             "template_count": len(template_files),
             "average_score": batch_analysis.get("average_score", 0.0),
             "total_issues": sum(len(m.issues) for m in template_metrics),
@@ -219,9 +219,7 @@ class QualityAssuranceFramework:
             ],
         }
 
-        return results
-
-    def get_template_recommendations(self, template_path: Union[str, Path]) -> Dict[str, Any]:
+    def get_template_recommendations(self, template_path: str | Path) -> dict[str, Any]:
         """Get specific recommendations for a template using modular analysis."""
         template_path = Path(template_path)
 
@@ -254,8 +252,8 @@ class QualityAssuranceFramework:
         }
 
     def compare_templates(
-        self, template1_path: Union[str, Path], template2_path: Union[str, Path]
-    ) -> Dict[str, Any]:
+        self, template1_path: str | Path, template2_path: str | Path
+    ) -> dict[str, Any]:
         """Compare quality metrics between two templates using modular components."""
         template1_path = Path(template1_path)
         template2_path = Path(template2_path)
@@ -290,13 +288,13 @@ class QualityAssuranceFramework:
 
 
 # Convenience functions for backward compatibility
-def validate_template(template_path: Union[str, Path]) -> QualityMetrics:
+def validate_template(template_path: str | Path) -> QualityMetrics:
     """Validate a single template (convenience function)."""
     validator = TemplateValidator()
     return validator.validate_template(Path(template_path))
 
 
-def run_qa_suite(templates_root: Optional[str] = None, **kwargs: Any) -> Dict[str, Any]:
+def run_qa_suite(templates_root: str | None = None, **kwargs: Any) -> dict[str, Any]:
     """Run QA suite (convenience function)."""
     qa_framework = QualityAssuranceFramework(templates_root)
     return qa_framework.run_qa_suite(**kwargs)
@@ -306,71 +304,42 @@ def run_qa_suite(templates_root: Optional[str] = None, **kwargs: Any) -> Dict[st
 if __name__ == "__main__":
     import sys
 
-    print("🔍 Template Quality Assurance Framework (Modular)")
-    print("=================================================")
-
     # Initialize QA framework
     qa = QualityAssuranceFramework()
 
     if len(sys.argv) > 1:
         template_path = sys.argv[1]
-        print(f"\n📋 Analyzing template: {template_path}")
 
         try:
             results = qa.run_qa_suite(template_path=template_path, save_report_flag=False)
 
-            print(f"\n📊 Results Summary:")
-            print(f"   • Templates analyzed: {results['template_count']}")
-            print(f"   • Average score: {results['average_score']:.1f}/100")
-            print(f"   • Total issues: {results['total_issues']}")
-            print(f"   • Critical issues: {results['critical_issues']}")
-
             if results["critical_issues"] > 0:
-                print(f"\n⚠️  {results['critical_issues']} critical issue(s) found!")
-            else:
-                print(f"\n✅ No critical issues found!")
+                pass
 
             # Show quality distribution
             if "quality_distribution" in results["batch_analysis"]:
                 dist = results["batch_analysis"]["quality_distribution"]
-                print(f"\n📈 Quality Distribution:")
-                for grade, count in dist.items():
+                for count in dist.values():
                     if count > 0:
-                        print(f"   • Grade {grade}: {count} template(s)")
+                        pass
 
-        except Exception as e:
-            print(f"❌ Error: {e}")
+        except Exception:
             sys.exit(1)
 
     else:
-        print("\n📋 Running batch analysis on all templates...")
 
         try:
             results = qa.run_qa_suite(save_report_flag=True)
-
-            print(f"\n📊 Batch Results Summary:")
-            print(f"   • Templates analyzed: {results['template_count']}")
-            print(f"   • Average score: {results['average_score']:.1f}/100")
-            print(f"   • Total issues: {results['total_issues']}")
-            print(f"   • Templates with errors: {results['templates_with_errors']}")
 
             # Show top issues
             if "common_issues" in results["batch_analysis"]:
                 common_issues = results["batch_analysis"]["common_issues"][:3]
                 if common_issues:
-                    print(f"\n🔍 Most Common Issues:")
-                    for issue in common_issues:
-                        print(
-                            f"   • {issue['category']}: {issue['message']} ({issue['count']} templates)"
-                        )
+                    for _issue in common_issues:
+                        pass
 
-            print(f"\n📄 Detailed report saved to file.")
-
-        except Exception as e:
-            print(f"❌ Error: {e}")
+        except Exception:
             sys.exit(1)
-
-    print(f"\n✨ QA analysis complete!")
 
 
 def main() -> None:
@@ -406,33 +375,19 @@ def main() -> None:
         )
 
         # Display summary
-        print(f"\n=== QA Results Summary ===")
-        print(f"Templates analyzed: {results['template_count']}")
-        print(f"Average quality score: {results['average_score']:.1f}/100")
-        print(f"Total issues found: {results['total_issues']}")
-        print(f"Critical issues: {results['critical_issues']}")
-        print(f"Templates with errors: {results['templates_with_errors']}")
 
         if "quality_distribution" in results:
-            print(f"\n=== Quality Distribution ===")
-            for grade, count in results["quality_distribution"].items():
-                print(f"Grade {grade}: {count} templates")
+            for _grade, _count in results["quality_distribution"].items():
+                pass
 
         if "batch_analysis" in results and "category_analysis" in results["batch_analysis"]:
-            print(f"\n=== Category Analysis ===")
-            for category, analysis in results["batch_analysis"]["category_analysis"].items():
-                print(
-                    f"{category}: {analysis['average_score']:.1f}/100 ({analysis['count']} templates)"
-                )
+            for _category, _analysis in results["batch_analysis"]["category_analysis"].items():
+                pass
 
-        print(f"\n=== Recommendations ===")
-        for i, rec in enumerate(results.get("recommendations", []), 1):
-            print(f"{i}. {rec}")
+        for _i, _rec in enumerate(results.get("recommendations", []), 1):
+            pass
 
-        print(f"\nDetailed reports saved to: {qa_framework.output_dir}")
-
-    except Exception as e:
-        print(f"Error running QA suite: {e}")
+    except Exception:
         sys.exit(1)
 
 

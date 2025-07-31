@@ -24,15 +24,15 @@ __author__ = "AutoPR Team"
 
 # Main exports for backward compatibility
 __all__ = [
-    "PrototypeEnhancer",
-    "PlatformRegistry",
-    "PlatformConfig",
-    "FileGenerator",
-    "EnhancementStrategy",
-    "ReplitEnhancementStrategy",
-    "LovableEnhancementStrategy",
     "BoltEnhancementStrategy",
+    "EnhancementStrategy",
     "EnhancementStrategyFactory",
+    "FileGenerator",
+    "LovableEnhancementStrategy",
+    "PlatformConfig",
+    "PlatformRegistry",
+    "PrototypeEnhancer",
+    "ReplitEnhancementStrategy",
 ]
 
 # Package metadata

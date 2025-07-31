@@ -6,12 +6,12 @@ Generates comprehensive reports and analytics for implementation roadmap executi
 
 import json
 import logging
+import operator
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 from .phase_manager import PhaseManager
-from .task_definitions import TaskRegistry
 from .task_executor import TaskExecution, TaskExecutor
 
 logger = logging.getLogger(__name__)
@@ -27,7 +27,7 @@ class ReportGenerator:
         self.task_executor = task_executor
         self.project_root = project_root
 
-    def generate_progress_report(self) -> Dict[str, Any]:
+    def generate_progress_report(self) -> dict[str, Any]:
         """Generate a comprehensive progress report."""
         overall_status = self.phase_manager.get_overall_status()
         execution_summary = self.task_executor.get_execution_summary()
@@ -52,8 +52,8 @@ class ReportGenerator:
         }
 
     def _generate_executive_summary(
-        self, overall_status: Dict[str, Any], execution_summary: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self, overall_status: dict[str, Any], execution_summary: dict[str, Any]
+    ) -> dict[str, Any]:
         """Generate executive summary."""
         total_phases = overall_status.get("total_phases", 0)
         completed_phases = overall_status.get("completed_phases", 0)
@@ -89,11 +89,11 @@ class ReportGenerator:
             "major_blockers": self._get_major_blockers(),
         }
 
-    def _generate_phase_details(self) -> Dict[str, Any]:
+    def _generate_phase_details(self) -> dict[str, Any]:
         """Generate detailed phase information."""
         phase_details = {}
 
-        for phase_id in self.phase_manager.phase_definitions.keys():
+        for phase_id in self.phase_manager.phase_definitions:
             status = self.phase_manager.get_phase_status(phase_id)
             phase_details[phase_id] = {
                 **status,
@@ -107,7 +107,7 @@ class ReportGenerator:
 
         return phase_details
 
-    def _generate_task_analysis(self) -> Dict[str, Any]:
+    def _generate_task_analysis(self) -> dict[str, Any]:
         """Generate task-level analysis."""
         task_categories = {}
         task_complexity_analysis = {}
@@ -172,7 +172,7 @@ class ReportGenerator:
             "most_failed_tasks": self._get_most_failed_tasks(),
         }
 
-    def _generate_recommendations(self) -> List[Dict[str, Any]]:
+    def _generate_recommendations(self) -> list[dict[str, Any]]:
         """Generate actionable recommendations."""
         recommendations = []
 
@@ -227,13 +227,13 @@ class ReportGenerator:
 
         return recommendations
 
-    def _generate_metrics(self) -> Dict[str, Any]:
+    def _generate_metrics(self) -> dict[str, Any]:
         """Generate key performance metrics."""
         execution_summary = self.task_executor.get_execution_summary()
-        overall_status = self.phase_manager.get_overall_status()
+        self.phase_manager.get_overall_status()
 
         # Calculate timeline metrics
-        all_executions: List[TaskExecution] = []
+        all_executions: list[TaskExecution] = []
         for phase_exec in self.phase_manager.phase_executions.values():
             all_executions.extend(phase_exec.task_executions.values())
 
@@ -298,7 +298,7 @@ class ReportGenerator:
             "total_duration": total_duration,
         }
 
-    def _generate_timeline(self) -> List[Dict[str, Any]]:
+    def _generate_timeline(self) -> list[dict[str, Any]]:
         """Generate implementation timeline."""
         timeline = []
 
@@ -337,11 +337,11 @@ class ReportGenerator:
                 )
 
         # Sort by date
-        timeline.sort(key=lambda x: x["date"])
+        timeline.sort(key=operator.itemgetter("date"))
 
         return timeline
 
-    def save_report(self, report: Dict[str, Any], filename: Optional[str] = None) -> Path:
+    def save_report(self, report: dict[str, Any], filename: str | None = None) -> Path:
         """Save report to file."""
         if not filename:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -350,13 +350,13 @@ class ReportGenerator:
         report_path = self.project_root / "reports" / filename
         report_path.parent.mkdir(exist_ok=True)
 
-        with open(report_path, "w") as f:
+        with open(report_path, "w", encoding="utf-8") as f:
             json.dump(report, f, indent=2, default=str)
 
         logger.info(f"Report saved to: {report_path}")
         return report_path
 
-    def generate_html_report(self, report: Dict[str, Any]) -> str:
+    def generate_html_report(self, report: dict[str, Any]) -> str:
         """Generate HTML version of the report."""
         html_template = """
         <!DOCTYPE html>
@@ -439,25 +439,27 @@ class ReportGenerator:
 
     # Helper methods
 
-    def _estimate_completion_date(self) -> Optional[str]:
+    def _estimate_completion_date(self) -> str | None:
         """Estimate completion date based on current velocity."""
         # Placeholder implementation
         return None
 
-    def _get_key_achievements(self) -> List[str]:
+    def _get_key_achievements(self) -> list[str]:
         """Get list of key achievements."""
-        achievements = []
-        for execution in self.task_executor.executions.values():
-            if execution.is_completed:
-                achievements.append(f"Completed {execution.task_id}")
+        achievements = [
+            f"Completed {execution.task_id}"
+            for execution in self.task_executor.executions.values()
+            if execution.is_completed
+        ]
         return achievements[:5]  # Return top 5
 
-    def _get_major_blockers(self) -> List[str]:
+    def _get_major_blockers(self) -> list[str]:
         """Get list of major blockers."""
-        blockers = []
-        for execution in self.task_executor.executions.values():
-            if execution.is_failed:
-                blockers.append(f"Failed {execution.task_id}: {execution.error_message}")
+        blockers = [
+            f"Failed {execution.task_id}: {execution.error_message}"
+            for execution in self.task_executor.executions.values()
+            if execution.is_failed
+        ]
         return blockers[:3]  # Return top 3
 
     def _assess_phase_risk(self, phase_id: str) -> str:
@@ -467,7 +469,7 @@ class ReportGenerator:
             failed_tasks = sum(1 for e in execution.task_executions.values() if e.is_failed)
             if failed_tasks > 2:
                 return "high"
-            elif failed_tasks > 0:
+            if failed_tasks > 0:
                 return "medium"
         return "low"
 
@@ -476,12 +478,12 @@ class ReportGenerator:
         # Placeholder implementation
         return 75.0
 
-    def _calculate_quality_metrics(self, phase_id: str) -> Dict[str, Any]:
+    def _calculate_quality_metrics(self, phase_id: str) -> dict[str, Any]:
         """Calculate quality metrics for a phase."""
         # Placeholder implementation
         return {"test_coverage": 85, "code_quality": 92}
 
-    def _get_longest_running_tasks(self) -> List[Dict[str, Any]]:
+    def _get_longest_running_tasks(self) -> list[dict[str, Any]]:
         """Get longest running tasks."""
         completed_tasks = [
             (task_id, execution)
@@ -504,7 +506,7 @@ class ReportGenerator:
             for task_id, execution in completed_tasks[:5]
         ]
 
-    def _get_most_failed_tasks(self) -> List[str]:
+    def _get_most_failed_tasks(self) -> list[str]:
         """Get most frequently failed tasks."""
         failed_tasks = [
             execution.task_id
@@ -518,7 +520,7 @@ class ReportGenerator:
         # Placeholder implementation
         return len(self.phase_manager.phase_executions)
 
-    def _identify_critical_path_tasks(self) -> List[str]:
+    def _identify_critical_path_tasks(self) -> list[str]:
         """Identify tasks on the critical path."""
         # Placeholder implementation
         return ["setup_sentry_monitoring", "implement_structured_logging"]

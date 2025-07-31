@@ -2,7 +2,8 @@
 
 ## Overview
 
-This document outlines the systematic approach for onboarding new template domains (like no-code platforms, services, pricing models, etc.) into our hybrid YAML + template system.
+This document outlines the systematic approach for onboarding new template domains (like no-code platforms, services,
+pricing models, etc.) into our hybrid YAML + template system.
 
 ## 🎯 Scalable Onboarding Framework
 
@@ -22,8 +23,7 @@ Before creating templates for a new domain, analyze:
 #### Platform Categories (from our analysis)
 
 - **AI-Powered Builders**: Horizons, Lovable, Bolt
-- **Visual Drag-and-Drop**: Bubble, Softr, Budibase  
-- **Mobile-Focused**: Glide, Thunkable, Adalo, FlutterFlow
+- **Visual Drag-and-Drop**: Bubble, Softr, Budibase- **Mobile-Focused**: Glide, Thunkable, Adalo, FlutterFlow
 - **Developer-Friendly**: Replit
 - **Form/Data-Centric**: Jotform
 

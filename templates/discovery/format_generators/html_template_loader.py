@@ -8,7 +8,8 @@ YAML templates but for HTML generation.
 
 import re
 from pathlib import Path
-from typing import Any, Dict, List, Match, Optional
+from re import Match
+from typing import Any
 
 import yaml
 
@@ -16,13 +17,13 @@ import yaml
 class YAMLHTMLTemplateLoader:
     """Loads and renders HTML templates from YAML format files."""
 
-    def __init__(self, templates_path: Optional[Path] = None):
+    def __init__(self, templates_path: Path | None = None):
         """Initialize the template loader with templates directory path."""
         if templates_path is None:
             templates_path = Path(__file__).parent.parent.parent / "html"
         self.templates_path = Path(templates_path)
 
-    def load_template(self, template_name: str) -> Dict[str, Any]:
+    def load_template(self, template_name: str) -> dict[str, Any]:
         """Load a YAML HTML template by name."""
         template_file = self.templates_path / f"{template_name}.yml"
 
@@ -31,17 +32,17 @@ class YAMLHTMLTemplateLoader:
             template_file = self.templates_path / f"{template_name}.yaml"
 
         if not template_file.exists():
-            raise FileNotFoundError(
-                f"Template '{template_name}' not found in {self.templates_path}"
-            )
+            msg = f"Template '{template_name}' not found in {self.templates_path}"
+            raise FileNotFoundError(msg)
 
         try:
-            with open(template_file, "r", encoding="utf-8") as f:
-                template_data: Dict[str, Any] = yaml.safe_load(f) or {}
+            with open(template_file, encoding="utf-8") as f:
+                template_data: dict[str, Any] = yaml.safe_load(f) or {}
 
             return template_data
         except yaml.YAMLError as e:
-            raise ValueError(f"Error parsing YAML template '{template_name}': {e}")
+            msg = f"Error parsing YAML template '{template_name}': {e}"
+            raise ValueError(msg)
 
     def render_template(self, template_name: str, **variables: Any) -> str:
         """Render a YAML HTML template with the provided variables."""
@@ -51,23 +52,22 @@ class YAMLHTMLTemplateLoader:
         html_content = template_data.get("template_content", "")
 
         if not html_content:
-            raise ValueError(f"Template '{template_name}' has no 'template_content' field")
+            msg = f"Template '{template_name}' has no 'template_content' field"
+            raise ValueError(msg)
 
         # Merge template variables with provided variables
         template_vars = template_data.get("variables", {})
         render_context = self._prepare_render_context(template_data, template_vars, variables)
 
         # Render the template with variables
-        rendered_html = self._render_template_content(html_content, render_context)
-
-        return rendered_html
+        return self._render_template_content(html_content, render_context)
 
     def _prepare_render_context(
         self,
-        template_data: Dict[str, Any],
-        template_vars: Dict[str, Any],
-        provided_vars: Dict[str, Any],
-    ) -> Dict[str, Any]:
+        template_data: dict[str, Any],
+        template_vars: dict[str, Any],
+        provided_vars: dict[str, Any],
+    ) -> dict[str, Any]:
         """Prepare the rendering context with defaults and provided variables."""
         context = {}
 
@@ -96,7 +96,8 @@ class YAMLHTMLTemplateLoader:
                 # Use default value if provided and variable is not required
                 default_value = var_config.get("default", "")
                 if var_config.get("required", False) and var_name not in provided_vars:
-                    raise ValueError(f"Required variable '{var_name}' not provided for template")
+                    msg = f"Required variable '{var_name}' not provided for template"
+                    raise ValueError(msg)
                 context[var_name] = default_value
 
         # Add any additional provided variables
@@ -106,7 +107,7 @@ class YAMLHTMLTemplateLoader:
 
         return context
 
-    def _render_template_content(self, content: str, context: Dict[str, Any]) -> str:
+    def _render_template_content(self, content: str, context: dict[str, Any]) -> str:
         """Render template content with variable substitution."""
         rendered = content
 
@@ -121,11 +122,9 @@ class YAMLHTMLTemplateLoader:
         rendered = self._process_conditionals(rendered, context)
 
         # Handle filters like {{ variable | default: "value" }}
-        rendered = self._process_filters(rendered, context)
+        return self._process_filters(rendered, context)
 
-        return rendered
-
-    def _get_nested_value(self, data: Dict[str, Any], path: str) -> Any:
+    def _get_nested_value(self, data: dict[str, Any], path: str) -> Any:
         """Get a nested value from a dictionary using dot notation."""
         keys = path.split(".")
         value = data
@@ -139,7 +138,7 @@ class YAMLHTMLTemplateLoader:
         except (KeyError, TypeError):
             return ""
 
-    def _process_conditionals(self, content: str, context: Dict[str, Any]) -> str:
+    def _process_conditionals(self, content: str, context: dict[str, Any]) -> str:
         """Process conditional blocks in the template."""
         # Simple conditional processing for {% if variable %}...{% endif %}
         pattern = r"\{%\s*if\s+([^%]+)\s*%\}(.*?)\{%\s*endif\s*%\}"
@@ -149,14 +148,13 @@ class YAMLHTMLTemplateLoader:
             block_content = match.group(2) or ""
 
             # Evaluate condition (simple variable existence check)
-            if condition in context and context[condition]:
+            if context.get(condition):
                 return block_content
-            else:
-                return ""
+            return ""
 
         return re.sub(pattern, replace_conditional, content, flags=re.DOTALL)
 
-    def _process_filters(self, content: str, context: Dict[str, Any]) -> str:
+    def _process_filters(self, content: str, context: dict[str, Any]) -> str:
         """Process template filters like {{ variable | default: "value" }}."""
         # Handle default filter: {{ variable | default: "value" }}
         pattern = r"\{\{\s*([^|]+)\s*\|\s*default:\s*([^}]+)\s*\}\}"
@@ -170,7 +168,7 @@ class YAMLHTMLTemplateLoader:
 
         return re.sub(pattern, replace_filter, content)
 
-    def get_template_info(self, template_name: str) -> Dict[str, Any]:
+    def get_template_info(self, template_name: str) -> dict[str, Any]:
         """Get metadata information about a template."""
         template_data = self.load_template(template_name)
 
@@ -187,12 +185,10 @@ class YAMLHTMLTemplateLoader:
             "styling": template_data.get("styling", {}),
         }
 
-    def list_available_templates(self) -> List[str]:
+    def list_available_templates(self) -> list[str]:
         """List all available YAML HTML templates."""
-        templates = []
 
-        for template_file in self.templates_path.glob("*.yml"):
-            templates.append(template_file.stem)
+        templates = [template_file.stem for template_file in self.templates_path.glob("*.yml")]
 
         for template_file in self.templates_path.glob("*.yaml"):
             if template_file.stem not in templates:  # Avoid duplicates

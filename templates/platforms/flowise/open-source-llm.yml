@@ -14,7 +14,7 @@ platform_info:
   pricing_model: "Open-source with cloud hosting options"
   target_audience: "Developers, AI engineers, businesses with technical teams, open-source enthusiasts"
   primary_use_cases: ["LLM-powered chatbots", "AI workflow automation", "Custom AI agents", "RAG systems", "Multi-agent AI coordination"]
-  
+
   key_features:
     - "Open-source AI agent builder with full customization"
     - "Native LLM integration (OpenAI, Anthropic, Hugging Face)"

@@ -13,4 +13,4 @@ pr_size_labeler:
       action: post_comment
       inputs:
         pull_request_number: "{{ pull_request.number }}"
-        comment: "Applying size label: `{{ label }}` (simulated)" 
+        comment: "Applying size label: `{{ label }}` (simulated)"

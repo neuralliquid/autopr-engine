@@ -4,7 +4,8 @@ This document describes the configuration structure for platform detection in Au
 
 ## Overview
 
-The platform detection system identifies development platforms and tools used in a codebase. It supports three main categories of platforms:
+The platform detection system identifies development platforms and tools used in a codebase. It supports three main
+categories of platforms:
 
 1. **Core Platforms**: General development platforms and frameworks
 2. **AI Platforms**: AI development tools and services
@@ -106,24 +107,24 @@ Each platform has its own configuration file with detailed detection rules:
 The platform detector uses a weighted scoring system based on multiple factors:
 
 1. **File Detection** (40% weight):
-   - Looks for specific files or directories that indicate the platform
-   - Example: `.cursor` directory for Cursor IDE
+    - Looks for specific files or directories that indicate the platform
+    - Example: `.cursor` directory for Cursor IDE
 
-2. **Dependency Detection** (30% weight):
-   - Checks for platform-specific packages in dependency files
-   - Example: `@githubnext/github-copilot-cli` for GitHub Copilot
+1. **Dependency Detection** (30% weight):
+    - Checks for platform-specific packages in dependency files
+    - Example: `@githubnext/github-copilot-cli` for GitHub Copilot
 
-3. **Folder Pattern Matching** (15% weight):
-   - Matches directory names against known patterns
-   - Example: `*-copilot` for GitHub Copilot related directories
+1. **Folder Pattern Matching** (15% weight):
+    - Matches directory names against known patterns
+    - Example: `*-copilot` for GitHub Copilot related directories
 
-4. **Commit Message Patterns** (10% weight):
-   - Looks for platform-related terms in commit messages
-   - Example: "Add Copilot configuration"
+1. **Commit Message Patterns** (10% weight):
+    - Looks for platform-related terms in commit messages
+    - Example: "Add Copilot configuration"
 
-5. **Content Patterns** (5% weight):
-   - Searches for platform-specific strings in files
-   - Example: "github-copilot" in configuration files
+1. **Content Patterns** (5% weight):
+    - Searches for platform-specific strings in files
+    - Example: "github-copilot" in configuration files
 
 ## Adding a New Platform
 
@@ -152,11 +153,11 @@ The platform detector uses a weighted scoring system based on multiple factors:
      "project_config": {
        "features": ["ai_completion", "code_generation"],
        "configuration_files": ["newplatform.config"],
-       "documentation": "https://newplatform.ai/docs"
+       "documentation": "<https://newplatform.ai/docs">
      },
      "metadata": {
        "vendor": "New AI Inc.",
-       "website": "https://newplatform.ai",
+       "website": "<https://newplatform.ai",>
        "pricing_model": "freemium",
        "supported_languages": ["python", "javascript", "typescript"],
        "last_updated": "2025-07-27",
@@ -165,7 +166,7 @@ The platform detector uses a weighted scoring system based on multiple factors:
    }
    ```
 
-2. Add the platform to `configs/platforms/ai_platforms.json`:
+1. Add the platform to `configs/platforms/ai_platforms.json`:
 
    ```json
    {

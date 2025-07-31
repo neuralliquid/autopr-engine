@@ -6,11 +6,11 @@ import json
 import logging
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Type, TypeVar, Union, cast
+from typing import Any
 
 import yaml
 
-from autopr.actions.platform_detection.analysis.base import FileAnalysisResult
+from autopr.actions.platform_detection.analysis.base import FileAnalysisResult, FileAnalyzer
 from autopr.actions.platform_detection.analysis.patterns import ContentPattern, FilePattern
 
 logger = logging.getLogger(__name__)
@@ -20,9 +20,9 @@ class FileHandler(ABC):
     """Base class for file handlers that process specific file types."""
 
     def __init__(self):
-        self.supported_extensions: Set[str] = set()
-        self.patterns: List[ContentPattern] = []
-        self.file_patterns: List[FilePattern] = []
+        self.supported_extensions: set[str] = set()
+        self.patterns: list[ContentPattern] = []
+        self.file_patterns: list[FilePattern] = []
         self._initialized = False
 
     def initialize(self) -> None:
@@ -36,7 +36,6 @@ class FileHandler(ABC):
     @abstractmethod
     def _setup_patterns(self) -> None:
         """Set up the patterns and configurations for this handler."""
-        pass
 
     def analyze(self, file_path: Path, analyzer: "FileAnalyzer") -> FileAnalysisResult:
         """
@@ -76,20 +75,20 @@ class FileHandler(ABC):
 
         return result
 
-    def _read_file(self, file_path: Path) -> Optional[str]:
+    def _read_file(self, file_path: Path) -> str | None:
         """Read the file content with proper encoding handling."""
         try:
             return file_path.read_text(encoding="utf-8", errors="replace")
-        except (UnicodeDecodeError, IOError) as e:
+        except (OSError, UnicodeDecodeError) as e:
             logger.warning(f"Could not read file {file_path}: {e}")
             return None
 
     def _analyze_content(
         self,
         file_path: Path,
-        content: Optional[str],
+        content: str | None,
         analyzer: "FileAnalyzer",
-    ) -> Optional[FileAnalysisResult]:
+    ) -> FileAnalysisResult | None:
         """
         Perform custom analysis on the file content.
 
@@ -123,9 +122,9 @@ class JsonFileHandler(FileHandler):
     def _analyze_content(
         self,
         file_path: Path,
-        content: Optional[str],
+        content: str | None,
         analyzer: "FileAnalyzer",
-    ) -> Optional[FileAnalysisResult]:
+    ) -> FileAnalysisResult | None:
         if content is None:
             return None
 
@@ -141,7 +140,7 @@ class JsonFileHandler(FileHandler):
         file_path: Path,
         data: Any,
         analyzer: "FileAnalyzer",
-    ) -> Optional[FileAnalysisResult]:
+    ) -> FileAnalysisResult | None:
         """Analyze JSON data."""
         result = FileAnalysisResult(file_path)
 
@@ -176,9 +175,9 @@ class YamlFileHandler(FileHandler):
     def _analyze_content(
         self,
         file_path: Path,
-        content: Optional[str],
+        content: str | None,
         analyzer: "FileAnalyzer",
-    ) -> Optional[FileAnalysisResult]:
+    ) -> FileAnalysisResult | None:
         if content is None:
             return None
 
@@ -194,7 +193,7 @@ class YamlFileHandler(FileHandler):
         file_path: Path,
         data: Any,
         analyzer: "FileAnalyzer",
-    ) -> Optional[FileAnalysisResult]:
+    ) -> FileAnalysisResult | None:
         """Analyze YAML data."""
         result = FileAnalysisResult(file_path)
 
@@ -226,9 +225,9 @@ class PythonFileHandler(FileHandler):
     def _analyze_content(
         self,
         file_path: Path,
-        content: Optional[str],
+        content: str | None,
         analyzer: "FileAnalyzer",
-    ) -> Optional[FileAnalysisResult]:
+    ) -> FileAnalysisResult | None:
         if content is None:
             return None
 
@@ -260,9 +259,9 @@ class RequirementsFileHandler(FileHandler):
     def _analyze_content(
         self,
         file_path: Path,
-        content: Optional[str],
+        content: str | None,
         analyzer: "FileAnalyzer",
-    ) -> Optional[FileAnalysisResult]:
+    ) -> FileAnalysisResult | None:
         if content is None:
             return None
 
@@ -310,25 +309,25 @@ class PackageJsonHandler(FileHandler):
     def _analyze_content(
         self,
         file_path: Path,
-        content: Optional[str],
+        content: str | None,
         analyzer: "FileAnalyzer",
-    ) -> Optional[FileAnalysisResult]:
+    ) -> FileAnalysisResult | None:
         if content is None:
             return None
 
         try:
             data = json.loads(content)
             return self._analyze_package_json(file_path, data, analyzer)
-        except json.JSONDecodeError as e:
+        except json.JSONDecodeError:
             logger.warning(f"Invalid package.json: {file_path}")
             return None
 
     def _analyze_package_json(
         self,
         file_path: Path,
-        data: Dict[str, Any],
+        data: dict[str, Any],
         analyzer: "FileAnalyzer",
-    ) -> Optional[FileAnalysisResult]:
+    ) -> FileAnalysisResult | None:
         """Analyze package.json content."""
         result = FileAnalysisResult(file_path)
 
@@ -385,9 +384,9 @@ class DockerfileHandler(FileHandler):
     def _analyze_content(
         self,
         file_path: Path,
-        content: Optional[str],
+        content: str | None,
         analyzer: "FileAnalyzer",
-    ) -> Optional[FileAnalysisResult]:
+    ) -> FileAnalysisResult | None:
         if content is None:
             return None
 
@@ -441,19 +440,17 @@ class DefaultFileHandler(FileHandler):
     def _analyze_content(
         self,
         file_path: Path,
-        content: Optional[str],
+        content: str | None,
         analyzer: "FileAnalyzer",
-    ) -> Optional[FileAnalysisResult]:
+    ) -> FileAnalysisResult | None:
         # Simple content matching for common files
         result = FileAnalysisResult(file_path)
 
         # Check for common web server files
         if file_path.name == ".htaccess":
             result.add_match("apache", 0.9)
-        elif (
-            file_path.name == "nginx.conf"
-            or file_path.suffix == ".conf"
-            and "nginx" in file_path.parts
+        elif file_path.name == "nginx.conf" or (
+            file_path.suffix == ".conf" and "nginx" in file_path.parts
         ):
             result.add_match("nginx", 0.9)
 

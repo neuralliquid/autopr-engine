@@ -3,13 +3,10 @@ Task Executor for Implementation Roadmap
 Handles the execution of individual implementation tasks
 """
 
-import asyncio
-import os
-import subprocess
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from .task_definitions import Task, TaskRegistry
 
@@ -21,10 +18,10 @@ class TaskExecution:
     task_name: str
     status: str  # "success", "error", "skipped"
     start_time: datetime
-    end_time: Optional[datetime] = None
-    error_message: Optional[str] = None
-    files_created: List[str] = None
-    logs: List[str] = None
+    end_time: datetime | None = None
+    error_message: str | None = None
+    files_created: list[str] = None
+    logs: list[str] = None
 
     def __post_init__(self) -> None:
         if self.files_created is None:
@@ -33,7 +30,7 @@ class TaskExecution:
             self.logs = []
 
     @property
-    def duration(self) -> Optional[float]:
+    def duration(self) -> float | None:
         """Get execution duration in seconds"""
         if self.end_time and self.start_time:
             return (self.end_time - self.start_time).total_seconds()
@@ -46,7 +43,7 @@ class TaskExecutor:
     def __init__(self, task_registry: TaskRegistry) -> None:
         self.task_registry = task_registry
         self.project_root = Path.cwd()
-        self.executions: Dict[str, TaskExecution] = {}
+        self.executions: dict[str, TaskExecution] = {}
 
     async def execute_task(self, task_name: str, dry_run: bool = False) -> TaskExecution:
         """Execute a specific task"""
@@ -82,22 +79,21 @@ class TaskExecutor:
 
     async def _execute_task_implementation(
         self, task: Task, execution: TaskExecution
-    ) -> Union[TaskExecution, BaseException]:
+    ) -> TaskExecution | BaseException:
         """Execute the actual task implementation"""
         # For immediate priority tasks, we have real implementations
         if task.name == "setup_sentry_monitoring":
             return await self._setup_sentry_monitoring(execution)
-        elif task.name == "implement_structured_logging":
+        if task.name == "implement_structured_logging":
             return await self._implement_structured_logging(execution)
-        elif task.name == "setup_redis_caching":
+        if task.name == "setup_redis_caching":
             return await self._setup_redis_caching(execution)
-        elif task.name == "create_health_checks":
+        if task.name == "create_health_checks":
             return await self._create_health_checks(execution)
-        elif task.name == "implement_basic_circuit_breakers":
+        if task.name == "implement_basic_circuit_breakers":
             return await self._implement_basic_circuit_breakers(execution)
-        else:
-            # For other tasks, create placeholder implementations
-            return await self._create_placeholder_implementation(task, execution)
+        # For other tasks, create placeholder implementations
+        return await self._create_placeholder_implementation(task, execution)
 
     async def _setup_sentry_monitoring(self, execution: TaskExecution) -> TaskExecution:
         """Setup Sentry for error tracking and performance monitoring"""
@@ -297,7 +293,10 @@ class CircuitBreaker:
                 raise Exception(f"Circuit breaker {self.name} is OPEN")
 
         try:
-            result = await func(*args, **kwargs) if asyncio.iscoroutinefunction(func) else func(*args, **kwargs)
+            if asyncio.iscoroutinefunction(func):
+                result = await func(*args, **kwargs)
+            else:
+                result = func(*args, **kwargs)
             await self._on_success()
             return result
         except Exception as e:
@@ -343,7 +342,11 @@ class CircuitBreaker:
                     full_path.parent.mkdir(parents=True, exist_ok=True)
 
                     if not full_path.exists():
-                        placeholder_content = f'"""\n{task.description}\nTODO: Implement {task.name}\n"""\n\n# Placeholder implementation\npass\n'
+                        placeholder_content = (
+                            f'"""\n{task.description}\n'
+                            f'TODO: Implement {task.name}\n"""\n\n'
+                            "# Placeholder implementation\npass\n"
+                        )
                         await self._write_file(str(full_path), placeholder_content)
 
         # Add requirements
@@ -370,7 +373,7 @@ class CircuitBreaker:
         # Read existing requirements
         existing_requirements = set()
         if requirements_file.exists():
-            with open(requirements_file, "r") as f:
+            with open(requirements_file, encoding="utf-8") as f:
                 existing_requirements = {
                     line.strip() for line in f if line.strip() and not line.startswith("#")
                 }
@@ -378,10 +381,10 @@ class CircuitBreaker:
         # Add new requirement if not already present
         req_name = requirement.split(">=")[0].split("==")[0].split("[")[0]
         if not any(req_name in existing for existing in existing_requirements):
-            with open(requirements_file, "a") as f:
+            with open(requirements_file, "a", encoding="utf-8") as f:
                 f.write(f"{requirement}\n")
 
-    def get_execution_summary(self) -> Dict[str, Any]:
+    def get_execution_summary(self) -> dict[str, Any]:
         """Get summary of all task executions"""
         total_tasks = len(self.executions)
         successful_tasks = sum(1 for exec in self.executions.values() if exec.status == "success")

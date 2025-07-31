@@ -144,7 +144,8 @@ Paid Additions ($100-200/month):
 ✅ Private repo hosting - $20-50/month
 
 Total: $150-300/month for 2-person team
-```
+
+```text
 
 ### **Scale-up Budget ($500-1500/month)**
 
@@ -173,7 +174,8 @@ Full Enterprise Stack:
 ✅ Custom integrations - $200-500/month
 
 Total: $1500-2500/month for 10+ person team
-```
+
+```text
 
 ---
 
@@ -229,7 +231,8 @@ Example Quality ROI:
 10 production bugs prevented × $5,000 = $50,000/month
 Tool cost = $200/month
 Quality ROI = ($50,000 - $200) / $200 × 100% = 24,900% ROI
-```
+
+```text
 
 ---
 
@@ -295,23 +298,29 @@ Quality ROI = ($50,000 - $200) / $200 × 100% = 24,900% ROI
 ### **Replace Devin AI Workflow ($200/month → $15/month)**
 
 ```bash
+
 # Instead of Devin subscription
+
 # Use free Continue.dev + Aider + API costs
 
 # Setup Continue.dev (FREE)
+
 npm install -g continue
 
 # Setup Aider (FREE + API costs)
+
 pip install aider-chat
 
 # Monthly cost: ~$10-15 in API calls vs $200 Devin
+
 # Savings: $185/month = $2,220/year
-```
+
+```text
 
 ### **Complete Stack Replacement**
 
 - **Current Expensive Stack**: $2,000/month
-- **Optimized Alternative**: $500/month  
+- **Optimized Alternative**: $500/month
 - **Annual Savings**: $18,000
 
 **Tools Replaced**:

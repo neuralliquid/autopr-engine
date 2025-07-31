@@ -15,7 +15,7 @@ platform_info:
   pricing_model: "Open-source with Google Cloud integration"
   target_audience: "Enterprise developers, AI engineers, Google Cloud customers, multi-agent system architects"
   primary_use_cases: ["Multi-agent system orchestration", "Enterprise AI automation", "Complex workflow coordination", "Agent delegation and hierarchy", "Production-ready AI applications"]
-  
+
   key_features:
     - "Open-source framework powering Google products"
     - "Multi-agent by design with hierarchical composition"

@@ -1,5 +1,3 @@
-from typing import Optional
-
 import pydantic
 
 from autopr.actions.base import Action
@@ -10,7 +8,7 @@ class Inputs(pydantic.BaseModel):
     body: str
     # If an issue with this label and title exists, it will be updated.
     # Otherwise, a new one is created.
-    find_label: Optional[str] = None
+    find_label: str | None = None
 
 
 class Outputs(pydantic.BaseModel):
@@ -27,17 +25,9 @@ class CreateOrUpdateIssue(Action[Inputs, Outputs]):
     id = "create_or_update_issue"
 
     async def run(self, inputs: Inputs) -> Outputs:
-        print("--- Create or Update Issue ---")
         if inputs.find_label:
-            print(
-                f"Searching for issue with title '{inputs.title}' and label '{inputs.find_label}'..."
-            )
             # Simulate finding an existing issue
-            print("Found existing issue. Updating it.")
-        else:
-            print(f"Creating new issue with title '{inputs.title}'...")
-
-        print(f"Body:\\n{inputs.body}")
+            pass
 
         simulated_url = "https://github.com/example/repo/issues/102"
 

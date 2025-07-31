@@ -6,11 +6,10 @@ including environment-specific checks, security validations, and
 dependency verification.
 """
 
-import logging
 import os
 import re
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 from urllib.parse import urlparse
 
 from .settings import AutoPRSettings, Environment, LLMProvider
@@ -21,10 +20,10 @@ class ConfigurationValidator:
 
     def __init__(self, settings: AutoPRSettings):
         self.settings = settings
-        self.errors: List[str] = []
-        self.warnings: List[str] = []
+        self.errors: list[str] = []
+        self.warnings: list[str] = []
 
-    def validate_all(self) -> Tuple[List[str], List[str]]:
+    def validate_all(self) -> tuple[list[str], list[str]]:
         """
         Run all validation checks.
 
@@ -219,9 +218,8 @@ class ConfigurationValidator:
             self.warnings.append("Tracing is enabled but no Jaeger endpoint configured")
 
         # Sentry validation
-        if monitoring.sentry_dsn:
-            if not str(monitoring.sentry_dsn).startswith("https://"):
-                self.warnings.append("Sentry DSN should start with https://")
+        if monitoring.sentry_dsn and not str(monitoring.sentry_dsn).startswith("https://"):
+            self.warnings.append("Sentry DSN should start with https://")
 
     def _validate_workflow_config(self) -> None:
         """Validate workflow configuration."""
@@ -284,7 +282,7 @@ class ConfigurationValidator:
                 )
 
 
-def validate_configuration(settings: AutoPRSettings) -> Dict[str, Any]:
+def validate_configuration(settings: AutoPRSettings) -> dict[str, Any]:
     """
     Validate configuration and return results.
 
@@ -306,7 +304,7 @@ def validate_configuration(settings: AutoPRSettings) -> Dict[str, Any]:
     }
 
 
-def check_environment_variables() -> Dict[str, Any]:
+def check_environment_variables() -> dict[str, Any]:
     """
     Check for common environment variable issues.
 
@@ -326,10 +324,7 @@ def check_environment_variables() -> Dict[str, Any]:
         "SECRET_KEY",
     ]
 
-    missing_vars = []
-    for var in important_vars:
-        if not os.getenv(var):
-            missing_vars.append(var)
+    missing_vars = [var for var in important_vars if not os.getenv(var)]
 
     if missing_vars:
         recommendations.append(
@@ -392,34 +387,39 @@ def generate_config_report(settings: AutoPRSettings) -> str:
     else:
         report.append("❌ Configuration has errors")
 
-    report.append(f"Errors: {validation_result['error_count']}")
-    report.append(f"Warnings: {validation_result['warning_count']}")
-    report.append("")
+    report.extend(
+        (
+            f"Errors: {validation_result['error_count']}",
+            f"Warnings: {validation_result['warning_count']}",
+            "",
+        )
+    )
 
     # Errors
     if validation_result["errors"]:
         report.append("🚨 Errors:")
-        for error in validation_result["errors"]:
-            report.append(f"  - {error}")
+        report.extend(f"  - {error}" for error in validation_result["errors"])
         report.append("")
 
     # Warnings
     if validation_result["warnings"]:
         report.append("⚠️  Warnings:")
-        for warning in validation_result["warnings"]:
-            report.append(f"  - {warning}")
+        report.extend(f"  - {warning}" for warning in validation_result["warnings"])
         report.append("")
 
     # Environment variable recommendations
     if env_check["recommendations"]:
         report.append("💡 Recommendations:")
-        for rec in env_check["recommendations"]:
-            report.append(f"  - {rec}")
+        report.extend(f"  - {rec}" for rec in env_check["recommendations"])
         report.append("")
 
     # Configuration summary
-    report.append("📋 Configuration Summary:")
-    report.append(f"  GitHub: {'✅' if settings.github.token or settings.github.app_id else '❌'}")
+    report.extend(
+        (
+            "📋 Configuration Summary:",
+            f"  GitHub: {'✅' if settings.github.token or settings.github.app_id else '❌'}",
+        )
+    )
 
     llm_providers = []
     if settings.llm.openai_api_key:
@@ -431,12 +431,15 @@ def generate_config_report(settings: AutoPRSettings) -> str:
     if settings.llm.groq_api_key:
         llm_providers.append("Groq")
 
-    report.append(f"  LLM Providers: {', '.join(llm_providers) if llm_providers else 'None'}")
-    report.append(f"  Database: {'✅' if settings.database.url else '❌'}")
-    report.append(f"  Redis: {'✅' if settings.redis.url else '❌'}")
-    report.append(f"  Monitoring: {'✅' if settings.monitoring.enable_metrics else '❌'}")
-    report.append("")
-
-    report.append("=" * 60)
+    report.extend(
+        (
+            f"  LLM Providers: {', '.join(llm_providers) if llm_providers else 'None'}",
+            f"  Database: {'✅' if settings.database.url else '❌'}",
+            f"  Redis: {'✅' if settings.redis.url else '❌'}",
+            f"  Monitoring: {'✅' if settings.monitoring.enable_metrics else '❌'}",
+            "",
+            "=" * 60,
+        )
+    )
 
     return "\n".join(report)

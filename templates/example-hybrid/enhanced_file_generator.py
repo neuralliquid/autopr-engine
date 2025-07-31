@@ -3,10 +3,10 @@ Enhanced File Generator with YAML metadata support.
 Demonstrates hybrid approach for template management.
 """
 
-import json
+import contextlib
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import yaml
 
@@ -14,7 +14,7 @@ import yaml
 class TemplateMetadata:
     """Represents template metadata from YAML files."""
 
-    def __init__(self, metadata: Dict[str, Any]):
+    def __init__(self, metadata: dict[str, Any]):
         self.name = metadata.get("name", "")
         self.description = metadata.get("description", "")
         self.category = metadata.get("category", "")
@@ -33,7 +33,7 @@ class EnhancedFileGenerator:
 
     def __init__(self, templates_dir: str = "templates"):
         self.templates_dir = Path(templates_dir)
-        self.template_cache: Dict[str, TemplateMetadata] = {}
+        self.template_cache: dict[str, TemplateMetadata] = {}
         self._load_templates()
 
     def _load_templates(self) -> None:
@@ -41,7 +41,7 @@ class EnhancedFileGenerator:
         for yaml_file in self.templates_dir.rglob("*.yml"):
             if yaml_file.name.endswith(".yml"):
                 template_key = self._get_template_key(yaml_file)
-                with open(yaml_file, "r", encoding="utf-8") as f:
+                with open(yaml_file, encoding="utf-8") as f:
                     metadata = yaml.safe_load(f)
                     self.template_cache[template_key] = TemplateMetadata(metadata)
 
@@ -55,12 +55,9 @@ class EnhancedFileGenerator:
         """Get the actual template file path from template key."""
         yaml_path = self.templates_dir / f"{template_key}.yml"
         # Template file is same name but without .yml extension
-        template_path = yaml_path.with_suffix("")
-        return template_path
+        return yaml_path.with_suffix("")
 
-    def list_templates(
-        self, platform: Optional[str] = None, category: Optional[str] = None
-    ) -> List[str]:
+    def list_templates(self, platform: str | None = None, category: str | None = None) -> list[str]:
         """List available templates, optionally filtered by platform/category."""
         templates = []
         for key, metadata in self.template_cache.items():
@@ -71,7 +68,7 @@ class EnhancedFileGenerator:
             templates.append(key)
         return templates
 
-    def get_template_metadata(self, template_key: str) -> Optional[TemplateMetadata]:
+    def get_template_metadata(self, template_key: str) -> TemplateMetadata | None:
         """Get metadata for a specific template."""
         return self.template_cache.get(template_key)
 
@@ -79,20 +76,22 @@ class EnhancedFileGenerator:
         self,
         template_key: str,
         output_path: str,
-        variables: Optional[Dict[str, Any]] = None,
-        variants: Optional[List[str]] = None,
+        variables: dict[str, Any] | None = None,
+        variants: list[str] | None = None,
     ) -> str:
         """Generate a file from template with variables and variants."""
         metadata = self.get_template_metadata(template_key)
         if not metadata:
-            raise ValueError(f"Template not found: {template_key}")
+            msg = f"Template not found: {template_key}"
+            raise ValueError(msg)
 
         template_path = self.get_template_file_path(template_key)
         if not template_path.exists():
-            raise FileNotFoundError(f"Template file not found: {template_path}")
+            msg = f"Template file not found: {template_path}"
+            raise FileNotFoundError(msg)
 
         # Read template content
-        with open(template_path, "r", encoding="utf-8") as f:
+        with open(template_path, encoding="utf-8") as f:
             content = f.read()
 
         # Apply variables
@@ -104,14 +103,14 @@ class EnhancedFileGenerator:
             content = self._apply_variants(content, metadata, variants)
 
         # Write output file
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        os.makedirs(Path(output_path).parent, exist_ok=True)
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(content)
 
         return content
 
     def _apply_variables(
-        self, content: str, metadata: TemplateMetadata, variables: Dict[str, Any]
+        self, content: str, metadata: TemplateMetadata, variables: dict[str, Any]
     ) -> str:
         """Apply variable substitutions to template content."""
         # Merge with defaults
@@ -124,7 +123,8 @@ class EnhancedFileGenerator:
                 elif default_value is not None:
                     final_vars[var_name] = default_value
                 elif var_config.get("required", False):
-                    raise ValueError(f"Required variable missing: {var_name}")
+                    msg = f"Required variable missing: {var_name}"
+                    raise ValueError(msg)
 
         # Apply substitutions
         for var_name, value in final_vars.items():
@@ -133,7 +133,7 @@ class EnhancedFileGenerator:
 
         return content
 
-    def _apply_variants(self, content: str, metadata: TemplateMetadata, variants: List[str]) -> str:
+    def _apply_variants(self, content: str, metadata: TemplateMetadata, variants: list[str]) -> str:
         """Apply variant modifications to template content."""
         lines = content.split("\n")
 
@@ -158,7 +158,7 @@ class EnhancedFileGenerator:
 
         return "\n".join(lines)
 
-    def get_template_info(self, template_key: str) -> Dict[str, Any]:
+    def get_template_info(self, template_key: str) -> dict[str, Any]:
         """Get comprehensive information about a template."""
         metadata = self.get_template_metadata(template_key)
         if not metadata:
@@ -188,27 +188,21 @@ if __name__ == "__main__":
     generator = EnhancedFileGenerator("templates")
 
     # List all templates
-    print("Available templates:")
-    for template in generator.list_templates():
-        print(f"  - {template}")
+    for _template in generator.list_templates():
+        pass
 
     # List React templates
-    print("\nReact templates:")
-    for template in generator.list_templates(platform="lovable"):
-        print(f"  - {template}")
+    for _template in generator.list_templates(platform="lovable"):
+        pass
 
     # Get template info
     info = generator.get_template_info("example-hybrid/react.dockerfile")
-    print(f"\nTemplate info: {json.dumps(info, indent=2)}")
 
     # Generate a file
-    try:
+    with contextlib.suppress(Exception):
         content = generator.generate_file(
             "example-hybrid/react.dockerfile",
             "output/Dockerfile",
             variables={"node_version": "20", "build_command": "npm run build:prod"},
             variants=["with_nginx_config"],
         )
-        print(f"\nGenerated content:\n{content}")
-    except Exception as e:
-        print(f"Error: {e}")

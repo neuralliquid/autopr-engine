@@ -2,14 +2,22 @@
 
 ## Overview
 
-This document outlines the integration patterns, technical architecture, and best practices for combining AutoPR's automated pull request capabilities with AutoWeave's template-based project generation system. The integration is designed for enterprise-scale operations with high performance, security, and reliability requirements.
+This document outlines the integration patterns, technical architecture, and best practices for combining AutoPR's
+automated pull request capabilities with AutoWeave's template-based project generation system. The integration is
+designed for enterprise-scale operations with high performance, security, and reliability requirements.
 
 ## Executive Summary
 
-The AutoPR and AutoWeave integration provides a seamless workflow for template-based project generation with automated pull request capabilities. The architecture is built on a modular microservices approach, delivering optimal performance for each domain while maintaining enterprise-grade security and scalability.
+The AutoPR and AutoWeave integration provides a seamless workflow for template-based project generation with automated
+pull request capabilities. The architecture is built on a modular microservices approach, delivering optimal
+performance for each domain while maintaining enterprise-grade security and scalability.
 
 **Key Capabilities:**
-- **Modular Architecture**: Clean separation of concerns with dedicated modules for template processing, AI/ML, and workflow orchestration
+
+- **Modular Architecture**: Clean separation of concerns with dedicated modules for template processing, AI/ML, and
+
+workflow orchestration
+
 - **High Performance**: Optimized template processing with intelligent caching and parallel execution
 - **Extensible Platform**: Plugin-based architecture for custom template types and processing logic
 - **Enterprise Security**: Comprehensive security controls and compliance features
@@ -290,6 +298,7 @@ redirect_uri=https://your-app.com/callback
 ```
 
 **Features**:
+
 - **PKCE** (Proof Key for Code Exchange) for public clients
 - **Short-lived access tokens** (15-60 minutes)
 - **Rotating refresh tokens** with detection of token reuse
@@ -314,6 +323,7 @@ auth:
 ```
 
 **Features**:
+
 - **Machine-to-machine** authentication
 - **Least privilege** access control
 - **Automatic token rotation**
@@ -352,6 +362,7 @@ spec:
 ```
 
 **Features**:
+
 - **Certificate-based authentication**
 - **Automatic certificate rotation** with cert-manager
 - **Service mesh integration** (Istio, Linkerd)
@@ -395,6 +406,7 @@ spec:
 ```
 
 **Features**:
+
 - **Fine-grained** permission controls
 - **Context-aware** authorization
 - **Runtime** policy evaluation
@@ -403,25 +415,27 @@ spec:
 ### Security Best Practices
 
 1. **Secrets Management**
-   - Use HashiCorp Vault or cloud KMS for secret storage
-   - Rotate secrets and certificates automatically
-   - Never commit secrets to version control
+    - Use HashiCorp Vault or cloud KMS for secret storage
+    - Rotate secrets and certificates automatically
+    - Never commit secrets to version control
 
-2. **Network Security**
-   - Encrypt all traffic with TLS 1.3+
-   - Implement network policies to restrict service communication
-   - Use service mesh for mutual TLS between services
+1. **Network Security**
+    - Encrypt all traffic with TLS 1.3+
+    - Implement network policies to restrict service communication
+    - Use service mesh for mutual TLS between services
 
-3. **Audit Logging**
-   - Log all authentication and authorization events
-   - Include request context in logs
-   - Centralize logs with retention policies
+1. **Audit Logging**
+    - Log all authentication and authorization events
+    - Include request context in logs
+    - Centralize logs with retention policies
 
-4. **Monitoring & Alerting**
-   - Monitor authentication failures and suspicious patterns
-   - Set up alerts for unusual access patterns
-   - Regularly review and update security controls
-```
+1. **Monitoring & Alerting**
+    - Monitor authentication failures and suspicious patterns
+    - Set up alerts for unusual access patterns
+    - Regularly review and update security controls
+
+```text
+
 # Client certificate configuration
 autoweave:
   tls:
@@ -430,6 +444,7 @@ autoweave:
     cert: /path/to/client.pem
     key: /path/to/client-key.pem
 ```
+
 - Required for highly regulated environments (HIPAA, FINRA, etc.)
 - Provides strong mutual authentication
 - Encrypts all communication in transit
@@ -438,51 +453,51 @@ autoweave:
 
 All responses include security headers:
 
-| Header | Value | Purpose |
-|--------|-------|---------|
-| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains; preload` | Enforces HTTPS |
-| `X-Content-Type-Options` | `nosniff` | Prevents MIME type sniffing |
-| `X-Frame-Options` | `DENY` | Prevents clickjacking |
-| `Content-Security-Policy` | `default-src 'self'` | Controls resource loading |
-| `X-XSS-Protection` | `1; mode=block` | Enables XSS filtering |
-| `Referrer-Policy` | `strict-origin-when-cross-origin` | Controls referrer information |
+| Header                      | Value                                          | Purpose                       |
+| --------------------------- | ---------------------------------------------- | ----------------------------- |
+| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains; preload` | Enforces HTTPS                |
+| `X-Content-Type-Options`    | `nosniff`                                      | Prevents MIME type sniffing   |
+| `X-Frame-Options`           | `DENY`                                         | Prevents clickjacking         |
+| `Content-Security-Policy`   | `default-src 'self'`                           | Controls resource loading     |
+| `X-XSS-Protection`          | `1; mode=block`                                | Enables XSS filtering         |
+| `Referrer-Policy`           | `strict-origin-when-cross-origin`              | Controls referrer information |
 
-### Security Best Practices
+### Security Best Practices 2
 
 1. **Secret Management**
 
-   - Never commit secrets to version control
-   - Use environment variables or secret management services
-   - Rotate credentials regularly
+    - Never commit secrets to version control
+    - Use environment variables or secret management services
+    - Rotate credentials regularly
 
-2. **Input Validation**
+1. **Input Validation**
 
-   - Validate all input parameters
-   - Use allowlists over blocklists
-   - Sanitize template parameters
+    - Validate all input parameters
+    - Use allowlists over blocklists
+    - Sanitize template parameters
 
-3. **Rate Limiting**
+1. **Rate Limiting**
 
-   - 1000 requests/hour per API key by default
-   - Configurable per client
-   - Returns `429 Too Many Requests` when exceeded
+    - 1000 requests/hour per API key by default
+    - Configurable per client
+    - Returns `429 Too Many Requests` when exceeded
 
-4. **Audit Logging**
+1. **Audit Logging**
 
-   - All API calls are logged
-   - Includes timestamp, user, action, and parameters
-   - Retained for 90 days
+    - All API calls are logged
+    - Includes timestamp, user, action, and parameters
+    - Retained for 90 days
 
 ### Scopes and Permissions
 
-| Scope | Description |
-|-------|-------------|
-| `templates:read` | List and view template metadata |
-| `templates:generate` | Generate templates with parameters |
-| `templates:manage` | Create, update, and delete templates |
-| `templates:cache` | Manage template cache (hybrid mode) |
-| `metrics:read` | Access monitoring metrics |
-| `logs:read` | View system logs |
+| Scope                | Description                          |
+| -------------------- | ------------------------------------ |
+| `templates:read`     | List and view template metadata      |
+| `templates:generate` | Generate templates with parameters   |
+| `templates:manage`   | Create, update, and delete templates |
+| `templates:cache`    | Manage template cache (hybrid mode)  |
+| `metrics:read`       | Access monitoring metrics            |
+| `logs:read`          | View system logs                     |
 
 ### Compliance
 
@@ -497,7 +512,7 @@ All responses include security headers:
 
 #### 1. URL Path Versioning (Primary)
 
-```
+```text
 /api/v1/templates
 /api/v2/templates
 ```
@@ -552,17 +567,20 @@ services:
 ### Version Policy
 
 #### Version Format: Semantic Versioning (SemVer)
+
 - **MAJOR**: Breaking changes
 - **MINOR**: Backward-compatible features
 - **PATCH**: Backward-compatible bug fixes
 
 #### Lifecycle
+
 1. **Active**: Fully supported, receives all updates
 2. **Maintenance**: Security fixes only (6 months)
 3. **Deprecated**: Scheduled for removal (3 months notice)
 4. **End of Life**: No longer available
 
 #### Deprecation Headers
+
 ```http
 Deprecation: true
 Sunset: Sat, 31 Dec 2025 23:59:59 GMT
@@ -572,6 +590,7 @@ Link: </api/v2/templates>; rel="successor-version"
 ### Version Migration
 
 #### Requesting Specific Versions
+
 ```python
 # Python example
 import requests
@@ -584,6 +603,7 @@ response = requests.get('https://api.autoweave.dev/templates', headers=headers)
 ```
 
 #### Version Discovery
+
 ```http
 OPTIONS /api/templates
 ```
@@ -609,18 +629,21 @@ OPTIONS /api/templates
 ## Best Practices
 
 ### 1. Error Handling
+
 - Always check HTTP status codes
 - Implement retries with exponential backoff
 - Log detailed error messages
 - Provide user-friendly error messages in PR comments
 
 ### 2. Performance
+
 - Cache template discovery results
 - Use streaming for large template generations
 - Implement request timeouts
 - Monitor API rate limits
 
 ### 3. Security
+
 - Validate all input parameters
 - Sanitize generated content
 - Use principle of least privilege for tokens
@@ -629,6 +652,7 @@ OPTIONS /api/templates
 ## Implementation Examples
 
 ### Python Client for AutoWeave
+
 ```python
 import requests
 from typing import Dict, Any
@@ -670,6 +694,7 @@ class AutoWeaveClient:
 ```
 
 ### C# Client for AutoPR
+
 ```csharp
 using System.Net.Http;
 using System.Text;
@@ -781,10 +806,10 @@ GET /health
 }
 ```
 
-2. **API Performance**
-   - Request latency
-   - Error rates
-   - Rate limit usage
+1. **API Performance**
+    - Request latency
+    - Error rates
+    - Rate limit usage
 
 ### Logging
 
@@ -801,7 +826,8 @@ GET /health
 
 ## Alternative Integration: Direct Package Installation
 
-For projects requiring tighter integration or offline capabilities, AutoWeave can be installed directly as a package in the target project.
+For projects requiring tighter integration or offline capabilities, AutoWeave can be installed directly as a package in
+the target project.
 
 ### Installation
 
@@ -842,7 +868,7 @@ engine.generate(
 )
 ```
 
-#### C#
+#### C-SHARP
 
 ```csharp
 using AutoWeave;
@@ -883,10 +909,10 @@ Combine both methods for flexibility:
 1. **Core Templates**: Direct package installation for stability and offline use
 2. **Dynamic Templates**: API access for frequently updated or context-specific templates
 3. **Caching Strategy**:
-   - Local disk cache with TTL (time-to-live)
-   - Cache invalidation on version changes
-   - Background refresh for frequently used templates
-   - Cache size limits to prevent disk bloat
+    - Local disk cache with TTL (time-to-live)
+    - Cache invalidation on version changes
+    - Background refresh for frequently used templates
+    - Cache size limits to prevent disk bloat
 
 #### Cache Management
 
@@ -918,16 +944,19 @@ cache_config = {
 ## Security Considerations
 
 ### Input Validation
+
 - Validate all parameters before processing
 - Use allowlists for template parameters
 - Sanitize all dynamic content
 
 ### Access Control
+
 - Implement role-based access control (RBAC)
 - Limit template execution scopes
 - Audit all template generation requests
 
 ### Network Security
+
 - Use HTTPS for all communications
 - Implement request signing
 - Rate limit API endpoints
@@ -935,16 +964,19 @@ cache_config = {
 ## Testing
 
 ### Unit Tests
+
 - Test template generation with various inputs
 - Verify parameter validation
 - Test error conditions
 
 ### Integration Tests
+
 - Test end-to-end workflow
 - Verify file generation
 - Test authentication and authorization
 
 ### Performance Tests
+
 - Test with large templates
 - Measure generation time
 - Test concurrent requests
@@ -952,12 +984,14 @@ cache_config = {
 ## Deployment
 
 ### Prerequisites
+
 - .NET 6.0+ for AutoWeave
 - Python 3.9+ for AutoPR
 - Redis for caching
 - PostgreSQL for template storage
 
 ### Environment Variables
+
 ```ini
 # AutoWeave
 AUTOWEAVE_API_KEY=your-api-key
@@ -973,6 +1007,7 @@ AUTOWEAVE_API_URL=https://autoweave.example.com/api
 ## Troubleshooting
 
 ### Common Issues
+
 ## Implementation Roadmap
 
 ### Phase 1: Foundation (Weeks 1-4)
@@ -998,7 +1033,7 @@ AUTOWEAVE_API_URL=https://autoweave.example.com/api
 
 ## Troubleshooting Guide
 
-### Common Issues
+### Common Issues 2
 
 #### 1. Authentication Failures
 
@@ -1028,18 +1063,20 @@ AUTOWEAVE_API_URL=https://autoweave.example.com/api
   3. Review security policy violations
   4. Check resource limits
 
-2. **Template Generation Failures**
-   - Check template syntax
-   - Verify required parameters
-   - Check file system permissions
+1. **Template Generation Failures**
+    - Check template syntax
+    - Verify required parameters
+    - Check file system permissions
 
-3. **Performance Issues**
-   - Check resource utilization
-   - Review template complexity
-   - Check for network latency
+1. **Performance Issues**
+    - Check resource utilization
+    - Review template complexity
+    - Check for network latency
 
 ## Support
+
 For assistance with integration:
-1. Check the [documentation](https://docs.autoweave.dev)
-2. Open an issue in the [GitHub repository](https://github.com/yourorg/autoweave)
-3. Contact support@autoweave.dev
+
+1. Check the [documentation](<https://docs.autoweave.dev)>
+2. Open an issue in the [GitHub repository](<https://github.com/yourorg/autoweave)>
+3. Contact <support@autoweave.dev>

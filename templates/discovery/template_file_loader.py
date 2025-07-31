@@ -8,7 +8,7 @@ Handles loading and parsing of template files from the filesystem.
 
 import logging
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import yaml
 
@@ -21,7 +21,7 @@ class TemplateFileLoader:
     def __init__(self, templates_root: Path) -> None:
         """Initialize the template file loader."""
         self.templates_root = templates_root
-        self.platform_categories: Dict[str, Any] = {}
+        self.platform_categories: dict[str, Any] = {}
         self._load_platform_categories()
 
     def _load_platform_categories(self) -> None:
@@ -29,15 +29,15 @@ class TemplateFileLoader:
         categories_file = self.templates_root / "platforms" / "platform-categories.yml"
         if categories_file.exists():
             try:
-                with open(categories_file, "r", encoding="utf-8") as f:
+                with open(categories_file, encoding="utf-8") as f:
                     self.platform_categories = yaml.safe_load(f) or {}
             except Exception as e:
                 logging.warning(f"Failed to load platform categories: {e}")
                 self.platform_categories = {}
 
-    def load_all_templates(self) -> List[TemplateInfo]:
+    def load_all_templates(self) -> list[TemplateInfo]:
         """Load all templates from the templates directory structure."""
-        templates: List[TemplateInfo] = []
+        templates: list[TemplateInfo] = []
 
         # Load platform templates
         platforms_dir = self.templates_root / "platforms"
@@ -64,9 +64,9 @@ class TemplateFileLoader:
 
         return templates
 
-    def _load_platform_templates(self, platform_dir: Path) -> List[TemplateInfo]:
+    def _load_platform_templates(self, platform_dir: Path) -> list[TemplateInfo]:
         """Load templates from a platform directory."""
-        templates: List[TemplateInfo] = []
+        templates: list[TemplateInfo] = []
         for template_file in platform_dir.glob("*.yml"):
             if template_file.name != "platform-categories.yml":
                 template = self._load_template_file(template_file, "platform")
@@ -76,11 +76,11 @@ class TemplateFileLoader:
 
     def _load_template_file(
         self, template_file: Path, default_category: str
-    ) -> Optional[TemplateInfo]:
+    ) -> TemplateInfo | None:
         """Load a single template file and extract metadata."""
         try:
-            with open(template_file, "r", encoding="utf-8") as f:
-                template_data: Dict[str, Any] = yaml.safe_load(f) or {}
+            with open(template_file, encoding="utf-8") as f:
+                template_data: dict[str, Any] = yaml.safe_load(f) or {}
 
             if not template_data:
                 return None
@@ -91,7 +91,7 @@ class TemplateFileLoader:
             category = template_data.get("category", default_category)
 
             # Extract platforms
-            platforms: List[str] = []
+            platforms: list[str] = []
             if "platform" in template_data:
                 if isinstance(template_data["platform"], str):
                     platforms = [template_data["platform"]]
@@ -114,7 +114,7 @@ class TemplateFileLoader:
             estimated_time = template_data.get("estimated_time", "unknown")
 
             # Extract use cases
-            use_cases: List[str] = []
+            use_cases: list[str] = []
             if "use_cases" in template_data:
                 if isinstance(template_data["use_cases"], list):
                     use_cases = template_data["use_cases"]
@@ -122,7 +122,7 @@ class TemplateFileLoader:
                     use_cases = [template_data["use_cases"]]
 
             # Extract key features
-            key_features: List[str] = []
+            key_features: list[str] = []
             if "key_features" in template_data:
                 if isinstance(template_data["key_features"], list):
                     key_features = template_data["key_features"]
@@ -131,17 +131,17 @@ class TemplateFileLoader:
                     key_features = template_data["features"]
 
             # Extract variables
-            variables: Dict[str, Any] = template_data.get("variables", {})
+            variables: dict[str, Any] = template_data.get("variables", {})
             if not isinstance(variables, dict):
                 variables = {}
 
             # Extract variants
-            variants: Dict[str, Any] = template_data.get("variants", {})
+            variants: dict[str, Any] = template_data.get("variants", {})
             if not isinstance(variants, dict):
                 variants = {}
 
             # Extract dependencies
-            dependencies: List[str] = []
+            dependencies: list[str] = []
             if "dependencies" in template_data:
                 if isinstance(template_data["dependencies"], list):
                     dependencies = template_data["dependencies"]
@@ -164,9 +164,9 @@ class TemplateFileLoader:
             )
 
         except Exception as e:
-            logging.error(f"Error loading template {template_file}: {e}")
+            logging.exception(f"Error loading template {template_file}: {e}")
             return None
 
-    def get_platform_categories(self) -> Dict[str, Any]:
+    def get_platform_categories(self) -> dict[str, Any]:
         """Get the loaded platform categories."""
         return self.platform_categories.copy()

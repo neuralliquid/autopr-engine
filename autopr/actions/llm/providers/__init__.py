@@ -5,21 +5,27 @@ LLM Providers package - Individual provider implementations.
 from typing import TYPE_CHECKING, Any, Dict
 
 # Import base class for inline implementations
-from ..base import BaseLLMProvider
-from ..types import LLMResponse
+from autopr.actions.llm.base import BaseLLMProvider
+from autopr.actions.llm.types import LLMResponse
+
 from .anthropic import AnthropicProvider
 from .groq import GroqProvider
-from .mistral import MistralProvider
-from .openai import OpenAIProvider
 
-if TYPE_CHECKING:
-    import openai
+# Optional AI providers
+try:
+    from .mistral import MistralProvider
+
+    MISTRAL_AVAILABLE = True
+except ImportError:
+    MistralProvider = None
+    MISTRAL_AVAILABLE = False
+from .openai import OpenAIProvider
 
 
 class PerplexityProvider(BaseLLMProvider):
     """Perplexity AI provider."""
 
-    def __init__(self, config: Dict[str, Any]) -> None:
+    def __init__(self, config: dict[str, Any]) -> None:
         super().__init__(config)
         try:
             import openai
@@ -29,7 +35,7 @@ class PerplexityProvider(BaseLLMProvider):
         except ImportError:
             self.available = False
 
-    def complete(self, request: Dict[str, Any]) -> LLMResponse:
+    def complete(self, request: dict[str, Any]) -> LLMResponse:
         try:
             messages = request.get("messages", [])
             model = request.get("model", self.default_model) or "llama-3.1-sonar-large-128k-online"
@@ -78,7 +84,7 @@ class PerplexityProvider(BaseLLMProvider):
 
         except Exception as e:
             return LLMResponse.from_error(
-                f"Error calling Perplexity API: {str(e)}",
+                f"Error calling Perplexity API: {e!s}",
                 str(request.get("model") or "llama-3.1-sonar-large-128k-online"),
             )
 
@@ -89,7 +95,7 @@ class PerplexityProvider(BaseLLMProvider):
 class TogetherAIProvider(BaseLLMProvider):
     """Together AI provider for open source models."""
 
-    def __init__(self, config: Dict[str, Any]) -> None:
+    def __init__(self, config: dict[str, Any]) -> None:
         super().__init__(config)
         try:
             import openai
@@ -101,7 +107,7 @@ class TogetherAIProvider(BaseLLMProvider):
         except ImportError:
             self.available = False
 
-    def complete(self, request: Dict[str, Any]) -> LLMResponse:
+    def complete(self, request: dict[str, Any]) -> LLMResponse:
         try:
             messages = request.get("messages", [])
             model = request.get("model", self.default_model) or "meta-llama/Llama-2-70b-chat-hf"
@@ -150,7 +156,7 @@ class TogetherAIProvider(BaseLLMProvider):
 
         except Exception as e:
             return LLMResponse.from_error(
-                f"Error calling Together AI API: {str(e)}",
+                f"Error calling Together AI API: {e!s}",
                 str(request.get("model") or "meta-llama/Llama-2-70b-chat-hf"),
             )
 
@@ -160,10 +166,13 @@ class TogetherAIProvider(BaseLLMProvider):
 
 # Export all providers
 __all__ = [
-    "OpenAIProvider",
     "AnthropicProvider",
     "GroqProvider",
-    "MistralProvider",
+    "OpenAIProvider",
     "PerplexityProvider",
     "TogetherAIProvider",
 ]
+
+# Add MistralProvider if available
+if MISTRAL_AVAILABLE:
+    __all__.append("MistralProvider")

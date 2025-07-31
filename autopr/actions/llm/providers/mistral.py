@@ -2,19 +2,23 @@
 Mistral AI provider implementation.
 """
 
-from typing import TYPE_CHECKING, Any, Dict, List
+from typing import Any
 
-from ..base import BaseLLMProvider
-from ..types import LLMResponse
+try:
+    from mistralai.models.chat_completion import ChatMessage
+except ImportError:
+    ChatMessage = None
 
-if TYPE_CHECKING:
-    from mistralai.models.chat_completion import ChatMessage  # type: ignore[import-not-found]
+from mistralai.models.chat_completion import ChatMessage
+
+from autopr.actions.llm.base import BaseLLMProvider
+from autopr.actions.llm.types import LLMResponse
 
 
 class MistralProvider(BaseLLMProvider):
     """Mistral AI provider."""
 
-    def __init__(self, config: Dict[str, Any]) -> None:
+    def __init__(self, config: dict[str, Any]) -> None:
         super().__init__(config)
         try:
             from mistralai.client import MistralClient
@@ -24,17 +28,15 @@ class MistralProvider(BaseLLMProvider):
         except ImportError:
             self.available = False
 
-    def complete(self, request: Dict[str, Any]) -> LLMResponse:
+    def complete(self, request: dict[str, Any]) -> LLMResponse:
         try:
-            from mistralai.models.chat_completion import ChatMessage
-
             messages = request.get("messages", [])
             model = request.get("model", self.default_model) or "mistral-large-latest"
             max_tokens = request.get("max_tokens", 1024)
             temperature = request.get("temperature", 0.7)
 
             # Convert input messages to correct type
-            mistral_messages: List[ChatMessage] = []
+            mistral_messages: list[ChatMessage] = []
             for msg in messages:
                 role = str(msg.get("role", "user"))
                 content = str(msg.get("content", "")).strip()
@@ -46,7 +48,8 @@ class MistralProvider(BaseLLMProvider):
             # Defensive: check if chat method exists
             chat_method = getattr(self.client, "chat", None)
             if not callable(chat_method):
-                raise AttributeError("MistralClient has no 'chat' method")
+                msg = "MistralClient has no 'chat' method"
+                raise AttributeError(msg)
 
             response = chat_method(
                 model=str(model),
@@ -84,7 +87,7 @@ class MistralProvider(BaseLLMProvider):
             )
         except Exception as e:
             return LLMResponse.from_error(
-                f"Error calling Mistral API: {str(e)}",
+                f"Error calling Mistral API: {e!s}",
                 str(request.get("model") or "mistral-large-latest"),
             )
 

@@ -24,52 +24,52 @@ variables:
     required: true
     description: "Name of the project management tool"
     examples: ["TaskFlow", "ProjectHub", "TeamSync"]
-  
+
   tool_description:
     type: "string"
     required: true
     description: "Brief description of the tool's focus and target users"
-    examples: 
+    examples:
       - "Agile project management tool for software development teams"
       - "Simple task tracking for small businesses and freelancers"
-  
+
   project_methodology:
     type: "string"
     default: "flexible"
     description: "Primary project management methodology supported"
     examples: ["agile", "waterfall", "kanban", "scrum", "flexible"]
-  
+
   team_size_focus:
     type: "string"
     default: "small_to_medium"
     description: "Target team size for optimization"
     examples: ["individual", "small_to_medium", "large_enterprise"]
-  
+
   core_features:
     type: "array"
     required: true
     description: "Essential features to include in the tool"
-    examples: 
+    examples:
       - ["tasks", "projects", "team_collaboration"]
       - ["tasks", "time_tracking", "reporting", "file_sharing"]
-  
+
   integration_needs:
     type: "array"
     default: []
     description: "Third-party integrations required"
     examples: [["slack", "google_drive"], ["github", "jira"], ["calendar", "email"]]
-  
+
   reporting_level:
     type: "string"
     default: "basic"
     description: "Complexity of reporting and analytics"
     examples: ["basic", "advanced", "enterprise"]
-  
+
   mobile_priority:
     type: "boolean"
     default: true
     description: "Whether mobile access is a priority"
-  
+
   real_time_collaboration:
     type: "boolean"
     default: true
@@ -83,7 +83,7 @@ variants:
       - line: 15
         action: "add_after"
         content: "- Advanced project analytics and KPI tracking\n- Resource utilization and capacity planning\n- Predictive project forecasting\n- Custom dashboard and reporting tools"
-  
+
   with_client_portal:
     name: "With Client Portal"
     description: "Includes client-facing portal for project visibility and collaboration"
@@ -91,7 +91,7 @@ variants:
       - line: 20
         action: "add_after"
         content: "- Client portal with project visibility\n- Client feedback and approval workflows\n- Invoice and billing integration\n- Client communication tools"
-  
+
   with_resource_management:
     name: "With Resource Management"
     description: "Includes advanced resource allocation and capacity planning"
@@ -116,7 +116,7 @@ platform_implementations:
       - "Set up reporting and analytics workflows"
     estimated_time: "4-5 weeks"
     complexity: "medium_to_high"
-  
+
   lovable:
     approach: "AI-assisted rapid project tool development"
     strengths:
@@ -132,7 +132,7 @@ platform_implementations:
       - "Add integrations and notifications"
     estimated_time: "2-3 weeks"
     complexity: "low_to_medium"
-  
+
   flutterflow:
     approach: "Mobile-first project management"
     strengths:
@@ -148,7 +148,7 @@ platform_implementations:
       - "Build reporting and analytics views"
     estimated_time: "4-6 weeks"
     complexity: "medium_to_high"
-  
+
   thunkable:
     approach: "Cross-platform mobile project management"
     strengths:
@@ -164,7 +164,7 @@ platform_implementations:
       - "Add progress tracking and notifications"
     estimated_time: "3-4 weeks"
     complexity: "medium"
-  
+
   replit:
     approach: "Custom project management with full flexibility"
     strengths:
@@ -194,7 +194,7 @@ core_features:
       projects: ["id", "name", "description", "status", "start_date", "end_date", "owner_id", "created_at"]
       project_members: ["project_id", "user_id", "role", "permissions", "joined_at"]
       project_milestones: ["id", "project_id", "name", "due_date", "status", "description"]
-  
+
   task_management:
     description: "Detailed task creation, assignment, and tracking"
     components:
@@ -208,7 +208,7 @@ core_features:
       task_dependencies: ["task_id", "depends_on_task_id", "dependency_type"]
       task_comments: ["id", "task_id", "user_id", "comment", "created_at"]
       task_attachments: ["id", "task_id", "file_url", "file_name", "uploaded_by", "uploaded_at"]
-  
+
   team_collaboration:
     description: "Team communication and collaboration tools"
     components:
@@ -222,7 +222,7 @@ core_features:
       team_members: ["team_id", "user_id", "role", "permissions", "joined_at"]
       team_messages: ["id", "team_id", "sender_id", "message", "sent_at"]
       notifications: ["id", "user_id", "type", "message", "read", "created_at"]
-  
+
   time_tracking:
     description: "Time logging and productivity monitoring"
     components:
@@ -235,7 +235,7 @@ core_features:
       time_entries: ["id", "user_id", "task_id", "project_id", "start_time", "end_time", "duration", "description"]
       timesheets: ["id", "user_id", "week_start", "status", "submitted_at", "approved_at"]
       billing_rates: ["id", "user_id", "project_id", "hourly_rate", "effective_from"]
-  
+
   reporting_analytics:
     description: "Project insights and performance analytics"
     components:
@@ -260,7 +260,7 @@ workflow_methodologies:
       sprints: ["id", "project_id", "name", "start_date", "end_date", "goal"]
       user_stories: ["id", "project_id", "title", "description", "story_points", "priority"]
       sprint_tasks: ["sprint_id", "task_id", "status"]
-  
+
   kanban:
     features:
       - "Customizable kanban boards"
@@ -271,7 +271,7 @@ workflow_methodologies:
       boards: ["id", "project_id", "name", "columns", "wip_limits"]
       cards: ["id", "board_id", "column_id", "task_id", "position"]
       workflow_rules: ["id", "board_id", "trigger", "action", "conditions"]
-  
+
   waterfall:
     features:
       - "Sequential phase management"
@@ -288,29 +288,29 @@ integration_capabilities:
     slack:
       features: ["Project notifications", "Task updates", "Team messaging"]
       setup: "Slack app integration with webhook notifications"
-    
+
     microsoft_teams:
       features: ["Channel integration", "Meeting scheduling", "File sharing"]
       setup: "Teams app with Graph API integration"
-  
+
   file_storage:
     google_drive:
       features: ["Document sharing", "Real-time collaboration", "Version control"]
       setup: "Google Drive API with OAuth authentication"
-    
+
     dropbox:
       features: ["File sync", "Team folders", "Link sharing"]
       setup: "Dropbox API integration with team account"
-  
+
   development_tools:
     github:
       features: ["Issue tracking", "Pull request integration", "Commit linking"]
       setup: "GitHub webhooks and API integration"
-    
+
     jira:
       features: ["Issue synchronization", "Workflow mapping", "Sprint integration"]
       setup: "Jira REST API with project mapping"
-  
+
   calendar:
     google_calendar:
       features: ["Meeting scheduling", "Deadline reminders", "Team availability"]
@@ -322,13 +322,13 @@ mobile_optimization:
     - "Touch-friendly interactions and gestures"
     - "Optimized layouts for small screens"
     - "Fast loading and minimal data usage"
-  
+
   offline_capabilities:
     - "Offline task viewing and editing"
     - "Local data synchronization"
     - "Conflict resolution for concurrent edits"
     - "Background sync when connection restored"
-  
+
   native_features:
     - "Push notifications for task updates"
     - "Camera integration for progress photos"
@@ -341,13 +341,13 @@ security_and_permissions:
     - "Project-level access restrictions"
     - "Task-level visibility controls"
     - "Time tracking approval workflows"
-  
+
   data_security:
     - "Encrypted data transmission and storage"
     - "Regular security audits and updates"
     - "GDPR compliance and data protection"
     - "Backup and disaster recovery procedures"
-  
+
   audit_trail:
     - "Complete activity logging and history"
     - "Change tracking for projects and tasks"
@@ -360,19 +360,19 @@ best_practices:
     - "Establish team roles and responsibilities"
     - "Set up project templates for consistency"
     - "Configure notification preferences for team"
-  
+
   task_management:
     - "Break down large tasks into manageable subtasks"
     - "Set realistic deadlines and priorities"
     - "Use clear and descriptive task titles"
     - "Regular task status updates and communication"
-  
+
   team_collaboration:
     - "Establish communication protocols and channels"
     - "Regular team meetings and check-ins"
     - "Encourage transparency and knowledge sharing"
     - "Provide training on tool usage and best practices"
-  
+
   performance_optimization:
     - "Regular review of project progress and metrics"
     - "Identify and address bottlenecks quickly"
@@ -385,13 +385,13 @@ success_metrics:
     - "Time to completion vs. estimates"
     - "Team utilization and efficiency"
     - "Project delivery on time and budget"
-  
+
   collaboration:
     - "Team communication frequency and quality"
     - "Knowledge sharing and documentation"
     - "Cross-functional collaboration effectiveness"
     - "Team satisfaction and engagement scores"
-  
+
   business_impact:
     - "Project ROI and value delivery"
     - "Client satisfaction and feedback"
@@ -408,7 +408,7 @@ examples:
     integration_needs: ["github", "slack", "jira"]
     platform_recommendation: "bubble"
     reasoning: "Complex agile workflows and development tool integrations require sophisticated automation"
-  
+
   creative_agency:
     tool_name: "CreativeHub"
     tool_description: "Project management tool for creative agencies with client collaboration and asset management"
@@ -418,7 +418,7 @@ examples:
     integration_needs: ["google_drive", "slack", "calendar"]
     platform_recommendation: "lovable"
     reasoning: "AI assistance valuable for creative workflow optimization and client communication features"
-  
+
   field_service:
     tool_name: "FieldManager"
     tool_description: "Mobile-first project management for field service teams and remote workers"

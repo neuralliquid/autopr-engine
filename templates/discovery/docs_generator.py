@@ -18,19 +18,11 @@ Features:
 - Modular architecture with template extraction
 """
 
-import os
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
 
 from .content_analyzer import ContentAnalyzer, TemplateAnalysis
-from .format_generators import (
-    DocumentationConfig,
-    FormatGeneratorFactory,
-    HTMLGenerator,
-    JSONGenerator,
-    MarkdownGenerator,
-)
+from .format_generators import DocumentationConfig, FormatGeneratorFactory
 
 # Import modular components
 from .template_loader import TemplateLoader
@@ -40,7 +32,7 @@ class TemplateDocumentationGenerator:
     """Generates comprehensive documentation for templates using modular architecture."""
 
     def __init__(
-        self, templates_root: Optional[str] = None, config: Optional[DocumentationConfig] = None
+        self, templates_root: str | None = None, config: DocumentationConfig | None = None
     ) -> None:
         """Initialize the documentation generator."""
         if templates_root is None:
@@ -61,9 +53,9 @@ class TemplateDocumentationGenerator:
             self.config.output_format, self.config, self.template_loader
         )
 
-    def _discover_templates(self) -> List[TemplateAnalysis]:
+    def _discover_templates(self) -> list[TemplateAnalysis]:
         """Discover and analyze all templates in the templates directory."""
-        template_files: List[Path] = []
+        template_files: list[Path] = []
 
         # Find all template files
         for pattern in ["platforms/**/*.yml", "use-cases/*.yml", "integrations/*.yml"]:
@@ -74,11 +66,11 @@ class TemplateDocumentationGenerator:
 
         # Analyze all templates
         analyses = self.content_analyzer.analyze_multiple_templates(template_files)
-        return analyses if analyses else []
+        return analyses or []
 
-    def generate_all_documentation(self) -> Dict[str, str]:
+    def generate_all_documentation(self) -> dict[str, str]:
         """Generate complete documentation suite using modular architecture."""
-        generated_files: Dict[str, str] = {}
+        generated_files: dict[str, str] = {}
 
         # Discover and analyze all templates
         template_analyses = self._discover_templates()
@@ -115,7 +107,7 @@ class TemplateDocumentationGenerator:
 
         return generated_files
 
-    def generate_main_index(self, template_analyses: List[TemplateAnalysis]) -> str:
+    def generate_main_index(self, template_analyses: list[TemplateAnalysis]) -> str:
         """Generate the main documentation index using modular approach."""
         try:
             # Use format generator to generate main index
@@ -131,9 +123,9 @@ class TemplateDocumentationGenerator:
             )
             return self._save_file("index.md", fallback_content)
 
-    def generate_platform_guides(self, analyses: List[TemplateAnalysis]) -> Dict[str, str]:
+    def generate_platform_guides(self, analyses: list[TemplateAnalysis]) -> dict[str, str]:
         """Generate documentation for all platform templates using modular approach."""
-        generated_files: Dict[str, str] = {}
+        generated_files: dict[str, str] = {}
 
         try:
             for analysis in analyses:
@@ -157,13 +149,13 @@ class TemplateDocumentationGenerator:
 
             return generated_files
 
-        except Exception as e:
+        except Exception:
             # Return empty dict if discovery fails
             return generated_files
 
-    def generate_use_case_guides(self, analyses: List[TemplateAnalysis]) -> Dict[str, str]:
+    def generate_use_case_guides(self, analyses: list[TemplateAnalysis]) -> dict[str, str]:
         """Generate documentation for use case templates using modular approach."""
-        generated_files: Dict[str, str] = {}
+        generated_files: dict[str, str] = {}
 
         try:
             for analysis in analyses:
@@ -187,13 +179,13 @@ class TemplateDocumentationGenerator:
 
             return generated_files
 
-        except Exception as e:
+        except Exception:
             # Return empty dict if discovery fails
             return generated_files
 
-    def generate_integration_guides(self, analyses: List[TemplateAnalysis]) -> Dict[str, str]:
+    def generate_integration_guides(self, analyses: list[TemplateAnalysis]) -> dict[str, str]:
         """Generate documentation for integration templates using modular approach."""
-        generated_files: Dict[str, str] = {}
+        generated_files: dict[str, str] = {}
 
         try:
             for analysis in analyses:
@@ -215,11 +207,11 @@ class TemplateDocumentationGenerator:
 
             return generated_files
 
-        except Exception as e:
+        except Exception:
             # Return empty dict if discovery fails
             return generated_files
 
-    def generate_comparison_guide(self, platform_analyses: List[TemplateAnalysis]) -> str:
+    def generate_comparison_guide(self, platform_analyses: list[TemplateAnalysis]) -> str:
         """Generate platform comparison documentation using modular approach."""
         try:
             # Use format generator to create comparison guide
@@ -236,7 +228,7 @@ class TemplateDocumentationGenerator:
         """Generate a comprehensive getting started guide using modular approach."""
         try:
             # Use template loader to get getting started template
-            template_content = self.template_loader.load_template("getting_started")
+            self.template_loader.load_template("getting_started")
 
             # Prepare template variables
             template_vars = {
@@ -283,14 +275,10 @@ def main() -> None:
     """Generate all documentation."""
     generator = TemplateDocumentationGenerator()
 
-    print("Generating template documentation...")
     generated_files = generator.generate_all_documentation()
 
-    print(f"\nGenerated {len(generated_files)} documentation files:")
-    for doc_type, file_path in generated_files.items():
-        print(f"  {doc_type}: {file_path}")
-
-    print(f"\nDocumentation available in: {generator.output_dir}")
+    for _doc_type, _file_path in generated_files.items():
+        pass
 
 
 if __name__ == "__main__":
