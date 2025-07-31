@@ -7,7 +7,7 @@ Handles phase orchestration, workflow management, and progress tracking for impl
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional, Set
+from typing import Any
 
 from .task_definitions import TaskRegistry
 from .task_executor import TaskExecution, TaskExecutor
@@ -20,14 +20,14 @@ class PhaseExecution:
     """Represents a phase execution instance."""
 
     phase_id: str
-    start_time: Optional[datetime] = None
-    end_time: Optional[datetime] = None
+    start_time: datetime | None = None
+    end_time: datetime | None = None
     status: str = "pending"  # pending, running, completed, failed, paused
-    task_executions: Dict[str, TaskExecution] = field(default_factory=dict)
+    task_executions: dict[str, TaskExecution] = field(default_factory=dict)
     progress_percentage: float = 0.0
 
     @property
-    def duration(self) -> Optional[timedelta]:
+    def duration(self) -> timedelta | None:
         """Get phase execution duration."""
         if self.start_time and self.end_time:
             return self.end_time - self.start_time
@@ -61,8 +61,8 @@ class PhaseManager:
 
     def __init__(self, task_executor: TaskExecutor) -> None:
         self.task_executor = task_executor
-        self.phase_executions: Dict[str, PhaseExecution] = {}
-        self.current_phase: Optional[str] = None
+        self.phase_executions: dict[str, PhaseExecution] = {}
+        self.current_phase: str | None = None
         self.phase_definitions = TaskRegistry.get_phase_definitions()
 
     async def execute_phase(
@@ -70,11 +70,13 @@ class PhaseManager:
     ) -> PhaseExecution:
         """Execute a specific phase."""
         if phase_id not in self.phase_definitions:
-            raise ValueError(f"Unknown phase: {phase_id}")
+            msg = f"Unknown phase: {phase_id}"
+            raise ValueError(msg)
 
         # Check dependencies unless forced
         if not force and not await self._check_phase_dependencies(phase_id):
-            raise ValueError(f"Phase dependencies not satisfied for: {phase_id}")
+            msg = f"Phase dependencies not satisfied for: {phase_id}"
+            raise ValueError(msg)
 
         # Initialize phase execution
         if phase_id not in self.phase_executions:
@@ -119,19 +121,19 @@ class PhaseManager:
         except Exception as e:
             phase_execution.end_time = datetime.now()
             phase_execution.status = "failed"
-            logger.error(f"Phase {phase_id} failed with exception: {e}")
-            raise e
+            logger.exception(f"Phase {phase_id} failed with exception: {e}")
+            raise
 
         return phase_execution
 
     async def execute_all_phases(
         self, dry_run: bool = False, stop_on_failure: bool = True
-    ) -> Dict[str, PhaseExecution]:
+    ) -> dict[str, PhaseExecution]:
         """Execute all phases in order."""
         # Get phases sorted by priority
         phases = sorted(self.phase_definitions.items(), key=lambda x: x[1].get("priority", 999))
 
-        for phase_id, phase_definition in phases:
+        for phase_id, _phase_definition in phases:
             try:
                 await self.execute_phase(phase_id, dry_run)
 
@@ -140,7 +142,7 @@ class PhaseManager:
                     break
 
             except Exception as e:
-                logger.error(f"Failed to execute phase {phase_id}: {e}")
+                logger.exception(f"Failed to execute phase {phase_id}: {e}")
                 if stop_on_failure:
                     break
 
@@ -162,7 +164,7 @@ class PhaseManager:
 
         return True
 
-    def get_phase_status(self, phase_id: str) -> Dict[str, Any]:
+    def get_phase_status(self, phase_id: str) -> dict[str, Any]:
         """Get detailed status of a specific phase."""
         if phase_id not in self.phase_executions:
             return {"phase_id": phase_id, "status": "not_started", "progress_percentage": 0.0}
@@ -194,7 +196,7 @@ class PhaseManager:
             },
         }
 
-    def get_overall_status(self) -> Dict[str, Any]:
+    def get_overall_status(self) -> dict[str, Any]:
         """Get overall implementation status across all phases."""
         total_phases = len(self.phase_definitions)
         completed_phases = sum(
@@ -238,12 +240,11 @@ class PhaseManager:
             "completed_phases": completed_phases,
             "failed_phases": failed_phases,
             "phases": {
-                phase_id: self.get_phase_status(phase_id)
-                for phase_id in self.phase_definitions.keys()
+                phase_id: self.get_phase_status(phase_id) for phase_id in self.phase_definitions
             },
         }
 
-    def get_next_steps(self) -> List[Dict[str, Any]]:
+    def get_next_steps(self) -> list[dict[str, Any]]:
         """Get recommended next steps based on current progress."""
         next_steps = []
 
@@ -261,7 +262,7 @@ class PhaseManager:
                     }
                 )
                 break
-            elif not self.phase_executions[phase_id].is_completed:
+            if not self.phase_executions[phase_id].is_completed:
                 # Find failed tasks in current phase
                 execution = self.phase_executions[phase_id]
                 failed_tasks = [

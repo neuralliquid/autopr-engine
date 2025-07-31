@@ -1,4 +1,5 @@
 import os
+import pathlib
 
 import pydantic
 
@@ -28,7 +29,7 @@ class FindLargeAssets(Action[Inputs, Outputs]):
             for file in files:
                 path = os.path.join(root, file)
                 try:
-                    size = os.path.getsize(path)
+                    size = pathlib.Path(path).stat().st_size
                     if size > threshold_bytes:
                         large_files.append(
                             {"file": path, "size_mb": round(size / (1024 * 1024), 2)}

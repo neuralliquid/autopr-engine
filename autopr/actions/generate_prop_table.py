@@ -1,6 +1,5 @@
 import asyncio
 import json
-from typing import Optional
 
 import pydantic
 
@@ -13,7 +12,7 @@ class Inputs(pydantic.BaseModel):
 
 class Outputs(pydantic.BaseModel):
     markdown_table: str
-    error: Optional[str] = None
+    error: str | None = None
 
 
 class GeneratePropTable(Action[Inputs, Outputs]):
@@ -46,7 +45,7 @@ class GeneratePropTable(Action[Inputs, Outputs]):
                 )
 
             # Assuming single component per file for simplicity
-            component_info = list(docgen_output.values())[0]
+            component_info = next(iter(docgen_output.values()))
             props = component_info.get("props", {})
 
             if not props:
@@ -71,7 +70,7 @@ if __name__ == "__main__":
 
     # Note: This test requires a valid component file to exist.
     # Create a dummy component for testing purposes.
-    with open("dummy_component.tsx", "w") as f:
+    with open("dummy_component.tsx", "w", encoding="utf-8") as f:
         f.write(
             "import React from 'react';\\nexport const MyComponent = (props: {{ name: string }}) => <div>hello</div>;"
         )

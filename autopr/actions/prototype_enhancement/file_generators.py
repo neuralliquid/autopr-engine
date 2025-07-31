@@ -6,13 +6,12 @@ Now supports hybrid YAML + template approach for enhanced metadata and flexibili
 """
 
 import json
-import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from .config_loader import ConfigLoader
 from .platform_configs import PlatformConfig, PlatformRegistry
-from .template_metadata import TemplateMetadata, TemplateRegistry
+from .template_metadata import TemplateRegistry
 
 
 class FileGenerator:
@@ -21,7 +20,7 @@ class FileGenerator:
     Now supports hybrid YAML + template approach with metadata-driven generation.
     """
 
-    def __init__(self, templates_dir: Optional[str] = None) -> None:
+    def __init__(self, templates_dir: str | None = None) -> None:
         self.platform_registry = PlatformRegistry()
 
         # Initialize template registry with hybrid YAML + template support
@@ -39,9 +38,9 @@ class FileGenerator:
     def generate_from_template(
         self,
         template_key: str,
-        variables: Optional[Dict[str, Any]] = None,
-        variants: Optional[List[str]] = None,
-    ) -> Optional[str]:
+        variables: dict[str, Any] | None = None,
+        variants: list[str] | None = None,
+    ) -> str | None:
         """Generate content from a template using the hybrid YAML + template approach.
 
         Args:
@@ -58,20 +57,20 @@ class FileGenerator:
         return self.template_registry.generate_template(template_key, variables, variants)
 
     def list_available_templates(
-        self, platform: Optional[str] = None, category: Optional[str] = None
-    ) -> List[str]:
+        self, platform: str | None = None, category: str | None = None
+    ) -> list[str]:
         """List all available templates, optionally filtered by platform or category."""
         return self.template_registry.list_templates(platform, category)
 
-    def get_template_info(self, template_key: str) -> Dict[str, Any]:
+    def get_template_info(self, template_key: str) -> dict[str, Any]:
         """Get comprehensive information about a template including metadata."""
         return self.template_registry.get_template_info(template_key)
 
     def generate_dockerfile(
         self,
         platform: str,
-        variables: Optional[Dict[str, Any]] = None,
-        variants: Optional[List[str]] = None,
+        variables: dict[str, Any] | None = None,
+        variants: list[str] | None = None,
     ) -> str:
         """Generate Dockerfile for the platform using hybrid templates when available."""
         config = self.platform_registry.get_platform_config(platform)
@@ -81,7 +80,7 @@ class FileGenerator:
             template_key = None
             if config.framework == "react":
                 template_key = "docker/react.dockerfile"
-            elif config.framework == "express" or config.framework == "node":
+            elif config.framework in {"express", "node"}:
                 template_key = "docker/node.dockerfile"
             else:
                 template_key = "docker/generic.dockerfile"
@@ -100,10 +99,9 @@ class FileGenerator:
         # Fallback to original approach
         if config.framework == "react":
             return self._generate_react_dockerfile()
-        elif config.framework == "express" or config.framework == "node":
+        if config.framework in {"express", "node"}:
             return self._generate_node_dockerfile()
-        else:
-            return self._generate_generic_dockerfile()
+        return self._generate_generic_dockerfile()
 
     def _generate_react_dockerfile(self) -> str:
         """Generate Dockerfile for React applications."""
@@ -120,8 +118,8 @@ class FileGenerator:
     def generate_typescript_config(
         self,
         platform: str,
-        variables: Optional[Dict[str, Any]] = None,
-        variants: Optional[List[str]] = None,
+        variables: dict[str, Any] | None = None,
+        variants: list[str] | None = None,
     ) -> str:
         """Generate TypeScript configuration using hybrid templates when available."""
         config = self.platform_registry.get_platform_config(platform)
@@ -150,10 +148,9 @@ class FileGenerator:
         # Fallback to original approach
         if config.framework == "react":
             return self._generate_react_tsconfig()
-        elif config.name == "bolt":
+        if config.name == "bolt":
             return self._generate_vite_tsconfig()
-        else:
-            return self._generate_basic_tsconfig()
+        return self._generate_basic_tsconfig()
 
     def _generate_react_tsconfig(self) -> str:
         """Generate tsconfig.json for React projects."""
@@ -234,11 +231,11 @@ class FileGenerator:
     def generate_next_config(
         self,
         platform: str,
-        variables: Optional[Dict[str, Any]] = None,
-        variants: Optional[List[str]] = None,
+        variables: dict[str, Any] | None = None,
+        variants: list[str] | None = None,
     ) -> str:
         """Generate Next.js configuration using hybrid templates when available."""
-        config = self.platform_registry.get_platform_config(platform)
+        self.platform_registry.get_platform_config(platform)
 
         # Try hybrid template approach first
         if self.use_hybrid_templates:
@@ -285,9 +282,9 @@ module.exports = nextConfig
     def generate_testing_files(
         self,
         platform: str,
-        variables: Optional[Dict[str, Any]] = None,
-        variants: Optional[List[str]] = None,
-    ) -> Dict[str, str]:
+        variables: dict[str, Any] | None = None,
+        variants: list[str] | None = None,
+    ) -> dict[str, str]:
         """Generate testing configuration files using hybrid templates when available."""
         config = self.platform_registry.get_platform_config(platform)
 
@@ -334,10 +331,9 @@ module.exports = nextConfig
         # Fallback to original approach
         if config.framework == "react":
             return self._generate_react_testing_files()
-        else:
-            return self._generate_common_testing_files()
+        return self._generate_common_testing_files()
 
-    def _generate_react_testing_files(self) -> Dict[str, str]:
+    def _generate_react_testing_files(self) -> dict[str, str]:
         """Generate React testing setup."""
         return {
             "src/setupTests.ts": """
@@ -377,7 +373,7 @@ module.exports = {
             """.strip(),
         }
 
-    def _generate_common_testing_files(self) -> Dict[str, str]:
+    def _generate_common_testing_files(self) -> dict[str, str]:
         """Generate common testing files."""
         return {
             ".github/workflows/test.yml": """
@@ -438,10 +434,10 @@ export default defineConfig({
             """.strip(),
         }
 
-    def generate_security_files(self, platform: str) -> Dict[str, str]:
+    def generate_security_files(self, platform: str) -> dict[str, str]:
         """Generate security configuration files."""
         config = self.platform_registry.get_platform_config(platform)
-        files: Dict[str, str] = {}
+        files: dict[str, str] = {}
 
         files[".env.example"] = self._generate_env_example(config)
         files["security/helmet.config.js"] = self._generate_helmet_config()
@@ -545,7 +541,7 @@ Header always set X-XSS-Protection "1; mode=block"
 Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
         """.strip()
 
-    def generate_storybook_config(self) -> Dict[str, str]:
+    def generate_storybook_config(self) -> dict[str, str]:
         """Generate Storybook configuration."""
         return {
             ".storybook/main.js": """
@@ -610,7 +606,7 @@ export const Secondary: Story = {
             """.strip(),
         }
 
-    def generate_accessibility_testing(self) -> Dict[str, str]:
+    def generate_accessibility_testing(self) -> dict[str, str]:
         """Generate accessibility testing setup."""
         return {
             "src/utils/axe-config.ts": """
@@ -643,12 +639,12 @@ describe('Accessibility tests', () => {
     def generate_azure_configs(
         self,
         platform: str,
-        variables: Optional[Dict[str, Any]] = None,
-        variants: Optional[List[str]] = None,
-    ) -> Dict[str, str]:
+        variables: dict[str, Any] | None = None,
+        variants: list[str] | None = None,
+    ) -> dict[str, str]:
         """Generate Azure-specific configuration files using hybrid templates when available."""
         config = self.platform_registry.get_platform_config(platform)
-        files: Dict[str, str] = {}
+        files: dict[str, str] = {}
 
         # Try hybrid template approach first
         if self.use_hybrid_templates:
@@ -779,8 +775,7 @@ stages:
   </system.webServer>
 </configuration>
             """.strip()
-        else:
-            return """
+        return """
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
   <system.webServer>
@@ -825,12 +820,12 @@ stages:
     def generate_deployment_automation(
         self,
         platform: str,
-        variables: Optional[Dict[str, Any]] = None,
-        variants: Optional[List[str]] = None,
-    ) -> Dict[str, str]:
+        variables: dict[str, Any] | None = None,
+        variants: list[str] | None = None,
+    ) -> dict[str, str]:
         """Generate deployment automation scripts using hybrid templates when available."""
         config = self.platform_registry.get_platform_config(platform)
-        files: Dict[str, str] = {}
+        files: dict[str, str] = {}
 
         # Try hybrid template approach first
         if self.use_hybrid_templates:
@@ -948,7 +943,7 @@ jobs:
                     "src": "package.json",
                     "use": (
                         "@vercel/node"
-                        if config.framework in ["express", "node"]
+                        if config.framework in {"express", "node"}
                         else "@vercel/static-build"
                     ),
                 }
@@ -986,7 +981,7 @@ jobs:
     X-Content-Type-Options = "nosniff"
         """.strip()
 
-    def generate_monitoring_scripts(self, platform: str) -> Dict[str, str]:
+    def generate_monitoring_scripts(self, platform: str) -> dict[str, str]:
         """Generate monitoring scripts."""
         return {
             "scripts/health_check.sh": """
@@ -1042,7 +1037,7 @@ echo "ALERT: $SERVICE_NAME failed - $ERROR_MESSAGE"
             """.strip(),
         }
 
-    def generate_backup_scripts(self, platform: str) -> Dict[str, str]:
+    def generate_backup_scripts(self, platform: str) -> dict[str, str]:
         """Generate backup scripts."""
         return {
             "scripts/backup.sh": """

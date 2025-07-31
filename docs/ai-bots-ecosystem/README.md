@@ -2,7 +2,8 @@
 
 ## 🎯 Complete Guide to GitHub PR Automation & AI Development Tools
 
-Welcome to the comprehensive documentation of AI-powered development tools, bots, and automation systems for modern software development workflows.
+Welcome to the comprehensive documentation of AI-powered development tools, bots, and automation systems for modern
+software development workflows.
 
 ---
 
@@ -135,4 +136,5 @@ Based on your existing tools (CharlieHelps, CodeRabbit, Korbit, etc.), here are 
 
 ---
 
-*This documentation represents the most comprehensive analysis of AI development tools available, covering 50+ tools across 8 major categories with detailed cost analysis, integration guides, and ROI calculations.*
+*This documentation represents the most comprehensive analysis of AI development tools available, covering 50+ tools
+across 8 major categories with detailed cost analysis, integration guides, and ROI calculations.*

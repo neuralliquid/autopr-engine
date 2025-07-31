@@ -7,9 +7,9 @@ Generates documentation in Markdown format.
 """
 
 from datetime import datetime
-from typing import List
 
-from ..content_analyzer import TemplateAnalysis
+from discovery.content_analyzer import TemplateAnalysis
+
 from .base import BaseFormatGenerator
 
 
@@ -58,7 +58,7 @@ class MarkdownGenerator(BaseFormatGenerator):
             troubleshooting=analysis.troubleshooting,
         )
 
-    def generate_main_index(self, analyses: List[TemplateAnalysis]) -> str:
+    def generate_main_index(self, analyses: list[TemplateAnalysis]) -> str:
         """Generate main documentation index."""
         # Group analyses by category
         platforms = [a for a in analyses if a.category == "platform"]
@@ -131,7 +131,7 @@ Not sure which platform to choose? Check out our [platform comparison guide](pla
 
         return content
 
-    def generate_comparison_guide(self, platform_analyses: List[TemplateAnalysis]) -> str:
+    def generate_comparison_guide(self, platform_analyses: list[TemplateAnalysis]) -> str:
         """Generate platform comparison guide."""
         content = f"""# Platform Comparison Guide
 

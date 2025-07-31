@@ -5,10 +5,10 @@ triggers:
   - on: push
     branches: [main, develop]
     condition: "contains(github.event.head_commit.message, 'replit') || contains(github.event.head_commit.message, 'lovable') || contains(github.event.head_commit.message, 'bolt') || contains(github.event.head_commit.message, 'same') || contains(github.event.head_commit.message, 'emergent')"
-  
+
   - on: repository_dispatch
     event_types: [prototype-export, replit-export, lovable-export, bolt-export]
-  
+
   - on: workflow_dispatch
     inputs:
       platform_override:
@@ -16,7 +16,7 @@ triggers:
         required: false
         type: choice
         options: ["auto-detect", "replit", "lovable", "bolt", "same", "emergent"]
-      
+
       enhancement_level:
         description: "Enhancement level"
         required: true
@@ -29,22 +29,22 @@ inputs:
     type: boolean
     default: true
     description: "Automatically enhance prototype for production"
-  
+
   target_platform:
     type: string
     default: "azure"
     description: "Target deployment platform"
-  
+
   enable_monitoring:
     type: boolean
     default: true
     description: "Enable Azure SRE monitoring"
-  
+
   create_staging:
     type: boolean
     default: true
     description: "Create staging environment"
-  
+
   run_e2e_tests:
     type: boolean
     default: true

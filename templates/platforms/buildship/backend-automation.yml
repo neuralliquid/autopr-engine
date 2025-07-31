@@ -36,30 +36,30 @@ variables:
     required: true
     description: "Primary type of backend workflow"
     examples: ["api_service", "data_processing", "automation", "integration", "scheduled_task"]
-  
+
   data_sources:
     type: "array"
     default: []
     description: "External data sources to integrate"
     examples: [["database"], ["database", "api"], ["database", "api", "webhook"]]
-  
+
   automation_triggers:
     type: "array"
     default: ["manual"]
     description: "Workflow trigger mechanisms"
     examples: [["manual"], ["webhook"], ["schedule"], ["webhook", "schedule", "database_change"]]
-  
+
   complexity_level:
     type: "string"
     default: "medium"
     description: "Workflow complexity and logic requirements"
     examples: ["simple", "medium", "complex", "enterprise"]
-  
+
   real_time_processing:
     type: "boolean"
     default: false
     description: "Enable real-time data processing capabilities"
-  
+
   custom_code_required:
     type: "boolean"
     default: false
@@ -79,7 +79,7 @@ variants:
       - "Authentication and authorization"
       - "Error handling and logging"
       - "Rate limiting and security"
-  
+
   data_synchronization:
     description: "Automated data sync between multiple systems"
     variables:
@@ -93,7 +93,7 @@ variants:
       - "Conflict resolution logic"
       - "Scheduled synchronization"
       - "Error handling and retry logic"
-  
+
   notification_system:
     description: "Multi-channel notification and alerting system"
     variables:
@@ -191,7 +191,7 @@ examples:
     complexity: "medium"
     estimated_executions: "1000-5000/month"
     estimated_setup: "1-2 weeks"
-  
+
   content_moderation_system:
     description: "Automated content review and moderation pipeline"
     workflow_steps:
@@ -204,7 +204,7 @@ examples:
     complexity: "complex"
     estimated_executions: "5000-20000/month"
     estimated_setup: "3-4 weeks"
-  
+
   lead_scoring_automation:
     description: "Automated lead qualification and scoring system"
     workflow_steps:

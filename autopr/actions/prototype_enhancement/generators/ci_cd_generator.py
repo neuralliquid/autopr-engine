@@ -4,9 +4,8 @@ CI/CD Generator Module
 Handles generation of CI/CD pipeline configurations for various providers.
 """
 
-import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from .base_generator import BaseGenerator
 
@@ -14,7 +13,7 @@ from .base_generator import BaseGenerator
 class CICDGenerator(BaseGenerator):
     """Generates CI/CD pipeline configurations for various providers."""
 
-    def generate(self, output_dir: str, **kwargs) -> List[str]:
+    def generate(self, output_dir: str, **kwargs) -> list[str]:
         """Generate CI/CD pipeline configurations.
 
         Args:
@@ -71,7 +70,7 @@ class CICDGenerator(BaseGenerator):
             generated_files.extend(self._generate_azure_pipelines(output_dir, template_vars))
 
         # Generate deployment configurations if needed
-        if kwargs.get("generate_deployment", False):
+        if kwargs.get("generate_deployment"):
             generated_files.extend(self._generate_deployment_configs(output_dir, template_vars))
 
         return generated_files
@@ -118,7 +117,7 @@ class CICDGenerator(BaseGenerator):
             "rust": "cargo install --path .",
         }.get(language, 'echo "No deploy command specified"')
 
-    def _generate_github_actions(self, output_dir: str, variables: Dict[str, Any]) -> List[str]:
+    def _generate_github_actions(self, output_dir: str, variables: dict[str, Any]) -> list[str]:
         """Generate GitHub Actions workflow files."""
         generated_files = []
         workflows_dir = Path(output_dir) / ".github" / "workflows"
@@ -168,7 +167,7 @@ class CICDGenerator(BaseGenerator):
 
         return generated_files
 
-    def _generate_gitlab_ci(self, output_dir: str, variables: Dict[str, Any]) -> List[str]:
+    def _generate_gitlab_ci(self, output_dir: str, variables: dict[str, Any]) -> list[str]:
         """Generate GitLab CI configuration."""
         generated_files = []
 
@@ -204,7 +203,7 @@ class CICDGenerator(BaseGenerator):
 
         return generated_files
 
-    def _generate_circleci(self, output_dir: str, variables: Dict[str, Any]) -> List[str]:
+    def _generate_circleci(self, output_dir: str, variables: dict[str, Any]) -> list[str]:
         """Generate CircleCI configuration."""
         generated_files = []
         circleci_dir = Path(output_dir) / ".circleci"
@@ -229,7 +228,7 @@ class CICDGenerator(BaseGenerator):
 
         return generated_files
 
-    def _generate_jenkins(self, output_dir: str, variables: Dict[str, Any]) -> List[str]:
+    def _generate_jenkins(self, output_dir: str, variables: dict[str, Any]) -> list[str]:
         """Generate Jenkins pipeline configuration."""
         generated_files = []
         jenkins_dir = Path(output_dir) / "jenkins"
@@ -260,7 +259,7 @@ class CICDGenerator(BaseGenerator):
 
         return generated_files
 
-    def _generate_azure_pipelines(self, output_dir: str, variables: Dict[str, Any]) -> List[str]:
+    def _generate_azure_pipelines(self, output_dir: str, variables: dict[str, Any]) -> list[str]:
         """Generate Azure Pipelines configuration."""
         generated_files = []
 
@@ -294,7 +293,7 @@ class CICDGenerator(BaseGenerator):
 
         return generated_files
 
-    def _generate_deployment_configs(self, output_dir: str, variables: Dict[str, Any]) -> List[str]:
+    def _generate_deployment_configs(self, output_dir: str, variables: dict[str, Any]) -> list[str]:
         """Generate deployment configuration files."""
         generated_files = []
         deploy_dir = Path(output_dir) / "deploy"
@@ -330,20 +329,20 @@ class CICDGenerator(BaseGenerator):
                 generated_files.append(str(manifest_path))
 
         # Helm chart if needed
-        if variables.get("generate_helm_chart", False):
+        if variables.get("generate_helm_chart"):
             helm_dir = deploy_dir / "helm"
             self._generate_helm_chart(helm_dir, variables)
             generated_files.extend([str(p) for p in helm_dir.rglob("*") if p.is_file()])
 
         # Terraform configuration if needed
-        if variables.get("generate_terraform", False):
+        if variables.get("generate_terraform"):
             terraform_dir = deploy_dir / "terraform"
             self._generate_terraform_config(terraform_dir, variables)
             generated_files.extend([str(p) for p in terraform_dir.rglob("*") if p.is_file()])
 
         return generated_files
 
-    def _generate_helm_chart(self, output_dir: Path, variables: Dict[str, Any]) -> None:
+    def _generate_helm_chart(self, output_dir: Path, variables: dict[str, Any]) -> None:
         """Generate a Helm chart for the application."""
         chart_dir = output_dir / variables.get("app_name", "app")
         chart_dir.mkdir(parents=True, exist_ok=True)
@@ -377,7 +376,7 @@ class CICDGenerator(BaseGenerator):
             if content:
                 (templates_dir / template).write_text(content)
 
-    def _generate_terraform_config(self, output_dir: Path, variables: Dict[str, Any]) -> None:
+    def _generate_terraform_config(self, output_dir: Path, variables: dict[str, Any]) -> None:
         """Generate Terraform configuration for infrastructure as code."""
         # Main configuration files
         main_tf = self._render_template("deploy/terraform/main.tf", variables)

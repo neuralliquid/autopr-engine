@@ -10,10 +10,7 @@ async def test_axolo_integration() -> None:
     """Test Axolo integration functionality"""
 
     if not is_axolo_available():
-        print("❌ Axolo integration not configured. Set required environment variables.")
         return
-
-    print("🔧 Testing Axolo integration...")
 
     # Create integration
     axolo = await create_axolo_integration()
@@ -28,7 +25,6 @@ async def test_axolo_integration() -> None:
     }
 
     channel = await axolo.create_pr_channel(test_pr_data)
-    print(f"✅ PR Channel created: {channel.channel_id}")
 
     # Test analysis posting
     test_analysis = {
@@ -45,11 +41,9 @@ async def test_axolo_integration() -> None:
     }
 
     await axolo.post_autopr_analysis(channel, test_analysis)
-    print("✅ Analysis posted to channel")
 
     # Cleanup
     await axolo.close()
-    print("✅ Axolo integration test complete")
 
 
 if __name__ == "__main__":

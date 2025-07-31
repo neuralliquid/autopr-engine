@@ -1,11 +1,12 @@
 """
-AutoPR Action: AI Comment Analyzer
+AutoPR Action: AI Comment Analyzer.
+
 Uses LLM to analyze PR comments and generate intelligent responses and fixes.
 """
 
 import json
 import os
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import openai
 from pydantic import BaseModel, Field
@@ -15,29 +16,27 @@ from .base import Action
 
 class AICommentAnalysisInputs(BaseModel):
     comment_body: str
-    file_path: Optional[str] = None
-    file_content: Optional[str] = None
-    surrounding_context: Optional[str] = None
-    pr_diff: Optional[str] = None
+    file_path: str | None = None
+    file_content: str | None = None
+    surrounding_context: str | None = None
+    pr_diff: str | None = None
 
 
 class AICommentAnalysisOutputs(BaseModel):
     intent: str  # "fix_request", "question", "suggestion", "praise", "complex_issue"
     confidence: float
-    suggested_actions: List[str] = Field(default_factory=list)
+    suggested_actions: list[str] = Field(default_factory=list)
     auto_fixable: bool
-    fix_code: Optional[str] = None
+    fix_code: str | None = None
     response_template: str
     issue_priority: str  # "low", "medium", "high", "critical"
-    tags: List[str] = Field(default_factory=list)
+    tags: list[str] = Field(default_factory=list)
 
 
 def analyze_comment_with_ai(
     inputs: AICommentAnalysisInputs,
 ) -> AICommentAnalysisOutputs:
-    """
-    Uses LLM to analyze PR comment and determine best response strategy.
-    """
+    """Analyze PR comment and determine best response strategy using LLM."""
 
     # Set up OpenAI client (or use local LLM)
     client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -91,7 +90,7 @@ def analyze_comment_with_ai(
 
         return AICommentAnalysisOutputs(**ai_analysis)
 
-    except Exception as e:
+    except Exception:
         # Fallback to rule-based analysis
         return fallback_analysis(inputs)
 
@@ -128,12 +127,14 @@ class AICommentAnalyzer(Action[AICommentAnalysisInputs, AICommentAnalysisOutputs
     def __init__(self) -> None:
         super().__init__(
             name="ai_comment_analyzer",
-            description="Uses LLM to analyze PR comments and generate intelligent responses and fixes",
+            description=(
+                "Uses LLM to analyze PR comments and generate intelligent responses and fixes"
+            ),
             version="1.0.0",
         )
 
     async def execute(
-        self, inputs: AICommentAnalysisInputs, context: Dict[str, Any]
+        self, inputs: AICommentAnalysisInputs, context: dict[str, Any]
     ) -> AICommentAnalysisOutputs:
         """Execute the AI comment analysis."""
         return analyze_comment_with_ai(inputs)

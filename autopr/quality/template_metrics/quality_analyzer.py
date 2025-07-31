@@ -10,8 +10,9 @@ analysis capabilities including trend analysis, batch processing, and
 improvement recommendations.
 """
 
+import operator
 import statistics
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 from templates.discovery.template_validators import ValidationSeverity
 
@@ -26,7 +27,7 @@ class QualityAnalyzer:
         """Initialize the quality analyzer."""
         self.scorer = QualityScorer()
 
-    def analyze_template_quality(self, metrics: QualityMetrics) -> Dict[str, Any]:
+    def analyze_template_quality(self, metrics: QualityMetrics) -> dict[str, Any]:
         """Analyze template quality and provide insights."""
         return {
             "summary": self._get_quality_summary(metrics),
@@ -37,7 +38,7 @@ class QualityAnalyzer:
             "trends": self._analyze_quality_trends(metrics),
         }
 
-    def _get_quality_summary(self, metrics: QualityMetrics) -> Dict[str, Any]:
+    def _get_quality_summary(self, metrics: QualityMetrics) -> dict[str, Any]:
         """Get a summary of quality metrics."""
         return {
             "overall_score": metrics.overall_score,
@@ -49,7 +50,7 @@ class QualityAnalyzer:
             "template_path": metrics.template_path,
         }
 
-    def _identify_strengths(self, metrics: QualityMetrics) -> List[str]:
+    def _identify_strengths(self, metrics: QualityMetrics) -> list[str]:
         """Identify template strengths."""
         strengths = []
 
@@ -72,7 +73,7 @@ class QualityAnalyzer:
 
         return strengths
 
-    def _identify_weaknesses(self, metrics: QualityMetrics) -> List[str]:
+    def _identify_weaknesses(self, metrics: QualityMetrics) -> list[str]:
         """Identify template weaknesses."""
         weaknesses = []
 
@@ -95,7 +96,7 @@ class QualityAnalyzer:
 
         return weaknesses
 
-    def _generate_recommendations(self, metrics: QualityMetrics) -> List[str]:
+    def _generate_recommendations(self, metrics: QualityMetrics) -> list[str]:
         """Generate improvement recommendations."""
         recommendations = []
 
@@ -120,11 +121,12 @@ class QualityAnalyzer:
                     recommendations.append("Optimize performance and add performance guidelines")
 
         # Issue-based recommendations
-        error_categories = set(
+        error_categories = {
             issue.category for issue in metrics.issues if issue.severity == ValidationSeverity.ERROR
+        }
+        recommendations.extend(
+            f"Fix critical issues in {category} category" for category in error_categories
         )
-        for category in error_categories:
-            recommendations.append(f"Fix critical issues in {category} category")
 
         # General recommendations
         if metrics.overall_score < 60:
@@ -134,9 +136,8 @@ class QualityAnalyzer:
 
         return recommendations
 
-    def _get_priority_fixes(self, metrics: QualityMetrics) -> List[Dict[str, Any]]:
+    def _get_priority_fixes(self, metrics: QualityMetrics) -> list[dict[str, Any]]:
         """Get priority issues that should be fixed first."""
-        priority_fixes = []
 
         # Sort issues by severity and category importance
         sorted_issues = sorted(
@@ -148,23 +149,21 @@ class QualityAnalyzer:
         )
 
         # Take top 5 priority issues
-        for issue in sorted_issues[:5]:
-            priority_fixes.append(
-                {
-                    "category": issue.category,
-                    "severity": issue.severity.value,
-                    "message": issue.message,
-                    "line": getattr(issue, "line", None),
-                    "priority_score": (
-                        self.scorer.severity_weights.get(issue.severity, 1.0)
-                        + self.scorer.category_weights.get(issue.category, 1.0)
-                    ),
-                }
-            )
+        return [
+            {
+                "category": issue.category,
+                "severity": issue.severity.value,
+                "message": issue.message,
+                "line": getattr(issue, "line", None),
+                "priority_score": (
+                    self.scorer.severity_weights.get(issue.severity, 1.0)
+                    + self.scorer.category_weights.get(issue.category, 1.0)
+                ),
+            }
+            for issue in sorted_issues[:5]
+        ]
 
-        return priority_fixes
-
-    def _analyze_quality_trends(self, metrics: QualityMetrics) -> Dict[str, Any]:
+    def _analyze_quality_trends(self, metrics: QualityMetrics) -> dict[str, Any]:
         """Analyze quality trends (placeholder for historical analysis)."""
         # This would be enhanced with historical data in a real implementation
         return {
@@ -176,7 +175,7 @@ class QualityAnalyzer:
             ),
         }
 
-    def batch_analyze_templates(self, template_metrics: List[QualityMetrics]) -> Dict[str, Any]:
+    def batch_analyze_templates(self, template_metrics: list[QualityMetrics]) -> dict[str, Any]:
         """Analyze multiple templates and provide comparative insights."""
         if not template_metrics:
             return {"error": "No templates provided for analysis"}
@@ -194,7 +193,7 @@ class QualityAnalyzer:
             "improvement_opportunities": self._find_improvement_opportunities(template_metrics),
         }
 
-    def _get_quality_distribution(self, template_metrics: List[QualityMetrics]) -> Dict[str, int]:
+    def _get_quality_distribution(self, template_metrics: list[QualityMetrics]) -> dict[str, int]:
         """Get distribution of quality grades."""
         distribution = {"A": 0, "B": 0, "C": 0, "D": 0, "F": 0}
 
@@ -204,25 +203,23 @@ class QualityAnalyzer:
 
         return distribution
 
-    def _get_top_performers(self, template_metrics: List[QualityMetrics]) -> List[Dict[str, Any]]:
+    def _get_top_performers(self, template_metrics: list[QualityMetrics]) -> list[dict[str, Any]]:
         """Get top performing templates."""
         sorted_templates = sorted(template_metrics, key=lambda m: m.overall_score, reverse=True)
 
-        top_performers = []
-        for metrics in sorted_templates[:5]:  # Top 5
-            top_performers.append(
-                {
-                    "template_path": metrics.template_path,
-                    "overall_score": metrics.overall_score,
-                    "grade": metrics.quality_grade,
-                    "success_rate": metrics.success_rate,
-                    "issues_count": len(metrics.issues),
-                }
-            )
+        # Top 5
+        return [
+            {
+                "template_path": metrics.template_path,
+                "overall_score": metrics.overall_score,
+                "grade": metrics.quality_grade,
+                "success_rate": metrics.success_rate,
+                "issues_count": len(metrics.issues),
+            }
+            for metrics in sorted_templates[:5]
+        ]
 
-        return top_performers
-
-    def _find_common_issues(self, template_metrics: List[QualityMetrics]) -> List[Dict[str, Any]]:
+    def _find_common_issues(self, template_metrics: list[QualityMetrics]) -> list[dict[str, Any]]:
         """Find issues that appear across multiple templates."""
         issue_counts = {}
 
@@ -246,11 +243,11 @@ class QualityAnalyzer:
         ]
 
         # Sort by frequency
-        common_issues.sort(key=lambda x: x["count"], reverse=True)
+        common_issues.sort(key=operator.itemgetter("count"), reverse=True)
 
         return common_issues[:10]  # Top 10 common issues
 
-    def _identify_best_practices(self, template_metrics: List[QualityMetrics]) -> List[str]:
+    def _identify_best_practices(self, template_metrics: list[QualityMetrics]) -> list[str]:
         """Identify best practices from high-quality templates."""
         best_practices = []
 
@@ -262,7 +259,7 @@ class QualityAnalyzer:
         if high_quality_templates:
             # Analyze common characteristics
             avg_scores = {}
-            for category in self.scorer.category_weights.keys():
+            for category in self.scorer.category_weights:
                 category_scores = [
                     metrics.category_scores.get(category, 0) for metrics in high_quality_templates
                 ]
@@ -278,17 +275,18 @@ class QualityAnalyzer:
 
         return best_practices
 
-    def _find_improvement_opportunities(self, template_metrics: List[QualityMetrics]) -> List[str]:
+    def _find_improvement_opportunities(self, template_metrics: list[QualityMetrics]) -> list[str]:
         """Find common improvement opportunities across templates."""
         opportunities = []
 
         # Analyze category scores across all templates
         category_scores = {}
-        for category in self.scorer.category_weights.keys():
-            scores = []
-            for metrics in template_metrics:
-                if category in metrics.category_scores:
-                    scores.append(metrics.category_scores[category])
+        for category in self.scorer.category_weights:
+            scores = [
+                metrics.category_scores[category]
+                for metrics in template_metrics
+                if category in metrics.category_scores
+            ]
 
             if scores:
                 category_scores[category] = statistics.mean(scores)
@@ -306,16 +304,15 @@ class QualityAnalyzer:
 
         return opportunities
 
-    def generate_quality_report(self, template_metrics: List[QualityMetrics]) -> Dict[str, Any]:
+    def generate_quality_report(self, template_metrics: list[QualityMetrics]) -> dict[str, Any]:
         """Generate a comprehensive quality report."""
-        individual_analyses = []
-        for metrics in template_metrics:
-            individual_analyses.append(
-                {
-                    "template_path": metrics.template_path,
-                    "analysis": self.analyze_template_quality(metrics),
-                }
-            )
+        individual_analyses = [
+            {
+                "template_path": metrics.template_path,
+                "analysis": self.analyze_template_quality(metrics),
+            }
+            for metrics in template_metrics
+        ]
 
         batch_analysis = self.batch_analyze_templates(template_metrics)
 

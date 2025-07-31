@@ -4,13 +4,13 @@ Base classes and interfaces for file analysis.
 
 from __future__ import annotations
 
+import fnmatch
 import logging
-from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Type, TypeVar, Union
+from typing import Any, TypeVar
 
-from autopr.actions.platform_detection.analysis.handlers import FileHandler
+from autopr.actions.platform_detection.analysis.handlers import DefaultFileHandler, FileHandler
 
 logger = logging.getLogger(__name__)
 
@@ -24,10 +24,10 @@ class FileAnalysisResult:
     path: Path
     """Path to the analyzed file or directory."""
 
-    platform_matches: Dict[str, float] = field(default_factory=dict)
+    platform_matches: dict[str, float] = field(default_factory=dict)
     """Mapping of platform IDs to confidence scores (0.0 to 1.0)."""
 
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
     """Additional metadata about the analysis."""
 
     def add_match(self, platform_id: str, confidence: float) -> None:
@@ -59,8 +59,8 @@ class FileAnalyzer:
 
     def __init__(
         self,
-        workspace_path: Union[str, Path],
-        handlers: Dict[str, Type[FileHandler]] = None,
+        workspace_path: str | Path,
+        handlers: dict[str, type[FileHandler]] | None = None,
     ):
         """
         Initialize the file analyzer.
@@ -70,14 +70,13 @@ class FileAnalyzer:
             handlers: Mapping of file patterns to handler classes
         """
         self.workspace_path = Path(workspace_path).resolve()
-        self.handlers: Dict[str, Type[FileHandler]] = {}
+        self.handlers: dict[str, type[FileHandler]] = {}
         self._initialize_handlers(handlers or {})
 
-    def _initialize_handlers(self, handlers: Dict[str, Type[FileHandler]]) -> None:
+    def _initialize_handlers(self, handlers: dict[str, type[FileHandler]]) -> None:
         """Initialize the file handlers."""
-        from fnmatch import fnmatch
 
-        self._handler_patterns = []
+        self._handler_patterns: list[tuple[Any, type[FileHandler]]] = []
 
         for pattern, handler_cls in handlers.items():
             self.register_handler(pattern, handler_cls)
@@ -85,11 +84,12 @@ class FileAnalyzer:
     def register_handler(
         self,
         pattern: str,
-        handler_cls: Type[FileHandler],
+        handler_cls: type[FileHandler],
     ) -> None:
         """Register a handler for files matching the given pattern."""
         if not issubclass(handler_cls, FileHandler):
-            raise ValueError(f"Handler must be a subclass of FileHandler, got {handler_cls}")
+            msg = f"Handler must be a subclass of FileHandler, got {handler_cls}"
+            raise ValueError(msg)
 
         self.handlers[pattern] = handler_cls
 
@@ -99,13 +99,13 @@ class FileAnalyzer:
         regex = fnmatch.translate(pattern)
         self._handler_patterns.append((re.compile(regex), handler_cls))
 
-    def get_handler_for_file(self, file_path: Path) -> Optional[FileHandler]:
+    def get_handler_for_file(self, file_path: Path) -> FileHandler | None:
         """Get the appropriate handler for the given file."""
         filename = file_path.name
 
         # Check for exact matches first
         for pattern, handler_cls in self.handlers.items():
-            if pattern == filename or pattern == f"*.{file_path.suffix.lswith('.')}":
+            if pattern == filename or pattern == f"*.{file_path.suffix.lstrip('.')}":
                 return handler_cls()
 
         # Then check glob patterns
@@ -127,10 +127,12 @@ class FileAnalyzer:
             FileAnalysisResult containing the analysis results
         """
         if not file_path.exists():
-            raise FileNotFoundError(f"File not found: {file_path}")
+            msg = f"File not found: {file_path}"
+            raise FileNotFoundError(msg)
 
         if not file_path.is_file():
-            raise ValueError(f"Path is not a file: {file_path}")
+            msg = f"Path is not a file: {file_path}"
+            raise ValueError(msg)
 
         handler = self.get_handler_for_file(file_path)
         if handler is None:
@@ -145,11 +147,11 @@ class FileAnalyzer:
 
     def analyze_directory(
         self,
-        dir_path: Optional[Path] = None,
-        exclude_dirs: Optional[Set[str]] = None,
-        exclude_files: Optional[Set[str]] = None,
+        dir_path: Path | None = None,
+        exclude_dirs: set[str] | None = None,
+        exclude_files: set[str] | None = None,
         max_depth: int = 5,
-    ) -> List[FileAnalysisResult]:
+    ) -> list[FileAnalysisResult]:
         """
         Recursively analyze all files in a directory.
 
@@ -166,10 +168,12 @@ class FileAnalyzer:
             dir_path = self.workspace_path
 
         if not dir_path.exists():
-            raise FileNotFoundError(f"Directory not found: {dir_path}")
+            msg = f"Directory not found: {dir_path}"
+            raise FileNotFoundError(msg)
 
         if not dir_path.is_dir():
-            raise ValueError(f"Path is not a directory: {dir_path}")
+            msg = f"Path is not a directory: {dir_path}"
+            raise ValueError(msg)
 
         if exclude_dirs is None:
             exclude_dirs = {".git", "__pycache__", "node_modules", ".venv", "venv"}
@@ -192,7 +196,7 @@ class FileAnalyzer:
                             )
                         )
                     except Exception as e:
-                        logger.error(f"Error analyzing directory {entry}: {e}")
+                        logger.exception(f"Error analyzing directory {entry}: {e}")
 
                 elif entry.is_file() and not any(
                     fnmatch.fnmatch(entry.name, pattern) for pattern in exclude_files
@@ -200,7 +204,7 @@ class FileAnalyzer:
                     try:
                         results.append(self.analyze_file(entry))
                     except Exception as e:
-                        logger.error(f"Error analyzing file {entry}: {e}")
+                        logger.exception(f"Error analyzing file {entry}: {e}")
 
         except PermissionError as e:
             logger.warning(f"Permission denied accessing {dir_path}: {e}")

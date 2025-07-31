@@ -1,5 +1,4 @@
 import asyncio
-from typing import Optional
 
 import pydantic
 
@@ -14,7 +13,7 @@ class Inputs(pydantic.BaseModel):
 class Outputs(pydantic.BaseModel):
     success: bool
     log: str
-    new_version: Optional[str] = None
+    new_version: str | None = None
 
 
 class PublishPackage(Action[Inputs, Outputs]):
@@ -33,7 +32,7 @@ class PublishPackage(Action[Inputs, Outputs]):
         logs.append(f"Running: {version_command}")
         # In a real scenario, we'd capture the new version from stdout
         # For simulation, we'll just note it.
-        logs.append(f"Simulated version increment to a new version.")
+        logs.append("Simulated version increment to a new version.")
 
         # 2. Publish command
         publish_command = "pnpm publish"

@@ -36,10 +36,9 @@ class SvgToComponent(Action[Inputs, Outputs]):
         # Add props to the svg tag
         svg_code = svg_code.replace("<svg", "<svg {{...props}}")
         # Naive camelCase conversion for attributes like 'stroke-width'
-        svg_code = re.sub(
+        return re.sub(
             r"(\w+)-(\w+)=", lambda m: f"{m.group(1)}{m.group(2).capitalize()}=", svg_code
         )
-        return svg_code
 
     async def run(self, inputs: Inputs) -> Outputs:
         icons_dir = "components/ui/icons"

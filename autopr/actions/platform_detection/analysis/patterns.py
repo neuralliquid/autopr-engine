@@ -5,7 +5,7 @@ Pattern matching classes for file analysis.
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, Pattern, Union
+from re import Pattern
 
 
 @dataclass
@@ -21,14 +21,15 @@ class BasePattern:
     def __post_init__(self):
         """Validate the pattern after initialization."""
         if not 0.0 <= self.confidence <= 1.0:
-            raise ValueError(f"Confidence must be between 0.0 and 1.0, got {self.confidence}")
+            msg = f"Confidence must be between 0.0 and 1.0, got {self.confidence}"
+            raise ValueError(msg)
 
 
 @dataclass
 class ContentPattern(BasePattern):
     """Pattern for matching content within files."""
 
-    pattern: Union[str, Pattern[str]]
+    pattern: str | Pattern[str]
     """The regex pattern to search for in file content."""
 
     def __post_init__(self):
@@ -85,8 +86,9 @@ class CompositePattern(BasePattern):
     def __post_init__(self):
         """Validate the operator."""
         super().__post_init__()
-        if self.operator not in ("and", "or"):
-            raise ValueError(f"Operator must be 'and' or 'or', got {self.operator}")
+        if self.operator not in {"and", "or"}:
+            msg = f"Operator must be 'and' or 'or', got {self.operator}"
+            raise ValueError(msg)
 
     def matches(self, target) -> bool:
         """Check if the combined patterns match the target."""
@@ -97,5 +99,5 @@ class CompositePattern(BasePattern):
 
         if self.operator == "and":
             return all(results)
-        else:  # "or"
-            return any(results)
+        # "or"
+        return any(results)

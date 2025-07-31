@@ -14,7 +14,7 @@ platform_info:
   pricing_model: "Open-source with cloud hosting options"
   target_audience: "Developers, technical teams, businesses requiring advanced automation"
   primary_use_cases: ["Workflow automation", "Multi-agent AI systems", "Data processing", "API integrations", "Custom business logic"]
-  
+
   key_features:
     - "Highly customizable AI workflow automation"
     - "Self-hosting options for data privacy"

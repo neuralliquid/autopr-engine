@@ -44,7 +44,7 @@ from .providers import (
 from .types import LLMConfig, LLMProviderType, LLMResponse, Message, MessageRole
 
 # Global provider manager instance
-_provider_manager: Optional[LLMProviderManager] = None
+_provider_manager: LLMProviderManager | None = None
 
 
 def get_llm_provider_manager() -> LLMProviderManager:
@@ -60,7 +60,7 @@ def get_llm_provider_manager() -> LLMProviderManager:
         return _provider_manager
 
     # Load configuration from environment
-    config: Dict[str, Any] = {
+    config: dict[str, Any] = {
         "default_provider": os.getenv("AUTOPR_DEFAULT_LLM_PROVIDER", "openai"),
         "fallback_order": os.getenv("AUTOPR_LLM_FALLBACK_ORDER", "openai,anthropic,mistral").split(
             ","
@@ -105,9 +105,9 @@ def get_llm_provider_manager() -> LLMProviderManager:
 
 
 def complete_chat(
-    messages: List[Dict[str, str]],
-    model: Optional[str] = None,
-    provider: Optional[str] = None,
+    messages: list[dict[str, str]],
+    model: str | None = None,
+    provider: str | None = None,
     **kwargs: Any,
 ) -> LLMResponse:
     """
@@ -122,7 +122,7 @@ def complete_chat(
     Returns:
         LLMResponse: The completion response from the LLM provider
     """
-    request: Dict[str, Any] = {
+    request: dict[str, Any] = {
         "messages": messages,
         "model": model,
         **kwargs,
@@ -143,24 +143,24 @@ def complete_chat(
 
 # Export all public components
 __all__ = [
-    # Types
-    "MessageRole",
-    "Message",
-    "LLMProviderType",
-    "LLMConfig",
-    "LLMResponse",
+    "AnthropicProvider",
     # Base classes
     "BaseLLMProvider",
+    "GroqProvider",
+    "LLMConfig",
     # Manager
     "LLMProviderManager",
+    "LLMProviderType",
+    "LLMResponse",
+    "Message",
+    # Types
+    "MessageRole",
+    "MistralProvider",
     # Providers
     "OpenAIProvider",
-    "AnthropicProvider",
-    "GroqProvider",
-    "MistralProvider",
     "PerplexityProvider",
     "TogetherAIProvider",
+    "complete_chat",
     # Factory functions
     "get_llm_provider_manager",
-    "complete_chat",
 ]

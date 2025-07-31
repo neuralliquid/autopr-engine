@@ -1,5 +1,4 @@
 import os
-from typing import List
 
 import pydantic
 
@@ -8,7 +7,7 @@ from autopr.actions.base import Action
 
 class Inputs(pydantic.BaseModel):
     route_name: str
-    http_methods: List[str] = ["GET"]
+    http_methods: list[str] = ["GET"]
 
 
 class Outputs(pydantic.BaseModel):

@@ -3,12 +3,11 @@ Phase Manager for Implementation Roadmap
 Handles phase orchestration, dependency management, and execution flow
 """
 
-import asyncio
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Set
+from typing import Any
 
-from .task_definitions import ImplementationPhases, Phase, Task, TaskRegistry
+from .task_definitions import ImplementationPhases, Phase, TaskRegistry
 from .task_executor import TaskExecution, TaskExecutor
 
 
@@ -19,15 +18,15 @@ class PhaseExecution:
     phase_name: str
     status: str  # "running", "completed", "failed", "paused"
     start_time: datetime
-    end_time: Optional[datetime] = None
-    completed_tasks: List[str] = field(default_factory=list)
-    failed_tasks: List[str] = field(default_factory=list)
-    skipped_tasks: List[str] = field(default_factory=list)
-    task_executions: Dict[str, TaskExecution] = field(default_factory=dict)
-    error_message: Optional[str] = None
+    end_time: datetime | None = None
+    completed_tasks: list[str] = field(default_factory=list)
+    failed_tasks: list[str] = field(default_factory=list)
+    skipped_tasks: list[str] = field(default_factory=list)
+    task_executions: dict[str, TaskExecution] = field(default_factory=dict)
+    error_message: str | None = None
 
     @property
-    def duration(self) -> Optional[float]:
+    def duration(self) -> float | None:
         """Get phase execution duration in seconds"""
         if self.end_time and self.start_time:
             return (self.end_time - self.start_time).total_seconds()
@@ -53,19 +52,21 @@ class PhaseManager:
         self.task_registry = task_registry
         self.task_executor = task_executor
         self.phases = ImplementationPhases()
-        self.phase_executions: Dict[str, PhaseExecution] = {}
-        self.current_phase: Optional[str] = None
+        self.phase_executions: dict[str, PhaseExecution] = {}
+        self.current_phase: str | None = None
         self._paused = False
 
     async def execute_phase(self, phase_name: str, dry_run: bool = False) -> PhaseExecution:
         """Execute a specific implementation phase"""
         phase = self.phases.get_phase(phase_name)
         if not phase:
-            raise ValueError(f"Unknown phase: {phase_name}")
+            msg = f"Unknown phase: {phase_name}"
+            raise ValueError(msg)
 
         # Check dependencies
         if not await self._check_phase_dependencies(phase):
-            raise ValueError(f"Phase dependencies not met for: {phase_name}")
+            msg = f"Phase dependencies not met for: {phase_name}"
+            raise ValueError(msg)
 
         # Initialize phase execution
         execution = PhaseExecution(
@@ -119,7 +120,7 @@ class PhaseManager:
 
         return execution
 
-    async def execute_all_phases(self, dry_run: bool = False) -> Dict[str, PhaseExecution]:
+    async def execute_all_phases(self, dry_run: bool = False) -> dict[str, PhaseExecution]:
         """Execute all phases in dependency order"""
         phase_order = ["immediate", "medium", "strategic"]
         results = {}
@@ -157,7 +158,7 @@ class PhaseManager:
                 return False
         return True
 
-    def _resolve_task_dependencies(self, task_names: List[str]) -> List[str]:
+    def _resolve_task_dependencies(self, task_names: list[str]) -> list[str]:
         """Resolve task execution order based on dependencies"""
         # Simple topological sort for task dependencies
         visited = set()
@@ -194,9 +195,7 @@ class PhaseManager:
         """Determine if a task is critical for phase success"""
         # For now, consider all immediate phase tasks as critical
         immediate_phase = self.phases.get_phase("immediate")
-        if immediate_phase and task_name in immediate_phase.tasks:
-            return True
-        return False
+        return bool(immediate_phase and task_name in immediate_phase.tasks)
 
     def pause_execution(self) -> None:
         """Pause phase execution"""
@@ -218,7 +217,7 @@ class PhaseManager:
                 if task_name in self.task_executor.executions:
                     del self.task_executor.executions[task_name]
 
-    def get_phase_progress(self, phase_name: str) -> Dict[str, Any]:
+    def get_phase_progress(self, phase_name: str) -> dict[str, Any]:
         """Get progress information for a specific phase"""
         execution = self.phase_executions.get(phase_name)
         if not execution:
@@ -249,7 +248,7 @@ class PhaseManager:
             "end_time": execution.end_time.isoformat() if execution.end_time else None,
         }
 
-    def get_overall_progress(self) -> Dict[str, Any]:
+    def get_overall_progress(self) -> dict[str, Any]:
         """Get overall implementation progress across all phases"""
         all_phases = ["immediate", "medium", "strategic"]
         total_tasks = 0
@@ -277,7 +276,7 @@ class PhaseManager:
             "phases": phase_progress,
         }
 
-    def get_next_steps(self) -> List[Dict[str, Any]]:
+    def get_next_steps(self) -> list[dict[str, Any]]:
         """Get recommended next steps based on current progress"""
         next_steps = []
 
@@ -342,7 +341,7 @@ class PhaseManager:
 
         return next_steps
 
-    def get_phase_summary(self) -> Dict[str, Any]:
+    def get_phase_summary(self) -> dict[str, Any]:
         """Get comprehensive summary of all phases"""
         summary = {
             "execution_summary": self.get_overall_progress(),

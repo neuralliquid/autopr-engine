@@ -1,15 +1,19 @@
 # 10. Monitoring and Observability
 
 ## Status
+
 Proposed
 
 ## Context
+
 AutoPR requires comprehensive monitoring to ensure reliability, performance, and quick issue resolution.
 
 ## Decision
+
 We will implement a multi-layered observability strategy:
 
 ### 1. Metrics Collection
+
 - **Application Metrics**
   - Request rates, error rates, latency
   - Resource utilization (CPU, memory, disk I/O)
@@ -21,7 +25,9 @@ We will implement a multi-layered observability strategy:
   - Cache hit/miss ratios
 
 ### 2. Logging Strategy
+
 - **Structured Logging**
+
   ```python
   logger.info(
       "Processing PR",
@@ -42,6 +48,7 @@ We will implement a multi-layered observability strategy:
   - TRACE: Very verbose debugging
 
 ### 3. Distributed Tracing
+
 - **Trace Context Propagation**
   - W3C Trace Context standard
   - Unique trace and span IDs
@@ -53,6 +60,7 @@ We will implement a multi-layered observability strategy:
   - Configurable per service
 
 ### 4. Alerting Strategy
+
 - **Error Budgets**
   - 99.9% success rate target
   - 95th percentile latency < 500ms
@@ -66,6 +74,7 @@ We will implement a multi-layered observability strategy:
 ## Implementation
 
 ### Tools
+
 - **Metrics**: Prometheus + Grafana
 - **Logging**: ELK Stack (Elasticsearch, Logstash, Kibana)
 - **Tracing**: Jaeger
@@ -73,7 +82,9 @@ We will implement a multi-layered observability strategy:
 - **Synthetics**: Blackbox exporter
 
 ### Code Example: Decorator for Metrics
+
 ```python
+
 def track_metrics(name):
     def decorator(func):
         @wraps(func)
@@ -95,21 +106,26 @@ def track_metrics(name):
 ```
 
 ## Consequences
+
 ### Positive
+
 - Proactive issue detection
 - Faster MTTR (Mean Time To Resolution)
 - Data-driven capacity planning
 - Better user experience
 
 ### Negative
+
 - Infrastructure overhead
 - Storage costs for logs/metrics
 - Alert fatigue if not tuned
 
 ### Neutral
+
 - Learning curve for new tools
 - Ongoing maintenance
 
 ## Related Decisions
+
 - [ADR-0009: Error Handling Strategy](0009-error-handling-strategy.md)
 - [ADR-0011: Deployment Strategy](0011-deployment-strategy.md)

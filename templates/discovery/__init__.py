@@ -17,6 +17,12 @@ Main Components:
 - template_browser: Template discovery and browsing
 """
 
+from templates.discovery.template_validators import (
+    ValidationIssue,
+    ValidationSeverity,
+    ValidatorRegistry,
+)
+
 from .content_analyzer import ContentAnalyzer
 from .docs_generator import TemplateDocumentationGenerator
 from .format_generators import (
@@ -34,36 +40,35 @@ from .report_generators import HTMLReportGenerator, JSONReportGenerator, Markdow
 from .report_generators import ReportGeneratorFactory as QAReportGeneratorFactory
 from .template_browser import TemplateBrowser, TemplateInfo
 from .template_loader import TemplateLoader
-from .template_validators import ValidationIssue, ValidationSeverity, ValidatorRegistry
 from .validation_rules import ValidationRuleLoader
 
 __all__ = [
-    # Template loading and analysis
-    "TemplateLoader",
-    "ContentAnalyzer",
     # Format generators
     "BaseFormatGenerator",
-    "MarkdownGenerator",
-    "HTMLGenerator",
-    "JSONGenerator",
+    "ContentAnalyzer",
     "FormatGeneratorFactory",
-    # Validation system
-    "ValidationIssue",
-    "ValidationSeverity",
-    "ValidatorRegistry",
-    "ValidationRuleLoader",
-    # Quality metrics
-    "QualityMetrics",
-    "QualityAnalyzer",
-    "QualityScorer",
+    "HTMLGenerator",
+    "HTMLReportGenerator",
+    "JSONGenerator",
     # Report generators
     "JSONReportGenerator",
+    "MarkdownGenerator",
     "MarkdownReportGenerator",
-    "HTMLReportGenerator",
     "QAReportGeneratorFactory",
+    "QualityAnalyzer",
     # Main systems
     "QualityAssuranceFramework",
-    "TemplateDocumentationGenerator",
+    # Quality metrics
+    "QualityMetrics",
+    "QualityScorer",
     "TemplateBrowser",
+    "TemplateDocumentationGenerator",
     "TemplateInfo",
+    # Template loading and analysis
+    "TemplateLoader",
+    # Validation system
+    "ValidationIssue",
+    "ValidationRuleLoader",
+    "ValidationSeverity",
+    "ValidatorRegistry",
 ]

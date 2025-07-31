@@ -1,10 +1,13 @@
 # 7. Authentication & Authorization
 
 ## Status
+
 Proposed
 
 ## Context
+
 AutoPR needs a robust security model to:
+
 - Secure API endpoints
 - Manage user identities
 - Control access to resources
@@ -12,21 +15,24 @@ AutoPR needs a robust security model to:
 - Handle service-to-service auth
 
 ## Decision
+
 We will implement a flexible authentication and authorization system with these components:
 
 ### Authentication
+
 1. **JWT-based Authentication**
-   - Short-lived access tokens (15-30 min)
-   - Refresh tokens for session management
-   - Stateless validation using public/private key pairs
+    - Short-lived access tokens (15-30 min)
+    - Refresh tokens for session management
+    - Stateless validation using public/private key pairs
 
-2. **Supported Identity Providers**
-   - GitHub OAuth (primary)
-   - Email/Password (for local development)
-   - Service Accounts (for CI/CD)
-   - SSO (SAML/OIDC for enterprise)
+1. **Supported Identity Providers**
+    - GitHub OAuth (primary)
+    - Email/Password (for local development)
+    - Service Accounts (for CI/CD)
+    - SSO (SAML/OIDC for enterprise)
 
-3. **Token Structure**
+1. **Token Structure**
+
    ```json
    {
      "sub": "user:123",
@@ -41,23 +47,26 @@ We will implement a flexible authentication and authorization system with these 
    ```
 
 ### Authorization
+
 1. **Role-Based Access Control (RBAC)**
-   - Predefined roles (admin, maintainer, developer, reader)
-   - Custom roles with granular permissions
-   - Organization-level and repository-level permissions
+    - Predefined roles (admin, maintainer, developer, reader)
+    - Custom roles with granular permissions
+    - Organization-level and repository-level permissions
 
-2. **Attribute-Based Access Control (ABAC)**
-   - Fine-grained permissions based on resource attributes
-   - Time-based access controls
-   - IP-based restrictions
+1. **Attribute-Based Access Control (ABAC)**
+    - Fine-grained permissions based on resource attributes
+    - Time-based access controls
+    - IP-based restrictions
 
-3. **Policy as Code**
-   - Rego (Open Policy Agent) for complex policies
-   - GitOps-friendly policy definitions
-   - Policy testing framework
+1. **Policy as Code**
+    - Rego (Open Policy Agent) for complex policies
+    - GitOps-friendly policy definitions
+    - Policy testing framework
 
 ### Implementation
+
 ```python
+
 # Example FastAPI authentication middleware
 from fastapi import Request, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -90,7 +99,9 @@ async def get_repo(
 ```
 
 ## Consequences
+
 ### Positive
+
 - Strong security model
 - Flexible authentication options
 - Fine-grained access control
@@ -98,16 +109,19 @@ async def get_repo(
 - Audit logging support
 
 ### Negative
+
 - Increased complexity
 - Token management overhead
 - Learning curve for custom policies
 - Performance impact
 
 ### Neutral
+
 - Need for token rotation
 - Session management
 - Revocation handling
 
 ## Related Decisions
+
 - [ADR-0004: API Versioning Strategy](0004-api-versioning-strategy.md)
 - [ADR-0008: Audit Logging](0008-audit-logging.md)

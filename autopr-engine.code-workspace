@@ -18,8 +18,8 @@
     "python.sortImports.args": ["--profile", "black"],
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": true,
-      "source.fixAll": true
+      "source.organizeImports": "explicit",
+      "source.fixAll": "explicit"
     },
     "files.exclude": {
       "**/__pycache__": true,
@@ -79,9 +79,11 @@
     "codegpt.query.maxTokens": 1000,
     "workbench.colorTheme": "GitHub Dark Default",
     "workbench.iconTheme": "material-icon-theme",
-    "git.enableSmartCommit": true,
+    "git.enableSmartCommit": false,
     "git.confirmSync": false,
-    "git.autofetch": true,
+    "git.autofetch": false,
+    "git.showPushSuccessNotification": false,
+    "git.showCommitInput": false,
     "dockerView.autoRefresh": true,
     "thunder-client.saveToWorkspace": true,
     "rest-client.environmentVariables": {
@@ -97,7 +99,16 @@
         "baseUrl": "https://autopr.neuralliquid.com",
         "apiToken": "{{$dotenv AUTOPR_PROD_API_TOKEN}}"
       }
-    }
+    },
+    "cSpell.words": [
+      "Alertmanager",
+      "FINRA",
+      "FURB",
+      "PKCE",
+      "retryable",
+      "SPIFFE",
+      "temporalio"
+    ]
   },
   "tasks": {
     "version": "2.0.0",

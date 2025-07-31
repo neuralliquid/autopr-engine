@@ -46,11 +46,11 @@ def get_quality_analyzer() -> QualityAnalyzer:
 
 # Public API
 __all__ = [
+    "QualityAnalyzer",
     "QualityMetrics",
     "QualityScorer",
-    "QualityAnalyzer",
-    "get_quality_scorer",
     "get_quality_analyzer",
+    "get_quality_scorer",
 ]
 
 __version__ = "1.0.0"

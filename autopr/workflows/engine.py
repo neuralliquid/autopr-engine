@@ -7,10 +7,11 @@ Orchestrates workflow execution and manages workflow lifecycle.
 import asyncio
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
-from ..config import AutoPRConfig
-from ..exceptions import WorkflowError
+from autopr.config import AutoPRConfig
+from autopr.exceptions import WorkflowError
+
 from .base import Workflow
 
 logger = logging.getLogger(__name__)
@@ -31,9 +32,9 @@ class WorkflowEngine:
             config: AutoPR configuration object
         """
         self.config = config
-        self.workflows: Dict[str, Workflow] = {}
-        self.running_workflows: Dict[str, asyncio.Task] = {}
-        self.workflow_history: List[Dict[str, Any]] = []
+        self.workflows: dict[str, Workflow] = {}
+        self.running_workflows: dict[str, asyncio.Task] = {}
+        self.workflow_history: list[dict[str, Any]] = []
         self._is_running = False
 
         logger.info("Workflow engine initialized")
@@ -81,8 +82,8 @@ class WorkflowEngine:
             logger.info(f"Unregistered workflow: {workflow_name}")
 
     async def execute_workflow(
-        self, workflow_name: str, context: Dict[str, Any], workflow_id: Optional[str] = None
-    ) -> Dict[str, Any]:
+        self, workflow_name: str, context: dict[str, Any], workflow_id: str | None = None
+    ) -> dict[str, Any]:
         """
         Execute a workflow by name.
 
@@ -95,10 +96,12 @@ class WorkflowEngine:
             Workflow execution result
         """
         if not self._is_running:
-            raise WorkflowError("Workflow engine is not running", workflow_name)
+            msg = "Workflow engine is not running"
+            raise WorkflowError(msg, workflow_name)
 
         if workflow_name not in self.workflows:
-            raise WorkflowError(f"Workflow '{workflow_name}' not found", workflow_name)
+            msg = f"Workflow '{workflow_name}' not found"
+            raise WorkflowError(msg, workflow_name)
 
         workflow = self.workflows[workflow_name]
         execution_id = workflow_id or f"{workflow_name}_{datetime.now().isoformat()}"
@@ -121,15 +124,15 @@ class WorkflowEngine:
             logger.info(f"Workflow execution completed: {execution_id}")
             return result
 
-        except asyncio.TimeoutError:
+        except TimeoutError:
             error_msg = f"Workflow execution timed out: {execution_id}"
-            logger.error(error_msg)
+            logger.exception(error_msg)
             self._record_execution(execution_id, workflow_name, "timeout", {"error": error_msg})
             raise WorkflowError(error_msg, workflow_name)
 
         except Exception as e:
             error_msg = f"Workflow execution failed: {e}"
-            logger.error(f"Workflow execution failed: {execution_id} - {e}")
+            logger.exception(f"Workflow execution failed: {execution_id} - {e}")
             self._record_execution(execution_id, workflow_name, "failed", {"error": str(e)})
             raise WorkflowError(error_msg, workflow_name)
 
@@ -139,8 +142,8 @@ class WorkflowEngine:
                 del self.running_workflows[execution_id]
 
     async def _execute_workflow_task(
-        self, workflow: Workflow, context: Dict[str, Any], execution_id: str
-    ) -> Dict[str, Any]:
+        self, workflow: Workflow, context: dict[str, Any], execution_id: str
+    ) -> dict[str, Any]:
         """
         Internal method to execute workflow task.
 
@@ -165,10 +168,10 @@ class WorkflowEngine:
             return result
 
         except Exception as e:
-            logger.error(f"Workflow task execution failed: {execution_id} - {e}")
+            logger.exception(f"Workflow task execution failed: {execution_id} - {e}")
             raise
 
-    async def process_event(self, event_type: str, event_data: Dict[str, Any]) -> Dict[str, Any]:
+    async def process_event(self, event_type: str, event_data: dict[str, Any]) -> dict[str, Any]:
         """
         Process an event and trigger appropriate workflows.
 
@@ -192,7 +195,7 @@ class WorkflowEngine:
                         {"workflow": workflow_name, "status": "success", "result": result}
                     )
                 except Exception as e:
-                    logger.error(
+                    logger.exception(
                         f"Failed to execute workflow {workflow_name} for event {event_type}: {e}"
                     )
                     results.append({"workflow": workflow_name, "status": "error", "error": str(e)})
@@ -200,7 +203,7 @@ class WorkflowEngine:
         return {"event_type": event_type, "processed_workflows": len(results), "results": results}
 
     def _record_execution(
-        self, execution_id: str, workflow_name: str, status: str, result: Dict[str, Any]
+        self, execution_id: str, workflow_name: str, status: str, result: dict[str, Any]
     ) -> None:
         """Record workflow execution in history."""
         self.workflow_history.append(
@@ -217,7 +220,7 @@ class WorkflowEngine:
         if len(self.workflow_history) > 1000:
             self.workflow_history = self.workflow_history[-1000:]
 
-    def get_status(self) -> Dict[str, Any]:
+    def get_status(self) -> dict[str, Any]:
         """Get workflow engine status."""
         return {
             "running": self._is_running,
@@ -227,10 +230,10 @@ class WorkflowEngine:
             "workflows": list(self.workflows.keys()),
         }
 
-    def get_workflow_history(self, limit: int = 100) -> List[Dict[str, Any]]:
+    def get_workflow_history(self, limit: int = 100) -> list[dict[str, Any]]:
         """Get workflow execution history."""
         return self.workflow_history[-limit:]
 
-    def get_running_workflows(self) -> List[str]:
+    def get_running_workflows(self) -> list[str]:
         """Get list of currently running workflow execution IDs."""
         return list(self.running_workflows.keys())

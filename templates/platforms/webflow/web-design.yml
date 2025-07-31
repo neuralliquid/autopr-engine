@@ -37,29 +37,29 @@ variables:
     required: true
     description: "Type of website to create"
     examples: ["portfolio", "business_website", "landing_page", "blog", "ecommerce", "agency_site"]
-  
+
   design_complexity:
     type: "string"
     default: "medium"
     description: "Design complexity level"
     examples: ["simple", "medium", "complex", "custom"]
-  
+
   cms_required:
     type: "boolean"
     default: false
     description: "Whether content management system is needed"
-  
+
   ecommerce_enabled:
     type: "boolean"
     default: false
     description: "Enable e-commerce functionality"
-  
+
   animation_level:
     type: "string"
     default: "basic"
     description: "Level of animations and interactions"
     examples: ["none", "basic", "advanced", "custom"]
-  
+
   responsive_breakpoints:
     type: "array"
     default: ["desktop", "tablet", "mobile"]
@@ -80,7 +80,7 @@ variants:
       - "Blog integration"
       - "Advanced animations"
       - "Mobile-optimized design"
-  
+
   business_website:
     description: "Professional business website with CMS"
     variables:
@@ -94,7 +94,7 @@ variants:
       - "Blog and news section"
       - "Contact forms"
       - "SEO optimization"
-  
+
   ecommerce_store:
     description: "Online store with product catalog and checkout"
     variables:
@@ -188,7 +188,7 @@ examples:
       - "Blog with CMS integration"
     complexity: "high"
     estimated_time: "2-3 weeks"
-  
+
   restaurant_website:
     description: "Restaurant website with menu and reservation system"
     features:
@@ -199,7 +199,7 @@ examples:
       - "Social media integration"
     complexity: "medium"
     estimated_time: "1-2 weeks"
-  
+
   online_course_platform:
     description: "Educational platform with course listings and enrollment"
     features:

@@ -50,4 +50,4 @@ echo "🗄️ Setting up database schema..."
 # Wait for postgres (placeholder)
 # e.g., wait-for-it or custom wait loop here
 # Initialize schema (placeholder)
-# e.g., python scripts/init_db.py or similar 
+# e.g., python scripts/init_db.py or similar

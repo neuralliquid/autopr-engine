@@ -13,7 +13,7 @@ platform_info:
   pricing_model: "Freemium with Visual Focus"
   target_audience: "Designers, visual developers, entrepreneurs, agencies"
   primary_use_cases: ["Web applications", "Chrome extensions", "Progressive web apps", "Prototypes", "Web3 apps"]
-  
+
   key_features:
     - "Figma-like visual canvas for app building"
     - "Whiteboard-style interface for planning and building"

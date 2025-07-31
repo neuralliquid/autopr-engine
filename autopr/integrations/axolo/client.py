@@ -1,10 +1,9 @@
 """Main Axolo integration client."""
 
-import asyncio
 import logging
 import os
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 import aiohttp
 
@@ -29,7 +28,7 @@ class AxoloIntegration:
     - Smart reminder system
     """
 
-    def __init__(self, config: Optional[Union[Dict[str, Any], AxoloConfig]] = None) -> None:
+    def __init__(self, config: dict[str, Any] | AxoloConfig | None = None) -> None:
         """Initialize Axolo integration."""
         if config is None:
             config = {}
@@ -39,19 +38,19 @@ class AxoloIntegration:
         else:
             self.config = config
 
-        self.active_channels: Dict[str, AxoloPRChannel] = {}
-        self.session: Optional[aiohttp.ClientSession] = None
+        self.active_channels: dict[str, AxoloPRChannel] = {}
+        self.session: aiohttp.ClientSession | None = None
         self._initialized: bool = False
 
         # Integration clients
-        self.github_client: Optional[Any] = None
-        self.slack_client: Optional[Any] = None
-        self.linear_client: Optional[Any] = None
+        self.github_client: Any | None = None
+        self.slack_client: Any | None = None
+        self.linear_client: Any | None = None
 
         # Component modules
-        self.messaging: Optional[AxoloMessaging] = None
-        self.command_handler: Optional[AxoloCommandHandler] = None
-        self.reminder_service: Optional[AxoloReminderService] = None
+        self.messaging: AxoloMessaging | None = None
+        self.command_handler: AxoloCommandHandler | None = None
+        self.reminder_service: AxoloReminderService | None = None
 
     async def initialize(self) -> None:
         """Initialize the integration."""
@@ -91,9 +90,7 @@ class AxoloIntegration:
 
         try:
             # GitHub client
-            from tools.autopr.clients.github_client import (
-                GitHubClient,  # type: ignore[import-not-found]
-            )
+            from autopr.clients.github_client import GitHubClient
 
             self.github_client = GitHubClient(os.getenv("GITHUB_TOKEN"))
 
@@ -103,16 +100,14 @@ class AxoloIntegration:
             self.slack_client = AsyncWebClient(token=os.getenv("SLACK_BOT_TOKEN"))
 
             # Linear client
-            from tools.autopr.clients.linear_client import (
-                LinearClient,  # type: ignore[import-not-found]
-            )
+            from autopr.clients.linear_client import LinearClient
 
             self.linear_client = LinearClient(os.getenv("LINEAR_API_KEY"))
 
             logger.info("Integration clients initialized")
 
         except Exception as e:
-            logger.error(f"Failed to initialize clients: {str(e)}")
+            logger.exception(f"Failed to initialize clients: {e!s}")
             raise
 
     async def _load_configuration(self) -> AxoloConfig:
@@ -147,7 +142,7 @@ class AxoloIntegration:
             },
         )
 
-    async def create_pr_channel(self, pr_data: Dict[str, Any]) -> AxoloPRChannel:
+    async def create_pr_channel(self, pr_data: dict[str, Any]) -> AxoloPRChannel:
         """Create or get existing Axolo channel for PR"""
 
         pr_key = f"{pr_data['repository']}/#{pr_data['pr_number']}"
@@ -177,7 +172,7 @@ class AxoloIntegration:
         return channel
 
     async def post_autopr_analysis(
-        self, channel: AxoloPRChannel, analysis_result: Dict[str, Any]
+        self, channel: AxoloPRChannel, analysis_result: dict[str, Any]
     ) -> None:
         """Post AutoPR analysis results to Axolo channel"""
 
@@ -186,10 +181,10 @@ class AxoloIntegration:
             return
 
         # Format analysis summary
-        summary = self.messaging.format_analysis_summary(analysis_result)
+        self.messaging.format_analysis_summary(analysis_result)
 
         # Create rich Slack message
-        message: Dict[str, Any] = {
+        message: dict[str, Any] = {
             "channel": channel.channel_id,
             "blocks": [
                 {
@@ -241,7 +236,7 @@ class AxoloIntegration:
         )
 
     async def link_linear_issues(
-        self, channel: AxoloPRChannel, issues: List[Dict[str, Any]]
+        self, channel: AxoloPRChannel, issues: list[dict[str, Any]]
     ) -> None:
         """Link created Linear issues to Axolo channel"""
 
@@ -253,7 +248,7 @@ class AxoloIntegration:
             return
 
         # Create message with Linear issues
-        message: Dict[str, Any] = {
+        message: dict[str, Any] = {
             "channel": channel.channel_id,
             "blocks": [
                 {
@@ -284,7 +279,7 @@ class AxoloIntegration:
         )
 
     async def setup_ai_assignments(
-        self, channel: AxoloPRChannel, assignments: List[Dict[str, Any]]
+        self, channel: AxoloPRChannel, assignments: list[dict[str, Any]]
     ) -> None:
         """Setup AI tool assignments in channel"""
 
@@ -296,7 +291,7 @@ class AxoloIntegration:
             return
 
         # Create message with AI assignments
-        message: Dict[str, Any] = {
+        message: dict[str, Any] = {
             "channel": channel.channel_id,
             "blocks": [
                 {
@@ -327,17 +322,17 @@ class AxoloIntegration:
         )
 
     # Command handlers (delegate to command_handler)
-    async def handle_analyze_command(self, command_data: Dict[str, Any]) -> None:
+    async def handle_analyze_command(self, command_data: dict[str, Any]) -> None:
         """Handle /autopr-analyze command"""
         if self.command_handler:
             await self.command_handler.handle_analyze_command(command_data)
 
-    async def handle_status_command(self, command_data: Dict[str, Any]) -> None:
+    async def handle_status_command(self, command_data: dict[str, Any]) -> None:
         """Handle /autopr-status command"""
         if self.command_handler:
             await self.command_handler.handle_status_command(command_data)
 
-    async def handle_assign_ai_command(self, command_data: Dict[str, Any]) -> None:
+    async def handle_assign_ai_command(self, command_data: dict[str, Any]) -> None:
         """Handle /autopr-assign-ai command"""
         if self.command_handler:
             await self.command_handler.handle_assign_ai_command(command_data)

@@ -11,23 +11,34 @@ This module provides a comprehensive configuration system with:
 
 import json
 import logging
-import os
-from dataclasses import dataclass, field, fields
-from enum import Enum
+from enum import StrEnum
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Type, Union
+from typing import Any, Dict, List, Optional
 
 import yaml
-from pydantic import BaseModel, Field, SecretStr, validator
+from pydantic import BaseModel, Field, SecretStr, field_validator, validator
 
 try:
-    # Pydantic 2.0+
+    # Pydantic 2.0+ (preferred)
     from pydantic_settings import BaseSettings
 except ImportError:
-    # Fallback to Pydantic 1.x
-    from pydantic.env_settings import BaseSettings
+    try:
+        # Pydantic 1.x fallback
+        from pydantic.env_settings import BaseSettings
+    except ImportError:
+        # Final fallback - create a basic BaseSettings class
+        from pydantic import BaseModel
 
-class Environment(str, Enum):
+        class BaseSettings(BaseModel):
+            """Fallback BaseSettings implementation for compatibility."""
+
+            class Config:
+                env_file = ".env"
+                env_file_encoding = "utf-8"
+                case_sensitive = False
+
+
+class Environment(StrEnum):
     """Environment types."""
 
     DEVELOPMENT = "development"
@@ -36,7 +47,7 @@ class Environment(str, Enum):
     PRODUCTION = "production"
 
 
-class LogLevel(str, Enum):
+class LogLevel(StrEnum):
     """Logging levels."""
 
     DEBUG = "DEBUG"
@@ -46,7 +57,7 @@ class LogLevel(str, Enum):
     CRITICAL = "CRITICAL"
 
 
-class LLMProvider(str, Enum):
+class LLMProvider(StrEnum):
     """Supported LLM providers."""
 
     OPENAI = "openai"
@@ -60,18 +71,22 @@ class LLMProvider(str, Enum):
 class GitHubConfig(BaseModel):
     """GitHub integration configuration."""
 
-    token: Optional[SecretStr] = Field(None, env="GITHUB_TOKEN")
-    app_id: Optional[str] = Field(None, env="GITHUB_APP_ID")
-    private_key: Optional[SecretStr] = Field(None, env="GITHUB_PRIVATE_KEY")
-    webhook_secret: Optional[SecretStr] = Field(None, env="GITHUB_WEBHOOK_SECRET")
-    base_url: str = Field("https://api.github.com", env="GITHUB_BASE_URL")
-    timeout: int = Field(30, env="GITHUB_TIMEOUT")
-    max_retries: int = Field(3, env="GITHUB_MAX_RETRIES")
+    token: str
+    timeout: int = 30
+    base_url: str = "https://api.github.com"
 
-    @validator("timeout")
-    def validate_timeout(cls, v):
+    @field_validator("timeout")
+    @classmethod
+    def validate_timeout(cls, v: int) -> int:
         if v <= 0:
             raise ValueError("timeout must be positive")
+        return v
+
+    @field_validator("token")
+    @classmethod
+    def validate_token(cls, v: str) -> str:
+        if not v or not v.startswith(("ghp_", "github_pat_")):
+            raise ValueError("Invalid GitHub token format")
         return v
 
 
@@ -79,35 +94,35 @@ class LLMConfig(BaseModel):
     """LLM provider configuration."""
 
     default_provider: LLMProvider = Field(LLMProvider.OPENAI, env="DEFAULT_LLM_PROVIDER")
-    fallback_order: List[LLMProvider] = Field(
+    fallback_order: list[LLMProvider] = Field(
         default_factory=lambda: [LLMProvider.OPENAI, LLMProvider.ANTHROPIC, LLMProvider.MISTRAL]
     )
 
     # Provider-specific configurations
-    openai_api_key: Optional[SecretStr] = Field(None, env="OPENAI_API_KEY")
-    openai_base_url: Optional[str] = Field(None, env="OPENAI_BASE_URL")
+    openai_api_key: SecretStr | None = Field(None, env="OPENAI_API_KEY")
+    openai_base_url: str | None = Field(None, env="OPENAI_BASE_URL")
     openai_default_model: str = Field("gpt-4", env="OPENAI_DEFAULT_MODEL")
 
-    anthropic_api_key: Optional[SecretStr] = Field(None, env="ANTHROPIC_API_KEY")
-    anthropic_base_url: Optional[str] = Field(None, env="ANTHROPIC_BASE_URL")
+    anthropic_api_key: SecretStr | None = Field(None, env="ANTHROPIC_API_KEY")
+    anthropic_base_url: str | None = Field(None, env="ANTHROPIC_BASE_URL")
     anthropic_default_model: str = Field("claude-3-sonnet-20240229", env="ANTHROPIC_DEFAULT_MODEL")
 
-    mistral_api_key: Optional[SecretStr] = Field(None, env="MISTRAL_API_KEY")
-    mistral_base_url: Optional[str] = Field(None, env="MISTRAL_BASE_URL")
+    mistral_api_key: SecretStr | None = Field(None, env="MISTRAL_API_KEY")
+    mistral_base_url: str | None = Field(None, env="MISTRAL_BASE_URL")
     mistral_default_model: str = Field("mistral-large-latest", env="MISTRAL_DEFAULT_MODEL")
 
-    groq_api_key: Optional[SecretStr] = Field(None, env="GROQ_API_KEY")
-    groq_base_url: Optional[str] = Field(None, env="GROQ_BASE_URL")
+    groq_api_key: SecretStr | None = Field(None, env="GROQ_API_KEY")
+    groq_base_url: str | None = Field(None, env="GROQ_BASE_URL")
     groq_default_model: str = Field("mixtral-8x7b-32768", env="GROQ_DEFAULT_MODEL")
 
-    perplexity_api_key: Optional[SecretStr] = Field(None, env="PERPLEXITY_API_KEY")
-    perplexity_base_url: Optional[str] = Field(None, env="PERPLEXITY_BASE_URL")
+    perplexity_api_key: SecretStr | None = Field(None, env="PERPLEXITY_API_KEY")
+    perplexity_base_url: str | None = Field(None, env="PERPLEXITY_BASE_URL")
     perplexity_default_model: str = Field(
         "llama-3.1-sonar-large-128k-online", env="PERPLEXITY_DEFAULT_MODEL"
     )
 
-    together_api_key: Optional[SecretStr] = Field(None, env="TOGETHER_API_KEY")
-    together_base_url: Optional[str] = Field(None, env="TOGETHER_BASE_URL")
+    together_api_key: SecretStr | None = Field(None, env="TOGETHER_API_KEY")
+    together_base_url: str | None = Field(None, env="TOGETHER_BASE_URL")
     together_default_model: str = Field(
         "meta-llama/Llama-2-70b-chat-hf", env="TOGETHER_DEFAULT_MODEL"
     )
@@ -118,17 +133,19 @@ class LLMConfig(BaseModel):
     timeout: int = Field(60, env="LLM_TIMEOUT")
     max_retries: int = Field(3, env="LLM_MAX_RETRIES")
 
-    @validator("temperature")
+    @field_validator("temperature")
+    @classmethod
     def validate_temperature(cls, v):
         if not 0 <= v <= 2:
-            raise ValueError("temperature must be between 0 and 2")
+            msg = "temperature must be between 0 and 2"
+            raise ValueError(msg)
         return v
 
 
 class DatabaseConfig(BaseModel):
     """Database configuration."""
 
-    url: Optional[str] = Field(None, env="DATABASE_URL")
+    url: str | None = Field(None, env="DATABASE_URL")
     pool_size: int = Field(10, env="DATABASE_POOL_SIZE")
     max_overflow: int = Field(20, env="DATABASE_MAX_OVERFLOW")
     pool_timeout: int = Field(30, env="DATABASE_POOL_TIMEOUT")
@@ -139,11 +156,11 @@ class DatabaseConfig(BaseModel):
 class RedisConfig(BaseModel):
     """Redis configuration."""
 
-    url: Optional[str] = Field(None, env="REDIS_URL")
+    url: str | None = Field(None, env="REDIS_URL")
     host: str = Field("localhost", env="REDIS_HOST")
     port: int = Field(6379, env="REDIS_PORT")
     db: int = Field(0, env="REDIS_DB")
-    password: Optional[SecretStr] = Field(None, env="REDIS_PASSWORD")
+    password: SecretStr | None = Field(None, env="REDIS_PASSWORD")
     ssl: bool = Field(False, env="REDIS_SSL")
     timeout: int = Field(5, env="REDIS_TIMEOUT")
     max_connections: int = Field(50, env="REDIS_MAX_CONNECTIONS")
@@ -165,8 +182,8 @@ class MonitoringConfig(BaseModel):
     enable_metrics: bool = Field(True, env="ENABLE_METRICS")
     metrics_port: int = Field(8000, env="METRICS_PORT")
     enable_tracing: bool = Field(False, env="ENABLE_TRACING")
-    jaeger_endpoint: Optional[str] = Field(None, env="JAEGER_ENDPOINT")
-    sentry_dsn: Optional[SecretStr] = Field(None, env="SENTRY_DSN")
+    jaeger_endpoint: str | None = Field(None, env="JAEGER_ENDPOINT")
+    sentry_dsn: SecretStr | None = Field(None, env="SENTRY_DSN")
     log_level: LogLevel = Field(LogLevel.INFO, env="LOG_LEVEL")
     structured_logging: bool = Field(True, env="STRUCTURED_LOGGING")
 
@@ -174,13 +191,85 @@ class MonitoringConfig(BaseModel):
 class SecurityConfig(BaseModel):
     """Security configuration."""
 
-    secret_key: Optional[SecretStr] = Field(None, env="SECRET_KEY")
-    jwt_secret: Optional[SecretStr] = Field(None, env="JWT_SECRET")
+    secret_key: SecretStr | None = Field(None, env="SECRET_KEY")
+    jwt_secret: SecretStr | None = Field(None, env="JWT_SECRET")
     jwt_expiry: int = Field(3600, env="JWT_EXPIRY")  # seconds
     rate_limit_per_minute: int = Field(60, env="RATE_LIMIT_PER_MINUTE")
     enable_cors: bool = Field(True, env="ENABLE_CORS")
-    allowed_origins: List[str] = Field(default_factory=list, env="ALLOWED_ORIGINS")
+    allowed_origins: list[str] = Field(default_factory=list, env="ALLOWED_ORIGINS")
     enable_csrf_protection: bool = Field(True, env="ENABLE_CSRF_PROTECTION")
+
+
+class ErrorHandlerConfig(BaseModel):
+    """Error handling configuration for AI linting fixer and other components."""
+
+    # Error handling settings
+    enabled: bool = Field(True, env="ERROR_HANDLER_ENABLED")
+    log_errors: bool = Field(True, env="ERROR_HANDLER_LOG_ERRORS")
+    display_errors: bool = Field(True, env="ERROR_HANDLER_DISPLAY_ERRORS")
+    export_errors: bool = Field(False, env="ERROR_HANDLER_EXPORT_ERRORS")
+
+    # Error categorization
+    auto_categorize: bool = Field(True, env="ERROR_HANDLER_AUTO_CATEGORIZE")
+    severity_threshold: str = Field("LOW", env="ERROR_HANDLER_SEVERITY_THRESHOLD")
+
+    # Recovery settings
+    enable_recovery: bool = Field(True, env="ERROR_HANDLER_ENABLE_RECOVERY")
+    max_retry_attempts: int = Field(3, env="ERROR_HANDLER_MAX_RETRIES")
+    retry_delay_seconds: float = Field(1.0, env="ERROR_HANDLER_RETRY_DELAY")
+    exponential_backoff: bool = Field(True, env="ERROR_HANDLER_EXPONENTIAL_BACKOFF")
+
+    # Display settings
+    use_colors: bool = Field(True, env="ERROR_HANDLER_USE_COLORS")
+    use_emojis: bool = Field(True, env="ERROR_HANDLER_USE_EMOJIS")
+    verbose_mode: bool = Field(False, env="ERROR_HANDLER_VERBOSE")
+
+    # Export settings
+    export_format: str = Field("json", env="ERROR_HANDLER_EXPORT_FORMAT")
+    export_directory: str = Field("./logs", env="ERROR_HANDLER_EXPORT_DIR")
+    auto_export: bool = Field(False, env="ERROR_HANDLER_AUTO_EXPORT")
+
+    # Callback settings
+    enable_callbacks: bool = Field(True, env="ERROR_HANDLER_ENABLE_CALLBACKS")
+    external_notifications: bool = Field(False, env="ERROR_HANDLER_EXTERNAL_NOTIFICATIONS")
+
+    # Integration settings
+    integrate_with_logging: bool = Field(True, env="ERROR_HANDLER_INTEGRATE_LOGGING")
+    integrate_with_metrics: bool = Field(True, env="ERROR_HANDLER_INTEGRATE_METRICS")
+    integrate_with_workflows: bool = Field(True, env="ERROR_HANDLER_INTEGRATE_WORKFLOWS")
+
+
+class AILintingConfig(BaseModel):
+    """AI Linting Fixer specific configuration."""
+
+    # Core settings
+    enabled: bool = Field(True, env="AI_LINTING_ENABLED")
+    default_provider: str = Field("openai", env="AI_LINTING_DEFAULT_PROVIDER")
+    default_model: str = Field("gpt-4", env="AI_LINTING_DEFAULT_MODEL")
+
+    # Processing settings
+    max_workers: int = Field(4, env="AI_LINTING_MAX_WORKERS")
+    max_fixes_per_run: int = Field(10, env="AI_LINTING_MAX_FIXES")
+    timeout_seconds: int = Field(300, env="AI_LINTING_TIMEOUT")
+
+    # Fix types
+    default_fix_types: list[str] = Field(
+        default_factory=lambda: ["E501", "F401", "F841", "E722", "B001"],
+        env="AI_LINTING_DEFAULT_FIX_TYPES",
+    )
+
+    # Quality settings
+    confidence_threshold: float = Field(0.7, env="AI_LINTING_CONFIDENCE_THRESHOLD")
+    syntax_validation: bool = Field(True, env="AI_LINTING_SYNTAX_VALIDATION")
+    create_backups: bool = Field(True, env="AI_LINTING_CREATE_BACKUPS")
+
+    # Error handling integration
+    error_handler: ErrorHandlerConfig = Field(default_factory=ErrorHandlerConfig)
+
+    # Performance settings
+    enable_metrics: bool = Field(True, env="AI_LINTING_ENABLE_METRICS")
+    enable_database_logging: bool = Field(True, env="AI_LINTING_DATABASE_LOGGING")
+    enable_orchestration: bool = Field(False, env="AI_LINTING_ENABLE_ORCHESTRATION")
 
 
 class AutoPRSettings(BaseSettings):
@@ -204,9 +293,10 @@ class AutoPRSettings(BaseSettings):
     workflow: WorkflowConfig = Field(default_factory=WorkflowConfig)
     monitoring: MonitoringConfig = Field(default_factory=MonitoringConfig)
     security: SecurityConfig = Field(default_factory=SecurityConfig)
+    ai_linting: AILintingConfig = Field(default_factory=AILintingConfig)
 
     # Custom settings for extensions
-    custom: Dict[str, Any] = Field(default_factory=dict)
+    custom: dict[str, Any] = Field(default_factory=dict)
 
     class Config:
         env_file = ".env"
@@ -228,7 +318,7 @@ class AutoPRSettings(BaseSettings):
 
         if env_config_file.exists():
             try:
-                with open(env_config_file, "r", encoding="utf-8") as f:
+                with open(env_config_file, encoding="utf-8") as f:
                     env_config = yaml.safe_load(f)
 
                 if env_config:
@@ -250,7 +340,7 @@ class AutoPRSettings(BaseSettings):
         for config_path in config_paths:
             if config_path.exists():
                 try:
-                    with open(config_path, "r", encoding="utf-8") as f:
+                    with open(config_path, encoding="utf-8") as f:
                         custom_config = yaml.safe_load(f)
 
                     if custom_config:
@@ -259,7 +349,7 @@ class AutoPRSettings(BaseSettings):
                 except Exception as e:
                     logging.warning(f"Failed to load custom config from {config_path}: {e}")
 
-    def _apply_config_overrides(self, overrides: Dict[str, Any]) -> None:
+    def _apply_config_overrides(self, overrides: dict[str, Any]) -> None:
         """Apply configuration overrides."""
         for key, value in overrides.items():
             if hasattr(self, key):
@@ -276,7 +366,7 @@ class AutoPRSettings(BaseSettings):
                 # Store in custom settings
                 self.custom[key] = value
 
-    def validate_configuration(self) -> List[str]:
+    def validate_configuration(self) -> list[str]:
         """
         Validate the complete configuration.
 
@@ -314,7 +404,7 @@ class AutoPRSettings(BaseSettings):
 
         return errors
 
-    def get_provider_config(self, provider: LLMProvider) -> Dict[str, Any]:
+    def get_provider_config(self, provider: LLMProvider) -> dict[str, Any]:
         """Get configuration for a specific LLM provider."""
         provider_configs = {
             LLMProvider.OPENAI: {
@@ -362,7 +452,7 @@ class AutoPRSettings(BaseSettings):
 
         return config
 
-    def to_safe_dict(self) -> Dict[str, Any]:
+    def to_safe_dict(self) -> dict[str, Any]:
         """
         Convert settings to dictionary with sensitive data masked.
 
@@ -373,16 +463,15 @@ class AutoPRSettings(BaseSettings):
         def mask_secrets(obj):
             if isinstance(obj, SecretStr):
                 return "***" if obj else None
-            elif isinstance(obj, BaseModel):
-                return {k: mask_secrets(v) for k, v in obj.dict().items()}
-            elif isinstance(obj, dict):
+            if isinstance(obj, BaseModel):
+                return {k: mask_secrets(v) for k, v in obj.model_dump().items()}
+            if isinstance(obj, dict):
                 return {k: mask_secrets(v) for k, v in obj.items()}
-            elif isinstance(obj, list):
+            if isinstance(obj, list):
                 return [mask_secrets(item) for item in obj]
-            else:
-                return obj
+            return obj
 
-        return mask_secrets(self.dict())
+        return mask_secrets(self.model_dump())
 
     def reload(self) -> None:
         """Reload configuration from all sources."""
@@ -390,7 +479,7 @@ class AutoPRSettings(BaseSettings):
         self._load_custom_config()
 
     @classmethod
-    def from_file(cls, config_path: Union[str, Path]) -> "AutoPRSettings":
+    def from_file(cls, config_path: str | Path) -> "AutoPRSettings":
         """
         Create settings instance from configuration file.
 
@@ -402,21 +491,23 @@ class AutoPRSettings(BaseSettings):
         """
         config_path = Path(config_path)
         if not config_path.exists():
-            raise FileNotFoundError(f"Configuration file not found: {config_path}")
+            msg = f"Configuration file not found: {config_path}"
+            raise FileNotFoundError(msg)
 
-        with open(config_path, "r", encoding="utf-8") as f:
-            if config_path.suffix.lower() in [".yaml", ".yml"]:
+        with open(config_path, encoding="utf-8") as f:
+            if config_path.suffix.lower() in {".yaml", ".yml"}:
                 config_data = yaml.safe_load(f)
             elif config_path.suffix.lower() == ".json":
                 config_data = json.load(f)
             else:
-                raise ValueError(f"Unsupported configuration file format: {config_path.suffix}")
+                msg = f"Unsupported configuration file format: {config_path.suffix}"
+                raise ValueError(msg)
 
         return cls(**config_data)
 
 
 # Global settings instance
-_settings: Optional[AutoPRSettings] = None
+_settings: AutoPRSettings | None = None
 
 
 def get_settings() -> AutoPRSettings:

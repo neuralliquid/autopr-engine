@@ -20,7 +20,6 @@ class DeleteBranch(Action[Inputs, Outputs]):
     id = "delete_branch"
 
     async def run(self, inputs: Inputs) -> Outputs:
-        print(f"--- Deleting Branch: {inputs.branch_name} ---")
         # In a real implementation, you would run 'git branch -d' and 'git push origin --delete'
         # For simulation, just print and return success
         return Outputs(

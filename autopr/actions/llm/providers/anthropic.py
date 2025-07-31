@@ -2,19 +2,16 @@
 Anthropic Claude provider implementation.
 """
 
-from typing import TYPE_CHECKING, Any, Dict, List
+from typing import Any
 
-from ..base import BaseLLMProvider
-from ..types import LLMResponse
-
-if TYPE_CHECKING:
-    import anthropic
+from autopr.actions.llm.base import BaseLLMProvider
+from autopr.actions.llm.types import LLMResponse
 
 
 class AnthropicProvider(BaseLLMProvider):
     """Anthropic Claude provider."""
 
-    def __init__(self, config: Dict[str, Any]) -> None:
+    def __init__(self, config: dict[str, Any]) -> None:
         super().__init__(config)
         try:
             import anthropic
@@ -24,7 +21,7 @@ class AnthropicProvider(BaseLLMProvider):
         except ImportError:
             self.available = False
 
-    def complete(self, request: Dict[str, Any]) -> LLMResponse:
+    def complete(self, request: dict[str, Any]) -> LLMResponse:
         try:
             messages = request.get("messages", [])
             model = request.get("model", self.default_model) or "claude-3-sonnet-20240229"
@@ -33,7 +30,7 @@ class AnthropicProvider(BaseLLMProvider):
 
             # Convert messages to Anthropic format
             system_prompt = ""
-            converted_messages: List[Dict[str, str]] = []
+            converted_messages: list[dict[str, str]] = []
 
             for msg in messages:
                 role = msg.get("role", "user")
@@ -47,7 +44,7 @@ class AnthropicProvider(BaseLLMProvider):
                     converted_messages.append({"role": role, "content": content})
 
             # Prepare system parameter - use NotGiven if empty
-            system_param = system_prompt.strip() if system_prompt.strip() else None
+            system_param = system_prompt.strip() or None
 
             # Call the API
             if system_param:
@@ -90,7 +87,7 @@ class AnthropicProvider(BaseLLMProvider):
 
         except Exception as e:
             return LLMResponse.from_error(
-                f"Error calling Anthropic API: {str(e)}",
+                f"Error calling Anthropic API: {e!s}",
                 str(request.get("model") or "claude-3-sonnet-20240229"),
             )
 

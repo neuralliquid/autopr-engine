@@ -3,10 +3,9 @@ AutoPR Action: Mem0 Memory Integration
 Advanced memory system using Mem0 for persistent, intelligent memory across interactions.
 """
 
-import json
 import os
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from pydantic import BaseModel
 
@@ -20,27 +19,28 @@ except ImportError:
 
 class Mem0MemoryInputs(BaseModel):
     action_type: str  # "add_memory", "search_memory", "get_insights", "update_memory"
-    user_id: Optional[str] = None
+    user_id: str | None = None
     agent_id: str = "autopr_agent"
-    memory_content: Optional[str] = None
-    metadata: Dict[str, Any] = {}
-    query: Optional[str] = None
-    memory_id: Optional[str] = None
+    memory_content: str | None = None
+    metadata: dict[str, Any] = {}
+    query: str | None = None
+    memory_id: str | None = None
 
 
 class Mem0MemoryOutputs(BaseModel):
     success: bool
-    memories: List[Dict[str, Any]] = []
-    insights: List[str] = []
-    memory_id: Optional[str] = None
-    relevance_scores: Dict[str, float] = {}
-    error_message: Optional[str] = None
+    memories: list[dict[str, Any]] = []
+    insights: list[str] = []
+    memory_id: str | None = None
+    relevance_scores: dict[str, float] = {}
+    error_message: str | None = None
 
 
 class Mem0MemoryManager:
     def __init__(self) -> None:
         if not MEM0_AVAILABLE:
-            raise ImportError("Mem0 not installed. Install with: pip install mem0ai")
+            msg = "Mem0 not installed. Install with: pip install mem0ai"
+            raise ImportError(msg)
 
         # Initialize Mem0 with configuration
         config = {
@@ -103,7 +103,7 @@ class Mem0MemoryManager:
             )
 
         except Exception as e:
-            return Mem0MemoryOutputs(success=False, error_message=f"Failed to add memory: {str(e)}")
+            return Mem0MemoryOutputs(success=False, error_message=f"Failed to add memory: {e!s}")
 
     def search_memory(self, inputs: Mem0MemoryInputs) -> Mem0MemoryOutputs:
         """Search for relevant memories based on query."""
@@ -137,7 +137,7 @@ class Mem0MemoryManager:
 
         except Exception as e:
             return Mem0MemoryOutputs(
-                success=False, error_message=f"Failed to search memories: {str(e)}"
+                success=False, error_message=f"Failed to search memories: {e!s}"
             )
 
     def get_insights(self, inputs: Mem0MemoryInputs) -> Mem0MemoryOutputs:
@@ -183,14 +183,12 @@ class Mem0MemoryManager:
             return Mem0MemoryOutputs(success=True, insights=insights, memories=all_memories)
 
         except Exception as e:
-            return Mem0MemoryOutputs(
-                success=False, error_message=f"Failed to get insights: {str(e)}"
-            )
+            return Mem0MemoryOutputs(success=False, error_message=f"Failed to get insights: {e!s}")
 
     def update_memory(self, inputs: Mem0MemoryInputs) -> Mem0MemoryOutputs:
         """Update an existing memory."""
         try:
-            result = self.memory.update(
+            self.memory.update(
                 memory_id=inputs.memory_id,
                 data=inputs.memory_content,
                 user_id=inputs.user_id,
@@ -210,9 +208,7 @@ class Mem0MemoryManager:
             )
 
         except Exception as e:
-            return Mem0MemoryOutputs(
-                success=False, error_message=f"Failed to update memory: {str(e)}"
-            )
+            return Mem0MemoryOutputs(success=False, error_message=f"Failed to update memory: {e!s}")
 
     def record_fix_pattern(
         self,
@@ -220,7 +216,7 @@ class Mem0MemoryManager:
         fix_type: str,
         success: bool,
         user_id: str,
-        context: Dict[str, Any],
+        context: dict[str, Any],
     ) -> bool:
         """Record a fix pattern for future learning."""
         memory_content = f"Applied {fix_type} fix for {comment_type} comment with {'success' if success else 'failure'}"
@@ -246,7 +242,7 @@ class Mem0MemoryManager:
         user_id: str,
         preference_type: str,
         preference_value: str,
-        context: Dict[str, Any],
+        context: dict[str, Any],
     ) -> bool:
         """Record user preferences for personalized interactions."""
         memory_content = f"User {user_id} prefers {preference_value} for {preference_type}"
@@ -268,7 +264,7 @@ class Mem0MemoryManager:
 
     def get_relevant_patterns(
         self, comment_type: str, file_path: str, user_id: str
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Get relevant fix patterns based on context."""
         query = (
             f"fix patterns for {comment_type} comments in {os.path.splitext(file_path)[1]} files"
@@ -280,12 +276,11 @@ class Mem0MemoryManager:
 
         if result.success:
             # Filter for fix patterns
-            fix_patterns = [
+            return [
                 m
                 for m in result.memories
                 if m.get("metadata", {}).get("memory_type") == "fix_pattern"
             ]
-            return fix_patterns
 
         return []
 
@@ -303,17 +298,16 @@ def mem0_memory_action(inputs: Mem0MemoryInputs) -> Mem0MemoryOutputs:
 
         if inputs.action_type == "add_memory":
             return manager.add_memory(inputs)
-        elif inputs.action_type == "search_memory":
+        if inputs.action_type == "search_memory":
             return manager.search_memory(inputs)
-        elif inputs.action_type == "get_insights":
+        if inputs.action_type == "get_insights":
             return manager.get_insights(inputs)
-        elif inputs.action_type == "update_memory":
+        if inputs.action_type == "update_memory":
             return manager.update_memory(inputs)
-        else:
-            return Mem0MemoryOutputs(
-                success=False,
-                error_message=f"Unknown action type: {inputs.action_type}",
-            )
+        return Mem0MemoryOutputs(
+            success=False,
+            error_message=f"Unknown action type: {inputs.action_type}",
+        )
 
     except Exception as e:
-        return Mem0MemoryOutputs(success=False, error_message=f"Mem0 operation failed: {str(e)}")
+        return Mem0MemoryOutputs(success=False, error_message=f"Mem0 operation failed: {e!s}")

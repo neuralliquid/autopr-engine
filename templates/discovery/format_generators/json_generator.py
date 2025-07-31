@@ -8,9 +8,10 @@ Generates documentation in JSON format.
 
 import json
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any
 
-from ..content_analyzer import TemplateAnalysis
+from discovery.content_analyzer import TemplateAnalysis
+
 from .base import BaseFormatGenerator
 
 
@@ -78,13 +79,13 @@ class JSONGenerator(BaseFormatGenerator):
         }
         return json.dumps(data, indent=2, ensure_ascii=False)
 
-    def generate_main_index(self, analyses: List[TemplateAnalysis]) -> str:
+    def generate_main_index(self, analyses: list[TemplateAnalysis]) -> str:
         """Generate main documentation index in JSON format."""
         return self.generate_summary_data(analyses)
 
-    def generate_comparison_guide(self, platform_analyses: List[TemplateAnalysis]) -> str:
+    def generate_comparison_guide(self, platform_analyses: list[TemplateAnalysis]) -> str:
         """Generate platform comparison guide in JSON format."""
-        comparison: Dict[str, Any] = {
+        comparison: dict[str, Any] = {
             "generated_at": datetime.now().isoformat(),
             "comparison_type": "platform_comparison",
             "total_platforms": len(platform_analyses),
@@ -105,9 +106,9 @@ class JSONGenerator(BaseFormatGenerator):
 
         return json.dumps(comparison, indent=2, ensure_ascii=False)
 
-    def generate_summary_data(self, analyses: List[TemplateAnalysis]) -> str:
+    def generate_summary_data(self, analyses: list[TemplateAnalysis]) -> str:
         """Generate summary data for all templates."""
-        summary: Dict[str, Any] = {
+        summary: dict[str, Any] = {
             "generated_at": datetime.now().isoformat(),
             "total_templates": len(analyses),
             "categories": {},

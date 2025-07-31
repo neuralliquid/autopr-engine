@@ -11,14 +11,14 @@ from .task_definitions import Task, TaskRegistry
 from .task_executor import TaskExecution, TaskExecutor
 
 __all__ = [
-    "Task",
-    "TaskRegistry",
-    "TaskExecutor",
-    "TaskExecution",
-    "PhaseManager",
-    "PhaseExecution",
-    "ReportGenerator",
     "Phase1ExtensionImplementor",
+    "PhaseExecution",
+    "PhaseManager",
+    "ReportGenerator",
+    "Task",
+    "TaskExecution",
+    "TaskExecutor",
+    "TaskRegistry",
 ]
 
 __version__ = "1.0.0"

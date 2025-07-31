@@ -13,7 +13,7 @@ platform_info:
   pricing_model: "Usage-based with Free Tier"
   target_audience: "Frontend developers, no-code builders, agencies, startups"
   primary_use_cases: ["API backends", "Database management", "Business logic", "User authentication", "File storage"]
-  
+
   key_features:
     - "Visual API builder with no-code logic"
     - "Relational database with PostgreSQL foundation"

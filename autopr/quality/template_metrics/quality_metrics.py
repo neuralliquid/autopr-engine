@@ -75,21 +75,21 @@ def batch_analyze_templates(template_metrics):
 
 # Export all public classes and functions
 __all__ = [
+    "DEFAULT_CATEGORY_WEIGHTS",
+    "DEFAULT_SEVERITY_WEIGHTS",
+    # Constants
+    "QUALITY_GRADES",
+    "QualityAnalyzer",
     # Core classes
     "QualityMetrics",
     "QualityScorer",
-    "QualityAnalyzer",
-    # Constants
-    "QUALITY_GRADES",
-    "DEFAULT_SEVERITY_WEIGHTS",
-    "DEFAULT_CATEGORY_WEIGHTS",
-    # Factory functions
-    "get_quality_scorer",
-    "get_quality_analyzer",
-    "create_quality_scorer",
-    "create_quality_analyzer",
-    # Convenience functions
-    "calculate_quality_metrics",
     "analyze_template_quality",
     "batch_analyze_templates",
+    # Convenience functions
+    "calculate_quality_metrics",
+    "create_quality_analyzer",
+    "create_quality_scorer",
+    "get_quality_analyzer",
+    # Factory functions
+    "get_quality_scorer",
 ]

@@ -15,22 +15,22 @@ from .task_definitions import ImplementationPhases, Phase, Task, TaskRegistry
 from .task_executor import TaskExecution, TaskExecutor
 
 __all__ = [
-    # Main orchestrator
-    "Phase1ExtensionImplementor",
-    "get_phase1_implementor",
-    "reset_global_implementor",
-    # Task system
-    "Task",
-    "TaskRegistry",
-    "TaskExecutor",
-    "TaskExecution",
+    "ImplementationPhases",
     # Phase system
     "Phase",
-    "ImplementationPhases",
-    "PhaseManager",
+    # Main orchestrator
+    "Phase1ExtensionImplementor",
     "PhaseExecution",
+    "PhaseManager",
     # Reporting
     "ReportGenerator",
+    # Task system
+    "Task",
+    "TaskExecution",
+    "TaskExecutor",
+    "TaskRegistry",
+    "get_phase1_implementor",
+    "reset_global_implementor",
 ]
 
 # Package metadata

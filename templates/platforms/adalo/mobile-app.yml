@@ -38,34 +38,34 @@ variables:
     required: true
     description: "Primary category of the mobile app"
     examples: ["social", "ecommerce", "productivity", "fitness", "education", "business", "marketplace"]
-  
+
   user_authentication:
     type: "boolean"
     default: true
     description: "Enable user registration and login"
-  
+
   database_complexity:
     type: "string"
     default: "medium"
     description: "Complexity of data relationships"
     examples: ["simple", "medium", "complex"]
-  
+
   monetization_model:
     type: "string"
     default: "none"
     description: "App monetization strategy"
     examples: ["none", "subscription", "one_time_purchase", "freemium", "ads"]
-  
+
   push_notifications:
     type: "boolean"
     default: true
     description: "Enable push notification functionality"
-  
+
   offline_capability:
     type: "boolean"
     default: false
     description: "Enable offline data access"
-  
+
   social_features:
     type: "array"
     default: []
@@ -88,7 +88,7 @@ variants:
       - "In-app messaging"
       - "Payment processing"
       - "Rating and review system"
-  
+
   fitness_tracker:
     description: "Personal fitness and workout tracking app"
     variables:
@@ -103,7 +103,7 @@ variants:
       - "Goal setting and achievements"
       - "Social sharing and challenges"
       - "Integration with fitness devices"
-  
+
   local_business_app:
     description: "App for local businesses to engage customers"
     variables:
@@ -204,7 +204,7 @@ examples:
     complexity: "high"
     estimated_time: "4-6 weeks"
     estimated_actions: "5000-8000/month"
-  
+
   event_management_app:
     description: "Community event discovery and management"
     features:
@@ -217,7 +217,7 @@ examples:
     complexity: "medium"
     estimated_time: "3-4 weeks"
     estimated_actions: "2000-4000/month"
-  
+
   learning_platform_app:
     description: "Mobile learning platform with courses and quizzes"
     features:

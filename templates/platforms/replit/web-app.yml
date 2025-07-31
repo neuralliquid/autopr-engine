@@ -25,25 +25,25 @@ variables:
     required: true
     description: "Name of your application project"
     examples: ["TaskTracker", "BlogEngine", "APIService"]
-  
+
   primary_language:
     type: "string"
     default: "javascript"
     description: "Primary programming language for the project"
     examples: ["javascript", "python", "java", "cpp", "go", "rust", "typescript"]
-  
+
   app_type:
     type: "string"
     required: true
     description: "Type of application you're building"
     examples: ["web_app", "api_service", "cli_tool", "game", "data_analysis", "bot"]
-  
+
   framework:
     type: "string"
     default: "express"
     description: "Framework or library to use (language-dependent)"
     examples: ["express", "react", "vue", "django", "flask", "spring", "gin"]
-  
+
   collaboration_type:
     type: "string"
     default: "solo"
@@ -58,7 +58,7 @@ variants:
       - line: 15
         action: "add_after"
         content: "- Database integration (SQLite, PostgreSQL, MongoDB)\n- ORM/ODM setup and configuration\n- Database migration scripts"
-  
+
   with_ai_assistance:
     name: "With Enhanced AI Features"
     description: "Leverages Replit's AI for code generation and debugging"
@@ -66,7 +66,7 @@ variants:
       - line: 20
         action: "add_after"
         content: "- AI-powered code completion\n- Automated debugging assistance\n- Code explanation and documentation\n- Refactoring suggestions"
-  
+
   with_deployment:
     name: "With Production Deployment"
     description: "Includes production deployment configuration"
@@ -99,13 +99,13 @@ language_specific_configs:
     package_manager: "npm"
     entry_point: "index.js"
     common_dependencies: ["express", "cors", "dotenv", "nodemon"]
-  
+
   python:
     frameworks: ["django", "flask", "fastapi", "streamlit"]
     package_manager: "pip"
     entry_point: "main.py"
     common_dependencies: ["flask", "requests", "python-dotenv"]
-  
+
   java:
     frameworks: ["spring", "spark", "vertx"]
     package_manager: "maven"
@@ -117,12 +117,12 @@ ai_assistance_features:
     - "Generate functions from natural language descriptions"
     - "Create boilerplate code for common patterns"
     - "Implement algorithms and data structures"
-  
+
   debugging:
     - "Identify and explain errors"
     - "Suggest fixes for common issues"
     - "Optimize code performance"
-  
+
   documentation:
     - "Generate code comments and docstrings"
     - "Create README files and documentation"
@@ -133,7 +133,7 @@ collaboration_features:
     - "Multiple cursors and simultaneous editing"
     - "Live code sharing and review"
     - "Integrated chat and voice communication"
-  
+
   version_control:
     - "Built-in Git integration"
     - "Branch management and merging"
@@ -144,7 +144,7 @@ dependencies:
     - "Replit account and appropriate subscription"
     - "Basic programming knowledge in chosen language"
     - "Project requirements and specifications"
-  
+
   optional:
     - "Custom domain for deployment"
     - "External database services"
@@ -156,13 +156,13 @@ best_practices:
     - "Use AI assistance for learning and productivity"
     - "Leverage real-time collaboration for code reviews"
     - "Keep dependencies minimal and up-to-date"
-  
+
   collaboration:
     - "Establish coding standards and conventions"
     - "Use meaningful commit messages"
     - "Communicate changes through integrated chat"
     - "Regular code reviews and pair programming"
-  
+
   deployment:
     - "Test thoroughly before publishing"
     - "Use environment variables for configuration"
@@ -193,7 +193,7 @@ examples:
       - models/ (data models)
       - middleware/ (custom middleware)
       - package.json (dependencies)
-  
+
   react_dashboard:
     name: "React Analytics Dashboard"
     description: "Interactive dashboard with data visualization"
@@ -210,7 +210,7 @@ examples:
       - src/services/ (API calls)
       - public/ (static assets)
       - package.json (dependencies)
-  
+
   python_ml_service:
     name: "Python Machine Learning Service"
     description: "ML model serving API with data processing"

@@ -7,7 +7,7 @@ Base classes and interfaces for AI/LLM provider implementation.
 import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +18,7 @@ class LLMMessage:
 
     role: str  # 'system', 'user', 'assistant'
     content: str
-    metadata: Optional[Dict[str, Any]] = None
+    metadata: dict[str, Any] | None = None
 
     def __post_init__(self) -> None:
         if self.metadata is None:
@@ -31,8 +31,8 @@ class LLMResponse:
 
     content: str
     model: str
-    usage: Optional[Dict[str, int]] = None  # token usage info
-    metadata: Optional[Dict[str, Any]] = None
+    usage: dict[str, int] | None = None  # token usage info
+    metadata: dict[str, Any] | None = None
 
     def __post_init__(self) -> None:
         if self.usage is None:
@@ -60,32 +60,30 @@ class LLMProvider(ABC):
         self.name: str = name
         self.description: str = description
         self.version: str = version
-        self.config: Dict[str, Any] = {}
-        self.supported_models: List[str] = []
+        self.config: dict[str, Any] = {}
+        self.supported_models: list[str] = []
         self.default_model: str = ""
-        self._client: Optional[Dict[str, Any]] = None
+        self._client: dict[str, Any] | None = None
         self._is_initialized: bool = False
 
     @abstractmethod
-    async def initialize(self, config: Dict[str, Any]) -> None:
+    async def initialize(self, config: dict[str, Any]) -> None:
         """
         Initialize the LLM provider with configuration.
 
         Args:
             config: Provider configuration
         """
-        pass
 
     @abstractmethod
     async def cleanup(self) -> None:
         """Clean up provider resources."""
-        pass
 
     @abstractmethod
     async def generate_completion(
         self,
-        messages: List[LLMMessage],
-        model: Optional[str] = None,
+        messages: list[LLMMessage],
+        model: str | None = None,
         temperature: float = 0.7,
         max_tokens: int = 1000,
         **kwargs: Any,
@@ -103,13 +101,12 @@ class LLMProvider(ABC):
         Returns:
             LLM response
         """
-        pass
 
     @abstractmethod
     async def generate_stream_completion(
         self,
-        messages: List[LLMMessage],
-        model: Optional[str] = None,
+        messages: list[LLMMessage],
+        model: str | None = None,
         temperature: float = 0.7,
         max_tokens: int = 1000,
         **kwargs: Any,
@@ -127,17 +124,15 @@ class LLMProvider(ABC):
         Yields:
             Partial LLM responses
         """
-        pass
 
     @abstractmethod
-    async def health_check(self) -> Dict[str, Any]:
+    async def health_check(self) -> dict[str, Any]:
         """
         Perform health check on the provider.
 
         Returns:
             Health status dictionary
         """
-        pass
 
     def supports_model(self, model: str) -> bool:
         """
@@ -151,7 +146,7 @@ class LLMProvider(ABC):
         """
         return model in self.supported_models
 
-    def get_metadata(self) -> Dict[str, Any]:
+    def get_metadata(self) -> dict[str, Any]:
         """
         Get provider metadata.
 
@@ -178,7 +173,7 @@ class OpenAIProvider(LLMProvider):
 
     def __init__(self) -> None:
         super().__init__(name="openai", description="OpenAI GPT models provider", version="1.0.0")
-        self.supported_models: List[str] = [
+        self.supported_models: list[str] = [
             "gpt-4",
             "gpt-4-turbo",
             "gpt-3.5-turbo",
@@ -186,12 +181,13 @@ class OpenAIProvider(LLMProvider):
         ]
         self.default_model: str = "gpt-4"
 
-    async def initialize(self, config: Dict[str, Any]) -> None:
+    async def initialize(self, config: dict[str, Any]) -> None:
         """Initialize OpenAI provider."""
         if "api_key" not in config:
-            raise ValueError("OpenAI API key is required")
+            msg = "OpenAI API key is required"
+            raise ValueError(msg)
 
-        self.config: Dict[str, Any] = config
+        self.config: dict[str, Any] = config
 
         try:
             # TODO: Initialize actual OpenAI client
@@ -201,7 +197,7 @@ class OpenAIProvider(LLMProvider):
             logger.info("OpenAI provider initialized successfully")
 
         except Exception as e:
-            logger.error(f"Failed to initialize OpenAI provider: {e}")
+            logger.exception(f"Failed to initialize OpenAI provider: {e}")
             raise
 
     async def cleanup(self) -> None:
@@ -212,15 +208,16 @@ class OpenAIProvider(LLMProvider):
 
     async def generate_completion(
         self,
-        messages: List[LLMMessage],
-        model: Optional[str] = None,
+        messages: list[LLMMessage],
+        model: str | None = None,
         temperature: float = 0.7,
         max_tokens: int = 1000,
         **kwargs: Any,
     ) -> LLMResponse:
         """Generate completion using OpenAI API."""
         if not self._is_initialized:
-            raise RuntimeError("OpenAI provider not initialized")
+            msg = "OpenAI provider not initialized"
+            raise RuntimeError(msg)
 
         model = model or self.default_model
 
@@ -234,15 +231,16 @@ class OpenAIProvider(LLMProvider):
 
     async def generate_stream_completion(
         self,
-        messages: List[LLMMessage],
-        model: Optional[str] = None,
+        messages: list[LLMMessage],
+        model: str | None = None,
         temperature: float = 0.7,
         max_tokens: int = 1000,
         **kwargs: Any,
     ) -> Any:
         """Generate streaming completion using OpenAI API."""
         if not self._is_initialized:
-            raise RuntimeError("OpenAI provider not initialized")
+            msg = "OpenAI provider not initialized"
+            raise RuntimeError(msg)
 
         model = model or self.default_model
 
@@ -254,7 +252,7 @@ class OpenAIProvider(LLMProvider):
             usage={"prompt_tokens": 50, "completion_tokens": 100, "total_tokens": 150},
         )
 
-    async def health_check(self) -> Dict[str, Any]:
+    async def health_check(self) -> dict[str, Any]:
         """Perform OpenAI API health check."""
         if not self._is_initialized:
             return {"status": "unhealthy", "message": "Provider not initialized"}
@@ -279,19 +277,20 @@ class AnthropicProvider(LLMProvider):
             description="Anthropic Claude models provider",
             version="1.0.0",
         )
-        self.supported_models: List[str] = [
+        self.supported_models: list[str] = [
             "claude-3-opus-20240229",
             "claude-3-sonnet-20240229",
             "claude-3-haiku-20240307",
         ]
         self.default_model: str = "claude-3-sonnet-20240229"
 
-    async def initialize(self, config: Dict[str, Any]) -> None:
+    async def initialize(self, config: dict[str, Any]) -> None:
         """Initialize Anthropic provider."""
         if "api_key" not in config:
-            raise ValueError("Anthropic API key is required")
+            msg = "Anthropic API key is required"
+            raise ValueError(msg)
 
-        self.config: Dict[str, Any] = config
+        self.config: dict[str, Any] = config
 
         try:
             # TODO: Initialize actual Anthropic client
@@ -301,7 +300,7 @@ class AnthropicProvider(LLMProvider):
             logger.info("Anthropic provider initialized successfully")
 
         except Exception as e:
-            logger.error(f"Failed to initialize Anthropic provider: {e}")
+            logger.exception(f"Failed to initialize Anthropic provider: {e}")
             raise
 
     async def cleanup(self) -> None:
@@ -312,15 +311,16 @@ class AnthropicProvider(LLMProvider):
 
     async def generate_completion(
         self,
-        messages: List[LLMMessage],
-        model: Optional[str] = None,
+        messages: list[LLMMessage],
+        model: str | None = None,
         temperature: float = 0.7,
         max_tokens: int = 1000,
         **kwargs: Any,
     ) -> LLMResponse:
         """Generate completion using Anthropic API."""
         if not self._is_initialized:
-            raise RuntimeError("Anthropic provider not initialized")
+            msg = "Anthropic provider not initialized"
+            raise RuntimeError(msg)
 
         model = model or self.default_model
 
@@ -333,15 +333,16 @@ class AnthropicProvider(LLMProvider):
 
     async def generate_stream_completion(
         self,
-        messages: List[LLMMessage],
-        model: Optional[str] = None,
+        messages: list[LLMMessage],
+        model: str | None = None,
         temperature: float = 0.7,
         max_tokens: int = 1000,
         **kwargs: Any,
     ) -> Any:
         """Generate streaming completion using Anthropic API."""
         if not self._is_initialized:
-            raise RuntimeError("Anthropic provider not initialized")
+            msg = "Anthropic provider not initialized"
+            raise RuntimeError(msg)
 
         model = model or self.default_model
 
@@ -352,7 +353,7 @@ class AnthropicProvider(LLMProvider):
             usage={"input_tokens": 50, "output_tokens": 100},
         )
 
-    async def health_check(self) -> Dict[str, Any]:
+    async def health_check(self) -> dict[str, Any]:
         """Perform Anthropic API health check."""
         if not self._is_initialized:
             return {"status": "unhealthy", "message": "Provider not initialized"}

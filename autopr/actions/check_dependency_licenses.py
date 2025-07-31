@@ -1,6 +1,5 @@
 import asyncio
 import json
-from typing import Dict, List
 
 import pydantic
 
@@ -8,7 +7,7 @@ from autopr.actions.base import Action
 
 
 class Inputs(pydantic.BaseModel):
-    allowed_licenses: List[str] = [
+    allowed_licenses: list[str] = [
         "MIT",
         "ISC",
         "Apache-2.0",
@@ -19,7 +18,7 @@ class Inputs(pydantic.BaseModel):
 
 class Outputs(pydantic.BaseModel):
     success: bool
-    forbidden_packages: List[Dict]
+    forbidden_packages: list[dict]
     log: str
 
 
@@ -31,7 +30,7 @@ class CheckDependencyLicenses(Action[Inputs, Outputs]):
     id = "check_dependency_licenses"
 
     async def run(self, inputs: Inputs) -> Outputs:
-        command = f"npx license-checker --json"
+        command = "npx license-checker --json"
 
         process = await asyncio.create_subprocess_shell(
             command,

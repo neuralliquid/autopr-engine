@@ -1,6 +1,5 @@
 import asyncio
-import json
-from typing import Any, Dict, List
+from typing import Any
 
 import pydantic
 
@@ -14,7 +13,7 @@ class Inputs(pydantic.BaseModel):
 class Outputs(pydantic.BaseModel):
     success: bool
     report: str
-    vulnerabilities: List[Dict[str, Any]]
+    vulnerabilities: list[dict[str, Any]]
 
 
 class RunSecurityAudit(Action[Inputs, Outputs]):

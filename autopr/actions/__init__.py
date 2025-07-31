@@ -1,5 +1,6 @@
 """
-AutoPR Engine Actions
+AutoPR Engine Actions.
+
 Core automation actions for GitHub PR processing
 """
 
@@ -8,31 +9,8 @@ Core automation actions for GitHub PR processing
 
 from typing import TYPE_CHECKING, Any, Optional, Type
 
-if TYPE_CHECKING:
-    from .ai_comment_analyzer import AICommentAnalyzer as _AICommentAnalyzer
-    from .ai_implementation_roadmap import AIImplementationRoadmap as _AIImplementationRoadmap
-    from .apply_git_patch import ApplyGitPatch as _ApplyGitPatch
-    from .autogen_implementation import AutoGenImplementation as _AutoGenImplementation
-    from .autogen_multi_agent import AutoGenAgentSystem as _AutoGenAgentSystem
-    from .create_or_update_issue import CreateOrUpdateIssue as _CreateOrUpdateIssue
-    from .generate_release_notes import GenerateReleaseNotes as _GenerateReleaseNotes
-    from .handle_pr_comment import PRCommentHandler as _PRCommentHandler
-    from .issue_creator import IssueCreator as _IssueCreator
-    from .label_pr import LabelPR as _LabelPR
-    from .learning_memory_system import LearningMemorySystem as _LearningMemorySystem
-    from .llm import LLMProviderManager as _LLMProviderManager
-    from .mem0_memory_integration import Mem0MemoryManager as _Mem0MemoryManager
-    from .multi_platform_integrator import MultiPlatformIntegrator as _MultiPlatformIntegrator
-    from .platform_detector import PlatformDetector as _PlatformDetector
-    from .platform_detector_enhanced import PlatformDetector as _PlatformDetector
-    from .post_comment import PostComment as _PostComment
-    from .prototype_enhancer import PrototypeEnhancer as _PrototypeEnhancer
-    from .quality_gates import QualityGates as _QualityGates
-    from .run_security_audit import RunSecurityAudit as _RunSecurityAudit
-    from .visual_regression_test import VisualRegressionTest as _VisualRegressionTest
-
 # Import action classes with error handling for optional dependencies
-PlatformDetector: Optional[Type[Any]] = None
+PlatformDetector: type[Any] | None = None
 try:
     from .platform_detector_enhanced import PlatformDetector as _RealPlatformDetector
 
@@ -40,7 +18,7 @@ try:
 except ImportError:
     pass
 
-PrototypeEnhancer: Optional[Type[Any]] = None
+PrototypeEnhancer: type[Any] | None = None
 try:
     from .prototype_enhancer import PrototypeEnhancer as _RealPrototypeEnhancer
 
@@ -48,7 +26,7 @@ try:
 except ImportError:
     pass
 
-PlatformDetector: Optional[Type[Any]] = None
+PlatformDetector: type[Any] | None = None
 try:
     from .platform_detector import PlatformDetector as _RealPlatformDetector
 
@@ -56,7 +34,7 @@ try:
 except ImportError:
     pass
 
-AutoGenImplementation: Optional[Type[Any]] = None
+AutoGenImplementation: type[Any] | None = None
 try:
     from .autogen_implementation import AutoGenImplementation as _RealAutoGenImplementation
 
@@ -64,7 +42,7 @@ try:
 except ImportError:
     pass
 
-IssueCreator: Optional[Type[Any]] = None
+IssueCreator: type[Any] | None = None
 try:
     from .issue_creator import IssueCreator as _RealIssueCreator
 
@@ -72,7 +50,7 @@ try:
 except ImportError:
     pass
 
-LLMProviderManager: Optional[Type[Any]] = None
+LLMProviderManager: type[Any] | None = None
 try:
     from .llm import LLMProviderManager as _RealLLMProviderManager
 
@@ -80,7 +58,7 @@ try:
 except ImportError:
     pass
 
-AutoGenAgentSystem: Optional[Type[Any]] = None
+AutoGenAgentSystem: type[Any] | None = None
 try:
     from .autogen_multi_agent import AutoGenAgentSystem as _RealAutoGenAgentSystem
 
@@ -88,7 +66,7 @@ try:
 except ImportError:
     pass
 
-Mem0MemoryManager: Optional[Type[Any]] = None
+Mem0MemoryManager: type[Any] | None = None
 try:
     from .mem0_memory_integration import Mem0MemoryManager as _RealMem0MemoryManager
 
@@ -96,7 +74,7 @@ try:
 except ImportError:
     pass
 
-QualityGates: Optional[Type[Any]] = None
+QualityGates: type[Any] | None = None
 try:
     from .quality_gates import QualityGates as _RealQualityGates
 
@@ -104,7 +82,7 @@ try:
 except ImportError:
     pass
 
-LearningMemorySystem: Optional[Type[Any]] = None
+LearningMemorySystem: type[Any] | None = None
 try:
     from .learning_memory_system import LearningMemorySystem as _RealLearningMemorySystem
 
@@ -112,7 +90,7 @@ try:
 except ImportError:
     pass
 
-MultiPlatformIntegrator: Optional[Type[Any]] = None
+MultiPlatformIntegrator: type[Any] | None = None
 try:
     from .multi_platform_integrator import MultiPlatformIntegrator as _RealMultiPlatformIntegrator
 
@@ -120,7 +98,7 @@ try:
 except ImportError:
     pass
 
-AICommentAnalyzer: Optional[Type[Any]] = None
+AICommentAnalyzer: type[Any] | None = None
 try:
     from .ai_comment_analyzer import AICommentAnalyzer as _RealAICommentAnalyzer
 
@@ -128,7 +106,7 @@ try:
 except ImportError:
     pass
 
-PRCommentHandler: Optional[Type[Any]] = None
+PRCommentHandler: type[Any] | None = None
 try:
     from .handle_pr_comment import PRCommentHandler as _RealPRCommentHandler
 
@@ -137,7 +115,7 @@ except ImportError:
     pass
 
 # Utility actions
-LabelPR: Optional[Type[Any]] = None
+LabelPR: type[Any] | None = None
 try:
     from .label_pr import LabelPR as _RealLabelPR
 
@@ -145,7 +123,7 @@ try:
 except ImportError:
     pass
 
-PostComment: Optional[Type[Any]] = None
+PostComment: type[Any] | None = None
 try:
     from .post_comment import PostComment as _RealPostComment
 
@@ -153,7 +131,7 @@ try:
 except ImportError:
     pass
 
-CreateOrUpdateIssue: Optional[Type[Any]] = None
+CreateOrUpdateIssue: type[Any] | None = None
 try:
     from .create_or_update_issue import CreateOrUpdateIssue as _RealCreateOrUpdateIssue
 
@@ -161,7 +139,7 @@ try:
 except ImportError:
     pass
 
-ApplyGitPatch: Optional[Type[Any]] = None
+ApplyGitPatch: type[Any] | None = None
 try:
     from .apply_git_patch import ApplyGitPatch as _RealApplyGitPatch
 
@@ -169,7 +147,7 @@ try:
 except ImportError:
     pass
 
-RunSecurityAudit: Optional[Type[Any]] = None
+RunSecurityAudit: type[Any] | None = None
 try:
     from .run_security_audit import RunSecurityAudit as _RealRunSecurityAudit
 
@@ -177,7 +155,7 @@ try:
 except ImportError:
     pass
 
-CheckPerformanceBudget: Optional[Type[Any]] = None
+CheckPerformanceBudget: type[Any] | None = None
 try:
     from .check_performance_budget import CheckPerformanceBudget as _RealCheckPerformanceBudget
 
@@ -185,7 +163,7 @@ try:
 except ImportError:
     pass
 
-VisualRegressionTest: Optional[Type[Any]] = None
+VisualRegressionTest: type[Any] | None = None
 try:
     from .visual_regression_test import VisualRegressionTest as _RealVisualRegressionTest
 
@@ -193,7 +171,7 @@ try:
 except ImportError:
     pass
 
-GenerateReleaseNotes: Optional[Type[Any]] = None
+GenerateReleaseNotes: type[Any] | None = None
 try:
     from .generate_release_notes import GenerateReleaseNotes as _RealGenerateReleaseNotes
 
@@ -201,7 +179,7 @@ try:
 except ImportError:
     pass
 
-AIImplementationRoadmap: Optional[Type[Any]] = None
+AIImplementationRoadmap: type[Any] | None = None
 try:
     from .ai_implementation_roadmap import AIImplementationRoadmap
 except ImportError:
@@ -209,28 +187,28 @@ except ImportError:
 
 # All available actions
 __all__ = [
-    # Core AI-powered actions
-    "PlatformDetector",
-    "PrototypeEnhancer",
-    "PlatformDetector",
+    "AICommentAnalyzer",
+    "AIImplementationRoadmap",
+    "ApplyGitPatch",
+    "AutoGenAgentSystem",
     "AutoGenImplementation",
+    "CheckPerformanceBudget",
+    "CreateOrUpdateIssue",
+    "GenerateReleaseNotes",
     "IssueCreator",
     "LLMProviderManager",
-    "AutoGenAgentSystem",
-    "Mem0MemoryManager",
-    "QualityGates",
-    "LearningMemorySystem",
-    "MultiPlatformIntegrator",
-    "AICommentAnalyzer",
-    "PRCommentHandler",
-    "AIImplementationRoadmap",
     # Utility actions
     "LabelPR",
+    "LearningMemorySystem",
+    "Mem0MemoryManager",
+    "MultiPlatformIntegrator",
+    "PRCommentHandler",
+    # Core AI-powered actions
+    "PlatformDetector",
+    "PlatformDetector",
     "PostComment",
-    "CreateOrUpdateIssue",
-    "ApplyGitPatch",
+    "PrototypeEnhancer",
+    "QualityGates",
     "RunSecurityAudit",
-    "CheckPerformanceBudget",
     "VisualRegressionTest",
-    "GenerateReleaseNotes",
 ]

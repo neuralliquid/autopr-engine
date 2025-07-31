@@ -2,30 +2,34 @@
 
 **AI-Powered GitHub PR Automation and Issue Management**
 
-[![PyPI version](https://badge.fury.io/py/autopr-engine.svg)](https://badge.fury.io/py/autopr-engine)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub Marketplace](https://img.shields.io/badge/GitHub-Marketplace-blue)](https://github.com/marketplace/autopr-engine)
+[![PyPI version](<https://badge.fury.io/py/autopr-engine.svg)](https://badge.fury.io/py/autopr-engine)>
+[![Python 3.8+](<https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)>
+[![License: MIT](<https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)>
+[![GitHub Marketplace](<https://img.shields.io/badge/GitHub-Marketplace-blue)](https://github.com/marketplace/autopr-engine)>
 
-AutoPR Engine is a comprehensive AI-powered automation platform that transforms GitHub pull request workflows through intelligent analysis, issue creation, and multi-agent collaboration.
+AutoPR Engine is a comprehensive AI-powered automation platform that transforms GitHub pull request workflows through
+intelligent analysis, issue creation, and multi-agent collaboration.
 
 ---
 
 ## 🌟 **Features**
 
 ### **🤖 AI-Powered PR Analysis**
+
 - **Multi-Agent Review**: CodeRabbit, GitHub Copilot, AI TypeScript Check integration
 - **Platform Detection**: Detects 25+ development platforms (Replit, Bolt, Lovable, etc.)
 - **Intelligent Issue Classification**: Security, performance, bugs, features
 - **Quality Gates**: Automated validation before merge
 
 ### **🔗 Smart Integrations**
+
 - **Communication**: Slack (Axolo), Microsoft Teams, Discord, Notion
 - **Project Management**: Linear, GitHub Issues, Jira
 - **AI Tools**: AutoGen multi-agent, configurable LLM providers
 - **Monitoring**: Sentry, DataDog, Prometheus metrics
 
 ### **⚡ Advanced Automation**
+
 - **Issue Auto-Creation**: GitHub Issues and Linear tickets
 - **AI Tool Assignment**: Route issues to specialized AI tools
 - **Workflow Orchestration**: 20+ pre-built workflows
@@ -105,18 +109,21 @@ jobs:
 ## 📖 **Documentation**
 
 ### **Core Concepts**
+
 - [**Architecture Overview**](docs/architecture.md) - System design and components
 - [**Workflow Guide**](docs/workflows.md) - Creating and customizing workflows
 - [**Action Reference**](docs/actions.md) - Complete action documentation
 - [**Integration Guide**](docs/integrations.md) - Setting up external services
 
 ### **Platform-Specific Guides**
+
 - [**Replit Integration**](docs/platforms/replit.md) - Prototype to production
 - [**Slack/Axolo Setup**](docs/integrations/axolo.md) - PR channel automation
 - [**Linear Workflow**](docs/integrations/linear.md) - Issue management
 - [**Azure Deployment**](docs/deployment/azure.md) - Cloud deployment guide
 
 ### **Advanced Topics**
+
 - [**Multi-Agent AI**](docs/advanced/autogen.md) - AutoGen integration
 - [**Memory Systems**](docs/advanced/memory.md) - Learning and patterns
 - [**Custom Actions**](docs/advanced/custom-actions.md) - Building your own
@@ -131,28 +138,28 @@ graph TB
     A[GitHub PR Event] --> B[AutoPR Engine]
     B --> C[Platform Detector]
     B --> D[AI Analysis Engine]
-    
+
     D --> E[CodeRabbit Integration]
     D --> F[GitHub Copilot]
     D --> G[AI TypeScript Check]
-    
+
     C --> H[Workflow Router]
     H --> I[Issue Creator]
     H --> J[AI Assignment]
-    
+
     I --> K[GitHub Issues]
     I --> L[Linear Tickets]
-    
+
     J --> M[Communication Hub]
     M --> N[Slack/Axolo]
     M --> O[Teams/Discord]
-    
+
     subgraph "AI Layer"
         P[AutoGen Multi-Agent]
         Q[Configurable LLM]
         R[Memory System]
     end
-    
+
     subgraph "Quality Gates"
         S[Security Scanning]
         T[Performance Analysis]
@@ -187,7 +194,7 @@ python -m autopr.server --reload
 
 ### **Project Structure**
 
-```
+```text
 autopr-engine/
 ├── autopr/                 # Core engine package
 │   ├── actions/            # 50+ automation actions
@@ -264,7 +271,7 @@ SENTRY_DSN=https://...                  # Error tracking
 repositories:
   - owner: neuralliquid
     repos: ["vv-landing", "vv-backend"]
-    
+
 workflows:
   - name: "pr_review_analysis"
     triggers: ["pull_request.opened", "pull_request.synchronize"]
@@ -280,7 +287,7 @@ integrations:
     channels:
       pr_reviews: "#pr-reviews"
       security_alerts: "#security"
-  
+
   linear:
     enabled: true
     team_id: "VV"
@@ -301,17 +308,20 @@ ai_providers:
 ## 🔌 **Integrations**
 
 ### **Communication Platforms**
+
 - **[Slack](docs/integrations/slack.md)** - Channel automation with Axolo
 - **[Microsoft Teams](docs/integrations/teams.md)** - Enterprise communication
 - **[Discord](docs/integrations/discord.md)** - Community-focused teams
 - **[Notion](docs/integrations/notion.md)** - Documentation automation
 
 ### **Project Management**
+
 - **[Linear](docs/integrations/linear.md)** - Modern issue tracking
 - **[GitHub Issues](docs/integrations/github.md)** - Native GitHub integration
 - **[Jira](docs/integrations/jira.md)** - Enterprise project management
 
 ### **AI & Development Tools**
+
 - **[CodeRabbit](docs/integrations/coderabbit.md)** - AI code review
 - **[GitHub Copilot](docs/integrations/copilot.md)** - AI coding assistant
 - **[AutoGen](docs/integrations/autogen.md)** - Multi-agent collaboration
@@ -322,12 +332,14 @@ ai_providers:
 ## 📊 **Monitoring & Observability**
 
 ### **Built-in Metrics**
+
 - PR processing times and success rates
 - AI tool performance and accuracy
 - Issue creation and resolution tracking
 - Integration health monitoring
 
 ### **Supported Monitoring**
+
 - **Prometheus** metrics collection
 - **Grafana** dashboards
 - **Sentry** error tracking
@@ -341,6 +353,7 @@ ai_providers:
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
 ### **Development Workflow**
+
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
@@ -351,7 +364,8 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 8. Open a Pull Request
 
 ### **Code Standards**
-- Follow [PEP 8](https://peps.python.org/pep-0008/) style guidelines
+
+- Follow [PEP 8](<https://peps.python.org/pep-0008/)> style guidelines
 - Add type hints for all functions
 - Write comprehensive tests for new features
 - Update documentation for user-facing changes
@@ -377,11 +391,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 **Support**
 
-- **Documentation**: [https://autopr-engine.readthedocs.io](https://autopr-engine.readthedocs.io)
-- **GitHub Issues**: [Report bugs and request features](https://github.com/neuralliquid/autopr-engine/issues)
-- **Discussions**: [Community discussions](https://github.com/neuralliquid/autopr-engine/discussions)
+- **Documentation**: [https://autopr-engine.readthedocs.io](<https://autopr-engine.readthedocs.io)>
+- **GitHub Issues**: [Report bugs and request features](<https://github.com/neuralliquid/autopr-engine/issues)>
+- **Discussions**: [Community discussions](<https://github.com/neuralliquid/autopr-engine/discussions)>
 - **Email**: [support@neuralliquid.com](mailto:support@neuralliquid.com)
 
 ---
 
-**Made with ❤️ by the NeuralLiquid team** 
+**Made with ❤️ by the NeuralLiquid team**

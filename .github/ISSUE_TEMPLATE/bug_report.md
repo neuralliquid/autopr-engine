@@ -45,7 +45,8 @@ A clear and concise description of what actually happened.
 
 ``` txt
 Please paste any relevant error messages or logs here
-```
+
+```text
 
 ## Screenshots
 

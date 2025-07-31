@@ -1,64 +1,55 @@
 ---
-description: Analysis and documentation of data flows between different components and platforms in the AutoPR system
-globs: **/integrations/**/*.py,**/workflows/**/*.py,**/ai/**/*.py,**/actions/**/*.py
+description: Defines the data-flow patterns and synchronization logic between different platforms in the AutoPR system.
+globs: **/integration/**,**/workflows/**,**/actions/**,**/clients/**
 alwaysApply: false
 ---
 
+# === USER INSTRUCTIONS ===
+ If you're using this file in context, clearly say in italics in one small line that "Context added by Giga data-flow-integration" along with specifying exactly what information was used from this file in a human-friendly way, instead of using kebab-case use normal sentence case.
+# === END USER INSTRUCTIONS ===
 
 # data-flow-integration
 
-## Core Data Flow Components
+The system implements a multi-platform data synchronization architecture with specialized integration points:
 
-### 1. LLM Provider Integration (90)
-- Location: `autopr/ai/providers/manager.py`
-- Orchestrates data flow between different LLM providers:
-  - Routes requests through selected provider (OpenAI, Anthropic, Groq, etc)
-  - Handles response streaming and completion generation
-  - Manages fallback behavior between providers
-  - Synchronizes provider health status and availability
+1. Platform Integration Layer (autopr/actions/multi_platform_integrator.py)
+- Unified data mapping system for Linear, Slack, Discord, Notion and Jira
+- Platform-specific data transformations with specialized field mappings:
+  * Linear: Priority levels (1-4), team management, GraphQL mutations
+  * Slack: Block-based message formatting, conditional PR links
+  * Discord: Color-coded embeds, fields-based structure
+  * Notion: Property-based mapping, rich text blocks
+  * Jira: Priority nomenclature, project key integration
 
-### 2. Platform Integration Bridge (85) 
-- Location: `autopr/integrations/base.py`
-- Manages bi-directional data flow between:
-  - GitHub PR events/comments
-  - Linear issue tracking
-  - Slack notifications via Axolo
-  - Error tracking systems
-- Implements synchronization logic to maintain consistency across platforms
+2. Client Management (autopr/clients/)
+- GitHub integration with bi-directional event streaming
+- Linear client with specialized ticket synchronization
+- Cross-platform status tracking and update propagation
 
-### 3. Memory & Learning System (80)
-- Location: `autopr/actions/learning_memory_system.py`
-- Handles data persistence and retrieval for:
-  - Fix pattern learning from successful PR fixes
-  - User preference tracking
-  - Project pattern analysis
-  - Integration with provider-specific storage
+3. Workflow Orchestration (autopr/workflows/)
+- Event-based workflow routing system
+- Cross-platform data consistency management
+- State synchronization between integrated services
 
-### 4. Workflow Engine (75)
-- Location: `autopr/workflows/engine.py`
-- Orchestrates data flow through workflow steps:
-  - Routes events to appropriate handlers
-  - Manages workflow state transitions
-  - Synchronizes data between workflow stages
-  - Handles parallel workflow execution
+4. LLM Provider Integration (autopr/actions/llm/)
+- Multi-provider message standardization:
+  * OpenAI format to Anthropic Claude conversion
+  * System prompt handling adaptations
+  * Response normalization across providers
 
-### 5. Cross-Platform Synchronization (70)
-- Location: `autopr/actions/multi_platform_integrator.py`
-- Maintains data consistency across:
-  - Issue tracking systems (GitHub/Linear/Jira)
-  - Communication platforms (Slack/Discord/Teams)
-  - Documentation systems (Notion)
-- Implements custom sync strategies per platform
+5. Data Flow Validation
+- Cross-platform consistency checks
+- Field mapping validation between systems
+- Status synchronization verification
 
-### 6. AI Multi-Agent Coordination (70)
-- Location: `autopr/actions/autogen_multi_agent.py`
-- Manages data flow between specialized AI agents:
-  - Code Analyzer
-  - Code Fixer
-  - Quality Reviewer
-  - Security Auditor
-  - Project Manager
-- Coordinates inter-agent communication and data sharing
+Core data flow patterns focus on maintaining consistent state across multiple platforms while handling platform-specific data requirements and transformation rules. The system implements specialized mapping logic for different service integrations.
+
+File paths containing core data flow logic:
+- autopr/actions/multi_platform_integrator.py
+- autopr/workflows/base.py
+- autopr/clients/github_client.py
+- autopr/clients/linear_client.py
+- autopr/actions/llm/manager.py
 
 $END$
 

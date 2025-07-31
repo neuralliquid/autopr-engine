@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import Any
 
 import pydantic
 
@@ -11,7 +11,7 @@ class Inputs(pydantic.BaseModel):
 
 
 class Outputs(pydantic.BaseModel):
-    stale_items: List[Dict[str, Any]] = pydantic.Field(default_factory=list)
+    stale_items: list[dict[str, Any]] = pydantic.Field(default_factory=list)
     report: str = ""
 
 
@@ -23,7 +23,6 @@ class FindStaleIssuesOrPRs(Action[Inputs, Outputs]):
     id = "find_stale_issues_or_prs"
 
     async def run(self, inputs: Inputs) -> Outputs:
-        print(f"--- Finding stale {inputs.type}s older than {inputs.days_stale} days ---")
         # In a real implementation, you would use the GitHub API
         # For simulation, return a fake list
         stale = [

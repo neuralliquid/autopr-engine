@@ -12,8 +12,6 @@ Command-line interface for managing AutoPR configuration:
 
 import json
 import sys
-from pathlib import Path
-from typing import Optional
 
 import click
 
@@ -25,7 +23,6 @@ from .validation import check_environment_variables, generate_config_report, val
 @click.version_option(version="1.0.0", prog_name="autopr-config")
 def cli():
     """AutoPR Configuration Management CLI"""
-    pass
 
 
 @cli.command()
@@ -34,7 +31,7 @@ def cli():
     "--format", "-f", type=click.Choice(["text", "json"]), default="text", help="Output format"
 )
 @click.option("--verbose", "-v", is_flag=True, help="Verbose output")
-def validate(config_file: Optional[str], format: str, verbose: bool):
+def validate(config_file: str | None, format: str, verbose: bool):
     """Validate AutoPR configuration."""
     try:
         if config_file:
@@ -81,13 +78,10 @@ def validate(config_file: Optional[str], format: str, verbose: bool):
 @cli.command()
 @click.option("--config-file", "-c", type=click.Path(exists=True), help="Configuration file path")
 @click.option("--output", "-o", type=click.Path(), help="Output file path")
-def report(config_file: Optional[str], output: Optional[str]):
+def report(config_file: str | None, output: str | None):
     """Generate comprehensive configuration report."""
     try:
-        if config_file:
-            settings = AutoPRSettings.from_file(config_file)
-        else:
-            settings = get_settings()
+        settings = AutoPRSettings.from_file(config_file) if config_file else get_settings()
 
         report_content = generate_config_report(settings)
 
@@ -160,10 +154,10 @@ def check_env(format: str):
     default="yaml",
     help="Output format",
 )
-def generate(environment: str, output: Optional[str], format: str):
+def generate(environment: str, output: str | None, format: str):
     """Generate sample configuration file."""
     try:
-        env_enum = Environment(environment)
+        Environment(environment)
 
         # Sample configuration based on environment
         sample_config = {
@@ -194,7 +188,7 @@ def generate(environment: str, output: Optional[str], format: str):
             "monitoring": {
                 "log_level": "INFO" if environment == "production" else "DEBUG",
                 "enable_metrics": True,
-                "enable_tracing": environment in ["staging", "production"],
+                "enable_tracing": environment in {"staging", "production"},
                 "sentry_dsn": "${SENTRY_DSN}" if environment == "production" else None,
             },
             "security": {
@@ -250,7 +244,7 @@ def generate(environment: str, output: Optional[str], format: str):
                 "",
                 "# Additional Configuration",
                 f"MAX_CONCURRENT_WORKFLOWS={20 if environment == 'production' else 5}",
-                f"WORKFLOW_TIMEOUT=300",
+                "WORKFLOW_TIMEOUT=300",
             ]
             content = "\n".join(env_vars)
 
@@ -275,13 +269,10 @@ def generate(environment: str, output: Optional[str], format: str):
     type=click.Choice(["openai", "anthropic", "mistral", "groq", "perplexity", "together"]),
     help="Test specific LLM provider",
 )
-def test(config_file: Optional[str], provider: Optional[str]):
+def test(config_file: str | None, provider: str | None):
     """Test configuration by attempting connections."""
     try:
-        if config_file:
-            settings = AutoPRSettings.from_file(config_file)
-        else:
-            settings = get_settings()
+        settings = AutoPRSettings.from_file(config_file) if config_file else get_settings()
 
         click.echo("🧪 Testing Configuration Connections")
         click.echo("=" * 40)
@@ -333,13 +324,10 @@ def test(config_file: Optional[str], provider: Optional[str]):
 
 @cli.command()
 @click.option("--config-file", "-c", type=click.Path(exists=True), help="Configuration file path")
-def show(config_file: Optional[str]):
+def show(config_file: str | None):
     """Show current configuration (with secrets masked)."""
     try:
-        if config_file:
-            settings = AutoPRSettings.from_file(config_file)
-        else:
-            settings = get_settings()
+        settings = AutoPRSettings.from_file(config_file) if config_file else get_settings()
 
         safe_config = settings.to_safe_dict()
         click.echo("📋 Current Configuration")

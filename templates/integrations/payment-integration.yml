@@ -96,41 +96,41 @@ variables:
     required: true
     description: "Primary payment processing service"
     examples: ["stripe", "paypal", "square", "razorpay", "paddle"]
-  
+
   payment_methods:
     type: "array"
     default: ["credit_card", "debit_card"]
     description: "Supported payment methods"
     examples: [["credit_card"], ["credit_card", "paypal"], ["credit_card", "apple_pay", "google_pay"]]
-  
+
   currencies:
     type: "array"
     default: ["USD"]
     description: "Supported currencies"
     examples: [["USD"], ["USD", "EUR"], ["USD", "EUR", "GBP", "CAD"]]
-  
+
   business_model:
     type: "string"
     required: true
     description: "Primary business model requiring payments"
     examples: ["one_time_purchase", "subscription", "marketplace", "donations", "services"]
-  
+
   subscription_intervals:
     type: "array"
     default: []
     description: "Subscription billing intervals (if applicable)"
     examples: [["monthly"], ["monthly", "yearly"], ["weekly", "monthly", "quarterly", "yearly"]]
-  
+
   marketplace_features:
     type: "boolean"
     default: false
     description: "Whether to support marketplace split payments"
-  
+
   tax_calculation:
     type: "boolean"
     default: false
     description: "Whether to include automated tax calculation"
-  
+
   compliance_requirements:
     type: "array"
     default: ["pci_dss"]
@@ -145,7 +145,7 @@ variants:
       - line: 15
         action: "add_after"
         content: "- Machine learning fraud detection\n- Risk scoring and assessment\n- 3D Secure authentication\n- Velocity checking and pattern analysis"
-  
+
   with_marketplace_payments:
     name: "With Marketplace Payments"
     description: "Includes split payments, escrow, and multi-party transactions"
@@ -153,7 +153,7 @@ variants:
       - line: 20
         action: "add_after"
         content: "- Split payments to multiple recipients\n- Escrow and delayed payment release\n- Marketplace fee management\n- Vendor payout automation"
-  
+
   with_crypto_payments:
     name: "With Cryptocurrency Support"
     description: "Includes Bitcoin, Ethereum, and other cryptocurrency payment options"
@@ -178,7 +178,7 @@ platform_implementations:
       - "Set up subscription and billing management"
     estimated_time: "2-3 days"
     complexity: "medium"
-  
+
   lovable:
     approach: "Stripe integration with AI-generated payment components"
     strengths:
@@ -194,7 +194,7 @@ platform_implementations:
       - "Add payment history and receipt management"
     estimated_time: "1-2 days"
     complexity: "low_to_medium"
-  
+
   flutterflow:
     approach: "Stripe Flutter SDK with native mobile payments"
     strengths:
@@ -210,7 +210,7 @@ platform_implementations:
       - "Implement payment confirmation and receipt flows"
     estimated_time: "3-4 days"
     complexity: "medium_to_high"
-  
+
   thunkable:
     approach: "Payment API integration with visual components"
     strengths:
@@ -226,7 +226,7 @@ platform_implementations:
       - "Add payment history and receipt display"
     estimated_time: "2-3 days"
     complexity: "medium"
-  
+
   horizons:
     approach: "AI-generated payment system with hosting integration"
     strengths:
@@ -242,7 +242,7 @@ platform_implementations:
       - "Deploy with integrated hosting and SSL"
     estimated_time: "1-2 days"
     complexity: "low_to_medium"
-  
+
   replit:
     approach: "Custom payment implementation with full API control"
     strengths:
@@ -274,7 +274,7 @@ payment_providers:
       - "Configure tax calculation if needed"
     pricing: "2.9% + 30¢ per transaction (US cards)"
     compliance: "PCI DSS Level 1, SOC 2, ISO 27001"
-  
+
   paypal:
     features:
       - "PayPal, credit cards, Pay in 4"
@@ -289,7 +289,7 @@ payment_providers:
       - "Enable desired payment methods"
     pricing: "2.9% + fixed fee per transaction"
     compliance: "PCI DSS, data protection standards"
-  
+
   square:
     features:
       - "Credit cards, digital wallets, gift cards"
@@ -304,7 +304,7 @@ payment_providers:
       - "Integrate with existing systems"
     pricing: "2.9% + 30¢ per online transaction"
     compliance: "PCI DSS Level 1 certified"
-  
+
   razorpay:
     features:
       - "Credit cards, UPI, net banking, wallets"
@@ -332,7 +332,7 @@ security_implementation:
       - "Implement SSL/TLS for all transactions"
       - "Tokenize payment information"
       - "Regular security audits and updates"
-  
+
   fraud_prevention:
     measures:
       - "Address verification system (AVS)"
@@ -345,7 +345,7 @@ security_implementation:
       - "Implement risk scoring algorithms"
       - "Set up real-time fraud monitoring"
       - "Create manual review workflows"
-  
+
   data_protection:
     requirements:
       - "Encryption of payment data in transit and at rest"
@@ -365,19 +365,19 @@ subscription_management:
       - "Free trials and promotional pricing"
       - "Plan upgrades and downgrades"
       - "Proration and billing adjustments"
-    
+
     usage_based:
       - "Metered billing based on usage"
       - "Tiered pricing with volume discounts"
       - "Overage charges and limits"
       - "Real-time usage tracking"
-    
+
     hybrid:
       - "Base subscription plus usage charges"
       - "Feature-based pricing tiers"
       - "Add-on services and modules"
       - "Custom enterprise pricing"
-  
+
   lifecycle_management:
     - "Automated subscription creation and activation"
     - "Payment retry logic for failed charges"
@@ -391,13 +391,13 @@ marketplace_payments:
     - "Platform fee calculation and collection"
     - "Configurable split percentages"
     - "Real-time settlement reporting"
-  
+
   escrow_services:
     - "Hold payments until delivery confirmation"
     - "Dispute resolution and mediation"
     - "Automatic release triggers"
     - "Manual release controls"
-  
+
   vendor_management:
     - "Vendor onboarding and verification"
     - "Payout scheduling and methods"
@@ -410,13 +410,13 @@ international_considerations:
     - "Real-time exchange rate conversion"
     - "Currency-specific payment methods"
     - "Hedging and settlement options"
-  
+
   local_payment_methods:
     - "Region-specific payment preferences"
     - "Local bank transfer options"
     - "Digital wallet integrations"
     - "Cash-based payment solutions"
-  
+
   regulatory_compliance:
     - "GDPR compliance for EU customers"
     - "PSD2 strong customer authentication"
@@ -430,13 +430,13 @@ testing_and_validation:
     - "Subscription creation and billing"
     - "Refund and dispute processing"
     - "Fraud detection and prevention"
-  
+
   test_data:
     - "Test credit card numbers"
     - "Simulated payment failures"
     - "Webhook event testing"
     - "Currency conversion testing"
-  
+
   security_testing:
     - "Penetration testing for vulnerabilities"
     - "SSL/TLS configuration validation"
@@ -450,13 +450,13 @@ analytics_and_reporting:
     - "Average transaction size"
     - "Customer lifetime value"
     - "Churn and retention rates"
-  
+
   financial_reporting:
     - "Revenue recognition and accounting"
     - "Tax reporting and compliance"
     - "Reconciliation and settlement reports"
     - "Fraud and chargeback analysis"
-  
+
   business_intelligence:
     - "Payment method performance"
     - "Geographic revenue distribution"
@@ -475,7 +475,7 @@ integration_examples:
       - "Guest checkout option"
       - "Automatic tax calculation"
       - "Refund and return processing"
-  
+
   saas_platform:
     payment_provider: "stripe"
     payment_methods: ["credit_card", "bank_transfer"]
@@ -487,7 +487,7 @@ integration_examples:
       - "Plan upgrades and downgrades"
       - "Usage-based billing"
       - "Enterprise invoicing"
-  
+
   marketplace:
     payment_provider: "stripe"
     payment_methods: ["credit_card", "paypal"]

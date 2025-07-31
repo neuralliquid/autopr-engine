@@ -19,7 +19,9 @@
 ### Pricing
 
 {% for tier, details in pricing.items() %}
+
 - **{{ tier.title() }}**: {{ details }}
+
 {% endfor %}
 {% endif %}
 
@@ -28,6 +30,7 @@
 {% for var_name, var_info in variables.items() %}
 
 ### {{ var_name.replace('_', ' ').title() }}
+
 - **Type**: {{ var_info.get('type', 'string') }}
 - **Required**: {{ "Required" if var_info.get('required', False) else "Optional" }}
 - **Description**: {{ var_info.get('description', '') }}
@@ -35,13 +38,16 @@
 {% if var_info.get('examples') %}
 **Examples**:
 {% for example in var_info.examples %}
+
 - `{{ example }}`
+
 {% endfor %}
 {% endif %}
 
 {% endfor %}
 
 {% if development_approach %}
+
 ## Development Approach
 
 **Method**: {{ development_approach.get('method', 'Not specified') }}
@@ -49,6 +55,7 @@
 {{ development_approach.get('description', '') }}
 
 {% if development_approach.get('steps') %}
+
 ### Development Steps
 
 {% for step in development_approach.steps %}
@@ -58,14 +65,18 @@
 {% endif %}
 
 {% if best_practices %}
+
 ## Best Practices
 
 {% for category, practices in best_practices.items() %}
+
 ### {{ category.replace('_', ' ').title() }}
 
 {% if practices is iterable and practices is not string %}
 {% for practice in practices %}
+
 - {{ practice }}
+
 {% endfor %}
 {% else %}
 {{ practices }}
@@ -75,9 +86,11 @@
 {% endif %}
 
 {% if troubleshooting %}
+
 ## Troubleshooting
 
 {% for issue, solution in troubleshooting.items() %}
+
 ### {{ issue.replace('_', ' ').title() }}
 
 {{ solution }}

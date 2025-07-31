@@ -9,8 +9,7 @@ This directory contains organized configuration files extracted from the AutoPR 
 Platform-specific configuration files for different development platforms:
 
 - `replit.json` - Replit platform configuration
-- `lovable.json` - Lovable.dev platform configuration  
-- `bolt.json` - Bolt.new platform configuration
+- `lovable.json` - Lovable.dev platform configuration- `bolt.json` - Bolt.new platform configuration
 - `emergent.json` - Emergent.sh platform configuration
 
 ### `/packages/`
@@ -42,4 +41,5 @@ Trigger configuration files (moved from autopr/)
 
 ## Usage
 
-These configuration files are designed to be imported and used by the AutoPR engine modules instead of having hardcoded configurations embedded in Python files.
+These configuration files are designed to be imported and used by the AutoPR engine modules instead of having hardcoded
+configurations embedded in Python files.

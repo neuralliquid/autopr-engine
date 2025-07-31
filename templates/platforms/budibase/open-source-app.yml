@@ -13,7 +13,7 @@ platform_info:
   pricing_model: "Freemium with Open-Source Core"
   target_audience: "Developers, IT teams, businesses seeking data control"
   primary_use_cases: ["Internal tools", "Admin panels", "Workflow automation", "Data management apps"]
-  
+
   key_features:
     - "Open-source with self-hosting options"
     - "Drag-and-drop GUI with 30+ pre-built components"

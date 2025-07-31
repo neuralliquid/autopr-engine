@@ -9,7 +9,7 @@ This module contains the QualityScorer class which implements the core
 scoring algorithms used to calculate quality metrics from validation results.
 """
 
-from typing import Any, Dict, List
+from typing import Any
 
 from templates.discovery.template_validators import ValidationIssue, ValidationSeverity
 
@@ -28,7 +28,7 @@ class QualityScorer:
         self.category_weights = DEFAULT_CATEGORY_WEIGHTS.copy()
 
     def calculate_metrics(
-        self, issues: List[ValidationIssue], total_checks: int, template_path: str = ""
+        self, issues: list[ValidationIssue], total_checks: int, template_path: str = ""
     ) -> QualityMetrics:
         """Calculate comprehensive quality metrics."""
 
@@ -46,20 +46,20 @@ class QualityScorer:
         return metrics
 
     def _calculate_category_scores(
-        self, issues: List[ValidationIssue], total_checks: int
-    ) -> Dict[str, float]:
+        self, issues: list[ValidationIssue], total_checks: int
+    ) -> dict[str, float]:
         """Calculate scores for each category."""
         category_scores = {}
 
         # Group issues by category
-        category_issues: Dict[str, List[ValidationIssue]] = {}
+        category_issues: dict[str, list[ValidationIssue]] = {}
         for issue in issues:
             if issue.category not in category_issues:
                 category_issues[issue.category] = []
             category_issues[issue.category].append(issue)
 
         # Calculate score for each category
-        for category in self.category_weights.keys():
+        for category in self.category_weights:
             category_issue_list = category_issues.get(category, [])
 
             # Calculate penalty based on issues
@@ -80,7 +80,7 @@ class QualityScorer:
         return category_scores
 
     def _calculate_overall_score(
-        self, category_scores: Dict[str, float], issues: List[ValidationIssue]
+        self, category_scores: dict[str, float], issues: list[ValidationIssue]
     ) -> float:
         """Calculate weighted overall score."""
         if not category_scores:
@@ -111,7 +111,7 @@ class QualityScorer:
 
         return min(100.0, final_score)  # Cap at 100
 
-    def compare_metrics(self, metrics1: QualityMetrics, metrics2: QualityMetrics) -> Dict[str, Any]:
+    def compare_metrics(self, metrics1: QualityMetrics, metrics2: QualityMetrics) -> dict[str, Any]:
         """Compare two quality metrics."""
         comparison = {
             "template1": {
@@ -161,8 +161,8 @@ class QualityScorer:
 
     def update_weights(
         self,
-        severity_weights: Dict[ValidationSeverity, float] = None,
-        category_weights: Dict[str, float] = None,
+        severity_weights: dict[ValidationSeverity, float] | None = None,
+        category_weights: dict[str, float] | None = None,
     ) -> None:
         """Update scoring weights."""
         if severity_weights:
@@ -171,7 +171,7 @@ class QualityScorer:
         if category_weights:
             self.category_weights.update(category_weights)
 
-    def get_scoring_config(self) -> Dict[str, Any]:
+    def get_scoring_config(self) -> dict[str, Any]:
         """Get current scoring configuration."""
         return {
             "severity_weights": dict(self.severity_weights),

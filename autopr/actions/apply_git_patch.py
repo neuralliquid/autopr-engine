@@ -1,5 +1,3 @@
-import subprocess
-
 import pydantic
 
 from autopr.actions.base import Action
@@ -22,8 +20,6 @@ class ApplyGitPatch(Action[Inputs, Outputs]):
     id = "apply_git_patch"
 
     async def run(self, inputs: Inputs) -> Outputs:
-        print("--- Applying Git Patch ---")
-        print(inputs.patch_content)
         # In a real implementation, you would write the patch to a file and run 'git apply'
         # For simulation, just print and return success
         if not inputs.patch_content.strip():

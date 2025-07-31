@@ -16,11 +16,10 @@ import json
 from abc import ABC, abstractmethod
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
-from autopr.quality.template_metrics import QualityAnalyzer, QualityMetrics
-
-from .template_validators import ValidationIssue, ValidationSeverity
+from autopr.quality.template_metrics import QualityMetrics
+from templates.discovery.template_validators import ValidationSeverity
 
 
 class ReportGenerator(ABC):
@@ -28,19 +27,17 @@ class ReportGenerator(ABC):
 
     @abstractmethod
     def generate_report(
-        self, metrics: QualityMetrics, analysis: Optional[Dict[str, Any]] = None
+        self, metrics: QualityMetrics, analysis: dict[str, Any] | None = None
     ) -> str:
         """Generate a quality assurance report."""
-        pass
 
     @abstractmethod
     def generate_batch_report(
         self,
-        template_metrics: List[QualityMetrics],
-        batch_analysis: Optional[Dict[str, Any]] = None,
+        template_metrics: list[QualityMetrics],
+        batch_analysis: dict[str, Any] | None = None,
     ) -> str:
         """Generate a batch report for multiple templates."""
-        pass
 
 
 class JSONReportGenerator(ReportGenerator):
@@ -51,7 +48,7 @@ class JSONReportGenerator(ReportGenerator):
         self.indent = indent
 
     def generate_report(
-        self, metrics: QualityMetrics, analysis: Optional[Dict[str, Any]] = None
+        self, metrics: QualityMetrics, analysis: dict[str, Any] | None = None
     ) -> str:
         """Generate JSON report for a single template."""
         report_data = {
@@ -93,8 +90,8 @@ class JSONReportGenerator(ReportGenerator):
 
     def generate_batch_report(
         self,
-        template_metrics: List[QualityMetrics],
-        batch_analysis: Optional[Dict[str, Any]] = None,
+        template_metrics: list[QualityMetrics],
+        batch_analysis: dict[str, Any] | None = None,
     ) -> str:
         """Generate JSON batch report for multiple templates."""
         report_data = {
@@ -132,15 +129,14 @@ class MarkdownReportGenerator(ReportGenerator):
     """Generates Markdown format reports."""
 
     def generate_report(
-        self, metrics: QualityMetrics, analysis: Optional[Dict[str, Any]] = None
+        self, metrics: QualityMetrics, analysis: dict[str, Any] | None = None
     ) -> str:
         """Generate Markdown report for a single template."""
         lines = []
 
         # Header
         template_name = Path(metrics.template_path).name if metrics.template_path else "Template"
-        lines.append(f"# Quality Assurance Report: {template_name}")
-        lines.append("")
+        lines.extend((f"# Quality Assurance Report: {template_name}", ""))
 
         # Metadata
         if metrics.analysis_timestamp:
@@ -164,10 +160,14 @@ class MarkdownReportGenerator(ReportGenerator):
 
         # Category Scores
         if metrics.category_scores:
-            lines.append("### Category Scores")
-            lines.append("")
-            lines.append("| Category | Score | Status |")
-            lines.append("|----------|-------|--------|")
+            lines.extend(
+                (
+                    "### Category Scores",
+                    "",
+                    "| Category | Score | Status |",
+                    "|----------|-------|--------|",
+                )
+            )
 
             for category, score in metrics.category_scores.items():
                 status = "✅ Good" if score >= 80 else "🟡 Fair" if score >= 60 else "🔴 Poor"
@@ -176,8 +176,7 @@ class MarkdownReportGenerator(ReportGenerator):
 
         # Issues Details
         if metrics.issues:
-            lines.append("## Issues Details")
-            lines.append("")
+            lines.extend(("## Issues Details", ""))
 
             # Group issues by severity
             errors = metrics.get_issues_by_severity(ValidationSeverity.ERROR)
@@ -190,24 +189,25 @@ class MarkdownReportGenerator(ReportGenerator):
                 ("Information", info_issues, "🔵"),
             ]:
                 if issues_list:
-                    lines.append(f"### {icon} {severity_name} ({len(issues_list)})")
-                    lines.append("")
+                    lines.extend((f"### {icon} {severity_name} ({len(issues_list)})", ""))
                     for i, issue in enumerate(issues_list, 1):
-                        lines.append(f"**{i}. {issue.message}**")
-                        lines.append(f"- Category: {issue.category}")
-                        lines.append(f"- Rule: {issue.rule_id}")
+                        lines.extend(
+                            (
+                                f"**{i}. {issue.message}**",
+                                f"- Category: {issue.category}",
+                                f"- Rule: {issue.rule_id}",
+                            )
+                        )
                         if issue.suggestion:
                             lines.append(f"- Suggestion: {issue.suggestion}")
                         lines.append("")
 
         # Analysis Section
         if analysis:
-            lines.append("## Quality Analysis")
-            lines.append("")
+            lines.extend(("## Quality Analysis", ""))
 
-            if "recommendations" in analysis and analysis["recommendations"]:
-                lines.append("### 💡 Recommendations")
-                lines.append("")
+            if analysis.get("recommendations"):
+                lines.extend(("### 💡 Recommendations", ""))
                 for i, recommendation in enumerate(analysis["recommendations"], 1):
                     lines.append(f"{i}. {recommendation}")
                 lines.append("")
@@ -216,38 +216,48 @@ class MarkdownReportGenerator(ReportGenerator):
 
     def generate_batch_report(
         self,
-        template_metrics: List[QualityMetrics],
-        batch_analysis: Optional[Dict[str, Any]] = None,
+        template_metrics: list[QualityMetrics],
+        batch_analysis: dict[str, Any] | None = None,
     ) -> str:
         """Generate Markdown batch report for multiple templates."""
         lines = []
 
         # Header
-        lines.append("# Batch Quality Assurance Report")
-        lines.append("")
-        lines.append(f"**Analysis Date:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        lines.append(f"**Total Templates:** {len(template_metrics)}")
-        lines.append("")
+        lines.extend(
+            (
+                "# Batch Quality Assurance Report",
+                "",
+                f"**Analysis Date:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+                f"**Total Templates:** {len(template_metrics)}",
+                "",
+            )
+        )
 
         # Summary Statistics
         if template_metrics:
             avg_score = sum(m.overall_score for m in template_metrics) / len(template_metrics)
             total_issues = sum(len(m.issues) for m in template_metrics)
 
-            lines.append("## Summary Statistics")
-            lines.append("")
-            lines.append(f"- **Average Score:** {avg_score:.1f}/100")
-            lines.append(f"- **Total Issues:** {total_issues}")
-            lines.append(
-                f"- **Templates with Errors:** {sum(1 for m in template_metrics if m.has_critical_issues)}"
+            lines.extend(
+                (
+                    "## Summary Statistics",
+                    "",
+                    f"- **Average Score:** {avg_score:.1f}/100",
+                    f"- **Total Issues:** {total_issues}",
+                    f"- **Templates with Errors:** {sum(1 for m in template_metrics if m.has_critical_issues)}",
+                    "",
+                )
             )
-            lines.append("")
 
         # Template Overview
-        lines.append("## Template Overview")
-        lines.append("")
-        lines.append("| Template | Score | Grade | Issues | Status |")
-        lines.append("|----------|-------|-------|--------|--------|")
+        lines.extend(
+            (
+                "## Template Overview",
+                "",
+                "| Template | Score | Grade | Issues | Status |",
+                "|----------|-------|-------|--------|--------|",
+            )
+        )
 
         for metrics in sorted(template_metrics, key=lambda m: m.overall_score, reverse=True):
             template_name = Path(metrics.template_path).name if metrics.template_path else "Unknown"
@@ -268,7 +278,7 @@ class HTMLReportGenerator(ReportGenerator):
     """Generates HTML format reports with basic styling."""
 
     def generate_report(
-        self, metrics: QualityMetrics, analysis: Optional[Dict[str, Any]] = None
+        self, metrics: QualityMetrics, analysis: dict[str, Any] | None = None
     ) -> str:
         """Generate HTML report for a single template."""
         template_name = Path(metrics.template_path).name if metrics.template_path else "Template"
@@ -327,8 +337,8 @@ class HTMLReportGenerator(ReportGenerator):
 
     def generate_batch_report(
         self,
-        template_metrics: List[QualityMetrics],
-        batch_analysis: Optional[Dict[str, Any]] = None,
+        template_metrics: list[QualityMetrics],
+        batch_analysis: dict[str, Any] | None = None,
     ) -> str:
         """Generate HTML batch report for multiple templates."""
         html = f"""<!DOCTYPE html>
@@ -384,15 +394,15 @@ class ReportGeneratorFactory:
 
         if format_type == "json":
             return JSONReportGenerator()
-        elif format_type in ["markdown", "md"]:
+        if format_type in {"markdown", "md"}:
             return MarkdownReportGenerator()
-        elif format_type == "html":
+        if format_type == "html":
             return HTMLReportGenerator()
-        else:
-            raise ValueError(f"Unsupported report format: {format_type}")
+        msg = f"Unsupported report format: {format_type}"
+        raise ValueError(msg)
 
     @staticmethod
-    def get_supported_formats() -> List[str]:
+    def get_supported_formats() -> list[str]:
         """Get list of supported report formats."""
         return ["json", "markdown", "md", "html"]
 
@@ -401,7 +411,7 @@ class ReportGeneratorFactory:
 def generate_report(
     metrics: QualityMetrics,
     format_type: str = "markdown",
-    analysis: Optional[Dict[str, Any]] = None,
+    analysis: dict[str, Any] | None = None,
 ) -> str:
     """Generate a quality assurance report in the specified format."""
     generator = ReportGeneratorFactory.create_generator(format_type)
@@ -409,9 +419,9 @@ def generate_report(
 
 
 def generate_batch_report(
-    template_metrics: List[QualityMetrics],
+    template_metrics: list[QualityMetrics],
     format_type: str = "markdown",
-    batch_analysis: Optional[Dict[str, Any]] = None,
+    batch_analysis: dict[str, Any] | None = None,
 ) -> str:
     """Generate a batch quality assurance report in the specified format."""
     generator = ReportGeneratorFactory.create_generator(format_type)

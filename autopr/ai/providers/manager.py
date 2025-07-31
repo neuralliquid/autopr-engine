@@ -5,7 +5,8 @@ Manages multiple LLM providers and provides unified access.
 """
 
 import logging
-from typing import Any, AsyncGenerator, Dict, List, Optional, Type
+from collections.abc import AsyncGenerator
+from typing import Any
 
 from ..base import AnthropicProvider, LLMMessage, LLMProvider, LLMResponse, OpenAIProvider
 
@@ -28,8 +29,8 @@ class LLMProviderManager:
             config: AutoPR configuration object
         """
         self.config = config
-        self.providers: Dict[str, LLMProvider] = {}
-        self.default_provider: Optional[str] = None
+        self.providers: dict[str, LLMProvider] = {}
+        self.default_provider: str | None = None
 
         # Register built-in providers
         self._register_builtin_providers()
@@ -50,7 +51,7 @@ class LLMProviderManager:
             logger.info("Built-in LLM providers registered")
 
         except Exception as e:
-            logger.error(f"Failed to register built-in providers: {e}")
+            logger.exception(f"Failed to register built-in providers: {e}")
 
     async def initialize(self) -> None:
         """Initialize all configured LLM providers."""
@@ -62,7 +63,7 @@ class LLMProviderManager:
                     self.default_provider = "openai"
                 logger.info("OpenAI provider initialized")
             except Exception as e:
-                logger.error(f"Failed to initialize OpenAI provider: {e}")
+                logger.exception(f"Failed to initialize OpenAI provider: {e}")
 
         # Initialize Anthropic if configured
         if hasattr(self.config, "anthropic_api_key") and self.config.anthropic_api_key:
@@ -74,7 +75,7 @@ class LLMProviderManager:
                     self.default_provider = "anthropic"
                 logger.info("Anthropic provider initialized")
             except Exception as e:
-                logger.error(f"Failed to initialize Anthropic provider: {e}")
+                logger.exception(f"Failed to initialize Anthropic provider: {e}")
 
         # Set default provider from config
         if hasattr(self.config, "default_llm_provider") and self.config.default_llm_provider:
@@ -90,7 +91,7 @@ class LLMProviderManager:
                 await provider.cleanup()
                 logger.info(f"Cleaned up LLM provider: {provider_name}")
             except Exception as e:
-                logger.error(f"Error cleaning up provider '{provider_name}': {e}")
+                logger.exception(f"Error cleaning up provider '{provider_name}': {e}")
 
     def register_provider(self, provider: LLMProvider) -> None:
         """
@@ -102,7 +103,7 @@ class LLMProviderManager:
         self.providers[provider.name] = provider
         logger.info(f"Registered custom LLM provider: {provider.name}")
 
-    def get_provider(self, provider_name: Optional[str] = None) -> Optional[LLMProvider]:
+    def get_provider(self, provider_name: str | None = None) -> LLMProvider | None:
         """
         Get an LLM provider by name.
 
@@ -125,13 +126,13 @@ class LLMProviderManager:
 
     async def generate_completion(
         self,
-        messages: List[LLMMessage],
-        provider_name: Optional[str] = None,
-        model: Optional[str] = None,
+        messages: list[LLMMessage],
+        provider_name: str | None = None,
+        model: str | None = None,
         temperature: float = 0.7,
         max_tokens: int = 1000,
         **kwargs: Any,
-    ) -> Optional[LLMResponse]:
+    ) -> LLMResponse | None:
         """
         Generate a completion using the specified or default provider.
 
@@ -162,18 +163,18 @@ class LLMProviderManager:
             return response
 
         except Exception as e:
-            logger.error(f"Failed to generate completion with provider '{provider.name}': {e}")
+            logger.exception(f"Failed to generate completion with provider '{provider.name}': {e}")
             return None
 
     async def generate_stream_completion(
         self,
-        messages: List[LLMMessage],
-        provider_name: Optional[str] = None,
-        model: Optional[str] = None,
+        messages: list[LLMMessage],
+        provider_name: str | None = None,
+        model: str | None = None,
         temperature: float = 0.7,
         max_tokens: int = 1000,
         **kwargs: Any,
-    ) -> AsyncGenerator[LLMResponse, None]:
+    ) -> AsyncGenerator[LLMResponse]:
         """
         Generate a streaming completion using the specified or default provider.
 
@@ -204,12 +205,12 @@ class LLMProviderManager:
                 yield response
 
         except Exception as e:
-            logger.error(
+            logger.exception(
                 f"Failed to generate streaming completion with provider '{provider.name}': {e}"
             )
             return  # Exit generator on error
 
-    def get_available_providers(self) -> List[str]:
+    def get_available_providers(self) -> list[str]:
         """
         Get list of available (initialized) providers.
 
@@ -222,7 +223,7 @@ class LLMProviderManager:
             if hasattr(provider, "is_initialized") and provider.is_initialized
         ]
 
-    def get_all_providers(self) -> List[str]:
+    def get_all_providers(self) -> list[str]:
         """
         Get list of all registered providers.
 
@@ -231,7 +232,7 @@ class LLMProviderManager:
         """
         return list(self.providers.keys())
 
-    async def health_check_all(self) -> Dict[str, Dict]:
+    async def health_check_all(self) -> dict[str, dict]:
         """
         Perform health check on all providers.
 
@@ -252,7 +253,7 @@ class LLMProviderManager:
 
         return health_status
 
-    def get_manager_stats(self) -> Dict[str, Any]:
+    def get_manager_stats(self) -> dict[str, Any]:
         """
         Get manager statistics.
 

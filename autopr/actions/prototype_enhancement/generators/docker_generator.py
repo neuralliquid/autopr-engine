@@ -4,9 +4,8 @@ Docker Generator Module
 Handles generation of Dockerfiles, docker-compose files, and related configurations.
 """
 
-import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set
+from typing import Any
 
 from .base_generator import BaseGenerator
 
@@ -14,7 +13,7 @@ from .base_generator import BaseGenerator
 class DockerGenerator(BaseGenerator):
     """Generates Docker-related files and configurations."""
 
-    def generate(self, output_dir: str, **kwargs) -> List[str]:
+    def generate(self, output_dir: str, **kwargs) -> list[str]:
         """Generate Docker-related files and configurations.
 
         Args:
@@ -52,12 +51,12 @@ class DockerGenerator(BaseGenerator):
         generated_files.extend(self._generate_docker_ignore(output_dir, template_vars))
 
         # Generate Kubernetes manifests if requested
-        if kwargs.get("kubernetes", False):
+        if kwargs.get("kubernetes"):
             generated_files.extend(self._generate_kubernetes_manifests(output_dir, template_vars))
 
         return generated_files
 
-    def _generate_dockerfile(self, output_dir: str, variables: Dict[str, Any]) -> List[str]:
+    def _generate_dockerfile(self, output_dir: str, variables: dict[str, Any]) -> list[str]:
         """Generate Dockerfile based on language and framework."""
         language = variables.get("language", "")
         framework = variables.get("framework", "")
@@ -92,7 +91,7 @@ class DockerGenerator(BaseGenerator):
         self._write_file(file_path, content)
         return [file_path]
 
-    def _generate_docker_compose(self, output_dir: str, variables: Dict[str, Any]) -> List[str]:
+    def _generate_docker_compose(self, output_dir: str, variables: dict[str, Any]) -> list[str]:
         """Generate docker-compose files."""
         generated_files = []
         language = variables.get("language", "")
@@ -116,7 +115,7 @@ class DockerGenerator(BaseGenerator):
             generated_files.append(file_path)
 
         # Generate environment-specific override if needed
-        if environment in ["dev", "prod", "test"]:
+        if environment in {"dev", "prod", "test"}:
             override_vars = {
                 **base_vars,
                 "is_dev": environment == "dev",
@@ -145,7 +144,7 @@ class DockerGenerator(BaseGenerator):
 
     def _get_docker_compose_services(
         self, language: str, framework: str, database: str, environment: str
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Get services configuration for docker-compose."""
         services = {}
 
@@ -174,7 +173,7 @@ class DockerGenerator(BaseGenerator):
 
         return services
 
-    def _get_database_service(self, database: str, environment: str) -> Optional[Dict[str, Any]]:
+    def _get_database_service(self, database: str, environment: str) -> dict[str, Any] | None:
         """Get database service configuration."""
         db_configs = {
             "postgresql": {
@@ -228,7 +227,7 @@ class DockerGenerator(BaseGenerator):
 
     def _get_docker_env_vars(
         self, language: str, framework: str, database: str, environment: str
-    ) -> Dict[str, str]:
+    ) -> dict[str, str]:
         """Get environment variables for Docker."""
         env_vars = {
             "NODE_ENV": environment,
@@ -264,10 +263,10 @@ class DockerGenerator(BaseGenerator):
 
         return env_vars
 
-    def _generate_docker_ignore(self, output_dir: str, variables: Dict[str, Any]) -> List[str]:
+    def _generate_docker_ignore(self, output_dir: str, variables: dict[str, Any]) -> list[str]:
         """Generate .dockerignore file."""
         language = variables.get("language", "")
-        framework = variables.get("framework", "")
+        variables.get("framework", "")
 
         # Common ignore patterns
         ignore_patterns = [
@@ -358,8 +357,8 @@ class DockerGenerator(BaseGenerator):
         return [file_path]
 
     def _generate_kubernetes_manifests(
-        self, output_dir: str, variables: Dict[str, Any]
-    ) -> List[str]:
+        self, output_dir: str, variables: dict[str, Any]
+    ) -> list[str]:
         """Generate Kubernetes manifests."""
         generated_files = []
         k8s_dir = Path(output_dir) / "k8s"
@@ -394,7 +393,7 @@ class DockerGenerator(BaseGenerator):
             generated_files.append(file_path)
 
         # Generate ingress if needed
-        if variables.get("ingress_enabled", False):
+        if variables.get("ingress_enabled"):
             content = self._render_template("kubernetes/ingress.yaml", variables)
             if content:
                 file_path = str(k8s_dir / "ingress.yaml")

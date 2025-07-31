@@ -1,20 +1,26 @@
 # 12. Deployment Strategy
 
 ## Status
+
 Proposed
 
 ## Context
+
 AutoPR needs a reliable, repeatable deployment process that supports:
+
 - Multiple environments (dev, staging, production)
 - Zero-downtime deployments
 - Rollback capabilities
 - Environment-specific configurations
 
 ## Decision
+
 We will implement a GitOps-based deployment strategy using the following components:
 
 ### 1. Infrastructure as Code (IaC)
+
 ```hcl
+
 # Example: Terraform module for ECS
 module "autopr_service" {
   source  = "terraform-aws-modules/ecs/aws//modules/service"
@@ -56,7 +62,9 @@ module "autopr_service" {
 ```
 
 ### 2. CI/CD Pipeline
+
 ```yaml
+
 # .github/workflows/deploy.yml
 name: Deploy
 
@@ -103,56 +111,65 @@ jobs:
 ### 3. Environment Strategy
 
 #### 3.1 Development
+
 - **Deployment**: On every push to feature branches
 - **Infrastructure**: Local Docker Compose or ECS Fargate
 - **Data**: Ephemeral or shared test database
 - **Access**: Public with authentication
 
 #### 3.2 Staging
+
 - **Deployment**: On merge to `staging` branch
 - **Infrastructure**: Same as production
 - **Data**: Anonymized production data
 - **Access**: Internal team only
 
 #### 3.3 Production
+
 - **Deployment**: Manual or automated from `main` branch
 - **Infrastructure**: Multi-AZ ECS Fargate
 - **Data**: Production database with backups
 - **Access**: Public with strict IAM policies
 
 ### 4. Rollback Strategy
+
 1. **Automated Rollback**
-   - Health check failures
-   - High error rates
-   - Performance degradation
+    - Health check failures
+    - High error rates
+    - Performance degradation
 
-2. **Manual Rollback**
-   - Via CI/CD pipeline
-   - Previous version promotion
-   - Database rollback if needed
+1. **Manual Rollback**
+    - Via CI/CD pipeline
+    - Previous version promotion
+    - Database rollback if needed
 
-3. **Blue/Green Deployment**
-   - Zero-downtime deployments
-   - Instant rollback capability
-   - Traffic shifting between versions
+1. **Blue/Green Deployment**
+    - Zero-downtime deployments
+    - Instant rollback capability
+    - Traffic shifting between versions
 
 ## Consequences
+
 ### Positive
+
 - Consistent deployments
 - Reduced human error
 - Faster recovery from issues
 - Better change tracking
 
 ### Negative
+
 - Initial setup complexity
 - Learning curve for team
 - Infrastructure overhead
 
 ### Neutral
+
 - Documentation requirements
 - Training needs
 
 ## Related Decisions
+
 - [ADR-0010: Monitoring and Observability](0010-monitoring-observability.md)
 - [ADR-0011: Data Persistence Strategy](0011-data-persistence-strategy.md)
 - [ADR-0013: Security Strategy](0013-security-strategy.md)

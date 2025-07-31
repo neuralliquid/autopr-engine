@@ -11,8 +11,8 @@ from .config import AxoloConfig
 from .models import AxoloPRChannel
 
 __all__ = [
-    "AxoloIntegration",
     "AxoloConfig",
+    "AxoloIntegration",
     "AxoloPRChannel",
     "create_axolo_integration",
     "is_axolo_available",

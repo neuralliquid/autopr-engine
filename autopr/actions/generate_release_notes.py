@@ -1,6 +1,4 @@
-import re
 import subprocess
-from typing import Dict, List, Optional
 
 import pydantic
 
@@ -8,7 +6,7 @@ from autopr.actions.base import Action
 
 
 class Inputs(pydantic.BaseModel):
-    from_tag: Optional[str] = None
+    from_tag: str | None = None
 
 
 class Outputs(pydantic.BaseModel):
@@ -48,7 +46,7 @@ class GenerateReleaseNotes(Action[Inputs, Outputs]):
             return Outputs(release_notes=f"Error getting git log: {e}")
 
         # Categorize commits
-        notes: Dict[str, List[str]] = {
+        notes: dict[str, list[str]] = {
             "Features ✨": [],
             "Bug Fixes 🐛": [],
             "Documentation 📖": [],

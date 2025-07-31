@@ -8,32 +8,32 @@ comparison_criteria:
     weight: 25
     description: "How easy is it for beginners to start building"
     scale: "1-10 (10 = most user-friendly)"
-  
+
   customization:
     weight: 20
     description: "Level of customization and flexibility available"
     scale: "1-10 (10 = most customizable)"
-  
+
   performance:
     weight: 15
     description: "Speed and performance of built applications"
     scale: "1-10 (10 = best performance)"
-  
+
   scalability:
     weight: 15
     description: "Ability to handle growth and large user bases"
     scale: "1-10 (10 = most scalable)"
-  
+
   cost_effectiveness:
     weight: 10
     description: "Value for money across pricing tiers"
     scale: "1-10 (10 = best value)"
-  
+
   learning_curve:
     weight: 10
     description: "Time required to become proficient"
     scale: "1-10 (10 = fastest to learn)"
-  
+
   support_ecosystem:
     weight: 5
     description: "Documentation, community, and support quality"
@@ -51,7 +51,7 @@ platform_scores:
     learning_curve: 9
     support_ecosystem: 6
     total_score: 7.4
-    
+
   bubble:
     name: "Bubble"
     type: "visual_builder"
@@ -63,7 +63,7 @@ platform_scores:
     learning_curve: 6
     support_ecosystem: 9
     total_score: 7.3
-    
+
   lovable:
     name: "Lovable"
     type: "ai_powered"
@@ -75,7 +75,7 @@ platform_scores:
     learning_curve: 8
     support_ecosystem: 7
     total_score: 7.7
-    
+
   flutterflow:
     name: "FlutterFlow"
     type: "mobile_focused"
@@ -87,7 +87,7 @@ platform_scores:
     learning_curve: 5
     support_ecosystem: 8
     total_score: 7.2
-    
+
   thunkable:
     name: "Thunkable"
     type: "mobile_focused"
@@ -99,7 +99,7 @@ platform_scores:
     learning_curve: 8
     support_ecosystem: 7
     total_score: 7.2
-    
+
   glide:
     name: "Glide"
     type: "mobile_focused"
@@ -111,7 +111,7 @@ platform_scores:
     learning_curve: 9
     support_ecosystem: 6
     total_score: 6.8
-    
+
   replit:
     name: "Replit"
     type: "developer_friendly"
@@ -129,32 +129,32 @@ use_case_recommendations:
     best_platforms: ["horizons", "lovable", "glide"]
     reasoning: "AI assistance and simple interfaces enable fastest time-to-prototype"
     timeline: "1-3 days"
-    
+
   mvp_development:
     best_platforms: ["lovable", "bubble", "thunkable"]
     reasoning: "Balance of speed and functionality for viable products"
     timeline: "1-2 weeks"
-    
+
   production_applications:
     best_platforms: ["bubble", "flutterflow", "replit"]
     reasoning: "Robust features, performance, and scalability for real users"
     timeline: "2-8 weeks"
-    
+
   mobile_first:
     best_platforms: ["flutterflow", "thunkable", "glide"]
     reasoning: "Native mobile experience and app store deployment"
     timeline: "2-6 weeks"
-    
+
   complex_workflows:
     best_platforms: ["bubble", "replit"]
     reasoning: "Advanced logic capabilities and custom integrations"
     timeline: "4-12 weeks"
-    
+
   beginner_friendly:
     best_platforms: ["horizons", "glide", "thunkable"]
     reasoning: "Minimal learning curve with visual or AI-assisted development"
     timeline: "1-4 weeks"
-    
+
   enterprise_ready:
     best_platforms: ["bubble", "flutterflow", "replit"]
     reasoning: "Security, scalability, and advanced features for business use"
@@ -169,7 +169,7 @@ feature_comparison:
     thunkable: "No AI features"
     glide: "No AI features"
     replit: "AI code completion and debugging"
-    
+
   code_ownership:
     horizons: "Limited code access"
     lovable: "Full GitHub sync and code ownership"
@@ -178,7 +178,7 @@ feature_comparison:
     thunkable: "No code export"
     glide: "No code export"
     replit: "Complete code ownership"
-    
+
   real_time_collaboration:
     horizons: "Basic sharing"
     lovable: "GitHub-based collaboration"
@@ -187,7 +187,7 @@ feature_comparison:
     thunkable: "Basic team sharing"
     glide: "Team workspace sharing"
     replit: "Real-time collaborative coding"
-    
+
   database_integration:
     horizons: "Built-in database"
     lovable: "Supabase integration"
@@ -196,7 +196,7 @@ feature_comparison:
     thunkable: "Airtable, Firebase, custom APIs"
     glide: "Google Sheets, Airtable"
     replit: "Any database via code"
-    
+
   payment_processing:
     horizons: "Basic payment integration"
     lovable: "Stripe integration"
@@ -205,7 +205,7 @@ feature_comparison:
     thunkable: "Stripe, PayPal integration"
     glide: "Stripe integration"
     replit: "Any payment provider via code"
-    
+
   mobile_deployment:
     horizons: "Web only"
     lovable: "Web only"
@@ -221,48 +221,48 @@ pricing_comparison:
       features: "Basic website building with limitations"
       limitations: "Hostinger branding, limited storage"
       best_for: "Personal projects and learning"
-      
+
     lovable:
       features: "5 messages per day for public projects"
       limitations: "Public projects only, message limits"
       best_for: "Experimentation and learning"
-      
+
     bubble:
       features: "Basic app building with Bubble branding"
       limitations: "Bubble branding, limited workflows"
       best_for: "Prototyping and learning"
-      
+
     flutterflow:
       features: "Limited projects with FlutterFlow branding"
       limitations: "Branding, no code export"
       best_for: "Learning Flutter development"
-      
+
     thunkable:
       features: "Limited projects with Thunkable branding"
       limitations: "Branding, limited components"
       best_for: "Mobile app prototyping"
-      
+
     glide:
       features: "Basic apps with Glide branding"
       limitations: "Branding, row limits"
       best_for: "Simple data-driven apps"
-      
+
     replit:
       features: "Basic development environment"
       limitations: "Resource limits, public projects"
       best_for: "Learning and small projects"
-  
+
   paid_tiers:
     budget_friendly: # Under $30/month
       platforms: ["horizons", "lovable", "thunkable"]
       features: "Remove branding, basic professional features"
       target_users: "Small businesses, freelancers"
-      
+
     professional: # $30-100/month
       platforms: ["bubble", "flutterflow", "glide"]
       features: "Advanced features, team collaboration"
       target_users: "Growing businesses, agencies"
-      
+
     enterprise: # $100+/month
       platforms: ["bubble", "replit"]
       features: "Custom solutions, dedicated support"
@@ -274,58 +274,58 @@ decision_matrix:
       recommended: ["horizons", "glide"]
       avoid: ["replit", "flutterflow"]
       reasoning: "Simple websites don't need complex development environments"
-      
+
     web_application:
       recommended: ["lovable", "bubble", "horizons"]
       avoid: ["glide", "thunkable"]
       reasoning: "Web-focused platforms offer better features and performance"
-      
+
     mobile_application:
       recommended: ["flutterflow", "thunkable", "glide"]
       avoid: ["horizons", "lovable"]
       reasoning: "Mobile-specific platforms provide native app experiences"
-      
+
     complex_business_tool:
       recommended: ["bubble", "replit", "flutterflow"]
       avoid: ["glide", "horizons"]
       reasoning: "Complex logic requires advanced workflow capabilities"
-  
+
   team_size:
     individual:
       recommended: ["horizons", "lovable", "glide"]
       reasoning: "AI assistance and simple interfaces ideal for solo developers"
-      
+
     small_team:
       recommended: ["bubble", "thunkable", "flutterflow"]
       reasoning: "Good collaboration features without enterprise complexity"
-      
+
     large_team:
       recommended: ["bubble", "replit", "flutterflow"]
       reasoning: "Advanced collaboration and project management features"
-  
+
   technical_expertise:
     beginner:
       recommended: ["horizons", "glide", "thunkable"]
       avoid: ["replit", "flutterflow"]
       reasoning: "Visual interfaces and AI assistance reduce learning curve"
-      
+
     intermediate:
       recommended: ["lovable", "bubble", "thunkable"]
       reasoning: "Balance of ease-of-use and advanced capabilities"
-      
+
     advanced:
       recommended: ["replit", "flutterflow", "bubble"]
       reasoning: "Full customization and code-level control available"
-  
+
   budget:
     minimal:
       recommended: ["horizons", "glide", "replit"]
       reasoning: "Strong free tiers or low-cost options available"
-      
+
     moderate:
       recommended: ["lovable", "thunkable", "bubble"]
       reasoning: "Good value professional tiers with essential features"
-      
+
     flexible:
       recommended: ["bubble", "flutterflow", "replit"]
       reasoning: "Premium features and enterprise options available"
@@ -337,26 +337,26 @@ migration_paths:
       timeline: "1-2 weeks"
       benefits: "More customization, better mobile features"
       considerations: "Need to rebuild UI, different data connections"
-      
+
     to_flutterflow:
       difficulty: "Hard"
       timeline: "4-6 weeks"
       benefits: "Native performance, code ownership"
       considerations: "Significant learning curve, complete rebuild"
-  
+
   from_bubble:
     to_replit:
       difficulty: "Hard"
       timeline: "6-12 weeks"
       benefits: "Complete code control, better performance"
       considerations: "Need coding skills, rebuild from scratch"
-      
+
     to_flutterflow:
       difficulty: "Medium"
       timeline: "3-6 weeks"
       benefits: "Mobile-first, better performance"
       considerations: "Mobile-only, different paradigm"
-  
+
   from_thunkable:
     to_flutterflow:
       difficulty: "Medium"
@@ -370,37 +370,37 @@ success_factors:
     - "You need integrated hosting and domain"
     - "You're building a simple business website"
     - "You have minimal technical experience"
-    
+
   choose_lovable_if:
     - "You want AI assistance with code ownership"
     - "You need GitHub integration"
     - "You're building a modern web application"
     - "You want to iterate quickly with AI help"
-    
+
   choose_bubble_if:
     - "You need complex business logic"
     - "You're building a web application with database"
     - "You want extensive plugin ecosystem"
     - "You need advanced user permissions"
-    
+
   choose_flutterflow_if:
     - "You're building a mobile application"
     - "You need native performance"
     - "You want code export capabilities"
     - "You're targeting app stores"
-    
+
   choose_thunkable_if:
     - "You're new to mobile development"
     - "You need cross-platform mobile apps"
     - "You want visual drag-and-drop building"
     - "You need quick mobile prototypes"
-    
+
   choose_glide_if:
     - "You have data in spreadsheets"
     - "You need a simple mobile app quickly"
     - "You're building internal business tools"
     - "You want minimal learning curve"
-    
+
   choose_replit_if:
     - "You need complete customization"
     - "You have coding experience"

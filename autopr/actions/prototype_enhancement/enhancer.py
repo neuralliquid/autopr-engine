@@ -5,11 +5,10 @@ Orchestrates all modular components and provides the same interface as the origi
 for backward compatibility while improving maintainability and testability.
 """
 
-import json
 import logging
 from dataclasses import asdict
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 try:
     from autopr.models.artifacts import (  # type: ignore[import-untyped]
@@ -18,7 +17,8 @@ try:
     )
 except ImportError:
     # Fallback for when models are not available during development
-    from typing import Any as PrototypeEnhancerInputs, Any as PrototypeEnhancerOutputs
+    from typing import Any as PrototypeEnhancerInputs
+    from typing import Any as PrototypeEnhancerOutputs
 
 from .enhancement_strategies import EnhancementStrategy, EnhancementStrategyFactory
 from .file_generators import FileGenerator
@@ -40,10 +40,10 @@ class PrototypeEnhancer:
         """Initialize the prototype enhancer with modular components."""
         self.platform_registry = PlatformRegistry()
         self.file_generator = FileGenerator()
-        self.enhancement_strategies: Dict[str, EnhancementStrategy] = {}
+        self.enhancement_strategies: dict[str, EnhancementStrategy] = {}
 
         # Initialize strategies for all supported platforms
-        for platform in self.platform_registry.get_platform_configs().keys():
+        for platform in self.platform_registry.get_platform_configs():
             self.enhancement_strategies[platform] = EnhancementStrategyFactory.create_strategy(
                 platform
             )
@@ -88,8 +88,8 @@ class PrototypeEnhancer:
             return result
 
         except Exception as e:
-            logger.error(f"Enhancement failed: {str(e)}")
-            return self._create_error_output(f"Enhancement failed: {str(e)}")
+            logger.exception(f"Enhancement failed: {e!s}")
+            return self._create_error_output(f"Enhancement failed: {e!s}")
 
     def _enhance_for_production(
         self, inputs: PrototypeEnhancerInputs, config: PlatformConfig
@@ -216,16 +216,16 @@ class PrototypeEnhancer:
         )
 
     def _generate_package_json_updates(
-        self, dependencies: List[str], dev_dependencies: List[str]
-    ) -> Dict[str, Any]:
+        self, dependencies: list[str], dev_dependencies: list[str]
+    ) -> dict[str, Any]:
         """Generate package.json updates."""
         updates = {}
 
         if dependencies:
-            updates["dependencies"] = {pkg: "latest" for pkg in dependencies}
+            updates["dependencies"] = dict.fromkeys(dependencies, "latest")
 
         if dev_dependencies:
-            updates["devDependencies"] = {pkg: "latest" for pkg in dev_dependencies}
+            updates["devDependencies"] = dict.fromkeys(dev_dependencies, "latest")
 
         # Add common scripts based on enhancement type
         updates["scripts"] = {
@@ -243,11 +243,11 @@ class PrototypeEnhancer:
 
         return updates
 
-    def _get_deployment_configs(self, platform: str) -> Dict[str, Any]:
+    def _get_deployment_configs(self, platform: str) -> dict[str, Any]:
         """Get deployment configurations for the platform."""
         return self.platform_registry.get_deployment_configs().get(platform, {})
 
-    def _create_enhancement_summary(self, enhancement_result: Dict[str, Any]) -> str:
+    def _create_enhancement_summary(self, enhancement_result: dict[str, Any]) -> str:
         """Create a summary of the enhancement process."""
         files_count = len(enhancement_result.get("files_created", []))
         packages_count = len(enhancement_result.get("packages_added", []))
@@ -262,7 +262,7 @@ class PrototypeEnhancer:
 
         return ". ".join(summary_parts) + "."
 
-    def _get_platform_notes(self, platform: str, enhancement_type: str) -> List[str]:
+    def _get_platform_notes(self, platform: str, enhancement_type: str) -> list[str]:
         """Get platform-specific notes for the enhancement."""
         notes = {
             "replit": {
@@ -344,11 +344,11 @@ class PrototypeEnhancer:
             platform_specific_notes=[],
         )
 
-    def get_supported_platforms(self) -> List[str]:
+    def get_supported_platforms(self) -> list[str]:
         """Get list of supported platforms."""
         return list(self.platform_registry.get_platform_configs().keys())
 
-    def get_platform_info(self, platform: str) -> Optional[Dict[str, Any]]:
+    def get_platform_info(self, platform: str) -> dict[str, Any] | None:
         """Get information about a specific platform."""
         if not self.platform_registry.is_supported_platform(platform):
             return None
@@ -356,11 +356,11 @@ class PrototypeEnhancer:
         config = self.platform_registry.get_platform_config(platform)
         return asdict(config)
 
-    def get_enhancement_types(self) -> List[str]:
+    def get_enhancement_types(self) -> list[str]:
         """Get list of supported enhancement types."""
         return ["production_ready", "testing", "security"]
 
-    def validate_inputs(self, inputs: PrototypeEnhancerInputs) -> List[str]:
+    def validate_inputs(self, inputs: PrototypeEnhancerInputs) -> list[str]:
         """Validate enhancement inputs and return any errors."""
         errors = []
 
@@ -379,7 +379,7 @@ class PrototypeEnhancer:
 
         return errors
 
-    def get_enhancement_preview(self, inputs: PrototypeEnhancerInputs) -> Dict[str, Any]:
+    def get_enhancement_preview(self, inputs: PrototypeEnhancerInputs) -> dict[str, Any]:
         """Get a preview of what the enhancement will do without actually performing it."""
         validation_errors = self.validate_inputs(inputs)
         if validation_errors:
@@ -388,7 +388,7 @@ class PrototypeEnhancer:
         strategy = self.enhancement_strategies[inputs.platform]
         package_updates = strategy.get_package_updates(inputs.enhancement_type)
 
-        preview = {
+        return {
             "platform": inputs.platform,
             "enhancement_type": inputs.enhancement_type,
             "files_to_create": list(strategy.generate_files(inputs.enhancement_type).keys()),
@@ -405,5 +405,3 @@ class PrototypeEnhancer:
                 .get(inputs.enhancement_type, [])
             ),
         }
-
-        return preview
