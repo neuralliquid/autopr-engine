@@ -14,7 +14,7 @@ from autopr.clients.github_client import GitHubClient, GitHubConfig, GitHubError
 class TestGitHubClient(TestCase):
     """Test cases for the GitHub API client with retry logic and rate limiting."""
 
-    def setUp(self):
+    def setUp(self) -> None:
         """Set up test fixtures."""
         self.token = "test_token"
         self.config = GitHubConfig(
@@ -34,7 +34,7 @@ class TestGitHubClient(TestCase):
             "X-RateLimit-Reset": str(int(time.time()) + 3600),
         }
 
-    def test_init_with_config(self):
+    def test_init_with_config(self) -> None:
         """Test initialization with a config object."""
         assert self.client.config.token == self.token
         assert self.client.config.base_url == "https://api.github.com"

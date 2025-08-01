@@ -160,7 +160,7 @@ Each suggestion should be specific, actionable, and explain both what to change 
                 else:
                     json_content = content
 
-                result = json.loads(json_content)
+                result: dict[str, Any] = json.loads(json_content)
                 self.logger.info(
                     "Successfully analyzed code with AI",
                     file_path=file_path,

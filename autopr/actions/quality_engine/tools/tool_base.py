@@ -30,7 +30,7 @@ class ToolExecutionResult(TypedDict):
 class Tool(ABC, Generic[TConfig, TIssue]):
     """Abstract base class for quality tools with enhanced error handling and timeouts."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.default_timeout = 60.0  # Default 60 second timeout
         self.max_files_per_run = 100  # Limit files to prevent hanging
         self.verbose_output = False

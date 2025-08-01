@@ -91,41 +91,15 @@ def execute_with_orchestration(
 def _execute_standalone(inputs: AILintingFixerInputs) -> AILintingFixerOutputs:
     """Execute AI linting fixer in standalone mode."""
     try:
-        from autopr.actions.llm.manager import LLMProviderManager
-
         from .ai_linting_fixer import AILintingFixer
 
         # Initialize components
-        llm_manager = LLMProviderManager()
-        fixer = AILintingFixer(llm_manager=llm_manager, max_workers=inputs.max_workers)
+        fixer = AILintingFixer()
 
-        # Run flake8 to detect issues
-        issues = fixer.run_flake8(inputs.target_path)
+        # Run the AI linting fixer
+        result = fixer.run(inputs)
 
-        if not issues:
-            return AILintingFixerOutputs(
-                total_issues_found=0,
-                issues_fixed=0,
-                files_modified=[],
-                success=True,
-                summary="No linting issues found",
-            )
-
-        # Fix issues with AI
-        result = fixer.fix_issues_with_ai(
-            issues=issues,
-            max_fixes=inputs.max_fixes_per_run,
-            provider=inputs.provider,
-            model=inputs.model,
-        )
-
-        return AILintingFixerOutputs(
-            total_issues_found=len(issues),
-            issues_fixed=len(result.fixed_issues),
-            files_modified=result.modified_files,
-            success=result.success,
-            summary=f"Fixed {len(result.fixed_issues)} out of {len(issues)} issues",
-        )
+        return result
 
     except Exception as e:
         logger.exception(f"Standalone execution failed: {e}")
