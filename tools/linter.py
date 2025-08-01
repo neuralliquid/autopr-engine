@@ -5,10 +5,10 @@ Tool for all code quality checks and AI-powered fixes
 """
 
 import asyncio
-from dataclasses import dataclass
-from enum import Enum
 import json
 import sys
+from dataclasses import dataclass
+from enum import Enum
 from typing import Any
 
 from autopr.actions.ai_linting_fixer import AILintingFixer, AILintingFixerInputs
@@ -35,7 +35,7 @@ class LintResult:
 class CodeLinter:
     """Linting engine with smart mode selection"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.results: list[LintResult] = []
         self.total_issues_found = 0
         self.total_issues_fixed = 0

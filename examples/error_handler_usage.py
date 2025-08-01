@@ -6,8 +6,8 @@ This example demonstrates how to integrate the new error handler system
 with the AI linting fixer for comprehensive error tracking and display.
 """
 
-from pathlib import Path
 import sys
+from pathlib import Path
 
 # Add the project root to the path
 project_root = Path(__file__).parent.parent
@@ -24,7 +24,7 @@ from autopr.actions.ai_linting_fixer import (
 from autopr.actions.llm.manager import LLMProviderManager
 
 
-def setup_error_handler():
+def setup_error_handler() -> None:
     """Set up the error handler with custom configuration."""
     # Create display configuration
     display_config = DisplayConfig(mode=OutputMode.VERBOSE, use_colors=True, use_emojis=True)

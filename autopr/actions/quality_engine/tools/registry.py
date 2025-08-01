@@ -10,7 +10,7 @@ TTool = TypeVar("TTool", bound=Tool)
 class ToolRegistry:
     """Registry for quality tools."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._tools: dict[str, Tool] = {}
         self._tool_classes: dict[str, type[Tool]] = {}
 

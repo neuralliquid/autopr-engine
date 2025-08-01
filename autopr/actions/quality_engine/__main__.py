@@ -12,7 +12,7 @@ from .di import container, get_engine
 from .engine import QualityInputs, QualityMode
 
 
-def main():
+def main() -> None:
     """Main CLI entry point for the Quality Engine."""
     parser = argparse.ArgumentParser(description="AutoPR Quality Engine")
     parser.add_argument(

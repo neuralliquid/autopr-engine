@@ -15,7 +15,7 @@ class WindowsSecurityTool(Tool):
     This serves as an alternative to CodeQL on Windows systems.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.default_timeout = 45.0  # 45 second timeout for comprehensive security scanning
         self.max_files_per_run = 50  # Limit files to prevent hanging

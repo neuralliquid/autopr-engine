@@ -5,7 +5,7 @@ T = TypeVar("T")
 
 
 class HandlerRegistry:
-    def __init__(self):
+    def __init__(self) -> None:
         self._handlers: dict[type[Any], Callable[[list[Any]], None]] = {}
 
     def register(self, result_type: type[T]):

@@ -10,7 +10,7 @@ class PyTestTool(Tool):
     A tool for running tests using the PyTest framework.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.default_timeout = 30.0  # Reduce timeout to 30 seconds for faster execution
 

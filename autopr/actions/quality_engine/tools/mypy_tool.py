@@ -17,7 +17,7 @@ class MyPyTool(Tool[MyPyConfig, LintIssue]):
     A tool for running MyPy, a static type checker for Python.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.default_timeout = 30.0  # Reduce timeout to 30 seconds for faster execution
 

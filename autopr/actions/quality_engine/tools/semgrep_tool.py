@@ -15,7 +15,7 @@ class SemgrepTool(Tool):
     Cross-platform and works well on Windows, Linux, and macOS.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.default_timeout = 45.0  # Reduce timeout to 45 seconds for faster execution
         self.max_files_per_run = 200  # Higher limit for static analysis

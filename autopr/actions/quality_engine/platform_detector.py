@@ -13,7 +13,7 @@ logger = structlog.get_logger(__name__)
 class PlatformDetector:
     """Detects the current platform and provides tool adaptations."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.platform = platform.system().lower()
         self.is_windows = self.platform == "windows"
         self.is_linux = self.platform == "linux"

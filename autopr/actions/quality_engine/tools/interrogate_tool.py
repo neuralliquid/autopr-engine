@@ -11,7 +11,7 @@ class InterrogateTool(Tool):
     A tool for checking Python docstring coverage using Interrogate.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.default_timeout = 15.0  # Reduce timeout to 15 seconds for faster execution
 

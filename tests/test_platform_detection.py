@@ -4,7 +4,7 @@ from autopr.actions.platform_detection.config import PlatformConfigManager
 
 
 class TestPlatformDetection(unittest.TestCase):
-    def test_ai_platforms_loading(self):
+    def test_ai_platforms_loading(self) -> None:
         """Test that AI platforms are loaded correctly with valid structure."""
         # Get AI platforms
         ai_platforms = PlatformConfigManager().get_ai_platforms()
@@ -40,7 +40,7 @@ class TestPlatformDetection(unittest.TestCase):
             assert "detection" in cursor
             assert "project_config" in cursor
 
-    def test_platform_structure(self):
+    def test_platform_structure(self) -> None:
         """Test the structure of all loaded platforms."""
         all_platforms = PlatformConfigManager().get_all_platforms()
         assert len(all_platforms) > 0, "No platforms were loaded"
