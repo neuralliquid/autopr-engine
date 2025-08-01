@@ -1,0 +1,120 @@
+❌ Broken Imports Found:
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\autopr\actions\autogen_implementation.py:
+  Line 14: from autogen import ConversableAgent, GroupChat, GroupChatManager
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\autopr\actions\autogen_multi_agent.py:
+  Line 13: from autogen import ConversableAgent, GroupChat, GroupChatManager
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\autopr\actions\mem0_memory_integration.py:
+  Line 13: from mem0 import Memory
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\autopr\actions\ai_linting_fixer\file_ops.test.py:
+  Line 7: from file_ops import BackupManager, FileValidator, SafeFileOperations
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\autopr\actions\ai_linting_fixer\orchestration.py:
+  Line 206: from celery import Celery
+  Line 258: from prefect import flow, task
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\autopr\actions\ai_linting_fixer\redis_queue.py:
+  Line 22: import redis
+  Line 23: from redis.exceptions import ConnectionError as RedisConnectionError
+  Line 24: from redis.exceptions import RedisError
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\autopr\actions\llm\providers\mistral.py:
+  Line 8: from mistralai.models.chat_completion import ChatMessage
+  Line 12: from mistralai.models.chat_completion import ChatMessage
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\autopr\ai\implementation_roadmap.py:
+  Line 144: import sentry_sdk
+  Line 145: from sentry_sdk.integrations.logging import LoggingIntegration
+  Line 146: from sentry_sdk.integrations.asyncio import AsyncioIntegration
+  Line 408: import asyncpg
+  Line 508: from fastapi import APIRouter
+  Line 540: import pybreaker
+  Line 591: from tools.autopr.caching.cache_manager import AutoPRCacheManager
+  Line 648: import asyncpg
+  Line 686: from prometheus_client import Counter, Histogram, Gauge, generate_latest
+  Line 687: from prometheus_fastapi_instrumentator import Instrumentator
+  Line 748: from authlib.integrations.fastapi_oauth2 import OAuth2Token
+  Line 750: from fastapi import HTTPException, Depends, status
+  Line 751: from fastapi.security import OAuth2PasswordBearer
+  Line 752: from jose import JWTError, jwt
+  Line 884: from fastapi.testclient import TestClient
+  Line 885: from autopr.main import app
+  Line 965: import chromadb
+  Line 966: from sentence_transformers import SentenceTransformer
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\autopr\ai\implementation_roadmap\task_executor.py:
+  Line 107: import sentry_sdk
+  Line 108: from sentry_sdk.integrations.fastapi import FastApiIntegration
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\autopr\extensions\implementation\task_executor.py:
+  Line 213: import sentry_sdk
+  Line 214: from sentry_sdk.integrations.logging import LoggingIntegration
+  Line 296: import redis
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\autopr\integrations\axolo\client.py:
+  Line 98: from slack_sdk.web.async_client import AsyncWebClient  # type: ignore[import-not-found]
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\autopr\integrations\axolo\commands.py:
+  Line 71: from slack_sdk.errors import SlackApiError  # type: ignore[import-not-found]
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\autopr\quality\template_metrics\quality_analyzer.py:
+  Line 17: from templates.discovery.template_validators import ValidationSeverity
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\autopr\security\auth.py:
+  Line 6: from fastapi import HTTPException, status
+  Line 7: from passlib.context import CryptContext
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\autopr\security\authentication.py:
+  Line 7: import bcrypt
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\katex\src\fonts\generate_fonts.py:
+  Line 7: from fontTools.ttLib import TTFont, sfnt
+  Line 8: from fontTools.misc.timeTools import timestampNow
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\katex\src\metrics\extract_tfms.py:
+  Line 5: import parse_tfm
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\katex\src\metrics\extract_ttfs.py:
+  Line 3: from fontTools.ttLib import TTFont
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\templates\discovery\format_generators\base.py:
+  Line 13: from discovery.content_analyzer import TemplateAnalysis
+  Line 14: from discovery.template_loader import TemplateLoader
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\templates\discovery\format_generators\factory.py:
+  Line 10: from discovery.content_analyzer import TemplateAnalysis
+  Line 11: from discovery.template_loader import TemplateLoader
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\templates\discovery\format_generators\html.py:
+  Line 11: from discovery.content_analyzer import TemplateAnalysis
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\templates\discovery\format_generators\json_generator.py:
+  Line 13: from discovery.content_analyzer import TemplateAnalysis
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\templates\discovery\format_generators\markdown.py:
+  Line 11: from discovery.content_analyzer import TemplateAnalysis
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\templates\example-hybrid\test_early_enhanced_file_generator\test_early___init__.py:
+  Line 8: from enhanced_file_generator import TemplateMetadata
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\tools\production_monitoring.py:
+  Line 9: from azure.monitor.opentelemetry import configure_azure_monitor
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\tools\markdown_lint\cli.py:
+  Line 8: from linter import MarkdownLinter
+  Line 9: from models import IssueSeverity
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\tools\markdown_lint\linter.py:
+  Line 8: from models import FileReport, IssueSeverity, LintIssue
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\tools\markdown_lint\__main__.py:
+  Line 3: from cli import main
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\tools\whitespace_fixer\__main__.py:
+  Line 4: from fixer import main
+
+📁 C:\Users\smitj\repos\autopr\autopr-engine\tools\yaml_lint\__init__.py:
+  Line 7: from yaml_lint import YAMLLinter

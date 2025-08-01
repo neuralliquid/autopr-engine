@@ -10,8 +10,7 @@ import json
 from datetime import datetime
 from typing import Any
 
-from discovery.content_analyzer import TemplateAnalysis
-
+from ..content_analyzer import TemplateAnalysis
 from .base import BaseFormatGenerator
 
 

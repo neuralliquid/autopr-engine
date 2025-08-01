@@ -5,7 +5,8 @@ Covers happy paths and edge cases for initialization from metadata dict.
 """
 
 import pytest
-from enhanced_file_generator import TemplateMetadata
+
+from ..enhanced_file_generator import TemplateMetadata
 
 
 @pytest.mark.usefixtures("metadata_dict")
@@ -205,4 +206,5 @@ class TestTemplateMetadataInit:
         with pytest.raises(AttributeError):
             TemplateMetadata("notadict")
         with pytest.raises(AttributeError):
+            TemplateMetadata(123)
             TemplateMetadata(123)
