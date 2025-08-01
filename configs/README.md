@@ -7,7 +7,7 @@ category.
 
 ### Root Configuration Files
 
-- `.flake8.test` - Flake8 linting configuration
+- `.flake8` - Flake8 linting configuration
 - `mypy.ini` - MyPy type checking configuration
 - `.markdownlint.json` - Markdown linting configuration
 
@@ -77,7 +77,7 @@ When updating configurations:
 
 ## 🔍 Quick Reference
 
-- **Linting**: `.flake8.test`, `.markdownlint.json`
+- **Linting**: `.flake8`, `.markdownlint.json`
 - **Type Checking**: `mypy.ini`
 - **Environment**: `environments/` directory
 - **Platforms**: `platforms/` directory
