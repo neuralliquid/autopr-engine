@@ -1,11 +1,11 @@
 """GitHub API client for AutoPR with retry logic and rate limiting."""
 
 import asyncio
-from dataclasses import dataclass
-from datetime import UTC, datetime
 import logging
 import random
 import time
+from dataclasses import dataclass
+from datetime import UTC, datetime
 from typing import Any, TypeVar, Union
 
 from aiohttp import ClientError, ClientResponse, ClientResponseError, ClientSession, ClientTimeout
@@ -144,7 +144,7 @@ class GitHubClient:
             self.logger.warning(f"Approaching rate limit. Waiting {sleep_time:.1f}s until reset")
             await asyncio.sleep(sleep_time)
 
-    async def _request(self, method: str, endpoint: str, **kwargs) -> dict[str, Any]:
+    async def _request(self, method: str, endpoint: str, **kwargs: Any) -> dict[str, Any]:
         """Make an HTTP request with retry logic and rate limit handling.
 
         Args:
@@ -248,7 +248,7 @@ class GitHubClient:
         return await self._request("GET", endpoint, **kwargs)
 
     async def post(
-        self, endpoint: str, data: dict[str, Any] | None = None, **kwargs
+        self, endpoint: str, data: dict[str, Any] | None = None, **kwargs: Any
     ) -> dict[str, Any]:
         """Make a POST request to the GitHub API.
 
@@ -265,7 +265,7 @@ class GitHubClient:
         return await self._request("POST", endpoint, **kwargs)
 
     async def put(
-        self, endpoint: str, data: dict[str, Any] | None = None, **kwargs
+        self, endpoint: str, data: dict[str, Any] | None = None, **kwargs: Any
     ) -> dict[str, Any]:
         """Make a PUT request to the GitHub API.
 
@@ -282,7 +282,7 @@ class GitHubClient:
         return await self._request("PUT", endpoint, **kwargs)
 
     async def patch(
-        self, endpoint: str, data: dict[str, Any] | None = None, **kwargs
+        self, endpoint: str, data: dict[str, Any] | None = None, **kwargs: Any
     ) -> dict[str, Any]:
         """Make a PATCH request to the GitHub API.
 
@@ -298,7 +298,7 @@ class GitHubClient:
             kwargs["json"] = data
         return await self._request("PATCH", endpoint, **kwargs)
 
-    async def delete(self, endpoint: str, **kwargs) -> bool:
+    async def delete(self, endpoint: str, **kwargs: Any) -> bool:
         """Make a DELETE request to the GitHub API.
 
         Args:
@@ -315,7 +315,7 @@ class GitHubClient:
         return response.get("status", 0) == 204
 
     async def graphql(
-        self, query: str, variables: dict[str, Any] | None = None, **kwargs
+        self, query: str, variables: dict[str, Any] | None = None, **kwargs: Any
     ) -> dict[str, Any]:
         """Execute a GraphQL query against the GitHub API.
 

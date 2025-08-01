@@ -1,4 +1,4 @@
-from typing import TypeVar
+from typing import Any, TypeVar
 
 from .tool_base import Tool
 
@@ -95,7 +95,7 @@ class ToolRegistry:
         """
         return [tool for tool in self._tools.values() if tool.category == category]
 
-    def instantiate_tool(self, name: str, *args, **kwargs) -> Tool:
+    def instantiate_tool(self, name: str, *args: Any, **kwargs: Any) -> Tool:
         """
         Instantiate a new instance of a tool class.
 
