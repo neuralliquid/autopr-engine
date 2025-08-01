@@ -6,7 +6,7 @@ Registry for managing and discovering actions.
 
 import logging
 from collections.abc import Callable
-from typing import Any, Protocol, TypeVar
+from typing import Any, Generic, Protocol, TypeVar
 
 from autopr.actions.base import Action
 
@@ -23,7 +23,7 @@ class ActionProtocol(Protocol):
 logger = logging.getLogger(__name__)
 
 
-class ActionRegistry[ActionT: Action[Any, Any]]:
+class ActionRegistry(Generic[ActionT]):
     """
     Registry for action classes with type safety.
     """

@@ -1,12 +1,12 @@
 """Configuration and fixtures for pytest."""
 
 import asyncio
-import os
 from collections.abc import AsyncGenerator, Generator
+import os
 
+from aiohttp import ClientSession
 import pytest
 import pytest_asyncio
-from aiohttp import ClientSession
 
 
 @pytest.fixture(scope="session")
@@ -37,7 +37,7 @@ async def http_session() -> AsyncGenerator[ClientSession]:
         yield session
 
 
-@pytest.fixture
+@pytest.fixture()
 def github_token() -> str:
     """
     Provide a GitHub token for testing.
@@ -47,7 +47,7 @@ def github_token() -> str:
     return os.getenv("GITHUB_TOKEN", "test_token")
 
 
-@pytest.fixture
+@pytest.fixture()
 def linear_api_key() -> str:
     """
     Provide a Linear API key for testing.

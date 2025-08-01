@@ -5,10 +5,10 @@ Automated setup script for production-grade enhancements
 """
 
 import asyncio
-import json
-import subprocess
 from datetime import datetime
+import json
 from pathlib import Path
+import subprocess
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -78,7 +78,6 @@ class Phase1ExtensionImplementor:
 
         # Execute tasks
         for task in tasks:
-
             if dry_run:
                 continue
 

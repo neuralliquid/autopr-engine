@@ -9,10 +9,9 @@ reorganization.
 import os
 import re
 import sys
-from typing import Dict, List, Tuple
 
 
-def find_markdown_files(directory: str) -> List[str]:
+def find_markdown_files(directory: str) -> list[str]:
     """Find all Markdown files in the directory."""
     markdown_files = []
     for root, dirs, files in os.walk(directory):
@@ -26,12 +25,12 @@ def find_markdown_files(directory: str) -> List[str]:
     return markdown_files
 
 
-def extract_links(file_path: str) -> List[Tuple[str, int, str]]:
+def extract_links(file_path: str) -> list[tuple[str, int, str]]:
     """Extract links from a Markdown file."""
     links = []
 
     try:
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             lines = f.readlines()
 
         for line_num, line in enumerate(lines, 1):
@@ -91,7 +90,7 @@ def check_link_validity(link_url: str, file_path: str, project_root: str) -> boo
     return False
 
 
-def validate_links(project_root: str) -> Dict[str, List[Tuple[str, int, str]]]:
+def validate_links(project_root: str) -> dict[str, list[tuple[str, int, str]]]:
     """Validate all links in documentation files."""
     markdown_files = find_markdown_files(project_root)
     broken_links = {}
@@ -112,7 +111,7 @@ def validate_links(project_root: str) -> Dict[str, List[Tuple[str, int, str]]]:
     return broken_links
 
 
-def generate_link_report(broken_links: Dict[str, List[Tuple[str, int, str]]]) -> str:
+def generate_link_report(broken_links: dict[str, list[tuple[str, int, str]]]) -> str:
     """Generate a report of broken links."""
     if not broken_links:
         return "✅ No broken links found!"

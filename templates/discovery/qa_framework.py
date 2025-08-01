@@ -19,7 +19,7 @@ from pathlib import Path
 from typing import Any
 
 from autopr.quality.template_metrics import QualityMetrics, get_quality_analyzer, get_quality_scorer
-from templates.discovery.template_validators import (
+from .template_validators import (
     ValidationIssue,
     ValidationSeverity,
     get_validator_registry,
@@ -327,7 +327,6 @@ if __name__ == "__main__":
             sys.exit(1)
 
     else:
-
         try:
             results = qa.run_qa_suite(save_report_flag=True)
 

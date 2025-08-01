@@ -5,9 +5,9 @@ Integrates with AutoPR's LLM infrastructure to automatically fix linting issues
 using AI agents specialized for different types of code quality problems.
 """
 
+from collections.abc import Callable
 import logging
 import os
-from collections.abc import Callable
 from typing import Any
 from uuid import uuid4
 

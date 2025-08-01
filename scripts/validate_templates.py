@@ -9,13 +9,12 @@ completeness, and proper organization.
 import json
 import os
 import sys
-from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 import yaml
 
 
-def find_template_files(directory: str) -> Dict[str, List[str]]:
+def find_template_files(directory: str) -> dict[str, list[str]]:
     """Find all template files in the directory."""
     template_files = {"yaml": [], "json": [], "py": [], "md": []}
 
@@ -39,10 +38,10 @@ def find_template_files(directory: str) -> Dict[str, List[str]]:
     return template_files
 
 
-def validate_yaml_template(file_path: str) -> Tuple[bool, str]:
+def validate_yaml_template(file_path: str) -> tuple[bool, str]:
     """Validate a YAML template file."""
     try:
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             content = yaml.safe_load(f)
 
         # Basic template validation
@@ -63,10 +62,10 @@ def validate_yaml_template(file_path: str) -> Tuple[bool, str]:
         return False, f"File Error: {e}"
 
 
-def validate_json_template(file_path: str) -> Tuple[bool, str]:
+def validate_json_template(file_path: str) -> tuple[bool, str]:
     """Validate a JSON template file."""
     try:
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             content = json.load(f)
 
         # Basic template validation
@@ -87,7 +86,7 @@ def validate_json_template(file_path: str) -> Tuple[bool, str]:
         return False, f"File Error: {e}"
 
 
-def check_template_organization(template_files: Dict[str, List[str]]) -> List[str]:
+def check_template_organization(template_files: dict[str, list[str]]) -> list[str]:
     """Check for template organization issues."""
     issues = []
 
@@ -98,7 +97,7 @@ def check_template_organization(template_files: Dict[str, List[str]]) -> List[st
             if "platforms/" in yaml_file:
                 # Platform templates should have platform-specific content
                 try:
-                    with open(yaml_file, "r", encoding="utf-8") as f:
+                    with open(yaml_file, encoding="utf-8") as f:
                         content = yaml.safe_load(f)
                     if content and isinstance(content, dict):
                         if "platform" not in content and "type" not in content:
@@ -109,7 +108,7 @@ def check_template_organization(template_files: Dict[str, List[str]]) -> List[st
     return issues
 
 
-def check_template_consistency(template_files: Dict[str, List[str]]) -> List[str]:
+def check_template_consistency(template_files: dict[str, list[str]]) -> list[str]:
     """Check for template consistency issues."""
     issues = []
 
@@ -123,7 +122,7 @@ def check_template_consistency(template_files: Dict[str, List[str]]) -> List[str
     return issues
 
 
-def validate_templates(template_files: Dict[str, List[str]]) -> Dict[str, Any]:
+def validate_templates(template_files: dict[str, list[str]]) -> dict[str, Any]:
     """Validate all template files."""
     results = {
         "valid_files": [],
@@ -155,7 +154,7 @@ def validate_templates(template_files: Dict[str, List[str]]) -> Dict[str, Any]:
     return results
 
 
-def generate_template_report(results: Dict[str, Any]) -> str:
+def generate_template_report(results: dict[str, Any]) -> str:
     """Generate a template validation report."""
     report = ["📋 AutoPR Engine Template Validation Report", ""]
 
@@ -206,7 +205,7 @@ def main():
     # Find template files
     template_files = find_template_files(templates_dir)
 
-    print(f"Found template files:")
+    print("Found template files:")
     for file_type, files in template_files.items():
         print(f"  {file_type.upper()}: {len(files)} files")
     print("")

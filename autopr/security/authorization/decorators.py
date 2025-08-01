@@ -1,7 +1,6 @@
 # autopr/security/authorization/decorators.py
 
 from functools import wraps
-from typing import List, Union
 
 from .models import AuthorizationContext, Permission, ResourceType
 from .utils import get_authorization_manager

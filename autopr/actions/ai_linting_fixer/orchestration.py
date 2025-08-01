@@ -20,7 +20,6 @@ def detect_available_orchestrators() -> dict[str, bool]:
 
     # Check Temporal.io
     try:
-
         # Check if environment variables are set
         if os.getenv("TEMPORAL_API_KEY") or os.getenv("TEMPORAL_ADDRESS"):
             availability["temporal"] = True
@@ -29,17 +28,14 @@ def detect_available_orchestrators() -> dict[str, bool]:
 
     # Check Celery
     with contextlib.suppress(ImportError):
-
         availability["celery"] = True
 
     # Check Prefect
     with contextlib.suppress(ImportError):
-
         availability["prefect"] = True
 
     # Check Airflow
     with contextlib.suppress(ImportError):
-
         availability["airflow"] = True
 
     return availability

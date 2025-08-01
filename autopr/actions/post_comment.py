@@ -22,7 +22,6 @@ class PostComment(Action[Inputs, Outputs]):
     id = "post_comment"
 
     async def run(self, inputs: Inputs) -> Outputs:
-
         # Simulate API call
         simulated_url = f"https://github.com/example/repo/issues/{inputs.pull_request_number}#issuecomment-12345"
 

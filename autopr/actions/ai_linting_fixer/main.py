@@ -5,8 +5,8 @@ This is the core module that orchestrates all the modular components
 to provide AI-powered linting fixes. Much cleaner and focused!
 """
 
-import logging
 from datetime import datetime
+import logging
 from typing import Any
 
 # Configure logging to suppress verbose provider warnings
@@ -526,7 +526,7 @@ class AILintingFixer(WorkflowIntegrationMixin):
         # Simulate based on success rate
         import random
 
-        return random.random() < success_rate
+        return random.random() < success_rate  # - Used for simulation, not security
 
     def _simulate_ai_fix_from_queue(
         self, issue_data: dict[str, Any], provider: str | None, model: str | None
@@ -557,7 +557,7 @@ class AILintingFixer(WorkflowIntegrationMixin):
         # Simulate based on success rate
         import random
 
-        return random.random() < effective_success_rate
+        return random.random() < effective_success_rate  # - Used for simulation, not security
 
     def close(self):
         """Clean up resources."""
@@ -652,7 +652,9 @@ def ai_linting_fixer(inputs: AILintingFixerInputs) -> AILintingFixerOutputs:
         mode=(
             OutputMode.QUIET
             if inputs.quiet
-            else OutputMode.VERBOSE if inputs.verbose_metrics else OutputMode.NORMAL
+            else OutputMode.VERBOSE
+            if inputs.verbose_metrics
+            else OutputMode.NORMAL
         )
     )
     display = get_display(display_config)

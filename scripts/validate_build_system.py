@@ -9,11 +9,10 @@ consistency, completeness, and proper organization.
 import os
 import sys
 import tomllib
-from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 
-def find_build_files(directory: str) -> Dict[str, List[str]]:
+def find_build_files(directory: str) -> dict[str, list[str]]:
     """Find all build-related files in the directory."""
     build_files = {"toml": [], "yaml": [], "json": [], "lock": [], "cache": []}
 
@@ -41,7 +40,7 @@ def find_build_files(directory: str) -> Dict[str, List[str]]:
     return build_files
 
 
-def validate_pyproject_toml(file_path: str) -> Tuple[bool, str]:
+def validate_pyproject_toml(file_path: str) -> tuple[bool, str]:
     """Validate pyproject.toml configuration."""
     try:
         with open(file_path, "rb") as f:
@@ -79,7 +78,7 @@ def validate_pyproject_toml(file_path: str) -> Tuple[bool, str]:
         return False, f"Error reading pyproject.toml: {e}"
 
 
-def check_build_artifacts(build_files: Dict[str, List[str]]) -> List[str]:
+def check_build_artifacts(build_files: dict[str, list[str]]) -> list[str]:
     """Check for build artifact issues."""
     issues = []
 
@@ -95,7 +94,7 @@ def check_build_artifacts(build_files: Dict[str, List[str]]) -> List[str]:
     return issues
 
 
-def check_package_management(build_files: Dict[str, List[str]]) -> List[str]:
+def check_package_management(build_files: dict[str, list[str]]) -> list[str]:
     """Check for package management issues."""
     issues = []
 
@@ -112,7 +111,7 @@ def check_package_management(build_files: Dict[str, List[str]]) -> List[str]:
     return issues
 
 
-def validate_build_system(build_files: Dict[str, List[str]]) -> Dict[str, Any]:
+def validate_build_system(build_files: dict[str, list[str]]) -> dict[str, Any]:
     """Validate the build system."""
     results = {
         "valid_files": [],
@@ -139,7 +138,7 @@ def validate_build_system(build_files: Dict[str, List[str]]) -> Dict[str, Any]:
     return results
 
 
-def generate_build_report(results: Dict[str, Any]) -> str:
+def generate_build_report(results: dict[str, Any]) -> str:
     """Generate a build system validation report."""
     report = ["🔧 AutoPR Engine Build System Validation Report", ""]
 
@@ -195,7 +194,7 @@ def main():
     # Find build files
     build_files = find_build_files(project_root)
 
-    print(f"Found build files:")
+    print("Found build files:")
     for file_type, files in build_files.items():
         print(f"  {file_type.upper()}: {len(files)} files")
     print("")

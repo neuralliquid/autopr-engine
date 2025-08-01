@@ -6,8 +6,8 @@ This example demonstrates how to integrate the new error handler system
 with the AI linting fixer for comprehensive error tracking and display.
 """
 
-import sys
 from pathlib import Path
+import sys
 
 # Add the project root to the path
 project_root = Path(__file__).parent.parent
@@ -67,7 +67,6 @@ def demonstrate_error_handler_integration():
     )
 
     try:
-
         # Run flake8 to detect issues
         issues = fixer.run_flake8(inputs.target_path)
 

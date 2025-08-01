@@ -9,10 +9,9 @@ documentation and code reorganization.
 import os
 import re
 import sys
-from typing import Dict, List, Tuple
 
 
-def find_python_files(directory: str) -> List[str]:
+def find_python_files(directory: str) -> list[str]:
     """Find all Python files in the directory."""
     python_files = []
     for root, dirs, files in os.walk(directory):
@@ -28,12 +27,12 @@ def find_python_files(directory: str) -> List[str]:
     return python_files
 
 
-def extract_imports(file_path: str) -> List[Tuple[str, int, str]]:
+def extract_imports(file_path: str) -> list[tuple[str, int, str]]:
     """Extract import statements from a Python file."""
     imports = []
 
     try:
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             lines = f.readlines()
 
         for line_num, line in enumerate(lines, 1):
@@ -232,7 +231,7 @@ def check_import_validity(import_statement: str, file_path: str) -> bool:
     return False
 
 
-def validate_imports(project_root: str) -> Dict[str, List[Tuple[str, int, str]]]:
+def validate_imports(project_root: str) -> dict[str, list[tuple[str, int, str]]]:
     """Validate all imports in the project."""
     python_files = find_python_files(project_root)
     broken_imports = {}
@@ -253,7 +252,7 @@ def validate_imports(project_root: str) -> Dict[str, List[Tuple[str, int, str]]]
     return broken_imports
 
 
-def generate_import_report(broken_imports: Dict[str, List[Tuple[str, int, str]]]) -> str:
+def generate_import_report(broken_imports: dict[str, list[tuple[str, int, str]]]) -> str:
     """Generate a report of broken imports."""
     if not broken_imports:
         return "✅ No broken imports found!"

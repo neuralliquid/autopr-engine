@@ -1,6 +1,6 @@
 import asyncio
 import json
-from typing import Any, Dict, List
+from typing import Any
 
 from .tool_base import Tool
 
@@ -22,7 +22,7 @@ class BanditTool(Tool):
     def description(self) -> str:
         return "A security linter for Python."
 
-    async def run(self, files: List[str], config: Dict[str, Any]) -> List[Dict[str, Any]]:
+    async def run(self, files: list[str], config: dict[str, Any]) -> list[dict[str, Any]]:
         """
         Run bandit on a list of files.
         """

@@ -62,7 +62,7 @@ def main():
         print("Operation cancelled by user.")
         sys.exit(130)
     except Exception as e:
-        print(f"Error running quality engine: {str(e)}")
+        print(f"Error running quality engine: {e!s}")
         sys.exit(1)
 
 

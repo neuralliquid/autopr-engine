@@ -4,7 +4,7 @@ Quality Engine - Single entry point for all code quality operations
 
 import asyncio
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import pydantic
 
@@ -20,7 +20,7 @@ class QualityMode(Enum):
 
 class QualityInputs(pydantic.BaseModel):
     mode: QualityMode = QualityMode.SMART
-    files: Optional[List[str]] = None
+    files: list[str] | None = None
     max_fixes: int = 50
     enable_ai_agents: bool = True
 
@@ -29,7 +29,7 @@ class QualityOutputs(pydantic.BaseModel):
     success: bool
     total_issues_found: int
     total_issues_fixed: int
-    files_modified: List[str]
+    files_modified: list[str]
     summary: str
 
 
@@ -45,7 +45,7 @@ class QualityEngine(Action[QualityInputs, QualityOutputs]):
             version="1.0.0",
         )
 
-    async def execute(self, inputs: QualityInputs, context: Dict[str, Any]) -> QualityOutputs:
+    async def execute(self, inputs: QualityInputs, context: dict[str, Any]) -> QualityOutputs:
         """Execute unified quality workflow"""
 
         try:
@@ -64,7 +64,7 @@ class QualityEngine(Action[QualityInputs, QualityOutputs]):
                 total_issues_found=0,
                 total_issues_fixed=0,
                 files_modified=[],
-                summary=f"Quality engine failed: {str(e)}",
+                summary=f"Quality engine failed: {e!s}",
             )
 
     async def run(self, inputs: QualityInputs) -> QualityOutputs:

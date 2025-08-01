@@ -46,7 +46,6 @@ class TestPlatformDetection(unittest.TestCase):
         assert len(all_platforms) > 0, "No platforms were loaded"
 
         for platform_id, platform in all_platforms.items():
-
             # Check required top-level fields
             assert platform_id == platform.get("id"), f"Platform ID mismatch for {platform_id}"
 

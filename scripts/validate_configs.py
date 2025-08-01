@@ -9,13 +9,12 @@ inconsistencies, and missing required configurations.
 import json
 import os
 import sys
-from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 import yaml
 
 
-def find_config_files(directory: str) -> Dict[str, List[str]]:
+def find_config_files(directory: str) -> dict[str, list[str]]:
     """Find all configuration files in the directory."""
     config_files = {"yaml": [], "json": [], "ini": [], "toml": []}
 
@@ -37,10 +36,10 @@ def find_config_files(directory: str) -> Dict[str, List[str]]:
     return config_files
 
 
-def validate_yaml_file(file_path: str) -> Tuple[bool, str]:
+def validate_yaml_file(file_path: str) -> tuple[bool, str]:
     """Validate a YAML file."""
     try:
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             yaml.safe_load(f)
         return True, "Valid YAML"
     except yaml.YAMLError as e:
@@ -49,10 +48,10 @@ def validate_yaml_file(file_path: str) -> Tuple[bool, str]:
         return False, f"File Error: {e}"
 
 
-def validate_json_file(file_path: str) -> Tuple[bool, str]:
+def validate_json_file(file_path: str) -> tuple[bool, str]:
     """Validate a JSON file."""
     try:
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             json.load(f)
         return True, "Valid JSON"
     except json.JSONDecodeError as e:
@@ -61,7 +60,7 @@ def validate_json_file(file_path: str) -> Tuple[bool, str]:
         return False, f"File Error: {e}"
 
 
-def check_duplicate_workflows(config_files: Dict[str, List[str]]) -> List[Tuple[str, str]]:
+def check_duplicate_workflows(config_files: dict[str, list[str]]) -> list[tuple[str, str]]:
     """Check for duplicate workflow configurations."""
     duplicates = []
     workflow_names = {}
@@ -69,7 +68,7 @@ def check_duplicate_workflows(config_files: Dict[str, List[str]]) -> List[Tuple[
     for yaml_file in config_files["yaml"]:
         if "workflows" in yaml_file:
             try:
-                with open(yaml_file, "r", encoding="utf-8") as f:
+                with open(yaml_file, encoding="utf-8") as f:
                     content = yaml.safe_load(f)
                     if content and "name" in content:
                         name = content["name"]
@@ -83,7 +82,7 @@ def check_duplicate_workflows(config_files: Dict[str, List[str]]) -> List[Tuple[
     return duplicates
 
 
-def check_configuration_consistency(config_files: Dict[str, List[str]]) -> List[str]:
+def check_configuration_consistency(config_files: dict[str, list[str]]) -> list[str]:
     """Check for configuration consistency issues."""
     issues = []
 
@@ -104,7 +103,7 @@ def check_configuration_consistency(config_files: Dict[str, List[str]]) -> List[
     return issues
 
 
-def validate_configurations(config_files: Dict[str, List[str]]) -> Dict[str, Any]:
+def validate_configurations(config_files: dict[str, list[str]]) -> dict[str, Any]:
     """Validate all configuration files."""
     results = {"valid_files": [], "invalid_files": [], "duplicates": [], "issues": []}
 
@@ -133,7 +132,7 @@ def validate_configurations(config_files: Dict[str, List[str]]) -> Dict[str, Any
     return results
 
 
-def generate_config_report(results: Dict[str, Any]) -> str:
+def generate_config_report(results: dict[str, Any]) -> str:
     """Generate a configuration validation report."""
     report = ["🔧 AutoPR Engine Configuration Validation Report", ""]
 
@@ -183,7 +182,7 @@ def main():
     # Find configuration files
     config_files = find_config_files(configs_dir)
 
-    print(f"Found configuration files:")
+    print("Found configuration files:")
     for file_type, files in config_files.items():
         print(f"  {file_type.upper()}: {len(files)} files")
     print("")
