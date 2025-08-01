@@ -1,139 +1,197 @@
-# Quality Engine: Generic Tool Architecture
+# AutoPR Quality Engine
 
-## 🧩 Generic Tool Class Hierarchy
+A comprehensive, cross-platform code quality analysis engine with AI-enhanced capabilities and
+Windows compatibility.
+
+## Features
+
+- **Cross-Platform Support**: Works on Windows, Linux, and macOS with automatic platform detection
+- **Comprehensive Tool Integration**: Integrates multiple quality analysis tools
+- **AI-Enhanced Analysis**: Optional AI-powered code review and suggestions
+- **Windows Adaptations**: Automatic tool substitutions and alternatives for Windows compatibility
+- **Extensible Architecture**: Easy to add new tools and analysis capabilities
+
+## Directory Structure
 
 ```
-┌─────────────────────────────────────────────┐
-│ Tool[TConfig, TIssue]                       │ (Generic Abstract Base Class)
-├─────────────────────────────────────────────┤
-│ + name: str                                 │
-│ + description: str                          │
-│ + category: str                             │
-│ + run(files: List[str],                     │
-│       config: TConfig) → Awaitable[List[TIssue]] │
-└─────────────────────────────────────────────┘
-                    ▲
-                    │
-        ┌───────────────────────┐
-        │                       │
-┌───────────────┐      ┌─────────────────┐
-│ ESLintTool    │      │ MyPyTool        │
-├───────────────┤      ├─────────────────┤
-│ Tool[ESLintConfig,   │ Tool[MyPyConfig,│
-│      LintIssue]│      │      LintIssue] │
-└───────────────┘      └─────────────────┘
+quality_engine/
+├── __init__.py                 # Main package initialization
+├── engine.py                   # Core quality engine implementation
+├── cli.py                      # Command-line interface
+├── models.py                   # Data models and enums
+├── config.py                   # Configuration management
+├── platform_detector.py        # Platform detection and adaptations
+├── tool_runner.py              # Tool execution and result processing
+├── summary.py                  # Result summarization
+├── di.py                       # Dependency injection container
+├── handler_registry.py         # Result handler management
+├── handler_base.py             # Base handler classes
+├── result_wrapper.py           # Result wrapping utilities
+├── example_usage.py            # Usage examples
+├── README.md                   # This file
+│
+├── tools/                      # Quality analysis tools
+│   ├── __init__.py            # Tool discovery and registration
+│   ├── tool_base.py           # Base tool interface
+│   ├── registry.py            # Tool registry
+│   ├── ruff_tool.py           # Python linting and formatting
+│   ├── mypy_tool.py           # Python type checking
+│   ├── bandit_tool.py         # Python security scanning
+│   ├── semgrep_tool.py        # Cross-platform static analysis (NEW)
+│   ├── interrogate_tool.py    # Python docstring coverage
+│   ├── pytest_tool.py         # Python testing
+│   ├── radon_tool.py          # Python complexity analysis
+│   ├── codeql_tool.py         # GitHub CodeQL (Linux/macOS)
+│   ├── windows_security_tool.py # Windows security scanner
+│   ├── eslint_tool.py         # JavaScript/TypeScript linting
+│   ├── sonarqube_tool.py      # SonarQube integration
+│   ├── dependency_scanner_tool.py # Dependency analysis
+│   └── performance_analyzer_tool.py # Performance analysis
+│
+├── handlers/                   # Result handlers
+│   ├── __init__.py            # Handler discovery
+│   ├── base.py                # Base handler classes
+│   └── ...                    # Specific handlers
+│
+├── ai/                        # AI-enhanced analysis
+│   ├── ai_modes.py            # AI analysis modes
+│   ├── ai_analyzer.py         # AI code analyzer
+│   └── ai_handler.py          # AI result handling
+│
+└── __tests__/                 # Test files
+    └── test_*.py              # Unit tests
 ```
 
-## 💡 Design Goal
+## Available Tools
 
-The quality engine architecture uses generics and TypedDict to create a flexible, type-safe system
-for running different code analysis tools. This design:
+### Cross-Platform Tools (Recommended)
 
-1. Provides type safety across the entire toolchain
-2. Enables polymorphic tool usage
-3. Maintains consistent result structures
-4. Allows for tool discovery and categorization
+- **Semgrep**: Comprehensive static analysis for security and code quality
+- **Ruff**: Fast Python linting and formatting
+- **Bandit**: Python security vulnerability scanning
+- **Safety**: Dependency vulnerability scanning
+- **MyPy**: Python type checking
+- **Pytest**: Python testing framework
 
-## 📦 Core Components
+### Platform-Specific Tools
 
-### 1. Tool Base Class
+- **CodeQL**: Advanced security analysis (Linux/macOS only)
+- **Windows Security Tool**: Comprehensive Windows security scanner
+- **ESLint**: JavaScript/TypeScript linting
+- **SonarQube**: Enterprise code quality analysis
 
-The `Tool` abstract base class provides a generic interface that all tools must implement:
+### Analysis Tools
+
+- **Interrogate**: Python docstring coverage
+- **Radon**: Python code complexity analysis
+- **Dependency Scanner**: Package dependency analysis
+- **Performance Analyzer**: Code performance analysis
+
+## Windows Compatibility
+
+The Quality Engine automatically detects Windows and provides:
+
+1. **Tool Substitutions**: CodeQL → Semgrep (recommended cross-platform alternative)
+2. **Windows Security Tool**: Comprehensive security scanning for Windows
+3. **Platform Warnings**: Clear information about limitations and alternatives
+4. **User Confirmation**: Optional confirmation before running on Windows
+
+## Usage
+
+### Command Line Interface
+
+```bash
+# Basic usage
+python -m autopr.actions.quality_engine.cli --files <files> --mode fast
+
+# Windows mode (with confirmation)
+python -m autopr.actions.quality_engine.cli --files <files> --mode comprehensive
+
+# Skip Windows check
+python -m autopr.actions.quality_engine.cli --files <files> --skip-windows-check
+
+# AI-enhanced analysis
+python -m autopr.actions.quality_engine.cli --files <files> --mode ai_enhanced --enable-ai
+```
+
+### Available Modes
+
+- **fast**: Quick analysis with essential tools (Ruff, Bandit)
+- **smart**: Intelligent tool selection based on file types
+- **comprehensive**: Full analysis with all available tools
+- **ai_enhanced**: AI-powered analysis with code suggestions
+
+### Programmatic Usage
 
 ```python
-class Tool(ABC, Generic[TConfig, TIssue]):
-    @property @abstractmethod
-    def name(self) -> str: ...
+from autopr.actions.quality_engine.engine import QualityEngine
+from autopr.actions.quality_engine.models import QualityInputs, QualityMode
 
-    @property @abstractmethod
-    def description(self) -> str: ...
+# Create engine
+engine = QualityEngine()
 
-    @property
-    def category(self) -> str:
-        return "general"
+# Run analysis
+inputs = QualityInputs(
+    mode=QualityMode.COMPREHENSIVE,
+    files=["src/"],
+    enable_ai_agents=True
+)
 
-    @abstractmethod
-    async def run(self, files: List[str], config: TConfig) -> List[TIssue]: ...
+result = await engine.run(inputs)
+print(f"Found {result.total_issues_found} issues")
 ```
 
-### 2. Type-Safe Configuration
+## Configuration
 
-Each tool defines its configuration using TypedDict:
+The engine can be configured via `pyproject.toml`:
 
-```python
-class MyPyConfig(TypedDict, total=False):
-    args: List[str]
+```toml
+[tool.autopr.quality_engine]
+default_mode = "smart"
+enable_ai = false
+
+[tool.autopr.quality_engine.tools]
+ruff = { enabled = true, config = {} }
+semgrep = { enabled = true, rules = "auto", severity = "INFO,WARNING,ERROR" }
+bandit = { enabled = true, config = {} }
 ```
 
-### 3. Standardized Results
+## Adding New Tools
 
-Results are represented with TypedDict for consistent access patterns:
+To add a new quality analysis tool:
 
-```python
-class LintIssue(TypedDict):
-    filename: str
-    line_number: int
-    column_number: int
-    message: str
-    code: str
-    level: str
-```
+1. Create a new tool class in `tools/` directory
+2. Inherit from `Tool` base class
+3. Implement required methods (`name`, `description`, `run`)
+4. Register the tool in `tools/__init__.py`
 
-### 4. Tool Registry
-
-The registry pattern provides runtime discovery of tools:
+Example:
 
 ```python
-# Register a tool
-@register_tool
-class MyPyTool(Tool[MyPyConfig, LintIssue]): ...
+from .tool_base import Tool
 
-# Get tools by category
-lint_tools = registry.get_tools_by_category("linting")
-```
-
-## 🔄 Workflow
-
-1. **Tool Implementation**: Create concrete tool classes that implement the generic `Tool` interface
-2. **Registration**: Automatically register tools using the `@register_tool` decorator
-3. **Configuration**: Define typed configurations specific to each tool
-4. **Result Standardization**: Return consistently structured results
-5. **Discovery**: Query the registry to find tools by name, category, or issue type
-
-## 🧠 Advanced Usage
-
-You can extend this architecture with:
-
-1. **Handlers**: Create dedicated handlers for processing specific issue types
-2. **Pipelines**: Chain tools together for comprehensive analysis
-3. **Filters**: Add filtering capabilities to focus on specific file types or issues
-4. **Parallel Execution**: Run tools concurrently for performance
-5. **Result Aggregation**: Combine results from multiple tools into unified reports
-
-## 📚 Implementation Example
-
-Here's how our MyPyTool is implemented:
-
-```python
-@register_tool
-class MyPyTool(Tool[MyPyConfig, LintIssue]):
-    """A tool for running MyPy, a static type checker for Python."""
-
+class MyCustomTool(Tool):
     @property
     def name(self) -> str:
-        return "mypy"
+        return "my_custom_tool"
 
     @property
     def description(self) -> str:
-        return "A static type checker for Python."
+        return "My custom quality analysis tool"
 
-    @property
-    def category(self) -> str:
-        return "linting"
-
-    async def run(self, files: List[str], config: MyPyConfig) -> List[LintIssue]:
-        # Implementation details...
+    async def run(self, files: List[str], config: Dict[str, Any]) -> List[Dict[str, Any]]:
+        # Implement tool logic here
+        return []
 ```
 
-This architecture provides a robust foundation for a quality engine that can integrate with various
-static analysis tools while maintaining type safety and modularity.
+## Contributing
+
+1. Follow the existing code structure and patterns
+2. Add appropriate tests for new tools
+3. Update documentation for new features
+4. Ensure cross-platform compatibility
+5. Add Windows adaptations if needed
+
+## License
+
+Part of the AutoPR project. See main project license.

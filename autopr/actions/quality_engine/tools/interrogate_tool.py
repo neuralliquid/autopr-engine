@@ -11,6 +11,10 @@ class InterrogateTool(Tool):
     A tool for checking Python docstring coverage using Interrogate.
     """
 
+    def __init__(self):
+        super().__init__()
+        self.default_timeout = 15.0  # Reduce timeout to 15 seconds for faster execution
+
     @property
     def name(self) -> str:
         return "interrogate"
@@ -36,7 +40,7 @@ class InterrogateTool(Tool):
             else:
                 return []
 
-        command = ["interrogate", "-v", *directories]
+        command = ["interrogate", *directories]
 
         fail_under = config.get("fail_under", 80)
         command.extend(["--fail-under", str(fail_under)])
@@ -50,7 +54,7 @@ class InterrogateTool(Tool):
 
         stdout, stderr = await process.communicate()
 
-        # Interrogate returns 0 for success, 2 for issues found.
+        # Interrogate returns 0 for success, 2 for coverage below threshold
         if process.returncode not in [0, 2]:
             error_message = stderr.decode().strip()
             if not error_message and stdout:
@@ -62,14 +66,35 @@ class InterrogateTool(Tool):
             return []
 
         output = stdout.decode()
-        return self._parse_output(output, files)
+        return self._parse_output(output, files, fail_under)
 
-    def _parse_output(self, output: str, files_to_check: List[str]) -> List[Dict[str, Any]]:
+    def _parse_output(
+        self, output: str, files_to_check: List[str], fail_under: int
+    ) -> List[Dict[str, Any]]:
         """
-        Parses the verbose text output of Interrogate.
-        Example: FAILED: autopr/my_module.py:10 - C001 - Missing docstring for public function `my_func`
+        Parses the output of Interrogate to check coverage and find issues.
         """
         issues = []
+
+        # Check if coverage is below threshold
+        coverage_match = re.search(r"TOTAL\s+\d+\s+\d+\s+\d+\s+(\d+\.?\d*)%", output)
+        if coverage_match:
+            coverage_percentage = float(coverage_match.group(1))
+            if coverage_percentage < fail_under:
+                issues.append(
+                    {
+                        "filename": "overall",
+                        "line_number": None,
+                        "code": "COVERAGE_BELOW_THRESHOLD",
+                        "message": f"Docstring coverage {coverage_percentage}% is below threshold of {fail_under}%",
+                        "details": {
+                            "coverage_percentage": coverage_percentage,
+                            "threshold": fail_under,
+                        },
+                    }
+                )
+
+        # Look for specific file issues in verbose output
         pattern = re.compile(
             r"^FAILED: (?P<file>[^:]+):(?P<line>\d+) - (?P<code>\w+) - (?P<message>.+)$"
         )
@@ -88,4 +113,5 @@ class InterrogateTool(Tool):
                             "message": issue_data["message"].strip(),
                         }
                     )
+
         return issues

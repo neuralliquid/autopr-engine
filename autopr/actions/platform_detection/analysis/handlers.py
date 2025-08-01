@@ -6,12 +6,15 @@ import json
 import logging
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import yaml
 
-from autopr.actions.platform_detection.analysis.base import FileAnalysisResult, FileAnalyzer
+from autopr.actions.platform_detection.analysis.base import FileAnalysisResult
 from autopr.actions.platform_detection.analysis.patterns import ContentPattern, FilePattern
+
+if TYPE_CHECKING:
+    from autopr.actions.platform_detection.analysis.base import FileAnalyzer
 
 logger = logging.getLogger(__name__)
 

@@ -2,13 +2,14 @@
 Dependency Injection container for the Quality Engine.
 """
 
-from typing import Any, Dict, List, Type
-
 from dependency_injector import containers, providers
 
-from .handler_base import Handler
+from .config import load_config
+from .engine import QualityEngine
+from .handler_registry import HandlerRegistry
 from .handlers.lint_handler import LintHandler
 from .handlers.lint_issue import LintIssue
+from .tools import discover_tools
 
 # Import registry at the module level to avoid circular imports
 from .tools.registry import registry as tool_registry_instance
@@ -19,16 +20,21 @@ class HandlerContainer(containers.DeclarativeContainer):
 
     # Configure handlers
     lint_handler = providers.Factory(LintHandler)
-    # Add more handlers as needed
-    # security_handler = providers.Factory(SecurityHandler)
-    # test_handler = providers.Factory(TestHandler)
 
 
 class ToolRegistryContainer(containers.DeclarativeContainer):
     """Container for tool registry."""
 
-    # Provide the tool registry as a singleton
-    registry = providers.Singleton(lambda: tool_registry_instance)
+    # Discover and register all tools
+    def _register_discovered_tools():
+        """Register all discovered tools with the registry."""
+        discovered_tools = discover_tools()
+        for tool_class in discovered_tools:
+            tool_registry_instance.register(tool_class)
+        return tool_registry_instance
+
+    # Provide the tool registry as a singleton with auto-registration
+    registry = providers.Singleton(_register_discovered_tools)
 
 
 class HandlerRegistryContainer(containers.DeclarativeContainer):
@@ -39,17 +45,10 @@ class HandlerRegistryContainer(containers.DeclarativeContainer):
 
     # Create a handler mapping
     handler_mapping = providers.Dict(
-        {
-            LintIssue: providers.Callable(
-                lambda handlers: handlers.lint_handler(), handlers=handlers
-            )
-            # Add more mappings as needed
-        }
+        {LintIssue: providers.Callable(lambda handlers: handlers.lint_handler(), handlers=handlers)}
     )
 
     # Create the handler registry with the mapping
-    from .handler_registry import HandlerRegistry
-
     registry = providers.Singleton(HandlerRegistry, handler_map=handler_mapping)
 
 
@@ -69,14 +68,9 @@ class QualityEngineContainer(containers.DeclarativeContainer):
     # Container for handler registry
     handler_registry = providers.Container(HandlerRegistryContainer, handlers=handlers)
 
-    # Import here to avoid circular dependencies
-    from .config import load_config
-
     config = providers.Callable(load_config, config_path=config_path)
 
     # The main QualityEngine class
-    from .engine import QualityEngine
-
     engine = providers.Singleton(
         QualityEngine,
         config_path=config_path,

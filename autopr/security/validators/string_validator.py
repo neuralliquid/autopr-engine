@@ -1,8 +1,10 @@
 import html
 import re
-from typing import Any, Dict
 
-from ..validation_models import ValidationResult, ValidationSeverity
+from autopr.security.validation_models import ValidationResult, ValidationSeverity
+
+# Constants
+MAX_KEY_LENGTH = 100
 
 
 class StringValidator:
@@ -12,7 +14,7 @@ class StringValidator:
         """Validate string input for security threats."""
         result = ValidationResult(is_valid=True)
 
-        # Length validation
+        # Check length validation
         if len(value) > self.max_string_length:
             result.errors.append(
                 f"String too long for key '{key}': {len(value)} > {self.max_string_length}"
@@ -20,6 +22,27 @@ class StringValidator:
             result.severity = ValidationSeverity.MEDIUM
             result.is_valid = False
             return result
+
+        # Check for security threats
+        threat_check = self._check_security_threats(key, value)
+        if not threat_check.is_valid:
+            return threat_check
+
+        # Sanitize HTML entities
+        sanitized_value = html.escape(value)
+
+        # Check format validation
+        format_check = self._check_format_validation(key, sanitized_value)
+        if not format_check.is_valid:
+            return format_check
+
+        # Wrap string value in a dictionary to satisfy type constraints
+        result.sanitized_data = {"value": sanitized_value}
+        return result
+
+    def _check_security_threats(self, key: str, value: str) -> ValidationResult:
+        """Check for security threats in the string."""
+        result = ValidationResult(is_valid=True)
 
         # SQL Injection detection
         for pattern in self.SQL_INJECTION_PATTERNS:
@@ -45,33 +68,32 @@ class StringValidator:
                 result.is_valid = False
                 return result
 
-        # Sanitize HTML entities
-        sanitized_value = html.escape(value)
+        return result
+
+    def _check_format_validation(self, key: str, sanitized_value: str) -> ValidationResult:
+        """Check format validation for specific contexts."""
+        result = ValidationResult(is_valid=True)
 
         # Additional sanitization for specific contexts
-        if "email" in key.lower():
-            if not self._is_valid_email(sanitized_value):
-                result.errors.append(f"Invalid email format in '{key}'")
-                result.severity = ValidationSeverity.MEDIUM
-                result.is_valid = False
-                return result
+        if "email" in key.lower() and not self._is_valid_email(sanitized_value):
+            result.errors.append(f"Invalid email format in '{key}'")
+            result.severity = ValidationSeverity.MEDIUM
+            result.is_valid = False
+            return result
 
-        if "url" in key.lower():
-            if not self._is_valid_url(sanitized_value):
-                result.errors.append(f"Invalid URL format in '{key}'")
-                result.severity = ValidationSeverity.MEDIUM
-                result.is_valid = False
-                return result
+        if "url" in key.lower() and not self._is_valid_url(sanitized_value):
+            result.errors.append(f"Invalid URL format in '{key}'")
+            result.severity = ValidationSeverity.MEDIUM
+            result.is_valid = False
+            return result
 
-        # Wrap string value in a dictionary to satisfy type constraints
-        result.sanitized_data = {"value": sanitized_value}
         return result
 
     def _is_safe_key(self, key: str) -> bool:
         """Check if key name is safe."""
         # Allow alphanumeric, underscore, hyphen, and dot
         safe_pattern = r"^[a-zA-Z0-9_\-\.]+$"
-        return bool(re.match(safe_pattern, key)) and len(key) <= 100
+        return bool(re.match(safe_pattern, key)) and len(key) <= MAX_KEY_LENGTH
 
     def _is_valid_email(self, email: str) -> bool:
         """Validate email format."""

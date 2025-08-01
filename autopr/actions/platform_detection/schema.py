@@ -30,6 +30,8 @@ class PlatformType(StrEnum):
     DEPLOYMENT = "deployment"
     MONITORING = "monitoring"
     SECURITY = "security"
+    AI = "ai"
+    DEVELOPMENT_PLATFORM = "development_platform"
     GENERAL = "general"
 
 
@@ -39,6 +41,9 @@ class PlatformSource(StrEnum):
     OFFICIAL = "official"
     COMMUNITY = "community"
     THIRD_PARTY = "third_party"
+    # Handle URL-based sources by mapping them to valid enum values
+    SAME_NEW = "https://same.new"
+    REPLIT = "https://replit.com"
 
 
 class PlatformStatus(StrEnum):
@@ -109,7 +114,7 @@ class PlatformConfig:
     name: str
     category: str
     description: str
-    priority: str
+    priority: int
 
     # Display information
     display_name: str = ""
@@ -180,15 +185,42 @@ class PlatformConfig:
         # Handle enums and special types
         status = PlatformStatus(data.get("status", "active")) if "status" in data else None
         platform_type = PlatformType(data["type"]) if "type" in data else None
-        source = PlatformSource(data["source"]) if "source" in data else None
+
+        # Handle source more flexibly
+        source = None
+        if "source" in data:
+            try:
+                source = PlatformSource(data["source"])
+            except ValueError:
+                # If the source value isn't in the enum, default to COMMUNITY
+                source = PlatformSource.COMMUNITY
 
         # Create and return the config
+        # Handle priority conversion
+        priority_value = data.get("priority", 0)
+        if isinstance(priority_value, str):
+            # Convert string priorities to numeric values
+            priority_map = {
+                "high": 10,
+                "medium": 5,
+                "low": 1,
+                "critical": 15,
+                "important": 8,
+                "normal": 5,
+                "minor": 2,
+            }
+            priority_value = priority_map.get(priority_value.lower(), 0)
+        elif isinstance(priority_value, int):
+            priority_value = priority_value
+        else:
+            priority_value = 0
+
         return cls(
             id=platform_id,
             name=data["name"],
             category=data["category"],
             description=data["description"],
-            priority=data["priority"],
+            priority=priority_value,
             # Display information
             display_name=data.get("display_name", data["name"]),
             version=data.get("version", "1.0.0"),

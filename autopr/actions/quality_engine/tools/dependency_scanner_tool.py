@@ -100,8 +100,5 @@ class DependencyScannerTool(Tool):
         else:
             summary_lines.append("No vulnerabilities found in dependencies.")
 
-        return {
-            "issues": issues,
-            "files_with_issues": files_with_issues,
-            "summary": "\n".join(summary_lines),
-        }
+        # Return the issues list directly, not wrapped in a dict
+        return issues

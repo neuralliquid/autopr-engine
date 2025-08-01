@@ -25,7 +25,7 @@ class RuffTool(Tool):
         if not files:
             return []
 
-        command = ["ruff", "check", "--format", "json", *files]
+        command = ["ruff", "check", "--output-format", "json", *files]
 
         extra_args = config.get("args", [])
         command.extend(extra_args)

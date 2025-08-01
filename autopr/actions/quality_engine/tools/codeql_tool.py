@@ -1,6 +1,7 @@
 import asyncio
 import json
 import os
+import shutil
 import tempfile
 from typing import Any, Dict, List
 
@@ -27,6 +28,11 @@ class CodeQLTool(Tool):
         2. Analyzing the database with a query suite.
         3. Parsing the SARIF output.
         """
+        # Check if CodeQL is available
+        if not shutil.which("codeql"):
+            print("CodeQL is not available on this system. Skipping CodeQL analysis.")
+            return [{"warning": "CodeQL is not available on this system"}]
+
         project_root = "."  # Assuming we run from the project root.
         language = config.get("language", "python")
         query_suite = config.get("query_suite", "python-security-and-quality.qls")
@@ -99,25 +105,48 @@ class CodeQLTool(Tool):
         if not sarif_data.get("runs"):
             return []
 
-        for run in sarif_data.get("runs", []):
-            for result in run.get("results", []):
-                message = result.get("message", {}).get("text", "No message")
-                locations = result.get("locations", [])
-                if not locations:
-                    continue
+        for run in sarif_data["runs"]:
+            if not run.get("results"):
+                continue
 
-                location = locations[0].get("physicalLocation", {})
-                artifact_location = location.get("artifactLocation", {}).get("uri", "N/A")
-                region = location.get("region", {})
+            for result in run["results"]:
+                # Extract location information
+                location = result.get("locations", [{}])[0]
+                physical_location = location.get("physicalLocation", {})
+                artifact_location = physical_location.get("artifactLocation", {})
+                region = physical_location.get("region", {})
+
+                filename = artifact_location.get("uri", "unknown")
+                line_number = region.get("startLine")
+                column_number = region.get("startColumn")
+
+                # Extract message
+                message = result.get("message", {})
+                if isinstance(message, dict):
+                    text = message.get("text", "No message provided")
+                else:
+                    text = str(message)
+
+                # Extract rule information
+                rule = result.get("rule", {})
+                rule_id = rule.get("id", "unknown") if isinstance(rule, dict) else "unknown"
 
                 issues.append(
                     {
-                        "filename": artifact_location,
-                        "line_number": region.get("startLine"),
-                        "column_number": region.get("startColumn"),
-                        "code": result.get("ruleId", "CODEQL_ISSUE"),
-                        "message": message,
-                        "level": result.get("level", "note"),
+                        "filename": filename,
+                        "line_number": line_number,
+                        "column_number": column_number,
+                        "code": rule_id,
+                        "message": text,
+                        "severity": result.get("level", "warning"),
+                        "details": {
+                            "rule_id": rule_id,
+                            "rule_name": (
+                                rule.get("name", "Unknown") if isinstance(rule, dict) else "Unknown"
+                            ),
+                            "help_uri": rule.get("helpUri", "") if isinstance(rule, dict) else "",
+                        },
                     }
                 )
+
         return issues

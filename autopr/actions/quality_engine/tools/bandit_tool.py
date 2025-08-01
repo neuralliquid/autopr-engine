@@ -10,6 +10,10 @@ class BanditTool(Tool):
     A tool for running Bandit, a security linter for Python.
     """
 
+    def __init__(self):
+        super().__init__()
+        self.default_timeout = 20.0  # Reduce timeout to 20 seconds for faster execution
+
     @property
     def name(self) -> str:
         return "bandit"

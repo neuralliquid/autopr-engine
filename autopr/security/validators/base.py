@@ -2,7 +2,8 @@ from typing import Any, Dict, Optional, Set
 
 import structlog
 
-from ..validation_models import ValidationResult, ValidationSeverity
+from autopr.security.validation_models import ValidationResult, ValidationSeverity
+
 from .array_validator import ArrayValidator
 from .file_validator import FileValidator
 from .number_validator import NumberValidator

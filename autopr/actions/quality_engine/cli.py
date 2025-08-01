@@ -1,79 +1,127 @@
 """
-Command-line interface for the quality engine
+Command-line interface for the Quality Engine.
 """
 
 import argparse
-import asyncio
-import glob
-import json
-from typing import List
+import sys
+from typing import List, Optional
 
-from .di import get_engine
+from .engine import QualityEngine
 from .models import QualityInputs, QualityMode
+from .platform_detector import PlatformDetector
 
 
-def parse_arguments() -> argparse.Namespace:
-    """Parse command line arguments for the quality engine.
+def ask_windows_confirmation() -> bool:
+    """Ask user for confirmation to continue on Windows."""
+    print("\n" + "=" * 60)
+    print("WINDOWS DETECTED - QUALITY ENGINE")
+    print("=" * 60)
+    print("Some quality tools may have limitations on Windows.")
+    print("The engine will automatically adapt and use Windows-compatible alternatives.")
+    print()
 
-    Returns:
-        Parsed arguments
-    """
-    parser = argparse.ArgumentParser(description="AutoPR Quality Engine")
+    while True:
+        response = input("Continue with Windows-adapted quality analysis? (y/n): ").lower().strip()
+        if response in ["y", "yes"]:
+            return True
+        elif response in ["n", "no"]:
+            return False
+        else:
+            print("Please enter 'y' or 'n'.")
+
+
+def main(args: Optional[List[str]] = None) -> int:
+    """Main CLI entry point."""
+    parser = argparse.ArgumentParser(description="Quality Engine CLI")
     parser.add_argument(
         "--mode",
-        choices=["fast", "comprehensive", "ai_enhanced", "smart"],
+        choices=["fast", "smart", "comprehensive", "ai_enhanced"],
         default="smart",
-        help="Quality check mode",
+        help="Quality analysis mode",
     )
-    parser.add_argument("--files", nargs="*", help="Files to check (supports glob patterns)")
-    parser.add_argument("--config", default="pyproject.toml", help="Path to configuration file")
-    parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
-    parser.add_argument("--ai-provider", help="AI provider to use for AI-enhanced mode")
-    parser.add_argument("--ai-model", help="AI model to use for AI-enhanced mode")
+    parser.add_argument(
+        "--files",
+        nargs="+",
+        help="Files or directories to analyze",
+    )
+    parser.add_argument(
+        "--ai-provider",
+        default="openai",
+        help="AI provider for enhanced analysis",
+    )
+    parser.add_argument(
+        "--ai-model",
+        default="gpt-4",
+        help="AI model for enhanced analysis",
+    )
+    parser.add_argument(
+        "--enable-ai",
+        action="store_true",
+        help="Enable AI-enhanced analysis",
+    )
+    parser.add_argument(
+        "--config",
+        default="pyproject.toml",
+        help="Configuration file path",
+    )
+    parser.add_argument(
+        "--skip-windows-check",
+        action="store_true",
+        help="Skip Windows compatibility check",
+    )
 
-    return parser.parse_args()
+    parsed_args = parser.parse_args(args)
 
+    # Platform detection and confirmation
+    platform_detector = PlatformDetector()
 
-def resolve_file_patterns(patterns: List[str]) -> List[str]:
-    """Resolve glob patterns to actual file paths.
+    if platform_detector.is_windows and not parsed_args.skip_windows_check:
+        if not ask_windows_confirmation():
+            print("Quality analysis cancelled by user.")
+            return 0
 
-    Args:
-        patterns: List of file patterns
+    # Create quality engine
+    engine = QualityEngine(config_path=parsed_args.config)
 
-    Returns:
-        List of resolved file paths
-    """
-    all_files = []
-    for pattern in patterns:
-        matched_files = glob.glob(pattern, recursive=True)
-        all_files.extend(matched_files)
-    return all_files
-
-
-async def main() -> None:
-    """Main entry point for the CLI."""
-    args = parse_arguments()
-
-    # Handle file globs
-    all_files = []
-    if args.files:
-        all_files = resolve_file_patterns(args.files)
-
+    # Create inputs
     inputs = QualityInputs(
-        mode=QualityMode(args.mode),
-        files=all_files,
-        config_path=args.config,
-        verbose=args.verbose,
-        ai_provider=args.ai_provider,
-        ai_model=args.ai_model,
+        mode=QualityMode(parsed_args.mode),
+        files=parsed_args.files,
+        ai_provider=parsed_args.ai_provider,
+        ai_model=parsed_args.ai_model,
+        enable_ai_agents=parsed_args.enable_ai,
     )
 
-    # Get the pre-configured engine from the DI container
-    engine = get_engine()
+    # Run analysis
+    try:
+        import asyncio
 
-    result = await engine.run(inputs)
-    print(json.dumps(result.model_dump(), indent=2))
+        result = asyncio.run(engine.run(inputs))
+
+        # Print results
+        print("\n" + "=" * 60)
+        print("QUALITY ANALYSIS RESULTS")
+        print("=" * 60)
+        print(f"Success: {result.success}")
+        print(f"Total Issues Found: {result.total_issues_found}")
+        print(f"Files with Issues: {len(set().union(*result.files_by_tool.values()))}")
+        print()
+
+        if result.issues_by_tool:
+            print("Issues by Tool:")
+            for tool, issues in result.issues_by_tool.items():
+                print(f"  {tool}: {len(issues)} issues")
+        print()
+
+        print("Summary:")
+        print(result.summary)
+
+        return 0 if result.success else 1
+
+    except Exception as e:
+        print(f"Error running quality analysis: {e}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    sys.exit(main())

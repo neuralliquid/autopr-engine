@@ -10,6 +10,10 @@ class PyTestTool(Tool):
     A tool for running tests using the PyTest framework.
     """
 
+    def __init__(self):
+        super().__init__()
+        self.default_timeout = 30.0  # Reduce timeout to 30 seconds for faster execution
+
     @property
     def name(self) -> str:
         return "pytest"
@@ -36,22 +40,36 @@ class PyTestTool(Tool):
 
         stdout, stderr = await process.communicate()
 
-        if process.returncode not in [0, 1, 5]:
+        # Handle different exit codes
+        if process.returncode == 5:
+            # No tests collected
+            return []
+        elif process.returncode not in [0, 1]:
             error_message = stderr.decode().strip()
             print(f"Error running pytest: {error_message}")
             return [{"error": f"PyTest execution failed: {error_message}"}]
 
-        if not stdout:
-            if process.returncode == 5:
-                return []
-            return [{"error": "PyTest produced no output."}]
+        # Try to find JSON output in the stdout
+        output_lines = stdout.decode().split("\n")
+        json_output = None
 
-        try:
-            report = json.loads(stdout)
-            return self._format_output(report)
-        except json.JSONDecodeError:
-            print(f"Failed to parse pytest json report: {stdout.decode()}")
-            return [{"error": "Failed to parse pytest JSON report"}]
+        for line in output_lines:
+            line = line.strip()
+            if line.startswith("{") and line.endswith("}"):
+                try:
+                    json_output = json.loads(line)
+                    break
+                except json.JSONDecodeError:
+                    continue
+
+        if not json_output:
+            # If no JSON found, check if tests passed
+            if process.returncode == 0:
+                return []  # All tests passed
+            else:
+                return [{"error": "PyTest produced no JSON output"}]
+
+        return self._format_output(json_output)
 
     def _format_output(self, report: Dict[str, Any]) -> List[Dict[str, Any]]:
         """
@@ -64,7 +82,7 @@ class PyTestTool(Tool):
 
         for test in report["tests"]:
             if test.get("outcome") == "failed":
-                filename = test.get("nodeid").split("::")[0]
+                filename = test.get("nodeid", "").split("::")[0]
                 lineno = None
                 if test.get("call", {}).get("traceback"):
                     last_trace = test["call"]["traceback"][-1]
