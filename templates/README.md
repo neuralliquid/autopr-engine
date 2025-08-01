@@ -126,12 +126,14 @@ All templates can be customized by:
 
 ### Template Validation
 
-Templates are validated to ensure:
+Templates are validated using `scripts/validate_templates.py` to ensure:
 
 - Proper syntax and structure
 - Required parameters are defined
 - Dependencies are satisfied
 - Security best practices are followed
+- Consistent naming conventions
+- Proper organization structure
 
 ## 📝 Template Development
 
