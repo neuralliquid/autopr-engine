@@ -16,8 +16,8 @@ def find_markdown_files(directory: str) -> List[str]:
     """Find all Markdown files in the directory."""
     markdown_files = []
     for root, dirs, files in os.walk(directory):
-        # Skip hidden directories
-        dirs[:] = [d for d in dirs if not d.startswith(".")]
+        # Skip hidden directories and node_modules
+        dirs[:] = [d for d in dirs if not d.startswith(".") and d != "node_modules"]
 
         for file in files:
             if file.endswith(".md"):
@@ -52,8 +52,16 @@ def extract_links(file_path: str) -> List[Tuple[str, int, str]]:
 
 def check_link_validity(link_url: str, file_path: str, project_root: str) -> bool:
     """Check if a link is valid."""
-    # Skip external links
-    if link_url.startswith(("http://", "https://", "mailto:", "#")):
+    # Skip external links (including incomplete URLs)
+    if link_url.startswith(("http://", "https://", "mailto:", "#", "<http")):
+        return True
+
+    # Skip node_modules links
+    if "node_modules" in link_url:
+        return True
+
+    # Skip template variables
+    if "{{" in link_url or "}}" in link_url:
         return True
 
     # Handle relative links
