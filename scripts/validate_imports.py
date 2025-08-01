@@ -167,10 +167,25 @@ def check_import_validity(import_statement: str, file_path: str) -> bool:
         "tomllib",
         "io",
         "setuptools",
+        "importlib",
+        "pkgutil",
+        "contextvars",
+        "mock",
     ]
 
     for module in stdlib_modules:
         if f"import {module}" in import_statement or f"from {module} import" in import_statement:
+            return True
+
+    # Check for specific standard library submodules
+    stdlib_submodules = [
+        "collections.abc",
+        "unittest.mock",
+        "urllib.parse",
+    ]
+
+    for submodule in stdlib_submodules:
+        if f"from {submodule} import" in import_statement:
             return True
 
     # Check if it's a common third-party library
@@ -191,6 +206,7 @@ def check_import_validity(import_statement: str, file_path: str) -> bool:
         "requests",
         "temporalio",
         "opentelemetry",
+        "jwt",
     ]
 
     for dep in common_deps:

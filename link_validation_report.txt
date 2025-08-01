@@ -1,14 +1,6 @@
 ❌ Broken Links Found:
 
 📁 C:\Users\smitj\repos\autopr\autopr-engine\README.md:
-  Line 5: <https://badge.fury.io/py/autopr-engine.svg
-    Context: [![PyPI version](<https://badge.fury.io/py/autopr-engine.svg)](https://badge.fury.io/py/autopr-engine)>
-  Line 6: <https://img.shields.io/badge/python-3.8+-blue.svg
-    Context: [![Python 3.8+](<https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)>
-  Line 7: <https://img.shields.io/badge/License-MIT-yellow.svg
-    Context: [![License: MIT](<https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)>
-  Line 8: <https://img.shields.io/badge/GitHub-Marketplace-blue
-    Context: [![GitHub Marketplace](<https://img.shields.io/badge/GitHub-Marketplace-blue)](https://github.com/marketplace/autopr-engine)>
   Line 14: docs/plans/IMPLEMENTATION_SUMMARY.md
     Context: > and developer experience. See [Implementation Summary](docs/plans/IMPLEMENTATION_SUMMARY.md) for
   Line 143: docs/architecture/README.md
@@ -37,12 +29,8 @@
     Context: - **[Platform Detection](docs/features/platform-detection.md)** - 25+ platforms
   Line 386: CONTRIBUTING.md
     Context: We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-  Line 401: <https://peps.python.org/pep-0008/
-    Context: - Follow [PEP 8](<https://peps.python.org/pep-0008/)> style guidelines
   Line 410: LICENSE
     Context: This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-  Line 427: <https://autopr-engine.readthedocs.io
-    Context: - **Documentation**: [https://autopr-engine.readthedocs.io](<https://autopr-engine.readthedocs.io)>
 
 📁 C:\Users\smitj\repos\autopr\autopr-engine\docs\README.md:
   Line 69: api/quality-engine.md
@@ -121,8 +109,6 @@
     Context: See the [Quick Start Guide](./QUICKSTART.md) for instructions on setting up a development
 
 📁 C:\Users\smitj\repos\autopr\autopr-engine\docs\architecture\AUTOPR_ENHANCED_SYSTEM.md:
-  Line 382: <https://linear.app/team/issue/SEC-456
-    Context: 📝 Created Issue: [SEC-456](<https://linear.app/team/issue/SEC-456)>
   Line 682: ./API_REFERENCE.md
     Context: - [API Reference](./API_REFERENCE.md)
   Line 683: ./CONFIGURATION.md
@@ -130,307 +116,17 @@
   Line 684: ./BEST_PRACTICES.md
     Context: - [Best Practices](./BEST_PRACTICES.md)
 
-📁 C:\Users\smitj\repos\autopr\autopr-engine\docs\development\autopr_autoweave_integration.md:
-  Line 1080: <https://docs.autoweave.dev
-    Context: 1. Check the [documentation](<https://docs.autoweave.dev)>
-  Line 1081: <https://github.com/yourorg/autoweave
-    Context: 2. Open an issue in the [GitHub repository](<https://github.com/yourorg/autoweave)>
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\docs\development\WINDOWS_DEVELOPMENT.md:
-  Line 38: <https://python.org
-    Context: [python.org](<https://python.org)> instead of the Microsoft Store version:
-  Line 41: <https://python.org/downloads/release/python-3135/
-    Context: 2. Download **Python 3.13.5** from [python.org](<https://python.org/downloads/release/python-3135/)>
-
 📁 C:\Users\smitj\repos\autopr\autopr-engine\docs\getting-started\MIGRATION_GUIDE.md:
   Line 59: plan-phase1-quality-pipeline.md
     Context: [Quality Pipeline Plan](plan-phase1-quality-pipeline.md)
   Line 63: docs/plans/plan-phase1-quality-pipeline.md
     Context: [Quality Pipeline Plan](docs/plans/plan-phase1-quality-pipeline.md)
 
-📁 C:\Users\smitj\repos\autopr\autopr-engine\docs\guides\authentication.md:
-  Line 272: <https://supabase.io/docs/guides/auth
-    Context: - [Supabase Auth Documentation](<https://supabase.io/docs/guides/auth)>
-  Line 273: <https://nextjs.org/docs/advanced-features/middleware
-    Context: - [Next.js Middleware Documentation](<https://nextjs.org/docs/advanced-features/middleware)>
-  Line 274: <https://auth0.com/docs/authorization/flows
-    Context: - [OAuth 2.0 Flow Explained](<https://auth0.com/docs/authorization/flows)>
-
 📁 C:\Users\smitj\repos\autopr\autopr-engine\docs\plans\ROADMAP.md:
   Line 191: CONTRIBUTING.md
     Context: We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on how to
   Line 196: LICENSE
     Context: AutoPR is [MIT licensed](LICENSE).
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\@nodelib\fs.scandir\README.md:
-  Line 80: ./src/types/index.ts
-    Context: * `dirent` — An instance of [`fs.Dirent`](./src/types/index.ts) class. On Node.js below 10.10 will be emulated by [`DirentFromStats`](./src/utils/fs.ts) class.
-  Line 80: ./src/utils/fs.ts
-    Context: * `dirent` — An instance of [`fs.Dirent`](./src/types/index.ts) class. On Node.js below 10.10 will be emulated by [`DirentFromStats`](./src/utils/fs.ts) class.
-  Line 127: ./src/adapters/fs.ts
-    Context: * Type: [`FileSystemAdapter`](./src/adapters/fs.ts)
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\@nodelib\fs.stat\README.md:
-  Line 102: ./src/adapters/fs.ts
-    Context: * Type: [`FileSystemAdapter`](./src/adapters/fs.ts)
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\@nodelib\fs.walk\README.md:
-  Line 91: ./src/types/index.ts
-    Context: * `dirent` — An instance of [`fs.Dirent`](./src/types/index.ts) class.
-  Line 121: ./src/settings.ts
-    Context: * Type: [`DeepFilterFunction`](./src/settings.ts)
-  Line 133: ./src/settings.ts
-    Context: * Type: [`EntryFilterFunction`](./src/settings.ts)
-  Line 145: ./src/settings.ts
-    Context: * Type: [`ErrorFilterFunction`](./src/settings.ts)
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\argparse\CHANGELOG.md:
-  Line 17: ./doc
-    Context: See [doc](./doc) for difference and migration info.
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\argparse\README.md:
-  Line 17: ./doc
-    Context: More details in [doc](./doc).
-  Line 76: ./doc
-    Context: 3. [Difference with python](./doc).
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\braces\README.md:
-  Line 17: CHANGELOG.md
-    Context: See the [changelog](CHANGELOG.md) for details.
-  Line 23: www.gnu.org/software/bash/
-    Context: - **Accurate** - complete support for the [Bash 4.3 Brace Expansion](www.gnu.org/software/bash/) specification (passes all of the Bash braces tests)
-  Line 484: test/support/generate.js
-    Context: If you'd like to run these comparisons yourself, see [test/support/generate.js](test/support/generate.js).
-  Line 532: ../../issues/new
-    Context: Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](../../issues/new).
-  Line 550: .verb.md
-    Context: _(This project's readme.md is generated by [verb](https://github.com/verbose/verb-generate-readme), please don't edit the readme directly. Any changes to the readme must be made in the [.verb.md](.verb.md) readme template.)_
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\commander\Readme.md:
-  Line 10: ./Readme_zh-CN.md
-    Context: Read this in other languages: English | [简体中文](./Readme_zh-CN.md)
-  Line 54: ./docs/terminology.md
-    Context: For information about terms used in this document see: [terminology](./docs/terminology.md)
-  Line 118: ./examples/options-common.js
-    Context: Example file: [options-common.js](./examples/options-common.js)
-  Line 154: ./examples/options-defaults.js
-    Context: Example file: [options-defaults.js](./examples/options-defaults.js)
-  Line 180: ./examples/options-negatable.js
-    Context: Example file: [options-negatable.js](./examples/options-negatable.js)
-  Line 209: ./examples/options-boolean-or-value.js
-    Context: Example file: [options-boolean-or-value.js](./examples/options-boolean-or-value.js)
-  Line 232: ./docs/options-taking-varying-arguments.md
-    Context: For information about possible ambiguous cases, see [options taking varying arguments](./docs/options-taking-varying-arguments.md).
-  Line 238: ./examples/options-required.js
-    Context: Example file: [options-required.js](./examples/options-required.js)
-  Line 259: ./examples/options-variadic.js
-    Context: Example file: [options-variadic.js](./examples/options-variadic.js)
-  Line 284: ./docs/options-taking-varying-arguments.md
-    Context: For information about possible ambiguous cases, see [options taking varying arguments](./docs/options-taking-varying-arguments.md).
-  Line 311: ./examples/options-extra.js
-    Context: Example files: [options-extra.js](./examples/options-extra.js), [options-env.js](./examples/options-env.js)
-  Line 311: ./examples/options-env.js
-    Context: Example files: [options-extra.js](./examples/options-extra.js), [options-env.js](./examples/options-env.js)
-  Line 347: ./examples/options-custom-processing.js
-    Context: Example file: [options-custom-processing.js](./examples/options-custom-processing.js)
-  Line 404: ./examples/nestedCommands.js
-    Context: You can specify (sub)commands using `.command()` or `.addCommand()`. There are two ways these can be implemented: using an action handler attached to the command, or as a stand-alone executable file (described in more detail later). The subcommands may be nested ([example](./examples/nestedCommands.js)).
-  Line 436: ./examples/defaultCommand.js
-    Context: subcommand is specified ([example](./examples/defaultCommand.js)).
-  Line 448: ./examples/argument.js
-    Context: Example file: [argument.js](./examples/argument.js)
-  Line 487: ./examples/arguments-extra.js
-    Context: Example file: [arguments-extra.js](./examples/arguments-extra.js)
-  Line 505: ./examples/arguments-custom-processing.js
-    Context: Example file: [arguments-custom-processing.js](./examples/arguments-custom-processing.js)
-  Line 523: ./examples/thank.js
-    Context: Example file: [thank.js](./examples/thank.js)
-  Line 563: ./examples/pm
-    Context: Example file: [pm](./examples/pm)
-  Line 582: ./examples/hook.js
-    Context: Example file: [hook.js](./examples/hook.js)
-  Line 610: ./examples/pizza
-    Context: Example file: [pizza](./examples/pizza)
-  Line 640: ./examples/custom-help
-    Context: Example file: [custom-help](./examples/custom-help)
-  Line 765: ./examples/configure-help.js
-    Context: Example file: [configure-help.js](./examples/configure-help.js)
-  Line 811: ./examples/positional-options.js
-    Context: Example file: [positional-options.js](./examples/positional-options.js)
-  Line 825: ./examples/pass-through-options.js
-    Context: Example file: [pass-through-options.js](./examples/pass-through-options.js)
-  Line 875: ./examples/custom-command-class.js
-    Context: customise the new subcommand (example file [custom-command-class.js](./examples/custom-command-class.js)).
-  Line 914: ./examples/configure-output.js
-    Context: Example file: [configure-output.js](./examples/configure-output.js)
-  Line 936: ./docs/deprecated.md
-    Context: - [deprecated](./docs/deprecated.md) features still supported for backwards compatibility
-  Line 937: ./docs/options-taking-varying-arguments.md
-    Context: - [options taking varying arguments](./docs/options-taking-varying-arguments.md)
-  Line 943: ./examples/pizza
-    Context: Example file: [pizza](./examples/pizza)
-  Line 965: ./examples/deploy
-    Context: Example file: [deploy](./examples/deploy)
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\debug\README.md:
-  Line 20: ./examples/node/app.js
-    Context: Example [_app.js_](./examples/node/app.js):
-  Line 43: ./examples/node/worker.js
-    Context: Example [_worker.js_](./examples/node/worker.js):
-  Line 252: ./examples/node/stdout.js
-    Context: Example [_stdout.js_](./examples/node/stdout.js):
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\dequal\readme.md:
-  Line 77: /bench
-    Context: The benchmarks can be found in the [`/bench`](/bench) directory. They are separated into two categories:
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\fast-glob\README.md:
-  Line 212: ./src/managers/tasks.ts
-    Context: Returns the internal representation of patterns ([`Task`](./src/managers/tasks.ts) is a combining patterns by base directory).
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\fill-range\README.md:
-  Line 177: ../../issues/new
-    Context: Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](../../issues/new).
-  Line 195: .verb.md
-    Context: _(This project's readme.md is generated by [verb](https://github.com/verbose/verb-generate-readme), please don't edit the readme directly. Any changes to the readme must be made in the [.verb.md](.verb.md) readme template.)_
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\ignore\README.md:
-  Line 438: nodejs.org/api/events.html
-    Context: - `ignore()` instance is no longer an [`EventEmitter`](nodejs.org/api/events.html), and all events are unnecessary and removed.
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\is-extglob\README.md:
-  Line 73: ../../issues/new
-    Context: Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](../../issues/new).
-  Line 77: .verb.md
-    Context: _(This document was generated by [verb-generate-readme](https://github.com/verbose/verb-generate-readme) (a [verb](https://github.com/verbose/verb) generator), please don't edit the readme directly. Any changes to the readme must be made in [.verb.md](.verb.md).)_
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\is-glob\README.md:
-  Line 144: ../../issues/new
-    Context: Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](../../issues/new).
-  Line 162: .verb.md
-    Context: _(This project's readme.md is generated by [verb](https://github.com/verbose/verb-generate-readme), please don't edit the readme directly. Any changes to the readme must be made in the [.verb.md](.verb.md) readme template.)_
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\is-number\README.md:
-  Line 34: ./test.js
-    Context: See the [tests](./test.js) for more examples.
-  Line 99: ./benchmark/index.js
-    Context: As with all benchmarks, take these with a grain of salt. See the [benchmarks](./benchmark/index.js) for more detail.
-  Line 126: ../../issues/new
-    Context: Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](../../issues/new).
-  Line 144: .verb.md
-    Context: _(This project's readme.md is generated by [verb](https://github.com/verbose/verb-generate-readme), please don't edit the readme directly. Any changes to the readme must be made in the [.verb.md](.verb.md) readme template.)_
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\js-yaml\CHANGELOG.md:
-  Line 22: migrate_v3_to_v4.md
-    Context: - Check [migration guide](migrate_v3_to_v4.md) to see details for all breaking changes.
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\katex\README.md:
-  Line 97: CONTRIBUTING.md
-    Context: This project exists thanks to all the people who contribute code. If you'd like to help, see [our guide to contributing code](CONTRIBUTING.md).
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\katex\dist\README.md:
-  Line 97: CONTRIBUTING.md
-    Context: This project exists thanks to all the people who contribute code. If you'd like to help, see [our guide to contributing code](CONTRIBUTING.md).
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\markdownlint\README.md:
-  Line 790: doc/CustomRules.md#authoring
-    Context: outlined in the [documentation for custom rules](doc/CustomRules.md#authoring).
-  Line 942: example/gulpfile.cjs
-    Context: straightforward: [`gulpfile.cjs`](example/gulpfile.cjs).
-  Line 945: example/Gruntfile.cjs
-    Context: [`Gruntfile.cjs`](example/Gruntfile.cjs).
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\markdownlint\doc\md045.md:
-  Line 13: image.jpg
-    Context: ![Alternate text](image.jpg)
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\markdownlint\doc\Rules.md:
-  Line 1917: image.jpg
-    Context: ![Alternate text](image.jpg)
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\micromatch\README.md:
-  Line 108: ./test
-    Context: * **Well tested** - More than 5,000 [test assertions](./test)
-  Line 170: index.js#L109
-    Context: ### [.matcher](index.js#L109)
-  Line 191: index.js#L128
-    Context: ### [.isMatch](index.js#L128)
-  Line 212: index.js#L153
-    Context: ### [.not](index.js#L153)
-  Line 233: index.js#L193
-    Context: ### [.contains](index.js#L193)
-  Line 256: index.js#L235
-    Context: ### [.matchKeys](index.js#L235)
-  Line 278: index.js#L264
-    Context: ### [.some](index.js#L264)
-  Line 301: index.js#L300
-    Context: ### [.every](index.js#L300)
-  Line 328: index.js#L339
-    Context: ### [.all](index.js#L339)
-  Line 358: index.js#L366
-    Context: ### [.capture](index.js#L366)
-  Line 381: index.js#L392
-    Context: ### [.makeRe](index.js#L392)
-  Line 401: index.js#L408
-    Context: ### [.scan](index.js#L408)
-  Line 418: index.js#L424
-    Context: ### [.parse](index.js#L424)
-  Line 435: index.js#L451
-    Context: ### [.braces](index.js#L451)
-  Line 912: .github/contributing.md
-    Context: All contributions are welcome! Please read [the contributing guide](.github/contributing.md) to get started.
-  Line 918: ../../issues
-    Context: * [research existing issues first](../../issues) (open and closed)
-  Line 932: ../../issues/new
-    Context: Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](../../issues/new).
-  Line 934: .github/contributing.md
-    Context: Please read the [contributing guide](.github/contributing.md) for advice on opening issues, pull requests, and coding standards.
-  Line 952: .verb.md
-    Context: _(This project's readme.md is generated by [verb](https://github.com/verbose/verb-generate-readme), please don't edit the readme directly. Any changes to the readme must be made in the [.verb.md](.verb.md) readme template.)_
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\picomatch\README.md:
-  Line 110: lib/picomatch.js#L32
-    Context: ### [picomatch](lib/picomatch.js#L32)
-  Line 131: lib/picomatch.js#L117
-    Context: ### [.test](lib/picomatch.js#L117)
-  Line 151: lib/picomatch.js#L161
-    Context: ### [.matchBase](lib/picomatch.js#L161)
-  Line 169: lib/picomatch.js#L183
-    Context: ### [.isMatch](lib/picomatch.js#L183)
-  Line 190: lib/picomatch.js#L199
-    Context: ### [.parse](lib/picomatch.js#L199)
-  Line 207: lib/picomatch.js#L231
-    Context: ### [.scan](lib/picomatch.js#L231)
-  Line 238: lib/picomatch.js#L245
-    Context: ### [.compileRe](lib/picomatch.js#L245)
-  Line 251: lib/picomatch.js#L286
-    Context: ### [.makeRe](lib/picomatch.js#L286)
-  Line 274: lib/picomatch.js#L321
-    Context: ### [.toRegex](lib/picomatch.js#L321)
-  Line 667: ../../issues/new
-    Context: Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](../../issues/new).
-  Line 669: .github/contributing.md
-    Context: Please read the [contributing guide](.github/contributing.md) for advice on opening issues, pull requests, and coding standards.
-  Line 687: .verb.md
-    Context: _(This project's readme.md is generated by [verb](https://github.com/verbose/verb-generate-readme), please don't edit the readme directly. Any changes to the readme must be made in the [.verb.md](.verb.md) readme template.)_
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\to-regex-range\README.md:
-  Line 62: ./test/test.js
-    Context: As of April 07, 2019, this library runs [>1m test assertions](./test/test.js) against generated regex-ranges to provide brute-force verification that results are correct.
-  Line 238: ../../issues/new
-    Context: Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](../../issues/new).
-  Line 256: .verb.md
-    Context: _(This project's readme.md is generated by [verb](https://github.com/verbose/verb-generate-readme), please don't edit the readme directly. Any changes to the readme must be made in the [.verb.md](.verb.md) readme template.)_
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\unicorn-magic\readme.md:
-  Line 25: index.d.ts
-    Context: See [the types](index.d.ts).
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\packages\autoweave\docs\architecture\decisions\0001-template-engine-selection.md:
-  Line 112: <https://github.com/scriban/scriban
-    Context: - [Scriban Documentation](<https://github.com/scriban/scriban)>
-  Line 113: <https://yaml.org/spec/
-    Context: - [YAML Specification](<https://yaml.org/spec/)>
 
 📁 C:\Users\smitj\repos\autopr\autopr-engine\templates\README.md:
   Line 171: docs/development/template-development.md
@@ -441,12 +137,8 @@
     Context: - [Template Examples](examples/templates.md)
 
 📁 C:\Users\smitj\repos\autopr\autopr-engine\templates\documentation\platform_guide.md:
-  Line 97: {{ platform_info.get('documentation_url', '#'
-    Context: - [{{ platform_name }} Official Documentation]({{ platform_info.get('documentation_url', '#') }})
   Line 98: examples/
     Context: - [Template Examples](examples/)
-  Line 99: {{ platform_info.get('community_url', '#'
-    Context: - [Community Support]({{ platform_info.get('community_url', '#') }})
   Line 103: troubleshooting.md
     Context: _Need help? Check our [troubleshooting guide](troubleshooting.md) or [contact support](support.md)._
   Line 103: support.md
