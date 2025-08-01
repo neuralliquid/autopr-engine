@@ -36,21 +36,22 @@ repos:
         # Run after prettier to handle any formatting changes
         additional_dependencies: []
 
-  # Quality Engine (replaces all other tools)
-  - repo: local
-    hooks:
-      - id: quality-engine
-        name: AutoPR Quality Engine
-        entry: python -m autopr.actions.quality_engine
-        language: system
-        types: [python]
-        args:
-          [
-            --mode=smart,
-            --files,
-            "autopr/security/validators/string_validator.py",
-            "autopr/actions/quality_engine/di.py",
-          ]
-        stages: [pre-commit]
-        verbose: true
-        pass_filenames: false
+  # Quality Engine (disabled for pre-commit - too heavy for every commit)
+  # Run manually with: python -m autopr.actions.quality_engine --mode=smart
+  # - repo: local
+  #   hooks:
+  #     - id: quality-engine
+  #       name: AutoPR Quality Engine
+  #       entry: python -m autopr.actions.quality_engine
+  #       language: system
+  #       types: [python]
+  #       args:
+  #         [
+  #           --mode=smart,
+  #           --files,
+  #           "autopr/security/validators/string_validator.py",
+  #           "autopr/actions/quality_engine/di.py",
+  #         ]
+  #       stages: [pre-commit]
+  #       verbose: true
+  #       pass_filenames: false
