@@ -4,7 +4,10 @@ import unittest
 from datetime import datetime
 from pathlib import Path
 
-from file_ops import BackupManager, FileValidator, SafeFileOperations
+try:
+    from .file_ops import BackupManager, FileValidator, SafeFileOperations
+except ImportError:
+    from file_ops import BackupManager, FileValidator, SafeFileOperations
 
 
 class TestGetFileInfoBasic(unittest.TestCase):

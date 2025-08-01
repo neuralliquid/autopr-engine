@@ -5,7 +5,10 @@ import re
 from collections.abc import Callable
 from pathlib import Path
 
-from models import FileReport, IssueSeverity, LintIssue
+try:
+    from .models import FileReport, IssueSeverity, LintIssue
+except ImportError:
+    from models import FileReport, IssueSeverity, LintIssue
 
 
 class MarkdownLinter:

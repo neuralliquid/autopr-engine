@@ -433,11 +433,11 @@
     Context: - [YAML Specification](<https://yaml.org/spec/)>
 
 📁 C:\Users\smitj\repos\autopr\autopr-engine\templates\README.md:
-  Line 169: docs/development/template-development.md
+  Line 171: docs/development/template-development.md
     Context: - [Template Development Guide](docs/development/template-development.md)
-  Line 170: docs/api/templates.md
+  Line 172: docs/api/templates.md
     Context: - [Template API Reference](docs/api/templates.md)
-  Line 171: examples/templates.md
+  Line 173: examples/templates.md
     Context: - [Template Examples](examples/templates.md)
 
 📁 C:\Users\smitj\repos\autopr\autopr-engine\templates\documentation\platform_guide.md:

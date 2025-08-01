@@ -60,9 +60,6 @@
 📁 C:\Users\smitj\repos\autopr\autopr-engine\autopr\integrations\axolo\commands.py:
   Line 71: from slack_sdk.errors import SlackApiError  # type: ignore[import-not-found]
 
-📁 C:\Users\smitj\repos\autopr\autopr-engine\autopr\quality\template_metrics\quality_analyzer.py:
-  Line 17: from templates.discovery.template_validators import ValidationSeverity
-
 📁 C:\Users\smitj\repos\autopr\autopr-engine\autopr\security\auth.py:
   Line 6: from fastapi import HTTPException, status
   Line 7: from passlib.context import CryptContext
@@ -79,26 +76,6 @@
 
 📁 C:\Users\smitj\repos\autopr\autopr-engine\node_modules\katex\src\metrics\extract_ttfs.py:
   Line 3: from fontTools.ttLib import TTFont
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\templates\discovery\format_generators\base.py:
-  Line 13: from discovery.content_analyzer import TemplateAnalysis
-  Line 14: from discovery.template_loader import TemplateLoader
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\templates\discovery\format_generators\factory.py:
-  Line 10: from discovery.content_analyzer import TemplateAnalysis
-  Line 11: from discovery.template_loader import TemplateLoader
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\templates\discovery\format_generators\html.py:
-  Line 11: from discovery.content_analyzer import TemplateAnalysis
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\templates\discovery\format_generators\json_generator.py:
-  Line 13: from discovery.content_analyzer import TemplateAnalysis
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\templates\discovery\format_generators\markdown.py:
-  Line 11: from discovery.content_analyzer import TemplateAnalysis
-
-📁 C:\Users\smitj\repos\autopr\autopr-engine\templates\example-hybrid\test_early_enhanced_file_generator\test_early___init__.py:
-  Line 8: from enhanced_file_generator import TemplateMetadata
 
 📁 C:\Users\smitj\repos\autopr\autopr-engine\tools\production_monitoring.py:
   Line 9: from azure.monitor.opentelemetry import configure_azure_monitor
