@@ -38,7 +38,7 @@ mdlint --config .mdlintrc .
 
 ### Options
 
-``` text
+````text
 Usage: mdlint [OPTIONS] [PATHS]...
 
   Lint and fix markdown files.
@@ -202,11 +202,11 @@ repos:
    ```bash
    pip install -e ".[dev]"
    pre-commit install
-   ```
+````
 
 ### Running Tests
 
-```bash
+````bash
 pytest
 
 ```text
@@ -224,3 +224,4 @@ mypy markdown_lint
 ## License
 
 MIT
+````

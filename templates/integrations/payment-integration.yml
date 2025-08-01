@@ -1,5 +1,6 @@
 name: "Payment Processing Integration Template"
-description: "Cross-platform payment processing integration for e-commerce and subscription-based applications"
+description:
+  "Cross-platform payment processing integration for e-commerce and subscription-based applications"
 category: "integration_template"
 platforms: ["bubble", "lovable", "flutterflow", "thunkable", "horizons", "replit"]
 file_extension: "md"
@@ -9,7 +10,14 @@ integration_info:
   type: "financial_services"
   complexity: "high"
   estimated_setup_time: "2-5 days"
-  use_cases: ["online_payments", "subscription_billing", "marketplace_payments", "donation_processing", "invoice_payments"]
+  use_cases:
+    [
+      "online_payments",
+      "subscription_billing",
+      "marketplace_payments",
+      "donation_processing",
+      "invoice_payments",
+    ]
   key_features:
     - "Secure payment processing with PCI compliance"
     - "Multiple payment methods (cards, digital wallets, bank transfers)"
@@ -101,7 +109,8 @@ variables:
     type: "array"
     default: ["credit_card", "debit_card"]
     description: "Supported payment methods"
-    examples: [["credit_card"], ["credit_card", "paypal"], ["credit_card", "apple_pay", "google_pay"]]
+    examples:
+      [["credit_card"], ["credit_card", "paypal"], ["credit_card", "apple_pay", "google_pay"]]
 
   currencies:
     type: "array"
@@ -144,7 +153,9 @@ variants:
     modifications:
       - line: 15
         action: "add_after"
-        content: "- Machine learning fraud detection\n- Risk scoring and assessment\n- 3D Secure authentication\n- Velocity checking and pattern analysis"
+        content:
+          "- Machine learning fraud detection\n- Risk scoring and assessment\n- 3D Secure
+          authentication\n- Velocity checking and pattern analysis"
 
   with_marketplace_payments:
     name: "With Marketplace Payments"
@@ -152,7 +163,9 @@ variants:
     modifications:
       - line: 20
         action: "add_after"
-        content: "- Split payments to multiple recipients\n- Escrow and delayed payment release\n- Marketplace fee management\n- Vendor payout automation"
+        content:
+          "- Split payments to multiple recipients\n- Escrow and delayed payment release\n-
+          Marketplace fee management\n- Vendor payout automation"
 
   with_crypto_payments:
     name: "With Cryptocurrency Support"
@@ -160,7 +173,9 @@ variants:
     modifications:
       - line: 25
         action: "add_after"
-        content: "- Bitcoin and Ethereum payment processing\n- Stablecoin payment options\n- Crypto-to-fiat conversion\n- Blockchain transaction tracking"
+        content:
+          "- Bitcoin and Ethereum payment processing\n- Stablecoin payment options\n- Crypto-to-fiat
+          conversion\n- Blockchain transaction tracking"
 
 platform_implementations:
   bubble:

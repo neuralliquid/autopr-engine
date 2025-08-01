@@ -1,6 +1,6 @@
 # {{ platform_name }} Platform Guide
 
-> *Generated on {{ generation_date }}*
+> _Generated on {{ generation_date }}_
 
 ## Overview
 
@@ -22,8 +22,7 @@
 
 - **{{ tier.title() }}**: {{ details }}
 
-{% endfor %}
-{% endif %}
+{% endfor %} {% endif %}
 
 ## Configuration Options
 
@@ -35,14 +34,11 @@
 - **Required**: {{ "Required" if var_info.get('required', False) else "Optional" }}
 - **Description**: {{ var_info.get('description', '') }}
 
-{% if var_info.get('examples') %}
-**Examples**:
-{% for example in var_info.examples %}
+{% if var_info.get('examples') %} **Examples**: {% for example in var_info.examples %}
 
 - `{{ example }}`
 
-{% endfor %}
-{% endif %}
+{% endfor %} {% endif %}
 
 {% endfor %}
 
@@ -58,10 +54,7 @@
 
 ### Development Steps
 
-{% for step in development_approach.steps %}
-{{ loop.index }}. {{ step }}
-{% endfor %}
-{% endif %}
+{% for step in development_approach.steps %} {{ loop.index }}. {{ step }} {% endfor %} {% endif %}
 {% endif %}
 
 {% if best_practices %}
@@ -72,18 +65,13 @@
 
 ### {{ category.replace('_', ' ').title() }}
 
-{% if practices is iterable and practices is not string %}
-{% for practice in practices %}
+{% if practices is iterable and practices is not string %} {% for practice in practices %}
 
 - {{ practice }}
 
-{% endfor %}
-{% else %}
-{{ practices }}
-{% endif %}
+{% endfor %} {% else %} {{ practices }} {% endif %}
 
-{% endfor %}
-{% endif %}
+{% endfor %} {% endif %}
 
 {% if troubleshooting %}
 
@@ -95,8 +83,7 @@
 
 {{ solution }}
 
-{% endfor %}
-{% endif %}
+{% endfor %} {% endif %}
 
 ## Getting Started
 
@@ -113,4 +100,4 @@
 
 ---
 
-*Need help? Check our [troubleshooting guide](troubleshooting.md) or [contact support](support.md).*
+_Need help? Check our [troubleshooting guide](troubleshooting.md) or [contact support](support.md)._

@@ -6,8 +6,8 @@ Proposed
 
 ## Context
 
-AutoPR needs to handle asynchronous operations and integrate with various external systems while maintaining
-responsiveness and scalability.
+AutoPR needs to handle asynchronous operations and integrate with various external systems while
+maintaining responsiveness and scalability.
 
 ## Decision
 
@@ -16,9 +16,9 @@ We will implement an event-driven architecture using the following components:
 ### Core Components
 
 1. **Event Bus**
-    - In-memory for single instance
-    - Redis for distributed deployments
-    - Topic-based routing
+   - In-memory for single instance
+   - Redis for distributed deployments
+   - Topic-based routing
 
 1. **Event Types**
 
@@ -36,24 +36,24 @@ We will implement an event-driven architecture using the following components:
    ```
 
 1. **Event Handlers**
-    - Stateless processing
-    - Retry policies
-    - Dead letter queue support
+   - Stateless processing
+   - Retry policies
+   - Dead letter queue support
 
 ### Integration Points
 
 1. **Git Providers**
-    - Push events
-    - PR events
-    - Comment events
+   - Push events
+   - PR events
+   - Comment events
 
 1. **CI/CD Systems**
-    - Build status updates
-    - Deployment events
+   - Build status updates
+   - Deployment events
 
 1. **Notification Systems**
-    - Slack/Teams notifications
-    - Email alerts
+   - Slack/Teams notifications
+   - Email alerts
 
 ## Consequences
 

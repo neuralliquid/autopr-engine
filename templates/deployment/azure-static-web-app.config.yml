@@ -1,6 +1,8 @@
 name: "Azure Static Web Apps Configuration"
 category: "deployment"
-description: "Azure Static Web Apps configuration with routing, authentication, and security headers for React SPAs"
+description:
+  "Azure Static Web Apps configuration with routing, authentication, and security headers for React
+  SPAs"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["azure", "static-web-apps", "spa", "routing", "authentication", "security"]
@@ -10,7 +12,8 @@ template_info:
   type: "deployment_configuration"
   framework: "React, Vue, Angular"
   target_audience: "Azure developers, frontend developers"
-  primary_use_cases: ["Static site deployment", "SPA routing", "API authentication", "Serverless functions"]
+  primary_use_cases:
+    ["Static site deployment", "SPA routing", "API authentication", "Serverless functions"]
 
 variables:
   api_authentication:
@@ -51,7 +54,8 @@ variables:
 
   security_headers:
     type: "boolean"
-    description: "Enable security headers (X-Content-Type-Options, X-Frame-Options, X-XSS-Protection)"
+    description:
+      "Enable security headers (X-Content-Type-Options, X-Frame-Options, X-XSS-Protection)"
     default: true
     required: false
 

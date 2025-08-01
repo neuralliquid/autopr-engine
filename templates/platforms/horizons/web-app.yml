@@ -1,5 +1,7 @@
 name: "Hostinger Horizons Vibe Coding Template"
-description: "Best overall vibe coding platform - AI-powered web app development using conversational prompts and natural language"
+description:
+  "Best overall vibe coding platform - AI-powered web app development using conversational prompts
+  and natural language"
 category: "vibe_coding_platform"
 platforms: ["horizons"]
 file_extension: "md"
@@ -75,7 +77,9 @@ variants:
     modifications:
       - line: 10
         action: "add_after"
-        content: "- User registration and login system\n- Profile management\n- Password reset functionality"
+        content:
+          "- User registration and login system\n- Profile management\n- Password reset
+          functionality"
 
   with_database:
     name: "With Database Integration"
@@ -101,8 +105,11 @@ usage:
 
 development_approach:
   method: "vibe_coding"
-  philosophy: "Human-AI collaboration where you control architecture and quality while AI handles repetitive coding tasks"
-  description: "Transform ideas into functioning web apps using conversational prompts instead of manual coding"
+  philosophy:
+    "Human-AI collaboration where you control architecture and quality while AI handles repetitive
+    coding tasks"
+  description:
+    "Transform ideas into functioning web apps using conversational prompts instead of manual coding"
   core_principles:
     - "Natural language to code conversion"
     - "Intent-focused development over syntax mastery"
@@ -204,9 +211,12 @@ examples:
     description: "Collaborative task management for small teams"
     variables:
       app_name: "TeamFlow"
-      app_description: "A collaborative task management system where team members can create projects, assign tasks, track progress, and communicate"
+      app_description:
+        "A collaborative task management system where team members can create projects, assign
+        tasks, track progress, and communicate"
       target_audience: "small business teams"
-      key_features: ["project boards", "task assignment", "progress tracking", "team chat", "file sharing"]
+      key_features:
+        ["project boards", "task assignment", "progress tracking", "team chat", "file sharing"]
       design_style: "modern"
     variants: ["with_authentication", "with_database"]
 
@@ -215,8 +225,11 @@ examples:
     description: "Platform for sharing and discovering recipes"
     variables:
       app_name: "FlavorFind"
-      app_description: "A recipe sharing platform where users can upload recipes, search by ingredients, save favorites, and plan meals"
+      app_description:
+        "A recipe sharing platform where users can upload recipes, search by ingredients, save
+        favorites, and plan meals"
       target_audience: "home cooks and food enthusiasts"
-      key_features: ["recipe upload", "ingredient search", "meal planning", "user ratings", "shopping lists"]
+      key_features:
+        ["recipe upload", "ingredient search", "meal planning", "user ratings", "shopping lists"]
       design_style: "colorful"
     variants: ["with_authentication", "with_database"]

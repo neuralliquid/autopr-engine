@@ -4,7 +4,12 @@ description: "Automated workflow for converting rapid prototypes to production-r
 triggers:
   - on: push
     branches: [main, develop]
-    condition: "contains(github.event.head_commit.message, 'replit') || contains(github.event.head_commit.message, 'lovable') || contains(github.event.head_commit.message, 'bolt') || contains(github.event.head_commit.message, 'same') || contains(github.event.head_commit.message, 'emergent')"
+    condition:
+      "contains(github.event.head_commit.message, 'replit') ||
+      contains(github.event.head_commit.message, 'lovable') ||
+      contains(github.event.head_commit.message, 'bolt') ||
+      contains(github.event.head_commit.message, 'same') ||
+      contains(github.event.head_commit.message, 'emergent')"
 
   - on: repository_dispatch
     event_types: [prototype-export, replit-export, lovable-export, bolt-export]
@@ -98,169 +103,67 @@ steps:
     description: "Identify which rapid prototyping platform was used"
     uses: ./actions/platform_detector.py
     with:
-      repository_url: "${{ steps.collect_info.outputs.repository_url }}"
+      repository_info: "${{ steps.collect_info.outputs.repository_info }}"
       commit_messages: "${{ steps.collect_info.outputs.commit_messages }}"
-      workspace_path: "${{ steps.collect_info.outputs.workspace_path }}"
-      package_json_content: "${{ steps.collect_info.outputs.package_json_content }}"
-
-  - name: "Platform Detection Results"
-    id: platform_results
-    description: "Process platform detection results and determine next steps"
-    uses: script
-    with:
-      script: |
-        import json
-
-        platform = "${{ steps.detect_platform.outputs.detected_platform }}"
-        confidence = float("${{ steps.detect_platform.outputs.confidence_score }}")
-        override = "${{ inputs.platform_override }}"
-
-        # Use override if specified
-        if override and override != "auto-detect":
-            final_platform = override
-            confidence = 1.0
-        else:
-            final_platform = platform
-
-        # Determine if we should proceed with enhancement
-        should_enhance = confidence > 0.3 or override != "auto-detect"
-
-        # Get platform-specific configuration
-        platform_config = json.loads('${{ steps.detect_platform.outputs.platform_specific_config }}')
-
-        return {
-            'final_platform': final_platform,
-            'confidence': confidence,
-            'should_enhance': should_enhance,
-            'platform_config': platform_config,
-            'recommended_workflow': "${{ steps.detect_platform.outputs.recommended_workflow }}"
-        }
+      key_files: "${{ steps.collect_info.outputs.key_files }}"
 
   - name: "Enhance Prototype for Production"
     id: enhance_prototype
-    description: "Enhance the prototype based on detected platform"
-    condition: "${{ steps.platform_results.outputs.should_enhance && inputs.enhance_for_production }}"
+    description: "Transform prototype into production-ready application"
+    condition: "${{ inputs.enhance_for_production }}"
     uses: ./actions/prototype_enhancer.py
     with:
-      platform: "${{ steps.platform_results.outputs.final_platform }}"
-      project_files: "${{ steps.collect_info.outputs.key_files }}"
-      enhancement_type: "${{ inputs.enhancement_level }}"
-      target_environment: "production"
-      workspace_path: "${{ steps.collect_info.outputs.workspace_path }}"
+      platform: "${{ steps.detect_platform.outputs.platform }}"
+      enhancement_level: "${{ inputs.enhancement_level }}"
+      target_platform: "${{ inputs.target_platform }}"
 
   - name: "Run Quality Checks"
     id: quality_checks
-    description: "Run platform-specific quality and security checks"
-    condition: "${{ steps.enhance_prototype.outputs.enhanced_files }}"
-    uses: script
+    description: "Comprehensive quality analysis of enhanced code"
+    uses: ./actions/quality_engine.py
     with:
-      script: |
-        import json
-        import subprocess
-        from pathlib import Path
+      mode: "comprehensive"
+      files: "${{ steps.enhance_prototype.outputs.enhanced_files }}"
+      config: "pyproject.toml"
 
-        platform = "${{ steps.platform_results.outputs.final_platform }}"
-        enhanced_files = json.loads('${{ steps.enhance_prototype.outputs.enhanced_files }}')
-        new_files = json.loads('${{ steps.enhance_prototype.outputs.new_files }}')
-
-        checks_passed = []
-        checks_failed = []
-
-        # Security check - ensure security dependencies are added
-        if 'package.json' in enhanced_files:
-            package_data = json.loads(enhanced_files['package.json'])
-            security_deps = ['helmet', 'cors', 'express-rate-limit']
-
-            for dep in security_deps:
-                if dep in package_data.get('dependencies', {}):
-                    checks_passed.append(f"Security dependency {dep} added")
-                else:
-                    checks_failed.append(f"Missing security dependency: {dep}")
-
-        # Configuration check - ensure production configs exist
-        required_configs = {
-            'replit': ['.env.example', 'ecosystem.config.js'],
-            'lovable': ['tsconfig.json', 'next.config.js'],
-            'bolt': ['Dockerfile', 'docker-compose.yml'],
-            'same': ['customization.config.js'],
-            'emergent': ['deploy.sh', 'monitoring.sh']
-        }
-
-        for config_file in required_configs.get(platform, []):
-            if config_file in new_files:
-                checks_passed.append(f"Configuration file {config_file} generated")
-            else:
-                checks_failed.append(f"Missing configuration: {config_file}")
-
-        # Test configuration check
-        test_files = ['jest.config.js', 'playwright.config.js']
-        test_files_found = sum(1 for f in test_files if f in new_files)
-
-        if test_files_found > 0:
-            checks_passed.append(f"Testing configuration added ({test_files_found} files)")
-        else:
-            checks_failed.append("No testing configuration found")
-
-        # Overall quality score
-        total_checks = len(checks_passed) + len(checks_failed)
-        quality_score = len(checks_passed) / total_checks if total_checks > 0 else 0
-
-        return {
-            'checks_passed': checks_passed,
-            'checks_failed': checks_failed,
-            'quality_score': quality_score,
-            'all_checks_passed': len(checks_failed) == 0,
-            'critical_issues': [f for f in checks_failed if 'security' in f.lower()]
-        }
-
-  - name: "Create Production PR"
+  - name: "Create Production Enhancement PR"
     id: create_pr
-    description: "Create PR with production enhancements"
-    condition: "${{ steps.enhance_prototype.outputs.enhanced_files }}"
+    description: "Create pull request with production enhancements"
+    condition: "${{ steps.quality_checks.outputs.quality_score > 0.7 }}"
     uses: script
     with:
       script: |
         import json
         import os
 
-        platform = "${{ steps.platform_results.outputs.final_platform }}"
+        platform = "${{ steps.detect_platform.outputs.platform }}"
         enhanced_files = json.loads('${{ steps.enhance_prototype.outputs.enhanced_files }}')
         new_files = json.loads('${{ steps.enhance_prototype.outputs.new_files }}')
-        enhancement_summary = "${{ steps.enhance_prototype.outputs.enhancement_summary }}"
-        checklist = json.loads('${{ steps.enhance_prototype.outputs.production_checklist }}')
         quality_score = float("${{ steps.quality_checks.outputs.quality_score }}")
 
-        # Create PR title and body
-        pr_title = f"🚀 Production Enhancement: {platform.title()} → Azure Deployment"
-
+        pr_title = f"🚀 {platform.title()} Prototype → Production Ready"
         pr_body = f"""
-## 🤖 Automated Production Enhancement
+        ## 🎯 Production Enhancement Summary
 
-**Platform Detected**: {platform.title()}
-**Confidence**: {float("${{ steps.platform_results.outputs.confidence }}"):.1%}
-**Quality Score**: {quality_score:.1%}
+        **Platform Detected:** {platform.title()}
+        **Quality Score:** {quality_score:.1%}
+        **Enhancement Level:** ${{{{ inputs.enhancement_level }}}}
 
-### 📋 Enhancement Summary
-{enhancement_summary}
+        ### 📁 Files Changed
+        {format_file_changes(enhanced_files, new_files)}
 
-### 📁 Files Modified
-{format_file_changes(enhanced_files, new_files)}
+        ### ✅ Quality Checks
+        {format_quality_results()}
 
-### ✅ Production Checklist
-{format_checklist(checklist)}
+        ### 🎯 Next Steps
+        1. Review and test all changes
+        2. Update environment variables
+        3. Deploy to staging environment
+        4. Run comprehensive test suite
+        5. Monitor application performance
 
-### 🚦 Quality Checks
-{format_quality_results()}
-
-### 🎯 Next Steps
-1. Review and test all changes
-2. Update environment variables
-3. Deploy to staging environment
-4. Run comprehensive test suite
-5. Monitor application performance
-
----
-*This PR was automatically generated by AutoPR Phase 2 workflow*
+        ---
+        *This PR was automatically generated by AutoPR Phase 2 workflow*
         """
 
         # Create the PR (in real implementation, this would use GitHub API)
@@ -299,9 +202,6 @@ steps:
 
             return '\n'.join(changes)
 
-        def format_checklist(items):
-            return '\n'.join([f"- [ ] {item}" for item in items])
-
         def format_quality_results():
             passed = json.loads('${{ steps.quality_checks.outputs.checks_passed }}')
             failed = json.loads('${{ steps.quality_checks.outputs.checks_failed }}')
@@ -327,7 +227,7 @@ steps:
       script: |
         import json
 
-        platform = "${{ steps.platform_results.outputs.final_platform }}"
+        platform = "${{ steps.detect_platform.outputs.platform }}"
         deployment_config = json.loads('${{ steps.enhance_prototype.outputs.deployment_config }}')
 
         # Platform-specific deployment logic
@@ -373,7 +273,7 @@ steps:
         import time
 
         staging_url = "${{ steps.deploy_staging.outputs.staging_url }}"
-        platform = "${{ steps.platform_results.outputs.final_platform }}"
+        platform = "${{ steps.detect_platform.outputs.platform }}"
 
         # Platform-specific E2E test scenarios
         test_scenarios = {
@@ -423,7 +323,7 @@ steps:
       script: |
         import json
 
-        platform = "${{ steps.platform_results.outputs.final_platform }}"
+        platform = "${{ steps.detect_platform.outputs.platform }}"
 
         post_processing_tasks = []
 
@@ -433,28 +333,24 @@ steps:
                 "Setup Azure App Service continuous deployment",
                 "Enable Application Insights monitoring"
             ])
-
         elif platform == "lovable":
             post_processing_tasks.extend([
                 "Optimize React bundle size",
                 "Setup Vercel Analytics",
                 "Configure Lighthouse CI"
             ])
-
         elif platform == "bolt":
             post_processing_tasks.extend([
                 "Setup database backup strategy",
                 "Configure container health checks",
                 "Enable API monitoring"
             ])
-
         elif platform == "same":
             post_processing_tasks.extend([
                 "Document customization options",
                 "Setup feature flag management",
                 "Configure branding pipeline"
             ])
-
         elif platform == "emergent":
             post_processing_tasks.extend([
                 "Validate automation scripts",
@@ -477,7 +373,7 @@ steps:
       script: |
         import json
 
-        platform = "${{ steps.platform_results.outputs.final_platform }}"
+        platform = "${{ steps.detect_platform.outputs.platform }}"
         quality_score = float("${{ steps.quality_checks.outputs.quality_score }}")
         staging_url = "${{ steps.deploy_staging.outputs.staging_url if steps.deploy_staging.outputs else '' }}"
         e2e_pass_rate = float("${{ steps.e2e_tests.outputs.pass_rate if steps.e2e_tests.outputs else '0' }}")
@@ -537,11 +433,11 @@ steps:
 outputs:
   platform_detected:
     description: "Detected prototyping platform"
-    value: "${{ steps.platform_results.outputs.final_platform }}"
+    value: "${{ steps.detect_platform.outputs.platform }}"
 
   confidence_score:
     description: "Platform detection confidence"
-    value: "${{ steps.platform_results.outputs.confidence }}"
+    value: "${{ steps.detect_platform.outputs.confidence }}"
 
   enhancement_completed:
     description: "Whether enhancement was completed"

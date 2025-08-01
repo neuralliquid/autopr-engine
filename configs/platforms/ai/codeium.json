@@ -81,9 +81,6 @@
       "multi_language_support",
       "offline_mode"
     ],
-    "configuration_files": [
-      ".codeium/config.json",
-      "codeium.json"
-    ]
+    "configuration_files": [".codeium/config.json", "codeium.json"]
   }
 }

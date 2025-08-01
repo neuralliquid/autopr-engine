@@ -36,7 +36,8 @@ description: For AutoPR-Engine and Python repos
 - PR titles follow Conventional Commits (`feat:`, `fix:`, etc.) unless rule overrides.
 - Never force-push on user branches; create/update bot branches (`autopr/<rule>/<hash>`).
 - Comment in PR with a summary of changes, linked rule, and dry-run diff.
-- Respect CODEOWNERS: request reviews automatically; don’t auto-merge unless rule explicitly says so.
+- Respect CODEOWNERS: request reviews automatically; don’t auto-merge unless rule explicitly says
+  so.
 - Idempotent reruns: second run on unchanged repo must be no-op.
 
 ## Diff / File Ops

@@ -2,28 +2,11 @@
   "name": "Netlify",
   "category": "cloud_hosting",
   "description": "Platform for modern web projects with continuous deployment",
-  "files": [
-    "netlify.toml",
-    "_redirects",
-    "_headers",
-    ".netlify/"
-  ],
-  "dependencies": [
-    "@netlify/functions",
-    "netlify-cli"
-  ],
-  "commit_patterns": [
-    "netlify",
-    "deployed to netlify"
-  ],
-  "content_patterns": [
-    "netlify.com",
-    "netlify app",
-    "deployed with netlify"
-  ],
-  "folder_patterns": [
-    ".netlify"
-  ],
+  "files": ["netlify.toml", "_redirects", "_headers", ".netlify/"],
+  "dependencies": ["@netlify/functions", "netlify-cli"],
+  "commit_patterns": ["netlify", "deployed to netlify"],
+  "content_patterns": ["netlify.com", "netlify app", "deployed with netlify"],
+  "folder_patterns": [".netlify"],
   "confidence_weights": {
     "files": 0.4,
     "dependencies": 0.3,

@@ -1,5 +1,7 @@
 name: "Appsmith Internal Tools Template"
-description: "Open-source low-code platform for building internal business tools with drag-and-drop interface and database integrations"
+description:
+  "Open-source low-code platform for building internal business tools with drag-and-drop interface
+  and database integrations"
 category: "no_code_platform"
 platforms: ["appsmith"]
 version: "1.0.0"
@@ -34,7 +36,8 @@ variables:
     type: "string"
     required: true
     description: "Type of internal tool to build"
-    examples: ["admin_panel", "dashboard", "crud_app", "database_gui", "approval_system", "analytics_tool"]
+    examples:
+      ["admin_panel", "dashboard", "crud_app", "database_gui", "approval_system", "analytics_tool"]
 
   data_sources:
     type: "array"

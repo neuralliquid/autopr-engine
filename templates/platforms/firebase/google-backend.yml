@@ -1,9 +1,19 @@
 name: "Firebase Google Backend Platform"
 category: "google-backend"
-description: "Google's comprehensive backend-as-a-service platform with real-time database, authentication, hosting, and cloud functions"
+description:
+  "Google's comprehensive backend-as-a-service platform with real-time database, authentication,
+  hosting, and cloud functions"
 version: "1.0.0"
 author: "AutoPR Template System"
-tags: ["google-backend", "real-time-database", "authentication", "cloud-functions", "hosting", "analytics"]
+tags:
+  [
+    "google-backend",
+    "real-time-database",
+    "authentication",
+    "cloud-functions",
+    "hosting",
+    "analytics",
+  ]
 
 platform_info:
   name: "Firebase"
@@ -12,7 +22,8 @@ platform_info:
   founded: "2011"
   pricing_model: "Freemium with Pay-as-you-go"
   target_audience: "Mobile developers, web developers, startups, enterprises"
-  primary_use_cases: ["Mobile backends", "Web applications", "Real-time apps", "Analytics", "Authentication systems"]
+  primary_use_cases:
+    ["Mobile backends", "Web applications", "Real-time apps", "Analytics", "Authentication systems"]
 
   key_features:
     - "Real-time NoSQL database (Firestore)"
@@ -58,7 +69,15 @@ variables:
   application_type:
     type: "select"
     description: "Primary type of application"
-    options: ["web_app", "mobile_app", "cross_platform", "real_time_app", "analytics_focused", "enterprise_app"]
+    options:
+      [
+        "web_app",
+        "mobile_app",
+        "cross_platform",
+        "real_time_app",
+        "analytics_focused",
+        "enterprise_app",
+      ]
     default: "web_app"
     required: true
 
@@ -72,14 +91,33 @@ variables:
   authentication_methods:
     type: "multi_select"
     description: "User authentication methods to implement"
-    options: ["email_password", "google_signin", "facebook_login", "twitter_login", "github_login", "phone_auth", "anonymous_auth"]
+    options:
+      [
+        "email_password",
+        "google_signin",
+        "facebook_login",
+        "twitter_login",
+        "github_login",
+        "phone_auth",
+        "anonymous_auth",
+      ]
     default: ["email_password", "google_signin"]
     required: true
 
   firebase_services:
     type: "multi_select"
     description: "Firebase services to integrate"
-    options: ["cloud_functions", "hosting", "storage", "analytics", "messaging", "crashlytics", "performance", "ab_testing"]
+    options:
+      [
+        "cloud_functions",
+        "hosting",
+        "storage",
+        "analytics",
+        "messaging",
+        "crashlytics",
+        "performance",
+        "ab_testing",
+      ]
     default: ["cloud_functions", "hosting", "storage", "analytics"]
     required: true
 
@@ -93,7 +131,15 @@ variables:
   real_time_features:
     type: "multi_select"
     description: "Real-time functionality requirements"
-    options: ["live_updates", "real_time_chat", "collaborative_editing", "live_notifications", "presence_detection", "live_analytics"]
+    options:
+      [
+        "live_updates",
+        "real_time_chat",
+        "collaborative_editing",
+        "live_notifications",
+        "presence_detection",
+        "live_analytics",
+      ]
     default: ["live_updates", "live_notifications"]
     required: false
 

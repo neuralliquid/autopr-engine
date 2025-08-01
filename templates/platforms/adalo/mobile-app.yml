@@ -1,5 +1,7 @@
 name: "Adalo Native Mobile App Template"
-description: "Native mobile app builder for entrepreneurs and small businesses with database integration and marketplace features"
+description:
+  "Native mobile app builder for entrepreneurs and small businesses with database integration and
+  marketplace features"
 category: "no_code_platform"
 platforms: ["adalo"]
 version: "1.0.0"
@@ -37,7 +39,8 @@ variables:
     type: "string"
     required: true
     description: "Primary category of the mobile app"
-    examples: ["social", "ecommerce", "productivity", "fitness", "education", "business", "marketplace"]
+    examples:
+      ["social", "ecommerce", "productivity", "fitness", "education", "business", "marketplace"]
 
   user_authentication:
     type: "boolean"
@@ -70,7 +73,12 @@ variables:
     type: "array"
     default: []
     description: "Social interaction features to include"
-    examples: [["messaging"], ["messaging", "social_feed"], ["messaging", "social_feed", "user_profiles", "following"]]
+    examples:
+      [
+        ["messaging"],
+        ["messaging", "social_feed"],
+        ["messaging", "social_feed", "user_profiles", "following"],
+      ]
 
 variants:
   marketplace_app:

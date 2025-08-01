@@ -24,9 +24,9 @@
 
 ## Executive Summary
 
-Your repository ecosystem includes **35+ AI-powered tools** working across different aspects of the development
-lifecycle. This analysis categorizes them by core functionality, interaction methods, and strategic value to help
-optimize your automated development workflow.
+Your repository ecosystem includes **35+ AI-powered tools** working across different aspects of the
+development lifecycle. This analysis categorizes them by core functionality, interaction methods,
+and strategic value to help optimize your automated development workflow.
 
 ### Key Categories:
 
@@ -42,7 +42,7 @@ optimize your automated development workflow.
 
 ## AI Code Review Bots
 
-### 1. **CodeRabbit AI** ⭐ *Premium Tier*
+### 1. **CodeRabbit AI** ⭐ _Premium Tier_
 
 **Core Skill**: AI-powered code review with contextual understanding
 
@@ -66,10 +66,9 @@ optimize your automated development workflow.
 
 ---
 
-### 2. **Korbit AI** ⭐ *Premium Tier*
+### 2. **Korbit AI** ⭐ _Premium Tier_
 
-**Core Skill**: AI mentor for code quality and developer upskilling
-**Interaction Methods
+**Core Skill**: AI mentor for code quality and developer upskilling \*\*Interaction Methods
 
 - Automatic PR reviews on creation
 - Interactive PR bot for Q&A
@@ -89,10 +88,9 @@ optimize your automated development workflow.
 
 ---
 
-### 3. **Greptile** 🔍 *Codebase Intelligence*
+### 3. **Greptile** 🔍 _Codebase Intelligence_
 
-**Core Skill**: Natural language codebase search and understanding
-**Interaction Methods**:
+**Core Skill**: Natural language codebase search and understanding **Interaction Methods**:
 
 - CLI tool: `greptile add [repo]` then `greptile start`
 - VS Code extension (deprecated)
@@ -111,10 +109,9 @@ optimize your automated development workflow.
 
 ---
 
-### 4. **Snyk** 🛡️ *Security Focused*
+### 4. **Snyk** 🛡️ _Security Focused_
 
-**Core Skill**: Security vulnerability detection and remediation
-**Interaction Methods**:
+**Core Skill**: Security vulnerability detection and remediation **Interaction Methods**:
 
 - Automatic security scans on PR creation
 - Automated dependency updates
@@ -133,10 +130,9 @@ optimize your automated development workflow.
 
 ---
 
-### 5. **CodeReviewBot.ai** 🔍 *Automated Reviews*
+### 5. **CodeReviewBot.ai** 🔍 _Automated Reviews_
 
-**Core Skill**: AI-powered automated code reviews
-**Interaction Methods**:
+**Core Skill**: AI-powered automated code reviews **Interaction Methods**:
 
 - GitHub App integration
 - Automatic PR analysis
@@ -154,10 +150,9 @@ optimize your automated development workflow.
 
 ---
 
-### 6. **Code Conventions AI** 📋 *Custom Standards*
+### 6. **Code Conventions AI** 📋 _Custom Standards_
 
-**Core Skill**: Enforce custom coding conventions
-**Interaction Methods**:
+**Core Skill**: Enforce custom coding conventions **Interaction Methods**:
 
 - GitHub App integration
 - Reads `CONVENTIONS.md` and `CONTRIBUTING.md`
@@ -175,10 +170,9 @@ optimize your automated development workflow.
 
 ---
 
-### 7. **GitHub's Autofix** 🔧 *Auto Bug Fixing*
+### 7. **GitHub's Autofix** 🔧 _Auto Bug Fixing_
 
-**Core Skill**: Autonomous bug detection and fixing
-**Interaction Methods**:
+**Core Skill**: Autonomous bug detection and fixing **Interaction Methods**:
 
 - Automatic code scanning integration
 - AI-powered fix suggestions
@@ -199,10 +193,9 @@ optimize your automated development workflow.
 
 ## Fill-in-the-Middle Code Completion Tools
 
-### 8. **GitHub Copilot** 🚁 *Microsoft/GitHub*
+### 8. **GitHub Copilot** 🚁 _Microsoft/GitHub_
 
-**Core Skill**: AI code completion and generation
-**Interaction Methods**:
+**Core Skill**: AI code completion and generation **Interaction Methods**:
 
 - Inline code suggestions in IDE
 - Chat interface in supported IDEs
@@ -221,10 +214,9 @@ optimize your automated development workflow.
 
 ---
 
-### 9. **Tabnine** 🎯 *Context-Aware Completion*
+### 9. **Tabnine** 🎯 _Context-Aware Completion_
 
-**Core Skill**: AI-powered code completion with team context
-**Interaction Methods**:
+**Core Skill**: AI-powered code completion with team context **Interaction Methods**:
 
 - IDE plugins across 15+ editors
 - Team model training on codebase
@@ -244,10 +236,9 @@ optimize your automated development workflow.
 
 ---
 
-### 10. **Tabby** 🐱 *Self-Hosted Alternative*
+### 10. **Tabby** 🐱 _Self-Hosted Alternative_
 
-**Core Skill**: Open-source, self-hosted code completion
-**Interaction Methods**:
+**Core Skill**: Open-source, self-hosted code completion **Interaction Methods**:
 
 - Self-hosted deployment
 - IDE integrations
@@ -266,10 +257,9 @@ optimize your automated development workflow.
 
 ---
 
-### 11. **Supermaven** ⚡ *Ultra-Fast Completion*
+### 11. **Supermaven** ⚡ _Ultra-Fast Completion_
 
-**Core Skill**: High-speed, context-aware code completion
-**Interaction Methods**:
+**Core Skill**: High-speed, context-aware code completion **Interaction Methods**:
 
 - IDE plugins with minimal latency
 - Long-range context understanding
@@ -287,10 +277,9 @@ optimize your automated development workflow.
 
 ---
 
-### 12. **Windsurf (Codeium)** 🌊 *Agentic IDE*
+### 12. **Windsurf (Codeium)** 🌊 _Agentic IDE_
 
-**Core Skill**: AI-integrated development environment with agentic features
-**Interaction Methods**:
+**Core Skill**: AI-integrated development environment with agentic features **Interaction Methods**:
 
 - Purpose-built IDE with AI integration
 - Cascade agent for multi-step tasks
@@ -310,10 +299,9 @@ optimize your automated development workflow.
 
 ---
 
-### 13. **Cursor** 📝 *AI-First Code Editor*
+### 13. **Cursor** 📝 _AI-First Code Editor_
 
-**Core Skill**: AI-integrated development environment
-**Interaction Methods**:
+**Core Skill**: AI-integrated development environment **Interaction Methods**:
 
 - Direct IDE integration
 - Natural language code editing
@@ -333,10 +321,9 @@ optimize your automated development workflow.
 
 ## Development Assistant Bots
 
-### 14. **Devin AI** 🧠 *Autonomous Software Engineer*
+### 14. **Devin AI** 🧠 _Autonomous Software Engineer_
 
-**Core Skill**: End-to-end software development automation
-**Interaction Methods**:
+**Core Skill**: End-to-end software development automation **Interaction Methods**:
 
 - Natural language task instructions
 - GitHub integration for PR creation/response
@@ -358,10 +345,9 @@ optimize your automated development workflow.
 
 ---
 
-### 15. **Replit** 🔄 *Cloud Development Platform*
+### 15. **Replit** 🔄 _Cloud Development Platform_
 
-**Core Skill**: Cloud-based development and collaboration
-**Interaction Methods**:
+**Core Skill**: Cloud-based development and collaboration **Interaction Methods**:
 
 - Web-based IDE
 - GitHub integration
@@ -379,10 +365,9 @@ optimize your automated development workflow.
 
 ---
 
-### 16. **Factory Droid** 🏭 *Automation Bot*
+### 16. **Factory Droid** 🏭 _Automation Bot_
 
-**Core Skill**: Development workflow automation
-**Interaction Methods**:
+**Core Skill**: Development workflow automation **Interaction Methods**:
 
 - GitHub Actions integration
 - Workflow automation
@@ -399,10 +384,9 @@ optimize your automated development workflow.
 
 ---
 
-### 17. **Engine Labs** ⚙️ *Development Tools*
+### 17. **Engine Labs** ⚙️ _Development Tools_
 
-**Core Skill**: Development infrastructure and tooling
-**Interaction Methods**:
+**Core Skill**: Development infrastructure and tooling **Interaction Methods**:
 
 - API integrations
 - Development tool enhancements
@@ -419,10 +403,9 @@ optimize your automated development workflow.
 
 ---
 
-### 18. **CodeGen.sh** 💻 *Code Generation*
+### 18. **CodeGen.sh** 💻 _Code Generation_
 
-**Core Skill**: Automated code generation
-**Interaction Methods**:
+**Core Skill**: Automated code generation **Interaction Methods**:
 
 - CLI tool
 - API endpoints
@@ -439,10 +422,9 @@ optimize your automated development workflow.
 
 ---
 
-### 19. **Lovable.dev (GPT-Engineer)** 💝 *AI App Builder*
+### 19. **Lovable.dev (GPT-Engineer)** 💝 _AI App Builder_
 
-**Core Skill**: Full-stack application development
-**Interaction Methods**:
+**Core Skill**: Full-stack application development **Interaction Methods**:
 
 - Natural language app descriptions
 - Interactive development process
@@ -459,10 +441,9 @@ optimize your automated development workflow.
 
 ---
 
-### 20. **Google Labs Jules** 🔬 *Experimental AI*
+### 20. **Google Labs Jules** 🔬 _Experimental AI_
 
-**Core Skill**: Experimental AI development assistance
-**Interaction Methods**:
+**Core Skill**: Experimental AI development assistance **Interaction Methods**:
 
 - Research-focused interactions
 - Experimental feature testing
@@ -479,7 +460,7 @@ optimize your automated development workflow.
 
 ---
 
-### 21. **CharlieLabs (Various Charlie Bots)** 🤖 *Multi-Purpose*
+### 21. **CharlieLabs (Various Charlie Bots)** 🤖 _Multi-Purpose_
 
 **Note**: Multiple "Charlie" tools found with different purposes:
 
@@ -504,10 +485,9 @@ optimize your automated development workflow.
 
 ## Agentic AI Systems
 
-### 22. **CrewAI** 👥 *Multi-Agent Framework*
+### 22. **CrewAI** 👥 _Multi-Agent Framework_
 
-**Core Skill**: Orchestrating teams of AI agents for complex tasks
-**Interaction Methods**:
+**Core Skill**: Orchestrating teams of AI agents for complex tasks **Interaction Methods**:
 
 - Python framework integration
 - Role-based agent creation
@@ -526,10 +506,9 @@ optimize your automated development workflow.
 
 ---
 
-### 23. **AutoGen** 🔄 *Microsoft Multi-Agent*
+### 23. **AutoGen** 🔄 _Microsoft Multi-Agent_
 
-**Core Skill**: Multi-agent conversation and collaboration
-**Interaction Methods**:
+**Core Skill**: Multi-agent conversation and collaboration **Interaction Methods**:
 
 - Python framework
 - Group chat management
@@ -548,10 +527,9 @@ optimize your automated development workflow.
 
 ---
 
-### 24. **LangChain Agents** 🦜 *Tool-Using Agents*
+### 24. **LangChain Agents** 🦜 _Tool-Using Agents_
 
-**Core Skill**: Building agents that can use tools and reason
-**Interaction Methods**:
+**Core Skill**: Building agents that can use tools and reason **Interaction Methods**:
 
 - Python/JavaScript frameworks
 - Tool binding and execution
@@ -570,10 +548,9 @@ optimize your automated development workflow.
 
 ---
 
-### 25. **MemGPT/Mem0** 🧠 *Memory-Enhanced Agents*
+### 25. **MemGPT/Mem0** 🧠 _Memory-Enhanced Agents_
 
-**Core Skill**: Long-term memory and context management
-**Interaction Methods**:
+**Core Skill**: Long-term memory and context management **Interaction Methods**:
 
 - API-based memory management
 - Context-aware interactions
@@ -592,10 +569,9 @@ optimize your automated development workflow.
 
 ---
 
-### 26. **AutoCrew** 🚀 *Automated Crew Creation*
+### 26. **AutoCrew** 🚀 _Automated Crew Creation_
 
-**Core Skill**: Automatically generating CrewAI teams
-**Interaction Methods**:
+**Core Skill**: Automatically generating CrewAI teams **Interaction Methods**:
 
 - Goal-based crew generation
 - Automatic agent and task creation
@@ -616,10 +592,9 @@ optimize your automated development workflow.
 
 ## Testing & Quality Automation
 
-### 27. **GitHub Actions** ⚙️ *CI/CD Automation*
+### 27. **GitHub Actions** ⚙️ _CI/CD Automation_
 
-**Core Skill**: Workflow automation and testing
-**Interaction Methods**:
+**Core Skill**: Workflow automation and testing **Interaction Methods**:
 
 - YAML workflow configuration
 - Event-triggered automation
@@ -638,10 +613,9 @@ optimize your automated development workflow.
 
 ---
 
-### 28. **SonarCloud** 🔍 *Code Quality Platform*
+### 28. **SonarCloud** 🔍 _Code Quality Platform_
 
-**Core Skill**: Continuous code quality and security analysis
-**Interaction Methods**:
+**Core Skill**: Continuous code quality and security analysis **Interaction Methods**:
 
 - GitHub integration
 - Pull request decoration
@@ -660,10 +634,9 @@ optimize your automated development workflow.
 
 ---
 
-### 29. **Codecov** 📊 *Code Coverage*
+### 29. **Codecov** 📊 _Code Coverage_
 
-**Core Skill**: Code coverage analysis and reporting
-**Interaction Methods**:
+**Core Skill**: Code coverage analysis and reporting **Interaction Methods**:
 
 - GitHub integration
 - Pull request comments
@@ -682,10 +655,9 @@ optimize your automated development workflow.
 
 ---
 
-### 30. **DeepCode/Snyk Code** 🔒 *AI Security Analysis*
+### 30. **DeepCode/Snyk Code** 🔒 _AI Security Analysis_
 
-**Core Skill**: AI-powered security and bug detection
-**Interaction Methods**:
+**Core Skill**: AI-powered security and bug detection **Interaction Methods**:
 
 - IDE integrations
 - GitHub App
@@ -706,10 +678,9 @@ optimize your automated development workflow.
 
 ## Infrastructure & Deployment Automation
 
-### 31. **Vercel** 🚀 *Frontend Deployment*
+### 31. **Vercel** 🚀 _Frontend Deployment_
 
-**Core Skill**: Automated deployment and hosting
-**Interaction Methods**:
+**Core Skill**: Automated deployment and hosting **Interaction Methods**:
 
 - GitHub integration for auto-deploy
 - Preview deployments on PRs
@@ -726,10 +697,9 @@ optimize your automated development workflow.
 
 ---
 
-### 32. **Railway** 🚂 *Infrastructure Platform*
+### 32. **Railway** 🚂 _Infrastructure Platform_
 
-**Core Skill**: Simplified infrastructure deployment
-**Interaction Methods**:
+**Core Skill**: Simplified infrastructure deployment **Interaction Methods**:
 
 - GitHub integration
 - One-click deployments
@@ -747,10 +717,9 @@ optimize your automated development workflow.
 
 ---
 
-### 33. **Fly.io** ✈️ *Edge Deployment*
+### 33. **Fly.io** ✈️ _Edge Deployment_
 
-**Core Skill**: Global edge application deployment
-**Interaction Methods**:
+**Core Skill**: Global edge application deployment **Interaction Methods**:
 
 - CLI tools
 - GitHub Actions integration
@@ -770,10 +739,9 @@ optimize your automated development workflow.
 
 ## Platform Integration Tools
 
-### 34. **Linear** 📋 *Issue Tracking Integration*
+### 34. **Linear** 📋 _Issue Tracking Integration_
 
-**Core Skill**: Project management and issue tracking
-**Interaction Methods**:
+**Core Skill**: Project management and issue tracking **Interaction Methods**:
 
 - GitHub issue synchronization
 - Automated project updates
@@ -790,10 +758,9 @@ optimize your automated development workflow.
 
 ---
 
-### 35. **Notion AI Connector** 📝 *Documentation Integration*
+### 35. **Notion AI Connector** 📝 _Documentation Integration_
 
-**Core Skill**: Documentation automation and knowledge management
-**Interaction Methods**:
+**Core Skill**: Documentation automation and knowledge management **Interaction Methods**:
 
 - Automated documentation updates
 - PR-to-documentation linking
@@ -810,10 +777,9 @@ optimize your automated development workflow.
 
 ---
 
-### 36. **Sentry.io** 🚨 *Error Tracking*
+### 36. **Sentry.io** 🚨 _Error Tracking_
 
-**Core Skill**: Application monitoring and error tracking
-**Interaction Methods**:
+**Core Skill**: Application monitoring and error tracking **Interaction Methods**:
 
 - Automatic error detection
 - PR impact analysis
@@ -830,10 +796,9 @@ optimize your automated development workflow.
 
 ---
 
-### 37. **Monday.com + GitHub** 📊 *Project Management*
+### 37. **Monday.com + GitHub** 📊 _Project Management_
 
-**Core Skill**: Project tracking and team management
-**Interaction Methods**:
+**Core Skill**: Project tracking and team management **Interaction Methods**:
 
 - GitHub issue synchronization
 - Project timeline integration
@@ -850,10 +815,9 @@ optimize your automated development workflow.
 
 ---
 
-### 38. **Sourcegraph Enterprise** 🔍 *Code Intelligence*
+### 38. **Sourcegraph Enterprise** 🔍 _Code Intelligence_
 
-**Core Skill**: Code search and intelligence across repositories
-**Interaction Methods**:
+**Core Skill**: Code search and intelligence across repositories **Interaction Methods**:
 
 - Universal code search
 - Cross-repository navigation
@@ -870,10 +834,9 @@ optimize your automated development workflow.
 
 ---
 
-### 39. **Amp for GitHub (Sourcegraph)** ⚡ *Performance Enhancement*
+### 39. **Amp for GitHub (Sourcegraph)** ⚡ _Performance Enhancement_
 
-**Core Skill**: GitHub workflow optimization
-**Interaction Methods**:
+**Core Skill**: GitHub workflow optimization **Interaction Methods**:
 
 - GitHub UI enhancements
 - Workflow automation
@@ -892,10 +855,9 @@ optimize your automated development workflow.
 
 ## Specialized Tools
 
-### 40. **Tembo.io** 🐘 *Database Specialist*
+### 40. **Tembo.io** 🐘 _Database Specialist_
 
-**Core Skill**: Database optimization and management
-**Interaction Methods**:
+**Core Skill**: Database optimization and management **Interaction Methods**:
 
 - Database performance monitoring
 - Automated optimization suggestions
@@ -912,11 +874,9 @@ optimize your automated development workflow.
 
 ---
 
-### 41. **ChatGPT Connector (OpenAI)** 🤖 *AI Integration*
+### 41. **ChatGPT Connector (OpenAI)** 🤖 _AI Integration_
 
-
-**Core Skill**: General AI assistance integration
-**Interaction Methods**:
+**Core Skill**: General AI assistance integration **Interaction Methods**:
 
 - API integrations
 - Custom AI workflows
@@ -933,11 +893,9 @@ optimize your automated development workflow.
 
 ---
 
-### 42. **Saldor AI** 🎯 *Specialized AI Assistant*
+### 42. **Saldor AI** 🎯 _Specialized AI Assistant_
 
-
-**Core Skill**: Domain-specific AI assistance
-**Interaction Methods**:
+**Core Skill**: Domain-specific AI assistance **Interaction Methods**:
 
 - Specialized workflow integration
 - Custom AI model deployment
@@ -954,10 +912,9 @@ optimize your automated development workflow.
 
 ---
 
-### 43. **Gitpod** ☁️ *Cloud Development Environments*
+### 43. **Gitpod** ☁️ _Cloud Development Environments_
 
-**Core Skill**: Instant, cloud-based development environments
-**Interaction Methods**:
+**Core Skill**: Instant, cloud-based development environments **Interaction Methods**:
 
 - GitHub integration for instant environments
 - Dockerfile-based configurations
@@ -1030,18 +987,18 @@ optimize your automated development workflow.
 
 ## Capability Matrix
 
-| Tool               | Code Review | Bug Detection | Security | Documentation | Deployment | Learning/Mentoring | Code Completion |
-| ------------------ | ----------- | ------------- | -------- | ------------- | ---------- | ------------------ | --------------- |
-| **CodeRabbit AI**  | ⭐⭐⭐⭐⭐       | ⭐⭐⭐⭐          | ⭐⭐⭐      | ⭐⭐⭐           | ⭐          | ⭐⭐⭐⭐               | ⭐⭐              |
-| **Korbit AI**      | ⭐⭐⭐⭐⭐       | ⭐⭐⭐⭐⭐         | ⭐⭐⭐      | ⭐⭐⭐           | ⭐          | ⭐⭐⭐⭐⭐              | ⭐⭐              |
-| **Devin AI**       | ⭐⭐⭐         | ⭐⭐⭐⭐⭐         | ⭐⭐⭐      | ⭐⭐⭐           | ⭐⭐⭐⭐⭐      | ⭐⭐⭐                | ⭐⭐⭐             |
-| **Greptile**       | ⭐⭐          | ⭐⭐⭐⭐          | ⭐⭐       | ⭐⭐⭐⭐          | ⭐          | ⭐⭐⭐                | ⭐               |
-| **GitHub Copilot** | ⭐⭐          | ⭐⭐⭐           | ⭐⭐       | ⭐⭐⭐           | ⭐          | ⭐⭐⭐                | ⭐⭐⭐⭐⭐           |
-| **Tabnine**        | ⭐⭐          | ⭐⭐⭐           | ⭐⭐       | ⭐⭐⭐           | ⭐          | ⭐⭐⭐                | ⭐⭐⭐⭐⭐           |
-| **Windsurf**       | ⭐⭐⭐         | ⭐⭐⭐⭐          | ⭐⭐⭐      | ⭐⭐⭐           | ⭐⭐⭐        | ⭐⭐⭐                | ⭐⭐⭐⭐⭐           |
-| **Snyk**           | ⭐⭐          | ⭐⭐⭐           | ⭐⭐⭐⭐⭐    | ⭐⭐            | ⭐          | ⭐⭐                 | ⭐               |
-| **Cursor**         | ⭐⭐          | ⭐⭐⭐           | ⭐⭐       | ⭐⭐⭐           | ⭐          | ⭐⭐⭐                | ⭐⭐⭐⭐            |
-| **CrewAI**         | ⭐⭐⭐         | ⭐⭐⭐⭐          | ⭐⭐       | ⭐⭐⭐⭐          | ⭐⭐⭐        | ⭐⭐⭐⭐               | ⭐⭐⭐             |
+| Tool               | Code Review | Bug Detection | Security   | Documentation | Deployment | Learning/Mentoring | Code Completion |
+| ------------------ | ----------- | ------------- | ---------- | ------------- | ---------- | ------------------ | --------------- |
+| **CodeRabbit AI**  | ⭐⭐⭐⭐⭐  | ⭐⭐⭐⭐      | ⭐⭐⭐     | ⭐⭐⭐        | ⭐         | ⭐⭐⭐⭐           | ⭐⭐            |
+| **Korbit AI**      | ⭐⭐⭐⭐⭐  | ⭐⭐⭐⭐⭐    | ⭐⭐⭐     | ⭐⭐⭐        | ⭐         | ⭐⭐⭐⭐⭐         | ⭐⭐            |
+| **Devin AI**       | ⭐⭐⭐      | ⭐⭐⭐⭐⭐    | ⭐⭐⭐     | ⭐⭐⭐        | ⭐⭐⭐⭐⭐ | ⭐⭐⭐             | ⭐⭐⭐          |
+| **Greptile**       | ⭐⭐        | ⭐⭐⭐⭐      | ⭐⭐       | ⭐⭐⭐⭐      | ⭐         | ⭐⭐⭐             | ⭐              |
+| **GitHub Copilot** | ⭐⭐        | ⭐⭐⭐        | ⭐⭐       | ⭐⭐⭐        | ⭐         | ⭐⭐⭐             | ⭐⭐⭐⭐⭐      |
+| **Tabnine**        | ⭐⭐        | ⭐⭐⭐        | ⭐⭐       | ⭐⭐⭐        | ⭐         | ⭐⭐⭐             | ⭐⭐⭐⭐⭐      |
+| **Windsurf**       | ⭐⭐⭐      | ⭐⭐⭐⭐      | ⭐⭐⭐     | ⭐⭐⭐        | ⭐⭐⭐     | ⭐⭐⭐             | ⭐⭐⭐⭐⭐      |
+| **Snyk**           | ⭐⭐        | ⭐⭐⭐        | ⭐⭐⭐⭐⭐ | ⭐⭐          | ⭐         | ⭐⭐               | ⭐              |
+| **Cursor**         | ⭐⭐        | ⭐⭐⭐        | ⭐⭐       | ⭐⭐⭐        | ⭐         | ⭐⭐⭐             | ⭐⭐⭐⭐        |
+| **CrewAI**         | ⭐⭐⭐      | ⭐⭐⭐⭐      | ⭐⭐       | ⭐⭐⭐⭐      | ⭐⭐⭐     | ⭐⭐⭐⭐           | ⭐⭐⭐          |
 
 ---
 
@@ -1090,7 +1047,8 @@ optimize your automated development workflow.
 
 - **High-frequency, low-cost**: CodeRabbit, Snyk, GitHub Copilot, Tabnine
 - **Low-frequency, high-value**: Devin AI for complex projects, CrewAI for specialized workflows
-- **Specialized needs**: Greptile for legacy code, Tembo for databases, Code Conventions for standards
+- **Specialized needs**: Greptile for legacy code, Tembo for databases, Code Conventions for
+  standards
 
 ---
 
@@ -1098,7 +1056,8 @@ optimize your automated development workflow.
 
 ### **Emerging Trends**
 
-1. **Agentic AI Integration**: Tools like Windsurf Cascade and CrewAI leading the autonomous development trend
+1. **Agentic AI Integration**: Tools like Windsurf Cascade and CrewAI leading the autonomous
+   development trend
 2. **Fill-in-the-Middle Evolution**: Advanced context understanding in code completion tools
 3. **Multi-Agent Collaboration**: Bots working together on complex tasks (CrewAI + AutoGen)
 4. **Context Awareness**: Better understanding of project-specific needs and coding patterns
@@ -1134,20 +1093,19 @@ Your AutoPR system can serve as an **orchestration layer** that:
 - **Creates** custom multi-agent workflows using CrewAI integration
 - **Manages** the complexity of 35+ tools through intelligent automation
 
-This positions AutoPR as the **"conductor"** of your AI orchestra, maximizing the value of your existing investments
-while providing intelligent coordination and reducing tool sprawl.
+This positions AutoPR as the **"conductor"** of your AI orchestra, maximizing the value of your
+existing investments while providing intelligent coordination and reducing tool sprawl.
 
 ---
 
 ## 📚 Documentation Specialist Tools & ChatPRD Alternatives
 
-Based on your use of ChatPRD, here are specialized documentation automation tools that excel in technical writing and
-product documentation:
+Based on your use of ChatPRD, here are specialized documentation automation tools that excel in
+technical writing and product documentation:
 
 ### **⭐ ChatPRD - Your Current Tool**
 
-**Pricing**: $5/month
-**Core Skill**: AI-powered PRD (Product Requirements Document) generation
+**Pricing**: $5/month **Core Skill**: AI-powered PRD (Product Requirements Document) generation
 **Interaction Methods**:
 
 - Chat-based PRD creation from simple ideas
@@ -1159,9 +1117,8 @@ product documentation:
 
 ### **1. Promptless** ⭐⭐⭐⭐⭐
 
-**Pricing**: Custom (Y Combinator backed)
-**Core Skill**: Automatic technical documentation updates with AI
-**Why It's Better Than ChatPRD**:
+**Pricing**: Custom (Y Combinator backed) **Core Skill**: Automatic technical documentation updates
+with AI **Why It's Better Than ChatPRD**:
 
 - **Auto-triggered updates** from PR commits and support tickets
 - **Context assembly** across Jira, Confluence, Linear, Slack
@@ -1176,8 +1133,7 @@ product documentation:
 
 ### **2. PRDKit** ⭐⭐⭐⭐
 
-**Pricing**: Freemium model
-**Core Skill**: AI-powered product requirements with visual aids
+**Pricing**: Freemium model **Core Skill**: AI-powered product requirements with visual aids
 **Standout Features**:
 
 - **Visual user flows** and wireframes generation
@@ -1187,8 +1143,7 @@ product documentation:
 
 ### **3. Mintlify Writer** ⭐⭐⭐⭐⭐
 
-**Pricing**: $150/month (Pro), $550/month (Growth)
-**Core Skill**: API documentation automation
+**Pricing**: $150/month (Pro), $550/month (Growth) **Core Skill**: API documentation automation
 **Benchmark Results**:
 
 - Generated complete API docs for 45 endpoints in 45 minutes
@@ -1197,9 +1152,8 @@ product documentation:
 
 ### **4. Doc-E.ai** ⭐⭐⭐⭐
 
-**Pricing**: Not disclosed (contact for pricing)
-**Core Skill**: Technical documentation with community insights
-**Unique Features**:
+**Pricing**: Not disclosed (contact for pricing) **Core Skill**: Technical documentation with
+community insights **Unique Features**:
 
 - **Automated content suggestions** from user interactions
 - **Community analysis** from Slack/Discord feedback
@@ -1207,23 +1161,20 @@ product documentation:
 
 ### **5. GitBook AI** ⭐⭐⭐⭐
 
-**Pricing**: Starts at $8/month per editor
-**Core Skill**: Comprehensive technical guides with AI assistance
-**Time Savings**: 67% reduction in documentation time
-**Best For**: Developer onboarding and complex API documentation
+**Pricing**: Starts at $8/month per editor **Core Skill**: Comprehensive technical guides with AI
+assistance **Time Savings**: 67% reduction in documentation time **Best For**: Developer onboarding
+and complex API documentation
 
 ### **6. Notion AI** ⭐⭐⭐⭐
 
-**Pricing**: $8/month per user (included in Notion plans)
-**Core Skill**: Technical writing and team wikis
-**Test Results**: Created team onboarding docs in 3.5 hours vs 10 hours manually
-**Best For**: Architecture Decision Records (ADRs) and process documentation
+**Pricing**: $8/month per user (included in Notion plans) **Core Skill**: Technical writing and team
+wikis **Test Results**: Created team onboarding docs in 3.5 hours vs 10 hours manually **Best For**:
+Architecture Decision Records (ADRs) and process documentation
 
 ### **7. Guidde** ⭐⭐⭐⭐
 
-**Pricing**: Free tier available, Pro from $16/month
-**Core Skill**: Interactive documentation with visual guides
-**Standout Features**:
+**Pricing**: Free tier available, Pro from $16/month **Core Skill**: Interactive documentation with
+visual guides **Standout Features**:
 
 - **Screen capture automation** for step-by-step guides
 - **Interactive elements** for user engagement
@@ -1241,29 +1192,25 @@ product documentation:
 
 ### **🏆 Top Budget-Friendly Alternatives:**
 
-### **1. Continue.dev** 💰 *Best Free Alternative*
+### **1. Continue.dev** 💰 _Best Free Alternative_
 
-**Pricing**: **FREE** (Open source)
-**Core Skill**: Customizable AI code assistant with IDE integration
-**Why Choose It**:
+**Pricing**: **FREE** (Open source) **Core Skill**: Customizable AI code assistant with IDE
+integration **Why Choose It**:
 
 - **95% of GitHub Copilot functionality** at zero cost
 - **Works with any LLM** (local or cloud)
 - **Full IDE integration** (VS Code + JetBrains)
 - **No vendor lock-in**
 
-### **2. Aider** ⭐⭐⭐⭐⭐ *Best Value*
+### **2. Aider** ⭐⭐⭐⭐⭐ _Best Value_
 
-**Pricing**: **FREE** tool + LLM API costs (~$0.10-0.50 per task)
-**Core Skill**: Terminal-based autonomous coding
-**Benchmark Performance**: Proven results on SWE-bench
-**Why It's Better**: Only pay for actual LLM usage, no subscription overhead
+**Pricing**: **FREE** tool + LLM API costs (~$0.10-0.50 per task) **Core Skill**: Terminal-based
+autonomous coding **Benchmark Performance**: Proven results on SWE-bench **Why It's Better**: Only
+pay for actual LLM usage, no subscription overhead
 
 ### **3. Cline (Claude Dev)** ⭐⭐⭐⭐
 
-**Pricing**: **FREE** extension + API costs
-**Core Skill**: VS Code autonomous agent
-**Features**:
+**Pricing**: **FREE** extension + API costs **Core Skill**: VS Code autonomous agent **Features**:
 
 - **Multi-file editing** capabilities
 - **Context-aware suggestions**
@@ -1272,16 +1219,14 @@ product documentation:
 
 ### **4. SWE-agent** ⭐⭐⭐⭐
 
-**Pricing**: **FREE** (Open source from Princeton)
-**Core Skill**: Autonomous GitHub issue resolution
-**Performance**: Strong benchmark results on real repositories
-**Best For**: Bug fixes and specific issue resolution
+**Pricing**: **FREE** (Open source from Princeton) **Core Skill**: Autonomous GitHub issue
+resolution **Performance**: Strong benchmark results on real repositories **Best For**: Bug fixes
+and specific issue resolution
 
 ### **5. Codegen** ⭐⭐⭐⭐
 
-**Pricing**: Multiple options from **FREE** to ~$30/month
-**Core Skill**: Code generation and completion
-**Variants**:
+**Pricing**: Multiple options from **FREE** to ~$30/month **Core Skill**: Code generation and
+completion **Variants**:
 
 - **CodeGen-sh**: GitHub App for automated PR generation
 - **Codegen alternatives**: Multiple implementations available
@@ -1384,8 +1329,8 @@ product documentation:
 
 ## Conclusion
 
-Your GitHub ecosystem demonstrates a sophisticated approach to AI-powered development automation across **seven major
-categories**. The key to success lies in:
+Your GitHub ecosystem demonstrates a sophisticated approach to AI-powered development automation
+across **seven major categories**. The key to success lies in:
 
 1. **Strategic Selection**: Choose complementary tools rather than redundant ones
 2. **Clear Interaction Patterns**: Establish when and how to engage each tool
@@ -1394,15 +1339,14 @@ categories**. The key to success lies in:
 5. **Custom Development**: Use frameworks like CrewAI to build domain-specific agents
 6. **Integration Orchestration**: Use AutoPR as a coordination layer for optimal tool utilization
 
-This comprehensive multi-tool approach positions your team at the forefront of AI-assisted development, with the
-potential for significant productivity gains, quality improvements, and the ability to tackle increasingly complex
-development challenges through intelligent automation.
+This comprehensive multi-tool approach positions your team at the forefront of AI-assisted
+development, with the potential for significant productivity gains, quality improvements, and the
+ability to tackle increasingly complex development challenges through intelligent automation.
 
-The missing areas identified (advanced testing automation, performance optimization, database migration, API
-documentation, accessibility compliance, and cross-platform compatibility) represent opportunities for future expansion
-and custom agent development.
+The missing areas identified (advanced testing automation, performance optimization, database
+migration, API documentation, accessibility compliance, and cross-platform compatibility) represent
+opportunities for future expansion and custom agent development.
 
 ---
 
-*Last Updated: February 2025*
-*Analysis covers 43+ tools across the GitHub AI ecosystem*
+_Last Updated: February 2025_ _Analysis covers 43+ tools across the GitHub AI ecosystem_

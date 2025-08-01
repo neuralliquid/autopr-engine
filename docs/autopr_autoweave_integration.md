@@ -2,23 +2,27 @@
 
 ## Overview
 
-This document outlines the integration patterns, technical architecture, and best practices for combining AutoPR's
-automated pull request capabilities with AutoWeave's template-based project generation system. The integration is
-designed for enterprise-scale operations with high performance, security, and reliability requirements.
+This document outlines the integration patterns, technical architecture, and best practices for
+combining AutoPR's automated pull request capabilities with AutoWeave's template-based project
+generation system. The integration is designed for enterprise-scale operations with high
+performance, security, and reliability requirements.
 
 ## Executive Summary
 
-The AutoPR and AutoWeave integration provides a seamless workflow for template-based project generation with automated
-pull request capabilities. The architecture is built on a modular microservices approach, delivering optimal
-performance for each domain while maintaining enterprise-grade security and scalability.
+The AutoPR and AutoWeave integration provides a seamless workflow for template-based project
+generation with automated pull request capabilities. The architecture is built on a modular
+microservices approach, delivering optimal performance for each domain while maintaining
+enterprise-grade security and scalability.
 
 **Key Capabilities:**
 
-- **Modular Architecture**: Clean separation of concerns with dedicated modules for template processing, AI/ML, and
+- **Modular Architecture**: Clean separation of concerns with dedicated modules for template
+  processing, AI/ML, and
 
 workflow orchestration
 
-- **High Performance**: Optimized template processing with intelligent caching and parallel execution
+- **High Performance**: Optimized template processing with intelligent caching and parallel
+  execution
 - **Extensible Platform**: Plugin-based architecture for custom template types and processing logic
 - **Enterprise Security**: Comprehensive security controls and compliance features
 - **Developer Experience**: Intuitive APIs and developer tooling for seamless integration
@@ -341,24 +345,24 @@ spec:
   template:
     spec:
       containers:
-      - name: autopr
-        volumeMounts:
-        - name: tls-certs
-          mountPath: /etc/tls
-          readOnly: true
-        env:
-        - name: TLS_ENABLED
-          value: "true"
-        - name: TLS_CA_CERT
-          value: /etc/tls/ca.crt
-        - name: TLS_CERT
-          value: /etc/tls/tls.crt
-        - name: TLS_KEY
-          value: /etc/tls/tls.key
+        - name: autopr
+          volumeMounts:
+            - name: tls-certs
+              mountPath: /etc/tls
+              readOnly: true
+          env:
+            - name: TLS_ENABLED
+              value: "true"
+            - name: TLS_CA_CERT
+              value: /etc/tls/ca.crt
+            - name: TLS_CERT
+              value: /etc/tls/tls.crt
+            - name: TLS_KEY
+              value: /etc/tls/tls.key
       volumes:
-      - name: tls-certs
-        secret:
-          secretName: autopr-tls
+        - name: tls-certs
+          secret:
+            secretName: autopr-tls
 ```
 
 **Features**:
@@ -415,24 +419,24 @@ spec:
 ### Security Best Practices
 
 1. **Secrets Management**
-    - Use HashiCorp Vault or cloud KMS for secret storage
-    - Rotate secrets and certificates automatically
-    - Never commit secrets to version control
+   - Use HashiCorp Vault or cloud KMS for secret storage
+   - Rotate secrets and certificates automatically
+   - Never commit secrets to version control
 
 1. **Network Security**
-    - Encrypt all traffic with TLS 1.3+
-    - Implement network policies to restrict service communication
-    - Use service mesh for mutual TLS between services
+   - Encrypt all traffic with TLS 1.3+
+   - Implement network policies to restrict service communication
+   - Use service mesh for mutual TLS between services
 
 1. **Audit Logging**
-    - Log all authentication and authorization events
-    - Include request context in logs
-    - Centralize logs with retention policies
+   - Log all authentication and authorization events
+   - Include request context in logs
+   - Centralize logs with retention policies
 
 1. **Monitoring & Alerting**
-    - Monitor authentication failures and suspicious patterns
-    - Set up alerts for unusual access patterns
-    - Regularly review and update security controls
+   - Monitor authentication failures and suspicious patterns
+   - Set up alerts for unusual access patterns
+   - Regularly review and update security controls
 
 ```text
 
@@ -465,28 +469,24 @@ All responses include security headers:
 ### Security Best Practices 2
 
 1. **Secret Management**
-
-    - Never commit secrets to version control
-    - Use environment variables or secret management services
-    - Rotate credentials regularly
+   - Never commit secrets to version control
+   - Use environment variables or secret management services
+   - Rotate credentials regularly
 
 1. **Input Validation**
-
-    - Validate all input parameters
-    - Use allowlists over blocklists
-    - Sanitize template parameters
+   - Validate all input parameters
+   - Use allowlists over blocklists
+   - Sanitize template parameters
 
 1. **Rate Limiting**
-
-    - 1000 requests/hour per API key by default
-    - Configurable per client
-    - Returns `429 Too Many Requests` when exceeded
+   - 1000 requests/hour per API key by default
+   - Configurable per client
+   - Returns `429 Too Many Requests` when exceeded
 
 1. **Audit Logging**
-
-    - All API calls are logged
-    - Includes timestamp, user, action, and parameters
-    - Retained for 90 days
+   - All API calls are logged
+   - Includes timestamp, user, action, and parameters
+   - Retained for 90 days
 
 ### Scopes and Permissions
 
@@ -807,9 +807,9 @@ GET /health
 ```
 
 1. **API Performance**
-    - Request latency
-    - Error rates
-    - Rate limit usage
+   - Request latency
+   - Error rates
+   - Rate limit usage
 
 ### Logging
 
@@ -826,8 +826,8 @@ GET /health
 
 ## Alternative Integration: Direct Package Installation
 
-For projects requiring tighter integration or offline capabilities, AutoWeave can be installed directly as a package in
-the target project.
+For projects requiring tighter integration or offline capabilities, AutoWeave can be installed
+directly as a package in the target project.
 
 ### Installation
 
@@ -909,10 +909,10 @@ Combine both methods for flexibility:
 1. **Core Templates**: Direct package installation for stability and offline use
 2. **Dynamic Templates**: API access for frequently updated or context-specific templates
 3. **Caching Strategy**:
-    - Local disk cache with TTL (time-to-live)
-    - Cache invalidation on version changes
-    - Background refresh for frequently used templates
-    - Cache size limits to prevent disk bloat
+   - Local disk cache with TTL (time-to-live)
+   - Cache invalidation on version changes
+   - Background refresh for frequently used templates
+   - Cache size limits to prevent disk bloat
 
 #### Cache Management
 
@@ -1064,14 +1064,14 @@ AUTOWEAVE_API_URL=https://autoweave.example.com/api
   4. Check resource limits
 
 1. **Template Generation Failures**
-    - Check template syntax
-    - Verify required parameters
-    - Check file system permissions
+   - Check template syntax
+   - Verify required parameters
+   - Check file system permissions
 
 1. **Performance Issues**
-    - Check resource utilization
-    - Review template complexity
-    - Check for network latency
+   - Check resource utilization
+   - Review template complexity
+   - Check for network latency
 
 ## Support
 

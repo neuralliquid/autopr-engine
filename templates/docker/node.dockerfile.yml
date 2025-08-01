@@ -28,7 +28,7 @@ variants:
         content: "RUN npm install -g pm2"
       - line: -1
         action: "replace"
-        content: "CMD [\"pm2-runtime\", \"start\", \"ecosystem.config.js\"]"
+        content: 'CMD ["pm2-runtime", "start", "ecosystem.config.js"]'
 
 usage:
   - "Express.js applications"

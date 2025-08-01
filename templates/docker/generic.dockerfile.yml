@@ -1,6 +1,8 @@
 name: "Generic Dockerfile"
 category: "docker"
-description: "Generic Dockerfile template for Node.js applications with configurable base image, ports, and commands"
+description:
+  "Generic Dockerfile template for Node.js applications with configurable base image, ports, and
+  commands"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["docker", "nodejs", "generic", "containerization", "deployment"]

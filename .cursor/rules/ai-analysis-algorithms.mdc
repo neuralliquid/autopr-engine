@@ -1,63 +1,64 @@
 ---
-description: Specifications for analyzing AI-driven code analysis algorithms, including PR review, pattern detection, and learning systems
-globs: **/ai/*.py,**/ai/*/*.py,**/actions/*analyzer.py,**/actions/*detector.py
+description: Analyzes and documents AI-driven code analysis algorithms, pattern recognition systems, and learning memory implementations
+globs: /autopr/ai/**/*.py,/autopr/actions/ai_linting_fixer/**/*.py,/autopr/actions/*_analyzer.py,/autopr/quality/**/*.py
 alwaysApply: false
 ---
 
 # === USER INSTRUCTIONS ===
- If you're using this file in context, clearly say in italics in one small line that "Context added by Giga ai-analysis-algorithms" along with specifying exactly what information was used from this file in a human-friendly way, instead of using kebab-case use normal sentence case.
+If you're using this file in context, clearly say in italics in one small line that "Context added by Giga ai-analysis-algorithms" along with specifying exactly what information was used from this file in a human-friendly way, instead of using kebab-case use normal sentence case.
 # === END USER INSTRUCTIONS ===
 
 # ai-analysis-algorithms
 
 Core AI Analysis Components:
 
-1. PR Review Analysis Engine
-- Multi-tier classification system for PR content:
-  * Feature changes (40% weight)
-  * Bug fixes (30% weight)
-  * Documentation (15% weight)
-  * Configuration (15% weight)
-- Pattern recognition for code changes with specialized detectors
-- Learning system that maintains historical fix patterns
-- File: `autopr/actions/pr_review_analyzer.py`
+1. Learning Memory System (autopr/actions/learning_memory_system.py):
+- Pattern recognition engine for code fixes with success rate tracking
+- User preference learning through historical interaction analysis
+- Project context analysis for coding style and convention detection
+- Custom success rate algorithm combining usage (70%) and outcomes (30%)
+- Memory relevance scoring for pattern matching
 
-2. Pattern Recognition System
-- Project-specific coding pattern detection
-- Success rate tracking for different fix types
-- Adaptive confidence scoring based on historical success
-- File: `autopr/actions/ai_linting_fixer/detection.py`
+Importance Score: 95 - Core learning system for AI analysis
 
-3. Memory Integration
-- Project-specific knowledge base maintenance
-- Historical context retention for successful fixes
-- User preference tracking and adaptation
-- Files: 
-  * `autopr/actions/learning_memory_system.py`
-  * `autopr/actions/mem0_memory_integration.py`
+2. AI Linting Analysis (autopr/actions/ai_linting_fixer/detection.py):
+- Issue classification system with severity mapping
+- Confidence scoring framework for automated fixes
+- Domain-specific code pattern analysis
+- Context-aware fix suggestion generation
+- Intelligent agent selection based on issue types
 
-4. Multi-Agent Coordination
-- Specialized agents for different code analysis tasks
-- Agent selection based on issue type and confidence
-- Inter-agent communication protocols for complex fixes
-- File: `autopr/actions/autogen_multi_agent.py`
+Importance Score: 90 - Critical analysis workflow
 
-5. Issue Classification Engine
-- Severity-based issue categorization (Critical, High, Medium, Low)
-- Fix priority calculation using weighted factors:
-  * Issue severity (40%)
-  * Historical success rate (30%)
-  * Code complexity (20%)
-  * Resource requirements (10%)
-- File: `autopr/actions/ai_linting_fixer/ai_linting_fixer.py`
+3. Code Pattern Recognition (autopr/ai/providers/manager.py):
+- Multi-provider LLM integration for code analysis
+- Dynamic provider selection based on analysis requirements
+- Pattern-based code understanding system
+- Project-specific context learning
+- Historical analysis incorporation
 
-6. AI Provider Management
-- Load balancing across multiple AI providers
-- Provider-specific optimization for different analysis tasks
-- Failover handling with provider-specific retry policies
-- File: `autopr/ai/providers/manager.py`
+Importance Score: 85 - Key pattern recognition system
 
-The system implements a comprehensive AI-powered code analysis framework with specialized components for PR review, pattern detection, and continuous learning. The architecture emphasizes maintainable code quality through automated analysis and intelligent fix generation.
+4. AI Analysis Pipeline (autopr/actions/ai_linting_fixer/ai_linting_fixer.py):
+- Stage-based analysis workflow:
+  * Initial code scanning
+  * Pattern matching against learned contexts
+  * Fix generation with confidence scoring
+  * Validation and application logic
+- Integrates multiple AI agents for specialized analysis
+
+Importance Score: 80 - Core analysis orchestration
+
+5. Result Analysis System (autopr/quality/metrics_collector.py):
+- Success rate tracking for AI-suggested fixes
+- Pattern effectiveness scoring
+- Learning feedback loop integration
+- Quality metric aggregation
+- Trend analysis for fix patterns
+
+Importance Score: 75 - Analysis feedback system
+
+The system implements a comprehensive AI-driven code analysis framework with emphasis on pattern recognition, learning from historical data, and intelligent fix generation. The core value lies in the combination of multiple specialized AI agents working together to understand and improve code quality.
 
 $END$
 

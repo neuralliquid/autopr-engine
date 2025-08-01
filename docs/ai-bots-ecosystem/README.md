@@ -2,8 +2,8 @@
 
 ## 🎯 Complete Guide to GitHub PR Automation & AI Development Tools
 
-Welcome to the comprehensive documentation of AI-powered development tools, bots, and automation systems for modern
-software development workflows.
+Welcome to the comprehensive documentation of AI-powered development tools, bots, and automation
+systems for modern software development workflows.
 
 ---
 
@@ -34,16 +34,22 @@ software development workflows.
 
 ### **Your Current Stack Enhancement**
 
-Based on your existing tools (CharlieHelps, CodeRabbit, Korbit, etc.), here are immediate improvements:
+Based on your existing tools (CharlieHelps, CodeRabbit, Korbit, etc.), here are immediate
+improvements:
 
-1. **TypeScript Focus**: [Language Specialists → TypeScript Section](./language-specialists.md#typescript-experts)
-2. **Azure Deployment**: [Infrastructure → Azure Tools](./infrastructure-deployment.md#azure-specialists)
-3. **Cost Optimization**: [Cost Analysis → Devin Alternatives](./cost-analysis.md#devin-alternatives)
-4. **Documentation**: [Documentation Tools → ChatPRD Alternatives](./documentation-tools.md#chatprd-alternatives)
+1. **TypeScript Focus**:
+   [Language Specialists → TypeScript Section](./language-specialists.md#typescript-experts)
+2. **Azure Deployment**:
+   [Infrastructure → Azure Tools](./infrastructure-deployment.md#azure-specialists)
+3. **Cost Optimization**:
+   [Cost Analysis → Devin Alternatives](./cost-analysis.md#devin-alternatives)
+4. **Documentation**:
+   [Documentation Tools → ChatPRD Alternatives](./documentation-tools.md#chatprd-alternatives)
 
 ### **Implementation Priority**
 
-- 🔥 **Week 1-2**: [Integration Guide → Immediate Implementation](./integration-guide.md#immediate-priority)
+- 🔥 **Week 1-2**:
+  [Integration Guide → Immediate Implementation](./integration-guide.md#immediate-priority)
 - ⚡ **Week 3-4**: [Integration Guide → Medium Priority](./integration-guide.md#medium-priority)
 - 📈 **Month 2+**: [Integration Guide → Long-term](./integration-guide.md#long-term-integration)
 
@@ -79,7 +85,8 @@ Based on your existing tools (CharlieHelps, CodeRabbit, Korbit, etc.), here are 
 
 ### **By Use Case**
 
-- **Bug Detection**: [Code Review Bots](./code-review-bots.md) + [Testing & Quality](./testing-quality.md)
+- **Bug Detection**: [Code Review Bots](./code-review-bots.md) +
+  [Testing & Quality](./testing-quality.md)
 - **Deployment Automation**: [Infrastructure & Deployment](./infrastructure-deployment.md)
 - **Documentation**: [Documentation Tools](./documentation-tools.md)
 - **Cost Optimization**: [Cost Analysis](./cost-analysis.md)
@@ -136,5 +143,6 @@ Based on your existing tools (CharlieHelps, CodeRabbit, Korbit, etc.), here are 
 
 ---
 
-*This documentation represents the most comprehensive analysis of AI development tools available, covering 50+ tools
-across 8 major categories with detailed cost analysis, integration guides, and ROI calculations.*
+_This documentation represents the most comprehensive analysis of AI development tools available,
+covering 50+ tools across 8 major categories with detailed cost analysis, integration guides, and
+ROI calculations._

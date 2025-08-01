@@ -1,6 +1,8 @@
 name: "Alert Notification Script"
 category: "monitoring"
-description: "Bash script for sending alerts and notifications with multiple delivery methods (email, Slack, webhooks, logging)"
+description:
+  "Bash script for sending alerts and notifications with multiple delivery methods (email, Slack,
+  webhooks, logging)"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["monitoring", "alerts", "notifications", "bash", "slack", "email", "webhooks"]
@@ -10,7 +12,8 @@ template_info:
   type: "monitoring_script"
   framework: "Bash"
   target_audience: "DevOps engineers, system administrators"
-  primary_use_cases: ["Alert notifications", "Incident management", "System monitoring", "Error reporting"]
+  primary_use_cases:
+    ["Alert notifications", "Incident management", "System monitoring", "Error reporting"]
 
 variables:
   slack_webhook:

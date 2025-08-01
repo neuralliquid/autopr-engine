@@ -1,6 +1,7 @@
 name: "Apache .htaccess Security Template"
 category: "security"
-description: "Apache .htaccess configuration for React/SPA applications with security headers and URL rewriting"
+description:
+  "Apache .htaccess configuration for React/SPA applications with security headers and URL rewriting"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["security", "apache", "htaccess", "spa", "react", "url_rewriting"]
@@ -10,7 +11,8 @@ template_info:
   type: "security_configuration"
   framework: "apache"
   target_audience: "Frontend developers, DevOps engineers, Apache administrators"
-  primary_use_cases: ["SPA routing", "Security headers", "Apache configuration", "Static site hosting"]
+  primary_use_cases:
+    ["SPA routing", "Security headers", "Apache configuration", "Static site hosting"]
 
 variables:
   enable_compression:

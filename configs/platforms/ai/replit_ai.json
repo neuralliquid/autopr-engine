@@ -60,29 +60,11 @@
   "maintainer": "Replit",
 
   "detection": {
-    "files": [
-      ".replit",
-      "replit.nix",
-      ".config/replit"
-    ],
-    "dependencies": [
-      "@replit/ai",
-      "@replit/codemirror-ai"
-    ],
-    "folder_patterns": [
-      "replit",
-      "-replit"
-    ],
-    "commit_patterns": [
-      "replit",
-      "replit ai",
-      "ghostwriter"
-    ],
-    "content_patterns": [
-      "replit.com/",
-      "replit-ai",
-      "ghostwriter"
-    ],
+    "files": [".replit", "replit.nix", ".config/replit"],
+    "dependencies": ["@replit/ai", "@replit/codemirror-ai"],
+    "folder_patterns": ["replit", "-replit"],
+    "commit_patterns": ["replit", "replit ai", "ghostwriter"],
+    "content_patterns": ["replit.com/", "replit-ai", "ghostwriter"],
     "confidence_weights": {
       "files": 0.6,
       "dependencies": 0.2,
@@ -96,20 +78,8 @@
     "primary_language": "python",
     "framework": "replit",
     "deployment_targets": ["cloud"],
-    "common_files": [
-      ".replit",
-      "replit.nix"
-    ],
-    "features": [
-      "browser_based_ide",
-      "ai_code_completion",
-      "collaboration",
-      "hosting",
-      "database"
-    ],
-    "configuration_files": [
-      ".replit",
-      "replit.nix"
-    ]
+    "common_files": [".replit", "replit.nix"],
+    "features": ["browser_based_ide", "ai_code_completion", "collaboration", "hosting", "database"],
+    "configuration_files": [".replit", "replit.nix"]
   }
 }

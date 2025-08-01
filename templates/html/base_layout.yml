@@ -1,6 +1,7 @@
 name: "Base HTML Layout Template"
 category: "html_template"
-description: "Base HTML layout template for documentation generation with responsive design and modern styling"
+description:
+  "Base HTML layout template for documentation generation with responsive design and modern styling"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["html", "layout", "documentation", "responsive", "css"]
@@ -10,7 +11,8 @@ template_info:
   type: "html_template"
   framework: "HTML5/CSS3"
   target_audience: "Documentation generators, web developers"
-  primary_use_cases: ["Documentation pages", "Content wrapping", "Responsive layouts", "Modern web design"]
+  primary_use_cases:
+    ["Documentation pages", "Content wrapping", "Responsive layouts", "Modern web design"]
 
 variables:
   title:

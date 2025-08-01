@@ -36,11 +36,7 @@
   "maintainer": "Cursor",
 
   "detection": {
-    "files": [
-      ".cursor",
-      ".cursor/tasks.json",
-      ".cursor/chat.json"
-    ],
+    "files": [".cursor", ".cursor/tasks.json", ".cursor/chat.json"],
     "dependencies": ["@cursor-so/cursor-extension"],
     "folder_patterns": ["cursor-", "-cursor"],
     "commit_patterns": ["cursor", "Cursor"],
@@ -58,10 +54,7 @@
     "primary_language": "typescript",
     "framework": "cursor",
     "deployment_targets": ["local"],
-    "common_files": [
-      ".cursor/config.json",
-      ".cursor/keybindings.json"
-    ],
+    "common_files": [".cursor/config.json", ".cursor/keybindings.json"],
     "features": [
       "ai_code_completion",
       "chat_interface",
@@ -69,9 +62,6 @@
       "git_integration",
       "code_search"
     ],
-    "configuration_files": [
-      ".cursor/config.json",
-      ".cursor/keybindings.json"
-    ]
+    "configuration_files": [".cursor/config.json", ".cursor/keybindings.json"]
   }
 }

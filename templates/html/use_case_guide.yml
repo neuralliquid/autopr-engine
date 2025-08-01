@@ -1,6 +1,7 @@
 name: "Use Case Guide HTML Template"
 category: "html_template"
-description: "HTML template for use case implementation guides with modern design and structured content"
+description:
+  "HTML template for use case implementation guides with modern design and structured content"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["html", "use_case", "guide", "documentation", "implementation"]
@@ -10,7 +11,13 @@ template_info:
   type: "html_template"
   framework: "HTML5/CSS3"
   target_audience: "Developers, product managers, business analysts"
-  primary_use_cases: ["Use case documentation", "Implementation guides", "Business requirements", "Feature specifications"]
+  primary_use_cases:
+    [
+      "Use case documentation",
+      "Implementation guides",
+      "Business requirements",
+      "Feature specifications",
+    ]
 
 variables:
   use_case_name:

@@ -1,5 +1,6 @@
 name: "Authentication Integration Template"
-description: "Cross-platform authentication and user management integration for no-code applications"
+description:
+  "Cross-platform authentication and user management integration for no-code applications"
 category: "integration_template"
 platforms: ["bubble", "lovable", "flutterflow", "thunkable", "horizons", "replit"]
 file_extension: "md"
@@ -9,7 +10,8 @@ integration_info:
   type: "user_management"
   complexity: "medium"
   estimated_setup_time: "1-3 days"
-  use_cases: ["user_registration", "login_logout", "profile_management", "password_reset", "social_login"]
+  use_cases:
+    ["user_registration", "login_logout", "profile_management", "password_reset", "social_login"]
   key_features:
     - "Secure user registration and login"
     - "Password reset and email verification"
@@ -108,11 +110,16 @@ variables:
     type: "array"
     default: ["name", "email"]
     description: "User profile fields to collect"
-    examples: [["name", "email"], ["name", "email", "phone", "avatar"], ["name", "email", "company", "role"]]
+    examples:
+      [
+        ["name", "email"],
+        ["name", "email", "phone", "avatar"],
+        ["name", "email", "company", "role"],
+      ]
 
   password_requirements:
     type: "object"
-    default: {"min_length": 8, "require_special": true}
+    default: { "min_length": 8, "require_special": true }
     description: "Password complexity requirements"
 
   session_duration:
@@ -128,7 +135,9 @@ variants:
     modifications:
       - line: 15
         action: "add_after"
-        content: "- SAML 2.0 and OpenID Connect support\n- Active Directory integration\n- Enterprise user provisioning\n- Domain-based authentication"
+        content:
+          "- SAML 2.0 and OpenID Connect support\n- Active Directory integration\n- Enterprise user
+          provisioning\n- Domain-based authentication"
 
   with_advanced_security:
     name: "With Advanced Security"
@@ -136,7 +145,9 @@ variants:
     modifications:
       - line: 20
         action: "add_after"
-        content: "- Device fingerprinting and tracking\n- Risk-based authentication\n- Login anomaly detection\n- Account lockout and security alerts"
+        content:
+          "- Device fingerprinting and tracking\n- Risk-based authentication\n- Login anomaly
+          detection\n- Account lockout and security alerts"
 
   with_passwordless:
     name: "With Passwordless Authentication"
@@ -144,7 +155,9 @@ variants:
     modifications:
       - line: 25
         action: "add_after"
-        content: "- Magic link authentication\n- Biometric authentication (fingerprint, face)\n- WebAuthn and FIDO2 support\n- SMS and email OTP authentication"
+        content:
+          "- Magic link authentication\n- Biometric authentication (fingerprint, face)\n- WebAuthn
+          and FIDO2 support\n- SMS and email OTP authentication"
 
 platform_implementations:
   bubble:

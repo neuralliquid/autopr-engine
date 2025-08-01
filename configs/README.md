@@ -41,5 +41,5 @@ Trigger configuration files (moved from autopr/)
 
 ## Usage
 
-These configuration files are designed to be imported and used by the AutoPR engine modules instead of having hardcoded
-configurations embedded in Python files.
+These configuration files are designed to be imported and used by the AutoPR engine modules instead
+of having hardcoded configurations embedded in Python files.

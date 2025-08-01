@@ -10,7 +10,13 @@ template_info:
   type: "security_configuration"
   framework: "express"
   target_audience: "API developers, backend engineers, security engineers"
-  primary_use_cases: ["API security", "Cross-origin requests", "Frontend-backend communication", "Third-party integrations"]
+  primary_use_cases:
+    [
+      "API security",
+      "Cross-origin requests",
+      "Frontend-backend communication",
+      "Third-party integrations",
+    ]
 
 variables:
   allowed_origins:
@@ -53,7 +59,13 @@ variants:
   development:
     description: "Permissive CORS for development environments"
     variables:
-      allowed_origins: ["http://localhost:3000", "http://localhost:3001", "http://localhost:8080", "http://127.0.0.1:3000"]
+      allowed_origins:
+        [
+          "http://localhost:3000",
+          "http://localhost:3001",
+          "http://localhost:8080",
+          "http://127.0.0.1:3000",
+        ]
       allowed_methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"]
       allowed_headers: ["*"]
       credentials: true

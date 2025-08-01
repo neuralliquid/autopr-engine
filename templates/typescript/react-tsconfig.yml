@@ -1,6 +1,8 @@
 name: "React TypeScript Configuration"
 category: "typescript"
-description: "TypeScript configuration optimized for React applications with modern ES features and strict type checking"
+description:
+  "TypeScript configuration optimized for React applications with modern ES features and strict type
+  checking"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["typescript", "react", "configuration", "jsx", "es6"]
@@ -10,7 +12,8 @@ template_info:
   type: "typescript_configuration"
   framework: "React"
   target_audience: "React developers, TypeScript developers"
-  primary_use_cases: ["React applications", "TypeScript projects", "Create React App", "Modern web development"]
+  primary_use_cases:
+    ["React applications", "TypeScript projects", "Create React App", "Modern web development"]
 
 variables:
   target:

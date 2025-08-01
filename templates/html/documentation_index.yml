@@ -1,6 +1,7 @@
 name: "Documentation Index HTML Template"
 category: "html_template"
-description: "Main documentation index template with statistics, hero section, and organized content sections"
+description:
+  "Main documentation index template with statistics, hero section, and organized content sections"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["html", "documentation", "index", "dashboard", "statistics"]
@@ -10,7 +11,8 @@ template_info:
   type: "html_template"
   framework: "HTML5/CSS3"
   target_audience: "Documentation users, developers, content managers"
-  primary_use_cases: ["Documentation homepage", "Template catalog", "Navigation hub", "Statistics dashboard"]
+  primary_use_cases:
+    ["Documentation homepage", "Template catalog", "Navigation hub", "Statistics dashboard"]
 
 variables:
   content:

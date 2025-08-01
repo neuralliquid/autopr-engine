@@ -4,27 +4,11 @@
   "description": "AI-powered development environment from Vercel",
   "category": "ai_development",
   "detection": {
-    "files": [
-      ".v0",
-      "vercel.json",
-      "v0.config.js"
-    ],
-    "dependencies": [
-      "@vercel/v0"
-    ],
-    "folder_patterns": [
-      "v0-",
-      "-v0"
-    ],
-    "commit_patterns": [
-      "v0",
-      "vercel ai"
-    ],
-    "content_patterns": [
-      "vercel.com/v0",
-      "from '@vercel/v0'",
-      "v0 deployment"
-    ]
+    "files": [".v0", "vercel.json", "v0.config.js"],
+    "dependencies": ["@vercel/v0"],
+    "folder_patterns": ["v0-", "-v0"],
+    "commit_patterns": ["v0", "vercel ai"],
+    "content_patterns": ["vercel.com/v0", "from '@vercel/v0'", "v0 deployment"]
   },
   "project_config": {
     "features": [
@@ -34,22 +18,14 @@
       "api_endpoints",
       "serverless_functions"
     ],
-    "configuration_files": [
-      "v0.config.js",
-      "vercel.json"
-    ],
+    "configuration_files": ["v0.config.js", "vercel.json"],
     "documentation": "https://v0.dev/docs"
   },
   "metadata": {
     "vendor": "Vercel",
     "website": "https://v0.dev",
     "pricing_model": "freemium",
-    "supported_languages": [
-      "typescript",
-      "javascript",
-      "react",
-      "next.js"
-    ],
+    "supported_languages": ["typescript", "javascript", "react", "next.js"],
     "last_updated": "2025-07-27",
     "version": "1.0.0"
   },

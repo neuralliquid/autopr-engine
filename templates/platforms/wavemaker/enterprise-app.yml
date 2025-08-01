@@ -1,6 +1,8 @@
 name: "WaveMaker Enterprise Application"
 category: "enterprise"
-description: "Enterprise low-code platform for building modern, API-driven web and mobile applications with AI-generated code capabilities"
+description:
+  "Enterprise low-code platform for building modern, API-driven web and mobile applications with
+  AI-generated code capabilities"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["enterprise", "low-code", "web-app", "mobile-app", "ai-generated", "angular", "java"]
@@ -12,7 +14,8 @@ platform_info:
   founded: "2003"
   pricing_model: "Custom Enterprise Pricing"
   target_audience: "Enterprise developers, ISVs, large organizations"
-  primary_use_cases: ["Enterprise web apps", "Mobile applications", "API-driven solutions", "Legacy modernization"]
+  primary_use_cases:
+    ["Enterprise web apps", "Mobile applications", "API-driven solutions", "Legacy modernization"]
 
   key_features:
     - "AI-generated code from Figma designs"
@@ -68,7 +71,18 @@ variables:
   data_sources:
     type: "multi_select"
     description: "Primary data sources for the application"
-    options: ["postgresql", "mysql", "oracle", "sql_server", "mongodb", "rest_api", "soap_api", "sap", "salesforce"]
+    options:
+      [
+        "postgresql",
+        "mysql",
+        "oracle",
+        "sql_server",
+        "mongodb",
+        "rest_api",
+        "soap_api",
+        "sap",
+        "salesforce",
+      ]
     default: ["postgresql", "rest_api"]
     required: true
 
@@ -89,7 +103,14 @@ variables:
   ai_features:
     type: "multi_select"
     description: "AI-powered features to include"
-    options: ["autocode_generation", "intelligent_mapping", "design_import", "code_optimization", "testing_automation"]
+    options:
+      [
+        "autocode_generation",
+        "intelligent_mapping",
+        "design_import",
+        "code_optimization",
+        "testing_automation",
+      ]
     default: ["autocode_generation", "intelligent_mapping"]
     required: false
 

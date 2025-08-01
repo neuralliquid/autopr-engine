@@ -1,6 +1,7 @@
 name: "Integration Guide HTML Template"
 category: "html_template"
-description: "HTML template for integration setup guides with technical focus and step-by-step instructions"
+description:
+  "HTML template for integration setup guides with technical focus and step-by-step instructions"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["html", "integration", "guide", "documentation", "technical"]
@@ -10,7 +11,8 @@ template_info:
   type: "html_template"
   framework: "HTML5/CSS3"
   target_audience: "Developers, system integrators, technical architects"
-  primary_use_cases: ["API integration", "System setup", "Configuration guides", "Technical documentation"]
+  primary_use_cases:
+    ["API integration", "System setup", "Configuration guides", "Technical documentation"]
 
 variables:
   integration_name:

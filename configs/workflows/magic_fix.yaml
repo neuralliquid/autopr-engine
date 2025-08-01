@@ -11,4 +11,4 @@ magic_fix:
     - id: apply_patch
       action: apply_git_patch
       inputs:
-        patch_content: '{{ pull_request.patch }}' # Simulated; in real use, would generate a patch
+        patch_content: "{{ pull_request.patch }}" # Simulated; in real use, would generate a patch

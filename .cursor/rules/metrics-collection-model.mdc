@@ -1,66 +1,65 @@
 ---
-description: Defines metrics collection system for tracking performance, success rates, quality metrics and component-level monitoring
-globs: /autopr/**/metrics*.{py,js},/autopr/**/quality*.{py,js},/autopr/**/performance*.{py,js}
+description: Defines the metrics collection and monitoring system for tracking AutoPR's AI code review performance and quality metrics
+globs: **/metrics_collector.py,**/metrics.py,**/models.py,**/*metrics*.py,**/evaluation/**
 alwaysApply: false
 ---
 
 # === USER INSTRUCTIONS ===
- If you're using this file in context, clearly say in italics in one small line that "Context added by Giga metrics-collection-model" along with specifying exactly what information was used from this file in a human-friendly way, instead of using kebab-case use normal sentence case.
+If you're using this file in context, clearly say in italics in one small line that "Context added by Giga metrics-collection-model" along with specifying exactly what information was used from this file in a human-friendly way, instead of using kebab-case use normal sentence case.
 # === END USER INSTRUCTIONS ===
 
 # metrics-collection-model
 
-Core Metrics Collection Components:
+Core Metrics Collection System:
 
-1. Performance Tracking System (autopr/quality/metrics_collector.py):
-- Custom weighted scoring system combining:
-  - Fix success rate (25% weight)
-  - User satisfaction (20% weight) 
-  - Uptime (15% weight)
-  - Test pass rate (15% weight)
-  - Security and code quality (10% each)
-  - Error rate (-5% penalty)
-- Domain-specific trend analysis with thresholds:
-  - "improving" for >5% positive change
-  - "declining" for >5% negative change
-  - "stable" for changes within ±5%
+1. Success Rate Tracking
+- Custom weighted metric calculation incorporating:
+  * Fix success rate (25%)
+  * User satisfaction (20%)
+  * Uptime metrics (15%)
+  * Test pass rates (15%) 
+  * Code quality scores (10%)
+  * Security metrics (10%)
+  * Error rates (-5% penalty)
 
-2. Template Quality Metrics (autopr/quality/template_metrics/):
-- Category-based quality scoring with weighted components:
-  - Security: 2.5x multiplier
-  - Structure: 2.0x multiplier 
-  - Metadata: 1.5x multiplier
-  - Variables: 1.2x multiplier
-  - Documentation/Examples: 1.0x multiplier
-- Critical issue penalty system that reduces scores based on severity
-- Quality grading thresholds:
-  - A: >= 90
-  - B: >= 80 
-  - C: >= 70
-  - D: >= 60
-  - F: < 60
+2. Performance Analytics Framework
+- Specialized measurement system for:
+  * Response timing per model/provider
+  * Token usage efficiency 
+  * CPU/Memory consumption patterns
+  * API cost optimization tracking
+  * Queue processing efficiency
 
-3. AI Operation Metrics (autopr/actions/ai_linting_fixer/metrics.py):
-- Specialized tracking for AI code fixes:
-  - Success/failure rates per issue type
-  - AI model confidence scoring
-  - Token usage optimization
-  - Processing duration tracking
-  - Resource efficiency monitoring
-- Custom KPI calculations:
-  - Fix acceptance rate
-  - Parallel processing efficiency
-  - AI response quality metrics
+3. Quality Assessment Pipeline
+- Domain-specific quality metrics:
+  * Code fix accuracy scores
+  * Documentation coverage rates
+  * Test coverage measurements
+  * Security compliance checks
+  * Performance impact analysis
 
-4. Integration Performance Tracking:
-- Cross-platform metrics collection from:
-  - GitHub API response times
-  - LLM provider latency
-  - Database operation timing
-  - Queue processing metrics
-- Health score aggregation with weighted components focusing on system reliability and performance
+4. Trend Analysis System
+- Custom trend classification logic:
+  * "improving": >5% positive change
+  * "declining": >5% negative change
+  * "stable": changes within ±5%
+  * Uses 7-day moving averages
 
-The metrics collection system provides comprehensive monitoring across multiple aspects of the AutoPR system, with specialized tracking for AI operations, code quality, and system health.
+5. Automated Recommendation Engine
+- Context-aware suggestions based on:
+  * Fix success rate thresholds (<80%)
+  * User satisfaction scores (<3.5/5)
+  * Response time metrics (>5s)
+  * Error frequency patterns (>10%)
+
+Core Implementation Files:
+- autopr/evaluation/metrics_collector.py
+- autopr/actions/ai_linting_fixer/metrics.py
+- autopr/quality/metrics_collector.py
+
+The system uniquely combines AI performance metrics with code quality measurements to provide comprehensive insights into automated PR management effectiveness.
+
+Importance Score: 95 - Critical for measuring and optimizing core business operations
 
 $END$
 

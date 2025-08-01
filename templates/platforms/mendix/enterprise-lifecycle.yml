@@ -1,9 +1,19 @@
 name: "Mendix Enterprise Lifecycle Management"
 category: "enterprise"
-description: "Enterprise low-code platform for end-to-end application lifecycle management with AI-assisted development"
+description:
+  "Enterprise low-code platform for end-to-end application lifecycle management with AI-assisted
+  development"
 version: "1.0.0"
 author: "AutoPR Template System"
-tags: ["enterprise", "lifecycle-management", "ai-assisted", "multi-platform", "collaboration", "mendix-studio"]
+tags:
+  [
+    "enterprise",
+    "lifecycle-management",
+    "ai-assisted",
+    "multi-platform",
+    "collaboration",
+    "mendix-studio",
+  ]
 
 platform_info:
   name: "Mendix"
@@ -12,7 +22,13 @@ platform_info:
   founded: "2005"
   pricing_model: "Subscription-based with Free Tier"
   target_audience: "Enterprise developers, IT departments, business analysts"
-  primary_use_cases: ["Enterprise applications", "Digital transformation", "Legacy modernization", "Multi-channel apps"]
+  primary_use_cases:
+    [
+      "Enterprise applications",
+      "Digital transformation",
+      "Legacy modernization",
+      "Multi-channel apps",
+    ]
 
   key_features:
     - "Mendix Studio Pro IDE for advanced development"
@@ -65,7 +81,17 @@ variables:
   business_domain:
     type: "select"
     description: "Primary business domain"
-    options: ["finance", "healthcare", "manufacturing", "retail", "logistics", "hr", "customer_service", "supply_chain"]
+    options:
+      [
+        "finance",
+        "healthcare",
+        "manufacturing",
+        "retail",
+        "logistics",
+        "hr",
+        "customer_service",
+        "supply_chain",
+      ]
     default: "finance"
     required: true
 
@@ -79,7 +105,17 @@ variables:
   integration_requirements:
     type: "multi_select"
     description: "Enterprise system integrations needed"
-    options: ["sap", "salesforce", "microsoft_365", "oracle", "workday", "servicenow", "rest_api", "soap_api"]
+    options:
+      [
+        "sap",
+        "salesforce",
+        "microsoft_365",
+        "oracle",
+        "workday",
+        "servicenow",
+        "rest_api",
+        "soap_api",
+      ]
     default: ["rest_api", "microsoft_365"]
     required: true
 

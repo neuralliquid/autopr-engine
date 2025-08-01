@@ -1,5 +1,7 @@
 name: "Social Media Platform Template"
-description: "Cross-platform social networking application with user-generated content, interactions, and community features"
+description:
+  "Cross-platform social networking application with user-generated content, interactions, and
+  community features"
 category: "use_case_template"
 platforms: ["bubble", "lovable", "flutterflow", "thunkable", "replit"]
 file_extension: "md"
@@ -64,7 +66,12 @@ variables:
     type: "array"
     default: ["notifications"]
     description: "Real-time features to implement"
-    examples: [["notifications"], ["live_chat", "notifications"], ["live_streaming", "chat", "notifications"]]
+    examples:
+      [
+        ["notifications"],
+        ["live_chat", "notifications"],
+        ["live_streaming", "chat", "notifications"],
+      ]
 
   moderation_level:
     type: "string"
@@ -79,7 +86,9 @@ variants:
     modifications:
       - line: 15
         action: "add_after"
-        content: "- Live video streaming capabilities\n- Real-time audience chat and reactions\n- Stream scheduling and notifications\n- Recording and replay functionality"
+        content:
+          "- Live video streaming capabilities\n- Real-time audience chat and reactions\n- Stream
+          scheduling and notifications\n- Recording and replay functionality"
 
   with_marketplace:
     name: "With Marketplace Features"
@@ -87,7 +96,9 @@ variants:
     modifications:
       - line: 20
         action: "add_after"
-        content: "- User marketplace for buying and selling\n- Product listings and transactions\n- Seller ratings and reviews\n- Integrated payment processing"
+        content:
+          "- User marketplace for buying and selling\n- Product listings and transactions\n- Seller
+          ratings and reviews\n- Integrated payment processing"
 
   with_events:
     name: "With Event Management"
@@ -95,7 +106,9 @@ variants:
     modifications:
       - line: 25
         action: "add_after"
-        content: "- Event creation and management\n- RSVP and attendance tracking\n- Event discovery and recommendations\n- Calendar integration and reminders"
+        content:
+          "- Event creation and management\n- RSVP and attendance tracking\n- Event discovery and
+          recommendations\n- Calendar integration and reminders"
 
 platform_implementations:
   bubble:
@@ -188,7 +201,18 @@ core_features:
       - "User search and discovery"
       - "Account verification and badges"
     database_schema:
-      users: ["id", "username", "email", "password_hash", "display_name", "bio", "avatar_url", "verified", "created_at"]
+      users:
+        [
+          "id",
+          "username",
+          "email",
+          "password_hash",
+          "display_name",
+          "bio",
+          "avatar_url",
+          "verified",
+          "created_at",
+        ]
       user_profiles: ["user_id", "location", "website", "birth_date", "privacy_level"]
       user_settings: ["user_id", "notifications_enabled", "privacy_mode", "language"]
 
@@ -201,7 +225,17 @@ core_features:
       - "Content tagging and categorization"
       - "Content editing and deletion"
     database_schema:
-      posts: ["id", "user_id", "content_type", "text_content", "media_urls", "tags", "privacy_level", "created_at"]
+      posts:
+        [
+          "id",
+          "user_id",
+          "content_type",
+          "text_content",
+          "media_urls",
+          "tags",
+          "privacy_level",
+          "created_at",
+        ]
       media_files: ["id", "post_id", "file_url", "file_type", "file_size", "alt_text"]
       post_tags: ["post_id", "tag_name"]
 
@@ -243,7 +277,8 @@ core_features:
     database_schema:
       conversations: ["id", "type", "name", "created_by", "created_at"]
       conversation_participants: ["conversation_id", "user_id", "joined_at", "role"]
-      messages: ["id", "conversation_id", "sender_id", "content", "message_type", "sent_at", "read_by"]
+      messages:
+        ["id", "conversation_id", "sender_id", "content", "message_type", "sent_at", "read_by"]
 
 real_time_features:
   notifications:
@@ -375,17 +410,21 @@ success_metrics:
 examples:
   local_community:
     platform_name: "NeighborConnect"
-    platform_description: "Hyperlocal social platform for neighborhood communities to share news, events, and recommendations"
+    platform_description:
+      "Hyperlocal social platform for neighborhood communities to share news, events, and
+      recommendations"
     content_types: ["text", "images", "events", "recommendations"]
     community_focus: "local"
     privacy_model: "public_private"
     real_time_features: ["notifications", "chat"]
     platform_recommendation: "bubble"
-    reasoning: "Complex location-based features and community moderation require sophisticated workflows"
+    reasoning:
+      "Complex location-based features and community moderation require sophisticated workflows"
 
   creative_community:
     platform_name: "ArtistHub"
-    platform_description: "Social platform for artists and designers to showcase work, collaborate, and get feedback"
+    platform_description:
+      "Social platform for artists and designers to showcase work, collaborate, and get feedback"
     content_types: ["images", "videos", "portfolios", "tutorials"]
     community_focus: "creative"
     privacy_model: "public_private"
@@ -395,10 +434,12 @@ examples:
 
   professional_network:
     platform_name: "IndustryConnect"
-    platform_description: "Professional networking platform for industry-specific communities and knowledge sharing"
+    platform_description:
+      "Professional networking platform for industry-specific communities and knowledge sharing"
     content_types: ["articles", "discussions", "job_postings", "events"]
     community_focus: "professional"
     privacy_model: "invite_only"
     real_time_features: ["notifications", "messaging"]
     platform_recommendation: "lovable"
-    reasoning: "AI assistance valuable for professional networking features and content recommendations"
+    reasoning:
+      "AI assistance valuable for professional networking features and content recommendations"

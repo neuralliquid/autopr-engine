@@ -2,27 +2,28 @@
 
 ## Overview
 
-This document outlines the strategy for migrating from inline/hardcoded templates to a structured, maintainable
-template system with proper packaging and versioning, following the new C# Core architecture with Python AI/ML integration.
+This document outlines the strategy for migrating from inline/hardcoded templates to a structured,
+maintainable template system with proper packaging and versioning, following the new C# Core
+architecture with Python AI/ML integration.
 
 ## Architecture Overview
 
 ### Core Components
 
 1. **Template Engine (C# .NET 8)**
-    - High-performance template processing
-    - Type-safe template definitions
-    - Plugin system integration
+   - High-performance template processing
+   - Type-safe template definitions
+   - Plugin system integration
 
 1. **AI/ML Services (Python)**
-    - Template optimization
-    - Intelligent suggestions
-    - Natural language processing
+   - Template optimization
+   - Intelligent suggestions
+   - Natural language processing
 
 1. **Web UI (React/TypeScript)**
-    - Template authoring interface
-    - Real-time preview
-    - Visual template management
+   - Template authoring interface
+   - Real-time preview
+   - Visual template management
 
 1. **Plugin System**
 
@@ -72,7 +73,6 @@ packages/
 Each template follows this structure:
 
 ```yaml
-
 # Metadata
 templateId: string
 version: semver
@@ -124,21 +124,21 @@ aiml:
 ### Phase 1: Core Infrastructure (Q3 2025)
 
 1. **C# Core Engine**
-    - Set up .NET 8 solution
-    - Implement template parsing/rendering
-    - Create plugin interfaces
+   - Set up .NET 8 solution
+   - Implement template parsing/rendering
+   - Create plugin interfaces
 
 1. **Python AI Services**
-    - Set up FastAPI service
-    - Implement template analysis
-    - Create suggestion engine
+   - Set up FastAPI service
+   - Implement template analysis
+   - Create suggestion engine
 
 1. **React UI Foundation**
-    - Set up Next.js project with TypeScript
-    - Create template editor with Monaco integration
-    - Implement real-time preview with WebSocket updates
-    - Add template validation feedback UI
-    - Create plugin management interface
+   - Set up Next.js project with TypeScript
+   - Create template editor with Monaco integration
+   - Implement real-time preview with WebSocket updates
+   - Add template validation feedback UI
+   - Create plugin management interface
 
 ### Phase 2: Template Migration (Q4 2025)
 
@@ -159,19 +159,19 @@ aiml:
 ### Core Scripts
 
 1. **Build & Test**
-    - `scripts/build.ps1` - .NET build script
-    - `scripts/test.ps1` - Cross-platform testing
-    - `scripts/lint.ps1` - Code quality checks
+   - `scripts/build.ps1` - .NET build script
+   - `scripts/test.ps1` - Cross-platform testing
+   - `scripts/lint.ps1` - Code quality checks
 
 1. **Template Management**
-    - `scripts/template.ps1` - Template CLI
-    - `scripts/migrate.ps1` - Migration utilities
-    - `scripts/validate.ps1` - Template validation
+   - `scripts/template.ps1` - Template CLI
+   - `scripts/migrate.ps1` - Migration utilities
+   - `scripts/validate.ps1` - Template validation
 
 1. **AI/ML Services**
-    - `scripts/train-model.ps1` - Model training
-    - `scripts/start-ai-service.ps1` - Local dev
-    - `scripts/update-embeddings.ps1` - Update vector DB
+   - `scripts/train-model.ps1` - Model training
+   - `scripts/start-ai-service.ps1` - Local dev
+   - `scripts/update-embeddings.ps1` - Update vector DB
 
 ## Validation & Testing
 
@@ -260,19 +260,19 @@ aiml:
 ### Integration Roadmap
 
 1. **Developer Tools**
-    - VS Code extension with IntelliSense
-    - JetBrains Rider/ReSharper plugin
-    - CLI tool for CI/CD pipelines
+   - VS Code extension with IntelliSense
+   - JetBrains Rider/ReSharper plugin
+   - CLI tool for CI/CD pipelines
 
 1. **CI/CD Integrations**
-    - GitHub Actions with custom actions
-    - Azure DevOps extension
-    - GitLab CI templates
-    - Jenkins pipeline library
+   - GitHub Actions with custom actions
+   - Azure DevOps extension
+   - GitLab CI templates
+   - Jenkins pipeline library
 
 1. **Documentation**
-    - Template authoring guide
-    - Plugin development kit (PDK)
-    - API reference with interactive examples
-    - Video tutorials and workshops
-    - Community-contributed templates repository
+   - Template authoring guide
+   - Plugin development kit (PDK)
+   - API reference with interactive examples
+   - Video tutorials and workshops
+   - Community-contributed templates repository
