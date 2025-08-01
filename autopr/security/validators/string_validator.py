@@ -10,6 +10,35 @@ MAX_KEY_LENGTH = 100
 class StringValidator:
     """String validation functionality."""
 
+    def __init__(self, max_string_length: int = 1000):
+        self.max_string_length = max_string_length
+        self.SQL_INJECTION_PATTERNS = [
+            r"(\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|EXECUTE|UNION|SCRIPT)\b)",
+            r"(\b(OR|AND)\b\s+\d+\s*=\s*\d+)",
+            r"(\b(OR|AND)\b\s+['\"]\w+['\"]\s*=\s*['\"]\w+['\"])",
+            r"(--|\b(COMMENT|REM)\b)",
+            r"(\b(WAITFOR|DELAY)\b)",
+            r"(\b(BENCHMARK|SLEEP)\b)",
+        ]
+        self.XSS_PATTERNS = [
+            r"<script[^>]*>.*?</script>",
+            r"javascript:",
+            r"on\w+\s*=",
+            r"<iframe[^>]*>",
+            r"<object[^>]*>",
+            r"<embed[^>]*>",
+            r"<form[^>]*>",
+            r"<input[^>]*>",
+            r"<textarea[^>]*>",
+            r"<select[^>]*>",
+        ]
+        self.COMMAND_INJECTION_PATTERNS = [
+            r"[;&|`$(){}[\]]",
+            r"\b(cat|ls|pwd|whoami|id|uname|ps|top|kill|rm|cp|mv|chmod|chown)\b",
+            r"\b(netcat|nc|telnet|ssh|scp|wget|curl|ftp|sftp)\b",
+            r"\b(bash|sh|zsh|fish|powershell|cmd|command)\b",
+        ]
+
     def _validate_string(self, key: str, value: str) -> ValidationResult:
         """Validate string input for security threats."""
         result = ValidationResult(is_valid=True)

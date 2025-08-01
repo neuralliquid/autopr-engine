@@ -26,7 +26,8 @@ class ToolRegistryContainer(containers.DeclarativeContainer):
     """Container for tool registry."""
 
     # Discover and register all tools
-    def _register_discovered_tools():
+    @staticmethod
+    def _register_discovered_tools() -> "tool_registry_instance":
         """Register all discovered tools with the registry."""
         discovered_tools = discover_tools()
         for tool_class in discovered_tools:
@@ -85,6 +86,6 @@ container = QualityEngineContainer()
 
 
 # Helper function to get the engine instance
-def get_engine():
+def get_engine() -> QualityEngine:
     """Get the configured QualityEngine instance."""
     return container.engine()
