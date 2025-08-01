@@ -1,14 +1,16 @@
 # AutoPR Engine Documentation
 
-Welcome to the AutoPR Engine documentation hub. This comprehensive collection of guides and references will help you
-understand, deploy, and extend the AutoPR Engine system.
+Welcome to the AutoPR Engine documentation hub. This comprehensive collection of guides and
+references will help you understand, deploy, and extend the AutoPR Engine system.
 
 ## 📚 Table of Contents
 
 ### Core Documentation
 
-- **[AutoPR Enhanced System](./AUTOPR_ENHANCED_SYSTEM.md)** - Complete system architecture and feature overview
-- **[AI Bots Ecosystem Analysis](./AI_BOTS_ECOSYSTEM_ANALYSIS.md)** - Comprehensive analysis of AI automation tools and integration strategies
+- **[AutoPR Enhanced System](./AUTOPR_ENHANCED_SYSTEM.md)** - Complete system architecture and
+  feature overview
+- **[AI Bots Ecosystem Analysis](./AI_BOTS_ECOSYSTEM_ANALYSIS.md)** - Comprehensive analysis of AI
+  automation tools and integration strategies
 
 ### Implementation Guides
 
@@ -26,29 +28,42 @@ understand, deploy, and extend the AutoPR Engine system.
 
 ### Setup & Configuration
 
-- **[Authentication Guide](./guides/authentication.md)** - Complete authentication setup and configuration
-- **[Integration Guide](./ai-bots-ecosystem/integration-guide.md)** - Platform integration instructions
-- **[Infrastructure & Deployment](./ai-bots-ecosystem/infrastructure-deployment.md)** - Deployment strategies and infrastructure setup
+- **[Authentication Guide](./guides/authentication.md)** - Complete authentication setup and
+  configuration
+- **[Integration Guide](./ai-bots-ecosystem/integration-guide.md)** - Platform integration
+  instructions
+- **[Infrastructure & Deployment](./ai-bots-ecosystem/infrastructure-deployment.md)** - Deployment
+  strategies and infrastructure setup
 
 ### Specialized Guides
 
-- **[Development Assistants](./ai-bots-ecosystem/development-assistants.md)** - AI development tools integration
+- **[Development Assistants](./ai-bots-ecosystem/development-assistants.md)** - AI development tools
+  integration
 - **[Code Review Bots](./ai-bots-ecosystem/code-review-bots.md)** - Automated code review setup
-- **[Testing & Quality](./ai-bots-ecosystem/testing-quality.md)** - Quality assurance and testing automation
-- **[Documentation Tools](./ai-bots-ecosystem/documentation-tools.md)** - Documentation generation and maintenance
+- **[Testing & Quality](./ai-bots-ecosystem/testing-quality.md)** - Quality assurance and testing
+  automation
+- **[Documentation Tools](./ai-bots-ecosystem/documentation-tools.md)** - Documentation generation
+  and maintenance
 
 ### Analysis & Planning
 
-- **[Cost Analysis](./ai-bots-ecosystem/cost-analysis.md)** - Resource requirements and cost optimization
-- **[Platform Detector Expansion](./ai-bots-ecosystem/platform-detector-expansion.md)** - Multi-platform integration strategies
-- **[Communication Integration](./ai-bots-ecosystem/communication-integration-expansion.md)** - Chat and notification integrations
+- **[Cost Analysis](./ai-bots-ecosystem/cost-analysis.md)** - Resource requirements and cost
+  optimization
+- **[Platform Detector Expansion](./ai-bots-ecosystem/platform-detector-expansion.md)** -
+  Multi-platform integration strategies
+- **[Communication Integration](./ai-bots-ecosystem/communication-integration-expansion.md)** - Chat
+  and notification integrations
 
 ## 🚀 Quick Start
 
-1. **New to AutoPR Engine?** Start with the [AutoPR Enhanced System](./AUTOPR_ENHANCED_SYSTEM.md) overview
-2. **Ready to implement?** Follow the [Phase 1 Foundation](./ai-bots-ecosystem/phase-1-foundation.md) guide
-3. **Need API access?** Check the [API Reference](./api/) and [Authentication Guide](./guides/authentication.md)
-4. **Planning deployment?** Review [Infrastructure & Deployment](./ai-bots-ecosystem/infrastructure-deployment.md)
+1. **New to AutoPR Engine?** Start with the [AutoPR Enhanced System](./AUTOPR_ENHANCED_SYSTEM.md)
+   overview
+2. **Ready to implement?** Follow the
+   [Phase 1 Foundation](./ai-bots-ecosystem/phase-1-foundation.md) guide
+3. **Need API access?** Check the [API Reference](./api/) and
+   [Authentication Guide](./guides/authentication.md)
+4. **Planning deployment?** Review
+   [Infrastructure & Deployment](./ai-bots-ecosystem/infrastructure-deployment.md)
 
 ## 🏗️ Architecture Overview
 
@@ -93,4 +108,5 @@ To contribute to this documentation:
 
 ## 📄 License
 
-This documentation is part of the AutoPR Engine project. See the main repository for license information.
+This documentation is part of the AutoPR Engine project. See the main repository for license
+information.

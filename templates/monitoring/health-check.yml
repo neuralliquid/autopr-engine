@@ -1,6 +1,7 @@
 name: "Health Check Script Template"
 category: "monitoring"
-description: "Comprehensive health check script for application monitoring and availability verification"
+description:
+  "Comprehensive health check script for application monitoring and availability verification"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["monitoring", "health_check", "availability", "script", "devops"]
@@ -10,7 +11,8 @@ template_info:
   type: "monitoring_script"
   framework: "bash"
   target_audience: "DevOps engineers, system administrators, monitoring specialists"
-  primary_use_cases: ["Application monitoring", "Health verification", "Automated checks", "CI/CD integration"]
+  primary_use_cases:
+    ["Application monitoring", "Health verification", "Automated checks", "CI/CD integration"]
 
 variables:
   app_name:

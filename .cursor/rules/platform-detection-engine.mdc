@@ -1,66 +1,66 @@
 ---
-description: Platform detection engine for identifying development platforms and frameworks in software projects through multi-signal analysis.
-globs: **/platform_detector.py,**/platform_detection/**,**/prototype_enhancement/platform_configs.py
+description: Specification for platform detection and analysis logic within AutoPR system including detection confidence scoring and categorization
+globs: /autopr/actions/platform_detection/**,/autopr/actions/prototype_enhancement/platform_configs*
 alwaysApply: false
 ---
 
 # === USER INSTRUCTIONS ===
- If you're using this file in context, clearly say in italics in one small line that "Context added by Giga platform-detection-engine" along with specifying exactly what information was used from this file in a human-friendly way, instead of using kebab-case use normal sentence case.
+If you're using this file in context, clearly say in italics in one small line that "Context added by Giga platform-detection-engine" along with specifying exactly what information was used from this file in a human-friendly way, instead of using kebab-case use normal sentence case.
 # === END USER INSTRUCTIONS ===
 
 # platform-detection-engine
 
-The platform detection engine implements a sophisticated multi-signal analysis system for identifying and classifying development platforms and frameworks.
+The platform detection engine implements specialized logic for identifying and analyzing development platforms and frameworks used in codebases.
 
 Core Components:
 
-1. Platform Scoring System
-- Weighted scoring algorithm evaluating multiple signals:
-  * File patterns (0.4 weight)
-  * Dependencies (0.25 weight) 
-  * Folder structures (0.2 weight)
-  * Content patterns (0.1 weight)
-  * Script signatures (0.05 weight)
+1. Platform Detection Algorithm (Importance: 95)
+- Multi-factor weighted scoring system using:
+  * File signatures (40% weight)
+  * Dependencies (25% weight)
+  * Folder patterns (20% weight)
+  * Commit messages (15% weight)
+  * Content patterns (10% weight)
+- Confidence threshold system:
+  * High confidence: >0.8 score
+  * Medium confidence: 0.5-0.8 score 
+  * Low confidence: <0.5 score
 
-2. Platform Registry
-- Comprehensive catalog of supported platforms:
-  * Replit: Cloud development environment
-  * Lovable.dev: React prototyping platform
-  * Bolt.new: Full-stack web framework
-  * Same.new: Component library platform
-  * Emergent.sh: AI-assisted development
+2. Platform Classification (Importance: 90)
+- Workflow type categorization:
+  * Single platform (1 high confidence match)
+  * Hybrid workflow (1+ high + 1+ medium confidence)
+  * Multi-platform (2+ high/medium confidence)
+- Platform-specific configuration extraction:
+  * Replit: Runtime detection, config parsing
+  * Lovable: Framework and TypeScript detection
+  * Bolt: Database type detection
+  * Same.new: Fullstack analysis
+  * Emergent.sh: Platform services detection
 
-3. Detection Rules Engine
-- Platform-specific detection patterns:
-  * Framework-specific file markers
-  * Required dependency sets
-  * Configuration file templates
-  * Directory structure requirements
-  * Unique platform signatures
+3. Enhancement Analysis (Importance: 85)
+- Generates platform-specific enhancement recommendations:
+  * Production readiness requirements
+  * Testing infrastructure needs
+  * Security hardening recommendations
+- Maps enhancement packages by category:
+  * Security
+  * Performance
+  * Monitoring
+  * Testing
+  * Development
 
-4. Confidence Scoring
-- Multi-factor confidence calculation:
-  * Signal strength evaluation
-  * Pattern match quality
-  * Context validation
-  * Cross-signal correlation
+Key Business Rules:
+- Platform detection requires minimum 0.5 confidence score
+- Enhancement recommendations must match detected platform capabilities
+- Platform combinations validated for compatibility
+- Migration path analysis required for hybrid/multi-platform setups
 
-5. Migration Analysis
-- Platform compatibility assessment
-- Migration path identification
-- Dependency conflict detection
-- Configuration transformation mapping
-
-Key Files:
-```
-autopr/actions/platform_detection/
-  ├── detector.py           # Core detection logic
-  ├── file_analyzer.py      # File pattern analysis
-  ├── scoring.py           # Confidence scoring system
-  └── config.py            # Platform definitions
-```
-
-The engine provides intelligent platform identification through comprehensive analysis of multiple project characteristics, enabling automated enhancement recommendations and migration planning.
+Relevant Files:
+- /autopr/actions/platform_detection/detector.py
+- /autopr/actions/platform_detection/scoring.py
+- /autopr/actions/platform_detection/analysis/patterns.py
+- /autopr/actions/prototype_enhancement/platform_configs.py
 
 $END$
 

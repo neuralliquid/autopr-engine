@@ -2,29 +2,35 @@
 
 ## Overview
 
-AutoPR is built on a hybrid architecture that leverages the strengths of both C# and Python, connected via gRPC for
-high-performance inter-process communication. The system is designed with modularity, scalability, and maintainability
-as core principles, with a strong focus on extensibility through plugins and templates.
+AutoPR is built on a hybrid architecture that leverages the strengths of both C# and Python,
+connected via gRPC for high-performance inter-process communication. The system is designed with
+modularity, scalability, and maintainability as core principles, with a strong focus on
+extensibility through plugins and templates.
 
 ## AutoWeave: The Templating Engine
 
 ### Role in AutoPR
 
-AutoWeave serves as the intelligent templating engine within AutoPR, providing a unified system for template
-management, processing, and rendering across the platform. It handles:
+AutoWeave serves as the intelligent templating engine within AutoPR, providing a unified system for
+template management, processing, and rendering across the platform. It handles:
 
-- **Template Definition**: Structured YAML/JSON-based template definitions with support for variables, conditions, and loops
-- **Multi-Format Support**: Generation of various output formats (YAML, JSON, HCL, etc.) from a single template
-- **AI-Powered Enhancements**: Intelligent template suggestions and auto-completion using machine learning
+- **Template Definition**: Structured YAML/JSON-based template definitions with support for
+  variables, conditions, and loops
+- **Multi-Format Support**: Generation of various output formats (YAML, JSON, HCL, etc.) from a
+  single template
+- **AI-Powered Enhancements**: Intelligent template suggestions and auto-completion using machine
+  learning
 - **Version Control Integration**: Git-based versioning and change tracking for all templates
 - **Dependency Management**: Automatic resolution and management of template dependencies
 
 ### Future as a Standalone Product
 
-While currently integrated with AutoPR, AutoWeave is being developed as a standalone product with these key goals:
+While currently integrated with AutoPR, AutoWeave is being developed as a standalone product with
+these key goals:
 
 1. **Independent Deployment**: Can be used independently of AutoPR for template management needs
-2. **Broader Ecosystem Support**: Native integrations with CI/CD tools, IDEs, and other developer tools
+2. **Broader Ecosystem Support**: Native integrations with CI/CD tools, IDEs, and other developer
+   tools
 3. **Template Marketplace**: A central repository for sharing and discovering community templates
 4. **Enterprise Features**: RBAC, audit logging, and compliance tooling
 
@@ -313,4 +319,5 @@ graph TD
 
 ## Getting Started
 
-See the [Quick Start Guide](./QUICKSTART.md) for instructions on setting up a development environment and running AutoPR locally.
+See the [Quick Start Guide](./QUICKSTART.md) for instructions on setting up a development
+environment and running AutoPR locally.

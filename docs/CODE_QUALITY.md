@@ -1,10 +1,12 @@
 # Code Quality Management for AutoPR Engine
 
-This document describes the code quality tools and processes implemented for the AutoPR Engine project.
+This document describes the code quality tools and processes implemented for the AutoPR Engine
+project.
 
 ## Overview
 
-The AutoPR Engine project uses a comprehensive set of code quality tools to ensure consistent, maintainable, and secure code:
+The AutoPR Engine project uses a comprehensive set of code quality tools to ensure consistent,
+maintainable, and secure code:
 
 - **Black**: Code formatting
 - **isort**: Import sorting
@@ -170,7 +172,8 @@ All tools are configured in `pyproject.toml`:
 
 ## CI/CD Integration
 
-The pre-commit hooks ensure code quality before commits reach the repository. For CI/CD pipelines, you can run:
+The pre-commit hooks ensure code quality before commits reach the repository. For CI/CD pipelines,
+you can run:
 
 ```bash
 # Install and run all pre-commit hooks
@@ -192,7 +195,7 @@ python scripts/code_quality.py check
 
 The project uses conventional commit messages enforced by commitizen:
 
-``` text
+````text
 feat: add new feature
 fix: fix bug
 docs: update documentation
@@ -257,3 +260,4 @@ The tools are also available as optional dependencies:
 pip install -e ".[dev]"
 
 ```text
+````

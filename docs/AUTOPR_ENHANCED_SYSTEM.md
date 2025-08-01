@@ -2,9 +2,9 @@
 
 ## Overview
 
-The AutoPR Enhanced System is a state-of-the-art AI-powered automation platform for GitHub pull request management. It
-combines multiple AI technologies, learning capabilities, and platform integrations to provide intelligent, automated
-responses to PR comments.
+The AutoPR Enhanced System is a state-of-the-art AI-powered automation platform for GitHub pull
+request management. It combines multiple AI technologies, learning capabilities, and platform
+integrations to provide intelligent, automated responses to PR comments.
 
 ## Table of Contents
 
@@ -73,7 +73,8 @@ graph TB
 ### 1. Intelligent Comment Analysis
 
 - **AI-Powered Understanding**: Uses LLMs to understand comment intent, sentiment, and context
-- **Classification System**: Automatically categorizes comments (fix requests, questions, suggestions, etc.)
+- **Classification System**: Automatically categorizes comments (fix requests, questions,
+  suggestions, etc.)
 - **Confidence Scoring**: Provides reliability metrics for all automated decisions
 - **Context Awareness**: Reads file content, PR diffs, and project history
 
@@ -331,7 +332,7 @@ QDRANT_PORT=6333
 
 **AutoPR Response:**
 
-``` text
+````text
 🤖 AutoPR Enhanced Response (Confidence: 0.95)
 
 I've identified this as a simple cleanup request for debugging code.
@@ -365,7 +366,7 @@ I've analyzed this as a performance optimization request requiring architectural
 - Code splitting for better loading
 
 This response was generated using AI analysis and learned patterns from 8 similar cases.
-```
+````
 
 ### 3. Security Concern
 
@@ -373,7 +374,7 @@ This response was generated using AI analysis and learned patterns from 8 simila
 
 **AutoPR Response:**
 
-``` text
+````text
 🤖 AutoPR Enhanced Response (Confidence: 0.92)
 
 I've identified this as a critical security concern requiring immediate attention.
@@ -697,3 +698,4 @@ AUTOPR_BATCH_TIMEOUT=30
 ---
 
 *This documentation is maintained by the AutoPR team and updated regularly. For the latest version, visit our [documentation site](https://docs.autopr.dev).*
+````

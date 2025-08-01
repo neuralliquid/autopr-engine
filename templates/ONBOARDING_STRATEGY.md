@@ -2,8 +2,8 @@
 
 ## Overview
 
-This document outlines the systematic approach for onboarding new template domains (like no-code platforms, services,
-pricing models, etc.) into our hybrid YAML + template system.
+This document outlines the systematic approach for onboarding new template domains (like no-code
+platforms, services, pricing models, etc.) into our hybrid YAML + template system.
 
 ## 🎯 Scalable Onboarding Framework
 
@@ -23,7 +23,8 @@ Before creating templates for a new domain, analyze:
 #### Platform Categories (from our analysis)
 
 - **AI-Powered Builders**: Horizons, Lovable, Bolt
-- **Visual Drag-and-Drop**: Bubble, Softr, Budibase- **Mobile-Focused**: Glide, Thunkable, Adalo, FlutterFlow
+- **Visual Drag-and-Drop**: Bubble, Softr, Budibase- **Mobile-Focused**: Glide, Thunkable, Adalo,
+  FlutterFlow
 - **Developer-Friendly**: Replit
 - **Form/Data-Centric**: Jotform
 
@@ -48,17 +49,17 @@ file_extension: "md" # or relevant extension
 platform_info:
   name: "Platform Full Name"
   type: "platform_category"
-  pricing: { } # pricing tiers and costs
-  key_features: [ ] # main platform capabilities
+  pricing: {} # pricing tiers and costs
+  key_features: [] # main platform capabilities
 
-variables: { } # configurable parameters
-variants: { } # template modifications
-usage: [ ] # when to use this template
-development_approach: { } # how to build with this platform
-dependencies: { } # requirements and optional items
-best_practices: { } # recommended approaches
-limitations: [ ] # platform constraints
-examples: { } # real-world use cases
+variables: {} # configurable parameters
+variants: {} # template modifications
+usage: [] # when to use this template
+development_approach: {} # how to build with this platform
+dependencies: {} # requirements and optional items
+best_practices: {} # recommended approaches
+limitations: [] # platform constraints
+examples: {} # real-world use cases
 ```
 
 ## 🚀 Implementation Process
@@ -149,14 +150,14 @@ category: "content_type" # pricing, services, support, etc.
 content_type: "specific_type" # pricing_page, feature_comparison, etc.
 
 variables:
-  target_audience: { }
-  content_focus: { }
-  detail_level: { }
+  target_audience: {}
+  content_focus: {}
+  detail_level: {}
 
 variants:
-  detailed: { } # comprehensive version
-  summary: { } # brief overview
-  comparison: { } # vs other options
+  detailed: {} # comprehensive version
+  summary: {} # brief overview
+  comparison: {} # vs other options
 
 output_formats:
   - "markdown"
@@ -245,4 +246,5 @@ output_formats:
 3. **Cross-Platform Projects**: Templates that work across multiple platforms
 4. **Automated Updates**: Keep templates current with platform changes
 
-This systematic approach ensures consistent, high-quality template onboarding while maintaining scalability and user experience.
+This systematic approach ensures consistent, high-quality template onboarding while maintaining
+scalability and user experience.

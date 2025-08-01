@@ -160,12 +160,13 @@
 
 ## Risks & Mitigations
 
-| Risk | Impact | Likelihood | Mitigation | Status |
-|------|--------|------------|------------|--------|
-| Breaking Changes | High | Medium | Semantic versioning, thorough testing | Monitoring |
-| Integration Complexity | High | High | Clear interfaces, documentation | In Progress |
-| Performance Bottlenecks | Medium | Medium | Monitoring, profiling, optimization | Not Started |
-| Security Vulnerabilities | High | Low | Regular audits, dependency updates | In Progress |
+| Risk                     | Impact | Likelihood | Mitigation                            | Status      |
+| ------------------------ | ------ | ---------- | ------------------------------------- | ----------- |
+| Breaking Changes         | High   | Medium     | Semantic versioning, thorough testing | Monitoring  |
+| Integration Complexity   | High   | High       | Clear interfaces, documentation       | In Progress |
+| Performance Bottlenecks  | Medium | Medium     | Monitoring, profiling, optimization   | Not Started |
+| Security Vulnerabilities | High   | Low        | Regular audits, dependency updates    | In Progress |
 
 ---
-*Last Updated: 2025-07-28*
+
+_Last Updated: 2025-07-28_

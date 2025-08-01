@@ -25,7 +25,8 @@ variants:
     modifications:
       - line: 12
         action: "add_after"
-        content: '        "baseUrl": ".",\n        "paths": {\n          "@/*": ["src/*"]\n        },'
+        content:
+          '        "baseUrl": ".",\n        "paths": {\n          "@/*": ["src/*"]\n        },'
 
 usage:
   - "Vite React projects"

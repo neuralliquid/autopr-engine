@@ -1,6 +1,7 @@
 name: "Azure DevOps Pipeline Template"
 category: "deployment"
-description: "Azure DevOps CI/CD pipeline for automated testing, building, and deployment to Azure services"
+description:
+  "Azure DevOps CI/CD pipeline for automated testing, building, and deployment to Azure services"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["deployment", "azure_devops", "ci_cd", "azure", "pipeline"]
@@ -10,7 +11,8 @@ template_info:
   type: "deployment_configuration"
   framework: "azure_devops"
   target_audience: "DevOps engineers, Azure developers, CI/CD specialists"
-  primary_use_cases: ["Azure deployment", "Continuous integration", "Automated testing", "Build pipelines"]
+  primary_use_cases:
+    ["Azure deployment", "Continuous integration", "Automated testing", "Build pipelines"]
 
 variables:
   pipeline_name:

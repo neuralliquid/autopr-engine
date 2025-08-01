@@ -14,6 +14,6 @@ automated_dependency_update:
     - id: post_comment
       action: post_comment
       inputs:
-        pull_request_number: '{{ pull_request.number }}'
+        pull_request_number: "{{ pull_request.number }}"
         comment: |
           📦 Dependency `{{ package_name }}` was updated and tests were run. See logs for details.

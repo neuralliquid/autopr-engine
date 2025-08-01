@@ -2,8 +2,8 @@
 
 ## 🗺️ Your Personal AI Development Journey
 
-A step-by-step roadmap for transforming your development workflow with AI tools, including typical project workflows
-and practical implementation schedules.
+A step-by-step roadmap for transforming your development workflow with AI tools, including typical
+project workflows and practical implementation schedules.
 
 ---
 
@@ -11,9 +11,9 @@ and practical implementation schedules.
 
 ### **Days 1-7: Foundation Setup**
 
-#### **Week 1 Core Tools** ⭐⭐⭐⭐⭐ *Essential*
+#### **Week 1 Core Tools** ⭐⭐⭐⭐⭐ _Essential_
 
-``` text
+````text
 Day 1-2: Basic Infrastructure
 ✅ Continue.dev - FREE AI coding assistant
 ✅ Aider - FREE autonomous coding
@@ -55,13 +55,13 @@ Week 4: Documentation & Monitoring
 
 Total Month 1 Cost: $200-400/month
 Expected Impact: 60% faster delivery, 80% fewer bugs
-```
+````
 
 ### **Days 31-60: Advanced Integration**
 
-#### **Month 2: Specialization** ⭐⭐⭐⭐ *Team Optimization*
+#### **Month 2: Specialization** ⭐⭐⭐⭐ _Team Optimization_
 
-``` text
+````text
 Week 5-6: Advanced AI Tools
 ✅ Korbit AI - Custom enterprise pricing
 ✅ Cursor - $20/month for advanced IDE AI
@@ -98,7 +98,7 @@ Week 11-12: Compliance & Scale
 
 Total Month 3 Cost: $500-1500/month
 Expected Impact: 80% automation, 3x productivity improvement
-```
+````
 
 ---
 
@@ -119,23 +119,23 @@ graph LR
 **Tools & Process:**
 
 1. **Start in Replit** - Use Replit Agent for rapid prototyping
-    - Natural language → working code in minutes
-    - Built-in AI pair programming
-    - Instant deployment for testing
+   - Natural language → working code in minutes
+   - Built-in AI pair programming
+   - Instant deployment for testing
 
 1. **GitHub Migration** - Move to GitHub when ready
-    - Export from Replit to GitHub repository
-    - Automatic README and documentation generation
-    - Initial CI/CD setup with GitHub Actions
+   - Export from Replit to GitHub repository
+   - Automatic README and documentation generation
+   - Initial CI/CD setup with GitHub Actions
 
 1. **AutoPR Activation** - Triggers on first push/PR
-    - Automatic code review with CodeRabbit
-    - Security scanning with Snyk
-    - Quality gates with SonarCloud
-    - Documentation updates with Promptless
+   - Automatic code review with CodeRabbit
+   - Security scanning with Snyk
+   - Quality gates with SonarCloud
+   - Documentation updates with Promptless
 
-**Timeline**: Idea → Working prototype: 2-4 hours
-**Cost**: $0 (Replit free tier) → $50/month (basic tools)
+**Timeline**: Idea → Working prototype: 2-4 hours **Cost**: $0 (Replit free tier) → $50/month (basic
+tools)
 
 #### **Phase 2: Development Enhancement**
 
@@ -152,21 +152,21 @@ graph TD
 **Enhanced Development Loop:**
 
 1. **Local AI Development**
-    - Continue.dev for AI pair programming
-    - Aider for autonomous code generation
-    - Cursor for advanced IDE features
+   - Continue.dev for AI pair programming
+   - Aider for autonomous code generation
+   - Cursor for advanced IDE features
 
 1. **Automated PR Process**
-    - CharlieHelps for TypeScript-specific reviews
-    - CodeRabbit for comprehensive analysis
-    - AI TypeScript Check for validation
-    - Automatic fixes applied via AI
+   - CharlieHelps for TypeScript-specific reviews
+   - CodeRabbit for comprehensive analysis
+   - AI TypeScript Check for validation
+   - Automatic fixes applied via AI
 
 1. **Smart Merging & Deployment**
-    - Mergify handles merge queue management
-    - AutoPR workflows for custom automation
-    - Azure SRE Agent monitors deployments
-    - Automatic rollback if issues detected
+   - Mergify handles merge queue management
+   - AutoPR workflows for custom automation
+   - Azure SRE Agent monitors deployments
+   - Automatic rollback if issues detected
 
 ### **Workflow 2: Enterprise Team Development**
 
@@ -200,7 +200,7 @@ graph TB
 
 #### **Scaling Strategy**
 
-``` text
+````text
 Phase 1: Open Source Tools (FREE)
 ├── Continue.dev for AI assistance
 ├── Aider for autonomous coding├── Renovate for dependencies
@@ -236,11 +236,11 @@ Wednesday: Configure Renovate for dependency updates
 Thursday: Setup AI TypeScript Check in CI/CD
 Friday: Team training session + workflow documentation
 Weekend: Monitor usage and gather initial feedback
-```
+````
 
 ### **Week 2: PR Automation**
 
-``` text
+````text
 Monday: Install and configure Mergify rules
 Tuesday: Setup GitHub Copilot for team
 Wednesday: Configure AutoPR basic workflows
@@ -259,11 +259,11 @@ Wednesday: Install Snyk security scanning
 Thursday: Setup performance monitoring
 Friday: Review quality metrics and adjust
 Weekend: Plan documentation automation
-```
+````
 
 ### **Week 4: Documentation & Monitoring**
 
-``` text
+````text
 Monday: Setup Mintlify for technical documentation
 Tuesday: Configure Promptless for auto-updates
 Wednesday: Setup comprehensive monitoring
@@ -383,7 +383,7 @@ jobs:
    └── Testim.io E2E tests
 6. Mergify handles merge when all checks pass
 7. Azure SRE Agent monitors deployment
-```
+````
 
 ---
 
@@ -393,7 +393,7 @@ jobs:
 
 #### **Development Velocity**
 
-``` text
+````text
 Week 1 Baseline:
 ├── PR Review Time: [Record current average]
 ├── Bug Detection Rate: [Record current rate]├── Deployment Frequency: [Record current frequency]
@@ -550,3 +550,4 @@ gh pr create --title "Test AutoPR" --body "Testing automated review"
 ---
 
 *This roadmap provides a clear, actionable path to transform your development workflow with AI tools. Start with the free tools, measure impact, and gradually scale to enterprise-level automation.*
+````

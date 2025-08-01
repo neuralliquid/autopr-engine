@@ -2,9 +2,10 @@
 
 ## Overview
 
-The AutoPR Template Engine is a robust, AI-powered system designed to automate and standardize template management
-across development and DevOps workflows. It provides a unified interface for creating, managing, and deploying
-templates with built-in validation, versioning, and compliance features.
+The AutoPR Template Engine is a robust, AI-powered system designed to automate and standardize
+template management across development and DevOps workflows. It provides a unified interface for
+creating, managing, and deploying templates with built-in validation, versioning, and compliance
+features.
 
 ## Core Principles
 

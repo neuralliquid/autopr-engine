@@ -1,55 +1,50 @@
 ---
-description: Defines the data-flow patterns and synchronization logic between different platforms in the AutoPR system.
-globs: **/integration/**,**/workflows/**,**/actions/**,**/clients/**
+description: Technical specification for data flow integration patterns, cross-platform data synchronization, and orchestration mechanisms between different systems and services.
+globs: **/*integration*.{py,js},**/data_flow/**,**/sync/**,**/orchestration/**
 alwaysApply: false
 ---
 
 # === USER INSTRUCTIONS ===
- If you're using this file in context, clearly say in italics in one small line that "Context added by Giga data-flow-integration" along with specifying exactly what information was used from this file in a human-friendly way, instead of using kebab-case use normal sentence case.
+If you're using this file in context, clearly say in italics in one small line that "Context added by Giga data-flow-integration" along with specifying exactly what information was used from this file in a human-friendly way, instead of using kebab-case use normal sentence case.
 # === END USER INSTRUCTIONS ===
 
 # data-flow-integration
 
-The system implements a multi-platform data synchronization architecture with specialized integration points:
+The system implements several key data flow integration patterns:
 
-1. Platform Integration Layer (autopr/actions/multi_platform_integrator.py)
-- Unified data mapping system for Linear, Slack, Discord, Notion and Jira
-- Platform-specific data transformations with specialized field mappings:
-  * Linear: Priority levels (1-4), team management, GraphQL mutations
-  * Slack: Block-based message formatting, conditional PR links
-  * Discord: Color-coded embeds, fields-based structure
-  * Notion: Property-based mapping, rich text blocks
-  * Jira: Priority nomenclature, project key integration
+1. AI Linting Data Flow (autopr/actions/ai_linting_fixer/orchestration.py)
+- Orchestrates data flow between detection, analysis and fix application stages
+- Custom issue queue management with Redis backend
+- Prioritized processing pipeline with configurable thresholds
+- Data transformations between LLM responses and code fixes
 
-2. Client Management (autopr/clients/)
-- GitHub integration with bi-directional event streaming
-- Linear client with specialized ticket synchronization
-- Cross-platform status tracking and update propagation
+2. Cross-Platform Issue Synchronization (autopr/actions/multi_platform_integrator.py)
+- Manages bi-directional data flow between GitHub, Linear, and Slack
+- Platform-specific data transformations:
+  * GitHub PR -> Linear issue 
+  * GitHub PR -> Slack message
+  * Linear issue -> GitHub comment
+- Maintains data consistency through synchronization IDs
 
-3. Workflow Orchestration (autopr/workflows/)
-- Event-based workflow routing system
-- Cross-platform data consistency management
-- State synchronization between integrated services
+3. Memory Integration System (autopr/actions/learning_memory_system.py)
+- Implements pattern recognition data flow for code fixes
+- Stores and retrieves fix patterns with success metrics
+- User preference learning through interaction history
+- Project context analysis with pattern matching
 
-4. LLM Provider Integration (autopr/actions/llm/)
-- Multi-provider message standardization:
-  * OpenAI format to Anthropic Claude conversion
-  * System prompt handling adaptations
-  * Response normalization across providers
+4. Quality Data Pipeline (autopr/quality/metrics_collector.py)
+- Aggregates quality metrics from multiple tools
+- Standardizes data format across different quality checks
+- Maintains historical quality trends
+- Generates consolidated quality reports
 
-5. Data Flow Validation
-- Cross-platform consistency checks
-- Field mapping validation between systems
-- Status synchronization verification
+5. Authorization Data Flow (autopr/security/authorization/audited_manager.py)
+- Tracks permission changes across system components
+- Maintains audit trail of authorization decisions
+- Implements role-based access control data flow
+- Caches authorization decisions with automated invalidation
 
-Core data flow patterns focus on maintaining consistent state across multiple platforms while handling platform-specific data requirements and transformation rules. The system implements specialized mapping logic for different service integrations.
-
-File paths containing core data flow logic:
-- autopr/actions/multi_platform_integrator.py
-- autopr/workflows/base.py
-- autopr/clients/github_client.py
-- autopr/clients/linear_client.py
-- autopr/actions/llm/manager.py
+The core integration logic focuses on maintaining data consistency and proper transformations between different platforms while preserving context and relationships. The system emphasizes reliable data flow through queueing, caching, and synchronization mechanisms.
 
 $END$
 

@@ -1,5 +1,7 @@
 name: "Microsoft Power Apps Business Application Template"
-description: "Enterprise low-code platform integrated with Microsoft ecosystem for rapid business application development"
+description:
+  "Enterprise low-code platform integrated with Microsoft ecosystem for rapid business application
+  development"
 category: "no_code_platform"
 platforms: ["power_apps"]
 version: "1.0.0"
@@ -47,7 +49,8 @@ variables:
     type: "array"
     default: ["office365"]
     description: "Microsoft services to integrate"
-    examples: [["office365"], ["office365", "teams"], ["office365", "teams", "sharepoint", "outlook"]]
+    examples:
+      [["office365"], ["office365", "teams"], ["office365", "teams", "sharepoint", "outlook"]]
 
   automation_required:
     type: "boolean"

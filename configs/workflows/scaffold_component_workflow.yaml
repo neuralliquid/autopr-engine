@@ -12,4 +12,4 @@ scaffold_and_barrel:
     - id: barrel
       action: generate_barrel_file
       inputs:
-        directory: 'components/ui' # Assuming a default directory
+        directory: "components/ui" # Assuming a default directory

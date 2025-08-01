@@ -2,13 +2,7 @@
   "name": "AWS Amplify",
   "category": "cloud_hosting",
   "description": "AWS service for building full-stack web and mobile applications",
-  "files": [
-    "amplify/",
-    "amplify.yml",
-    "amplify.yaml",
-    "aws-exports.js",
-    "awsconfiguration.json"
-  ],
+  "files": ["amplify/", "amplify.yml", "amplify.yaml", "aws-exports.js", "awsconfiguration.json"],
   "dependencies": [
     "@aws-amplify/cli",
     "aws-amplify",
@@ -16,22 +10,14 @@
     "@aws-amplify/auth",
     "@aws-amplify/storage"
   ],
-  "commit_patterns": [
-    "amplify",
-    "aws amplify",
-    "deployed with amplify",
-    "aws deployment"
-  ],
+  "commit_patterns": ["amplify", "aws amplify", "deployed with amplify", "aws deployment"],
   "content_patterns": [
     "aws-exports.js",
     "awsconfiguration.json",
     "amplify/backend/",
     "Amplify.configure"
   ],
-  "folder_patterns": [
-    "amplify/",
-    ".amplify/"
-  ],
+  "folder_patterns": ["amplify/", ".amplify/"],
   "confidence_weights": {
     "files": 0.45,
     "dependencies": 0.3,
@@ -40,10 +26,7 @@
     "folder_patterns": 0.1
   },
   "deployment": {
-    "config_files": [
-      "amplify.yml",
-      "amplify.yaml"
-    ],
+    "config_files": ["amplify.yml", "amplify.yaml"],
     "build_command": "npm run build",
     "start_command": "npm start"
   },

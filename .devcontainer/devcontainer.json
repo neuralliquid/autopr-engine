@@ -72,7 +72,9 @@
         "visualstudioexptteam.vscodeintellicode",
         "ms-python.debugpy",
         "bierner.markdown-mermaid",
-        "davidanson.vscode-markdownlint"
+        "davidanson.vscode-markdownlint",
+        "giga-ai.giga-ai",
+        "Continue.continue"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/usr/local/bin/python",

@@ -1,9 +1,19 @@
 name: "Softr Database-Driven Application"
 category: "database-driven"
-description: "No-code platform for building dynamic, database-driven web applications, websites, and client portals with extensive data source integrations"
+description:
+  "No-code platform for building dynamic, database-driven web applications, websites, and client
+  portals with extensive data source integrations"
 version: "1.0.0"
 author: "AutoPR Template System"
-tags: ["database-driven", "no-code", "dynamic-apps", "client-portals", "airtable-integration", "drag-drop"]
+tags:
+  [
+    "database-driven",
+    "no-code",
+    "dynamic-apps",
+    "client-portals",
+    "airtable-integration",
+    "drag-drop",
+  ]
 
 platform_info:
   name: "Softr"
@@ -12,7 +22,14 @@ platform_info:
   founded: "2019"
   pricing_model: "Freemium with Generous Free Tier"
   target_audience: "Designers, entrepreneurs, small businesses, agencies"
-  primary_use_cases: ["Client portals", "Internal tools", "Lightweight CRMs", "Project management", "Directory websites"]
+  primary_use_cases:
+    [
+      "Client portals",
+      "Internal tools",
+      "Lightweight CRMs",
+      "Project management",
+      "Directory websites",
+    ]
 
   key_features:
     - "Drag-and-drop interface for rapid development"
@@ -60,7 +77,16 @@ variables:
   app_type:
     type: "select"
     description: "Type of database-driven application"
-    options: ["client_portal", "internal_tool", "directory_website", "crm_system", "project_tracker", "inventory_manager", "membership_site"]
+    options:
+      [
+        "client_portal",
+        "internal_tool",
+        "directory_website",
+        "crm_system",
+        "project_tracker",
+        "inventory_manager",
+        "membership_site",
+      ]
     default: "client_portal"
     required: true
 
@@ -74,28 +100,48 @@ variables:
   user_authentication:
     type: "select"
     description: "User authentication and access control"
-    options: ["public_access", "simple_login", "user_roles", "advanced_permissions", "sso_integration"]
+    options:
+      ["public_access", "simple_login", "user_roles", "advanced_permissions", "sso_integration"]
     default: "user_roles"
     required: true
 
   design_template:
     type: "select"
     description: "Starting template or design approach"
-    options: ["blank_canvas", "client_portal_template", "directory_template", "crm_template", "project_template", "custom_design"]
+    options:
+      [
+        "blank_canvas",
+        "client_portal_template",
+        "directory_template",
+        "crm_template",
+        "project_template",
+        "custom_design",
+      ]
     default: "client_portal_template"
     required: true
 
   integrations:
     type: "multi_select"
     description: "Third-party integrations and automations"
-    options: ["zapier", "stripe", "mailchimp", "google_analytics", "intercom", "slack", "typeform", "calendly"]
+    options:
+      [
+        "zapier",
+        "stripe",
+        "mailchimp",
+        "google_analytics",
+        "intercom",
+        "slack",
+        "typeform",
+        "calendly",
+      ]
     default: ["zapier", "google_analytics"]
     required: false
 
   customization_level:
     type: "select"
     description: "Level of customization and branding"
-    options: ["basic_customization", "advanced_styling", "custom_domain", "white_label", "full_branding"]
+    options:
+      ["basic_customization", "advanced_styling", "custom_domain", "white_label", "full_branding"]
     default: "custom_domain"
     required: true
 

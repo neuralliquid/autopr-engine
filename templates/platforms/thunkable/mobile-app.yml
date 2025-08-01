@@ -45,7 +45,8 @@ variables:
     type: "string"
     required: true
     description: "Primary app category"
-    examples: ["productivity", "fitness", "finance", "social", "education", "entertainment", "business"]
+    examples:
+      ["productivity", "fitness", "finance", "social", "education", "entertainment", "business"]
 
   data_storage:
     type: "string"
@@ -81,7 +82,9 @@ variants:
     modifications:
       - line: 15
         action: "add_after"
-        content: "- Advanced chart and graph components\n- Interactive maps integration\n- Smooth animations and transitions\n- Custom UI component library"
+        content:
+          "- Advanced chart and graph components\n- Interactive maps integration\n- Smooth
+          animations and transitions\n- Custom UI component library"
 
   with_ai_features:
     name: "With AI Integration"
@@ -89,7 +92,9 @@ variants:
     modifications:
       - line: 20
         action: "add_after"
-        content: "- AI image recognition and classification\n- Natural language processing\n- Machine learning model integration\n- Intelligent recommendations"
+        content:
+          "- AI image recognition and classification\n- Natural language processing\n- Machine
+          learning model integration\n- Intelligent recommendations"
 
   with_monetization:
     name: "With Monetization Features"
@@ -97,7 +102,9 @@ variants:
     modifications:
       - line: 25
         action: "add_after"
-        content: "- In-app purchase integration\n- Advertisement display options\n- Subscription management\n- Revenue analytics tracking"
+        content:
+          "- In-app purchase integration\n- Advertisement display options\n- Subscription
+          management\n- Revenue analytics tracking"
 
 usage:
   - "Rapid mobile app prototyping"
@@ -195,7 +202,8 @@ testing_strategies:
 
   device_testing:
     description: "Test on multiple devices and screen sizes"
-    considerations: ["Performance variations", "Screen size differences", "OS version compatibility"]
+    considerations:
+      ["Performance variations", "Screen size differences", "OS version compatibility"]
 
 publishing_process:
   preparation:
@@ -263,7 +271,9 @@ examples:
     description: "Track workouts, progress, and fitness goals"
     variables:
       app_name: "FitTrack Pro"
-      app_description: "A comprehensive fitness tracking app with workout logging, progress visualization, goal setting, and social sharing features"
+      app_description:
+        "A comprehensive fitness tracking app with workout logging, progress visualization, goal
+        setting, and social sharing features"
       target_platforms: ["ios", "android"]
       app_category: "fitness"
       data_storage: "cloud_database"
@@ -284,7 +294,9 @@ examples:
     description: "Personal finance management with receipt scanning"
     variables:
       app_name: "ExpenseSmart"
-      app_description: "An intelligent expense management app with receipt scanning, budget tracking, spending analytics, and financial goal setting"
+      app_description:
+        "An intelligent expense management app with receipt scanning, budget tracking, spending
+        analytics, and financial goal setting"
       target_platforms: ["ios", "android"]
       app_category: "finance"
       data_storage: "cloud_database"
@@ -305,7 +317,9 @@ examples:
     description: "Discover and share local events and activities"
     variables:
       app_name: "EventsNearby"
-      app_description: "A location-based events discovery app where users can find local events, RSVP, share experiences, and create their own events"
+      app_description:
+        "A location-based events discovery app where users can find local events, RSVP, share
+        experiences, and create their own events"
       target_platforms: ["ios", "android"]
       app_category: "social"
       data_storage: "cloud_database"

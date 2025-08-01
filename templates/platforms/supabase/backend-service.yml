@@ -1,5 +1,6 @@
 name: "Supabase Backend-as-a-Service Template"
-description: "Open-source Firebase alternative with PostgreSQL database, real-time features, and authentication"
+description:
+  "Open-source Firebase alternative with PostgreSQL database, real-time features, and authentication"
 category: "no_code_platform"
 platforms: ["supabase"]
 version: "1.0.0"
@@ -41,7 +42,8 @@ variables:
     type: "array"
     default: ["email_password"]
     description: "Authentication methods to implement"
-    examples: [["email_password"], ["email_password", "oauth"], ["email_password", "oauth", "magic_link"]]
+    examples:
+      [["email_password"], ["email_password", "oauth"], ["email_password", "oauth", "magic_link"]]
 
   real_time_features:
     type: "boolean"

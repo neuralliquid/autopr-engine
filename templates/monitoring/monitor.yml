@@ -1,6 +1,8 @@
 name: "System Monitoring Script"
 category: "monitoring"
-description: "Bash script for continuous monitoring of CPU and memory usage with configurable intervals and output formats"
+description:
+  "Bash script for continuous monitoring of CPU and memory usage with configurable intervals and
+  output formats"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["monitoring", "bash", "cpu", "memory", "system", "performance"]
@@ -10,7 +12,8 @@ template_info:
   type: "monitoring_script"
   framework: "Bash"
   target_audience: "DevOps engineers, system administrators"
-  primary_use_cases: ["System monitoring", "Performance tracking", "Resource usage", "Server maintenance"]
+  primary_use_cases:
+    ["System monitoring", "Performance tracking", "Resource usage", "Server maintenance"]
 
 variables:
   monitor_interval:

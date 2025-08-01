@@ -1,6 +1,8 @@
 name: "WeWeb Frontend Builder Application"
 category: "frontend"
-description: "No-code frontend builder for creating pixel-perfect, responsive web applications with extensive data source integrations"
+description:
+  "No-code frontend builder for creating pixel-perfect, responsive web applications with extensive
+  data source integrations"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["frontend", "no-code", "responsive-design", "data-integration", "pwa", "visual-editor"]
@@ -12,7 +14,8 @@ platform_info:
   founded: "2019"
   pricing_model: "Freemium with Transparent Pricing"
   target_audience: "Designers, developers, businesses, agencies"
-  primary_use_cases: ["Web applications", "Client portals", "SaaS products", "Multi-step forms", "Internal tools"]
+  primary_use_cases:
+    ["Web applications", "Client portals", "SaaS products", "Multi-step forms", "Internal tools"]
 
   key_features:
     - "Pixel-perfect visual editor with drag-and-drop interface"
@@ -58,7 +61,15 @@ variables:
   app_type:
     type: "select"
     description: "Type of web application to build"
-    options: ["business_website", "web_app", "client_portal", "saas_product", "e_commerce", "internal_tool"]
+    options:
+      [
+        "business_website",
+        "web_app",
+        "client_portal",
+        "saas_product",
+        "e_commerce",
+        "internal_tool",
+      ]
     default: "web_app"
     required: true
 
@@ -72,14 +83,16 @@ variables:
   primary_data_source:
     type: "select"
     description: "Primary data source for the application"
-    options: ["rest_api", "graphql", "airtable", "supabase", "xano", "postgresql", "mysql", "firebase"]
+    options:
+      ["rest_api", "graphql", "airtable", "supabase", "xano", "postgresql", "mysql", "firebase"]
     default: "rest_api"
     required: true
 
   additional_integrations:
     type: "multi_select"
     description: "Additional integrations and services"
-    options: ["stripe", "google_maps", "typeform", "segment", "mailchimp", "zapier", "auth0", "sendgrid"]
+    options:
+      ["stripe", "google_maps", "typeform", "segment", "mailchimp", "zapier", "auth0", "sendgrid"]
     default: ["stripe", "sendgrid"]
     required: false
 
@@ -93,7 +106,15 @@ variables:
   performance_optimization:
     type: "multi_select"
     description: "Performance and SEO optimization features"
-    options: ["seo_optimization", "lazy_loading", "image_optimization", "caching", "pwa_features", "analytics"]
+    options:
+      [
+        "seo_optimization",
+        "lazy_loading",
+        "image_optimization",
+        "caching",
+        "pwa_features",
+        "analytics",
+      ]
     default: ["seo_optimization", "image_optimization", "analytics"]
     required: false
 

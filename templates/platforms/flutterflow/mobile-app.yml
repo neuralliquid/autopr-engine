@@ -84,7 +84,9 @@ variants:
     modifications:
       - line: 15
         action: "add_after"
-        content: "- Custom animation controllers and transitions\n- Lottie animation integration\n- Hero animations and shared element transitions\n- Interactive gesture-based animations"
+        content:
+          "- Custom animation controllers and transitions\n- Lottie animation integration\n- Hero
+          animations and shared element transitions\n- Interactive gesture-based animations"
 
   with_ai_ml:
     name: "With AI/ML Features"
@@ -92,7 +94,9 @@ variants:
     modifications:
       - line: 20
         action: "add_after"
-        content: "- TensorFlow Lite model integration\n- ML Kit for text recognition and translation\n- Custom AI model deployment\n- On-device machine learning capabilities"
+        content:
+          "- TensorFlow Lite model integration\n- ML Kit for text recognition and translation\n-
+          Custom AI model deployment\n- On-device machine learning capabilities"
 
   with_custom_backend:
     name: "With Custom Backend Integration"
@@ -100,7 +104,9 @@ variants:
     modifications:
       - line: 25
         action: "add_after"
-        content: "- Custom REST API integration\n- GraphQL client implementation\n- WebSocket real-time communication\n- Custom authentication and authorization"
+        content:
+          "- Custom REST API integration\n- GraphQL client implementation\n- WebSocket real-time
+          communication\n- Custom authentication and authorization"
 
 usage:
   - "Professional mobile app development"
@@ -261,7 +267,9 @@ examples:
     description: "Messaging app with real-time communication and media sharing"
     variables:
       app_name: "ChatFlow"
-      app_description: "A real-time messaging app with group chats, file sharing, push notifications, and user presence indicators"
+      app_description:
+        "A real-time messaging app with group chats, file sharing, push notifications, and user
+        presence indicators"
       target_platforms: ["ios", "android"]
       app_theme: "material"
       backend_service: "firebase"
@@ -283,7 +291,9 @@ examples:
     description: "Full-featured shopping app with cart and payment processing"
     variables:
       app_name: "ShopFlutter"
-      app_description: "A comprehensive e-commerce app with product browsing, cart management, secure payments, order tracking, and user reviews"
+      app_description:
+        "A comprehensive e-commerce app with product browsing, cart management, secure payments,
+        order tracking, and user reviews"
       target_platforms: ["ios", "android", "web"]
       app_theme: "material"
       backend_service: "firebase"
@@ -305,7 +315,9 @@ examples:
     description: "Task management app with team collaboration features"
     variables:
       app_name: "TaskFlow Pro"
-      app_description: "A productivity app for task management with project organization, team collaboration, deadline tracking, and progress analytics"
+      app_description:
+        "A productivity app for task management with project organization, team collaboration,
+        deadline tracking, and progress analytics"
       target_platforms: ["ios", "android"]
       app_theme: "cupertino"
       backend_service: "supabase"

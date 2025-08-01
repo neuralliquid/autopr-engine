@@ -17,6 +17,6 @@ draft_release:
         tag_name:
           var: tag_name
         name:
-          template: 'Release {{ tag_name }}'
+          template: "Release {{ tag_name }}"
         body:
           var: notes_body

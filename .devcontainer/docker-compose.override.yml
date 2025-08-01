@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.13"
 
 services:
   autopr-engine:
@@ -13,11 +13,11 @@ services:
     environment:
       - AUTOPR_DEBUG=true
       - AUTOPR_LOG_LEVEL=DEBUG
-      - PYTHONPATH=/workspace
+      - =/workspace
     command: sleep infinity
     ports:
-      - '8080:8080'
-      - '5678:5678' # debugpy port
+      - "8080:8080"
+      - "5678:5678" # debugpy port
     depends_on:
       - postgres
       - redis
@@ -28,14 +28,14 @@ services:
       - POSTGRES_USER=autopr_dev
       - POSTGRES_PASSWORD=autopr_dev_password
     ports:
-      - '5432:5432'
+      - "5432:5432"
     volumes:
       - postgres_dev_data:/var/lib/postgresql/data
       - ../migrations:/docker-entrypoint-initdb.d
 
   redis:
     ports:
-      - '6379:6379'
+      - "6379:6379"
     volumes:
       - redis_dev_data:/data
 

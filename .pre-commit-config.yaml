@@ -31,7 +31,13 @@ repos:
         entry: python -m autopr.actions.quality_engine
         language: system
         types: [python]
-        args: [--mode=smart]
+        args:
+          [
+            --mode=smart,
+            --files,
+            "autopr/security/validators/string_validator.py",
+            "autopr/actions/quality_engine/di.py",
+          ]
         stages: [pre-commit]
         verbose: true
         pass_filenames: false

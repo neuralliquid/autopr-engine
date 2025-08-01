@@ -2,25 +2,11 @@
   "name": "Render",
   "category": "cloud_hosting",
   "description": "Unified cloud for building and running all your apps and websites with free SSL, global CDN, private networks, and auto deploys from Git.",
-  "files": [
-    "render.yaml",
-    "render.yml",
-    "Dockerfile",
-    "Dockerfile.*"
-  ],
+  "files": ["render.yaml", "render.yml", "Dockerfile", "Dockerfile.*"],
   "dependencies": [],
-  "commit_patterns": [
-    "render",
-    "deployed to render",
-    "render.com"
-  ],
-  "content_patterns": [
-    "render.com",
-    "deployed with render"
-  ],
-  "folder_patterns": [
-    ".render"
-  ],
+  "commit_patterns": ["render", "deployed to render", "render.com"],
+  "content_patterns": ["render.com", "deployed with render"],
+  "folder_patterns": [".render"],
   "confidence_weights": {
     "files": 0.4,
     "commit_patterns": 0.3,

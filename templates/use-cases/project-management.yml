@@ -1,5 +1,7 @@
 name: "Project Management Tool Template"
-description: "Cross-platform project management application with task tracking, team collaboration, and progress monitoring"
+description:
+  "Cross-platform project management application with task tracking, team collaboration, and
+  progress monitoring"
 category: "use_case_template"
 platforms: ["bubble", "lovable", "flutterflow", "thunkable", "replit"]
 file_extension: "md"
@@ -82,7 +84,9 @@ variants:
     modifications:
       - line: 15
         action: "add_after"
-        content: "- Advanced project analytics and KPI tracking\n- Resource utilization and capacity planning\n- Predictive project forecasting\n- Custom dashboard and reporting tools"
+        content:
+          "- Advanced project analytics and KPI tracking\n- Resource utilization and capacity
+          planning\n- Predictive project forecasting\n- Custom dashboard and reporting tools"
 
   with_client_portal:
     name: "With Client Portal"
@@ -90,7 +94,9 @@ variants:
     modifications:
       - line: 20
         action: "add_after"
-        content: "- Client portal with project visibility\n- Client feedback and approval workflows\n- Invoice and billing integration\n- Client communication tools"
+        content:
+          "- Client portal with project visibility\n- Client feedback and approval workflows\n-
+          Invoice and billing integration\n- Client communication tools"
 
   with_resource_management:
     name: "With Resource Management"
@@ -98,7 +104,9 @@ variants:
     modifications:
       - line: 25
         action: "add_after"
-        content: "- Resource allocation and scheduling\n- Capacity planning and workload balancing\n- Skill-based task assignment\n- Resource cost tracking and budgeting"
+        content:
+          "- Resource allocation and scheduling\n- Capacity planning and workload balancing\n-
+          Skill-based task assignment\n- Resource cost tracking and budgeting"
 
 platform_implementations:
   bubble:
@@ -191,7 +199,8 @@ core_features:
       - "Project timeline and Gantt charts"
       - "Project archiving and templates"
     database_schema:
-      projects: ["id", "name", "description", "status", "start_date", "end_date", "owner_id", "created_at"]
+      projects:
+        ["id", "name", "description", "status", "start_date", "end_date", "owner_id", "created_at"]
       project_members: ["project_id", "user_id", "role", "permissions", "joined_at"]
       project_milestones: ["id", "project_id", "name", "due_date", "status", "description"]
 
@@ -204,7 +213,18 @@ core_features:
       - "Task dependencies and blocking relationships"
       - "Task status workflow and completion tracking"
     database_schema:
-      tasks: ["id", "project_id", "title", "description", "assignee_id", "priority", "status", "due_date", "created_at"]
+      tasks:
+        [
+          "id",
+          "project_id",
+          "title",
+          "description",
+          "assignee_id",
+          "priority",
+          "status",
+          "due_date",
+          "created_at",
+        ]
       task_dependencies: ["task_id", "depends_on_task_id", "dependency_type"]
       task_comments: ["id", "task_id", "user_id", "comment", "created_at"]
       task_attachments: ["id", "task_id", "file_url", "file_name", "uploaded_by", "uploaded_at"]
@@ -232,7 +252,17 @@ core_features:
       - "Timesheet generation and reporting"
       - "Billable hours and rate management"
     database_schema:
-      time_entries: ["id", "user_id", "task_id", "project_id", "start_time", "end_time", "duration", "description"]
+      time_entries:
+        [
+          "id",
+          "user_id",
+          "task_id",
+          "project_id",
+          "start_time",
+          "end_time",
+          "duration",
+          "description",
+        ]
       timesheets: ["id", "user_id", "week_start", "status", "submitted_at", "approved_at"]
       billing_rates: ["id", "user_id", "project_id", "hourly_rate", "effective_from"]
 
@@ -401,23 +431,27 @@ success_metrics:
 examples:
   software_development:
     tool_name: "DevFlow"
-    tool_description: "Agile project management tool specifically designed for software development teams"
+    tool_description:
+      "Agile project management tool specifically designed for software development teams"
     project_methodology: "agile"
     team_size_focus: "small_to_medium"
     core_features: ["tasks", "sprints", "code_integration", "bug_tracking"]
     integration_needs: ["github", "slack", "jira"]
     platform_recommendation: "bubble"
-    reasoning: "Complex agile workflows and development tool integrations require sophisticated automation"
+    reasoning:
+      "Complex agile workflows and development tool integrations require sophisticated automation"
 
   creative_agency:
     tool_name: "CreativeHub"
-    tool_description: "Project management tool for creative agencies with client collaboration and asset management"
+    tool_description:
+      "Project management tool for creative agencies with client collaboration and asset management"
     project_methodology: "flexible"
     team_size_focus: "small_to_medium"
     core_features: ["tasks", "client_portal", "file_sharing", "time_tracking"]
     integration_needs: ["google_drive", "slack", "calendar"]
     platform_recommendation: "lovable"
-    reasoning: "AI assistance valuable for creative workflow optimization and client communication features"
+    reasoning:
+      "AI assistance valuable for creative workflow optimization and client communication features"
 
   field_service:
     tool_name: "FieldManager"
@@ -427,4 +461,6 @@ examples:
     core_features: ["tasks", "mobile_access", "gps_tracking", "photo_documentation"]
     mobile_priority: true
     platform_recommendation: "flutterflow"
-    reasoning: "Mobile-first approach essential for field workers with offline capabilities and native features"
+    reasoning:
+      "Mobile-first approach essential for field workers with offline capabilities and native
+      features"

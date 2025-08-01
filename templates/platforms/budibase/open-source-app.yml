@@ -1,9 +1,12 @@
 name: "Budibase Open-Source Application"
 category: "open-source"
-description: "Open-source low-code platform for building apps and workflows from any data source with self-hosting capabilities"
+description:
+  "Open-source low-code platform for building apps and workflows from any data source with
+  self-hosting capabilities"
 version: "1.0.0"
 author: "AutoPR Template System"
-tags: ["open-source", "low-code", "self-hosted", "workflow-automation", "internal-tools", "drag-drop"]
+tags:
+  ["open-source", "low-code", "self-hosted", "workflow-automation", "internal-tools", "drag-drop"]
 
 platform_info:
   name: "Budibase"
@@ -12,7 +15,8 @@ platform_info:
   founded: "2019"
   pricing_model: "Freemium with Open-Source Core"
   target_audience: "Developers, IT teams, businesses seeking data control"
-  primary_use_cases: ["Internal tools", "Admin panels", "Workflow automation", "Data management apps"]
+  primary_use_cases:
+    ["Internal tools", "Admin panels", "Workflow automation", "Data management apps"]
 
   key_features:
     - "Open-source with self-hosting options"
@@ -58,7 +62,15 @@ variables:
   app_type:
     type: "select"
     description: "Type of application to build"
-    options: ["internal_tool", "admin_panel", "workflow_app", "data_dashboard", "approval_system", "inventory_tracker"]
+    options:
+      [
+        "internal_tool",
+        "admin_panel",
+        "workflow_app",
+        "data_dashboard",
+        "approval_system",
+        "inventory_tracker",
+      ]
     default: "internal_tool"
     required: true
 
@@ -72,21 +84,40 @@ variables:
   primary_data_source:
     type: "select"
     description: "Primary data source for the application"
-    options: ["budibase_db", "postgresql", "mysql", "mongodb", "google_sheets", "airtable", "rest_api", "graphql"]
+    options:
+      [
+        "budibase_db",
+        "postgresql",
+        "mysql",
+        "mongodb",
+        "google_sheets",
+        "airtable",
+        "rest_api",
+        "graphql",
+      ]
     default: "budibase_db"
     required: true
 
   additional_integrations:
     type: "multi_select"
     description: "Additional data sources and integrations"
-    options: ["stripe", "twilio", "sendgrid", "slack", "microsoft_365", "salesforce", "hubspot", "zapier"]
+    options:
+      ["stripe", "twilio", "sendgrid", "slack", "microsoft_365", "salesforce", "hubspot", "zapier"]
     default: ["slack"]
     required: false
 
   automation_features:
     type: "multi_select"
     description: "Workflow automation features to include"
-    options: ["email_notifications", "data_sync", "approval_workflows", "scheduled_tasks", "webhook_triggers", "conditional_logic"]
+    options:
+      [
+        "email_notifications",
+        "data_sync",
+        "approval_workflows",
+        "scheduled_tasks",
+        "webhook_triggers",
+        "conditional_logic",
+      ]
     default: ["email_notifications", "approval_workflows"]
     required: false
 

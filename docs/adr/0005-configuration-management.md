@@ -29,7 +29,6 @@ We will implement a hierarchical configuration system with the following charact
 ### Configuration Structure
 
 ```yaml
-
 # config/defaults.yaml
 logging:
   level: INFO

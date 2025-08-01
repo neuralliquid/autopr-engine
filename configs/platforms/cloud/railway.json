@@ -2,27 +2,11 @@
   "name": "Railway",
   "category": "cloud_hosting",
   "description": "Infrastructure platform for deploying full-stack applications",
-  "files": [
-    "railway.json",
-    "railway.toml",
-    ".railway/",
-    "Procfile"
-  ],
-  "dependencies": [
-    "@railway/cli"
-  ],
-  "commit_patterns": [
-    "railway",
-    "deployed to railway"
-  ],
-  "content_patterns": [
-    "railway.app",
-    "railway.tech",
-    "deployed with railway"
-  ],
-  "folder_patterns": [
-    ".railway"
-  ],
+  "files": ["railway.json", "railway.toml", ".railway/", "Procfile"],
+  "dependencies": ["@railway/cli"],
+  "commit_patterns": ["railway", "deployed to railway"],
+  "content_patterns": ["railway.app", "railway.tech", "deployed with railway"],
+  "folder_patterns": [".railway"],
   "confidence_weights": {
     "files": 0.4,
     "dependencies": 0.3,

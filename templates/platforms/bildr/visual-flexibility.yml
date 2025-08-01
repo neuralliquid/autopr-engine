@@ -1,6 +1,8 @@
 name: "Bildr Visual Flexibility Platform"
 category: "visual-development"
-description: "Highly visual no-code platform for building flexible web apps, Chrome extensions, and progressive web apps with Figma-like interface"
+description:
+  "Highly visual no-code platform for building flexible web apps, Chrome extensions, and progressive
+  web apps with Figma-like interface"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["visual-development", "flexible", "web-apps", "chrome-extensions", "pwa", "figma-like"]
@@ -12,7 +14,8 @@ platform_info:
   founded: "2020"
   pricing_model: "Freemium with Visual Focus"
   target_audience: "Designers, visual developers, entrepreneurs, agencies"
-  primary_use_cases: ["Web applications", "Chrome extensions", "Progressive web apps", "Prototypes", "Web3 apps"]
+  primary_use_cases:
+    ["Web applications", "Chrome extensions", "Progressive web apps", "Prototypes", "Web3 apps"]
 
   key_features:
     - "Figma-like visual canvas for app building"
@@ -59,14 +62,30 @@ variables:
   app_type:
     type: "select"
     description: "Type of application to build"
-    options: ["web_app", "chrome_extension", "progressive_web_app", "prototype", "web3_app", "marketplace", "saas_tool"]
+    options:
+      [
+        "web_app",
+        "chrome_extension",
+        "progressive_web_app",
+        "prototype",
+        "web3_app",
+        "marketplace",
+        "saas_tool",
+      ]
     default: "web_app"
     required: true
 
   design_approach:
     type: "select"
     description: "Design and development approach"
-    options: ["visual_first", "component_based", "pattern_driven", "prototype_to_production", "collaborative_design"]
+    options:
+      [
+        "visual_first",
+        "component_based",
+        "pattern_driven",
+        "prototype_to_production",
+        "collaborative_design",
+      ]
     default: "visual_first"
     required: true
 
@@ -80,21 +99,43 @@ variables:
   user_interface_style:
     type: "select"
     description: "User interface design style and approach"
-    options: ["modern_minimal", "creative_custom", "business_professional", "mobile_first", "desktop_focused"]
+    options:
+      [
+        "modern_minimal",
+        "creative_custom",
+        "business_professional",
+        "mobile_first",
+        "desktop_focused",
+      ]
     default: "modern_minimal"
     required: true
 
   data_management:
     type: "select"
     description: "Data storage and management approach"
-    options: ["local_storage", "external_api", "third_party_service", "custom_backend", "blockchain_storage"]
+    options:
+      [
+        "local_storage",
+        "external_api",
+        "third_party_service",
+        "custom_backend",
+        "blockchain_storage",
+      ]
     default: "external_api"
     required: true
 
   interactive_features:
     type: "multi_select"
     description: "Interactive features and functionality"
-    options: ["user_authentication", "real_time_updates", "file_uploads", "payment_processing", "notifications", "social_features"]
+    options:
+      [
+        "user_authentication",
+        "real_time_updates",
+        "file_uploads",
+        "payment_processing",
+        "notifications",
+        "social_features",
+      ]
     default: ["user_authentication", "notifications"]
     required: false
 
@@ -108,7 +149,8 @@ variables:
   collaboration_needs:
     type: "select"
     description: "Team collaboration and workflow requirements"
-    options: ["individual_project", "small_team", "design_team", "client_collaboration", "agency_workflow"]
+    options:
+      ["individual_project", "small_team", "design_team", "client_collaboration", "agency_workflow"]
     default: "small_team"
     required: true
 
