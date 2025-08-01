@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any
 
 from autopr.quality.template_metrics import QualityMetrics
+
 from .template_validators import ValidationSeverity
 
 
@@ -448,4 +449,5 @@ def save_report(content: str, output_path: Path, format_type: str = "markdown") 
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(content)
 
+    return str(output_path)
     return str(output_path)
