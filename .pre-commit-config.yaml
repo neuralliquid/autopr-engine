@@ -23,6 +23,19 @@ repos:
         types_or: [json, yaml, markdown]
         args: [--prose-wrap=always, --print-width=100]
 
+  # Custom hook to handle unstaged changes after Prettier
+  - repo: local
+    hooks:
+      - id: handle-unstaged-changes
+        name: Handle Unstaged Changes
+        entry: python tools/pre-commit-hooks.py
+        language: system
+        stages: [pre-commit]
+        verbose: true
+        pass_filenames: false
+        # Run after prettier to handle any formatting changes
+        additional_dependencies: []
+
   # Quality Engine (replaces all other tools)
   - repo: local
     hooks:
