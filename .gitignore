@@ -52,6 +52,12 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
+# Build artifacts
+build-artifacts/
+*.db
+*.sqlite
+*.sqlite3
+
 # Translations
 *.mo
 *.pot
