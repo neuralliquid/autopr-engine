@@ -10,9 +10,35 @@
 AutoPR Engine is a comprehensive AI-powered automation platform that transforms GitHub pull request
 workflows through intelligent analysis, issue creation, and multi-agent collaboration.
 
-> **📢 Repository Structure Update**: The repository has been reorganized for better
-> maintainability. See [Migration Guide](docs/MIGRATION_GUIDE.md) for details on the changes and how
-> to update your workflows.
+> **📢 Repository Structure Update**: The repository has been reorganized for better maintainability
+> and developer experience. See [Implementation Summary](docs/plans/IMPLEMENTATION_SUMMARY.md) for
+> details on the improvements.
+
+---
+
+## 📁 **Repository Structure**
+
+The AutoPR Engine repository is organized for optimal developer experience and maintainability:
+
+```
+autopr-engine/
+├── docs/                      # 📚 All documentation
+│   ├── getting-started/       # Setup and quick start guides
+│   ├── development/           # Development guides and tools
+│   ├── plans/                 # Project planning documents
+│   └── README.md              # Documentation index
+├── configs/                   # ⚙️ Configuration files
+│   ├── environments/          # Environment-specific configs
+│   ├── platforms/             # Platform configurations
+│   └── workflows/             # Workflow configurations
+├── templates/                 # 🎨 Template system
+│   ├── platforms/             # Platform-specific templates
+│   ├── use-cases/             # Use case templates
+│   └── deployment/            # Deployment templates
+├── tools/                     # 🔧 Development tools
+├── build-artifacts/           # 📦 Build outputs
+└── autopr/                    # 🚀 Main source code
+```
 
 ---
 

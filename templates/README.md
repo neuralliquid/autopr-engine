@@ -1,253 +1,171 @@
-# AutoPR Engine Template System
+# AutoPR Engine Templates
 
-## 🎨 **Template System Overview**
+This directory contains all templates for the AutoPR Engine project, organized by category and use
+case.
 
-The AutoPR Engine template system provides a comprehensive collection of templates for various
-platforms, use cases, and deployment scenarios. These templates are designed to accelerate
-development and ensure consistency across projects.
+## 📁 Template Structure
 
-## 📁 **Template Categories**
+### Platform Templates
 
-### **🏗️ Platform Templates**
+- `platforms/` - Platform-specific templates
+  - GitHub integration templates
+  - GitLab integration templates
+  - CI/CD platform templates
 
-Platform-specific templates for different development and deployment platforms:
+### Use Case Templates
 
-- **[AI Platforms](platforms/ai/)** - AI and machine learning platforms
-  - Amazon CodeGuru, Amazon CodeWhisperer, Claude Dev, Cursor, GitHub Copilot, etc.
-- **[Cloud Platforms](platforms/cloud/)** - Cloud deployment platforms
-  - AWS Amplify, DigitalOcean, Firebase, Heroku, Netlify, Vercel, etc.
-- **[Core Platforms](platforms/core/)** - Core development platforms
-  - Bolt, CodeSandbox, Glitch, Replit, StackBlitz, etc.
-- **[No-Code Platforms](platforms/)** - No-code and low-code platforms
-  - Adalo, Airtable, Bubble, Budibase, FlutterFlow, etc.
+- `use-cases/` - Use case specific templates
+  - Code review templates
+  - PR analysis templates
+  - Quality assurance templates
 
-### **📋 Use Case Templates**
+### Deployment Templates
 
-Templates for specific application types and use cases:
+- `deployment/` - Deployment and infrastructure templates
+  - Docker configurations
+  - Cloud deployment templates
+  - Infrastructure as code templates
 
-- **[E-commerce Store](use-cases/ecommerce-store.yml)** - E-commerce application templates
-- **[Project Management](use-cases/project-management.yml)** - Project management applications
-- **[Social Platform](use-cases/social-platform.yml)** - Social media platforms
+### Security Templates
 
-### **🚀 Deployment Templates**
+- `security/` - Security and compliance templates
+  - Security audit templates
+  - Compliance check templates
+  - Vulnerability assessment templates
 
-Templates for different deployment scenarios:
+### Monitoring Templates
 
-- **[Azure](deployment/azure-pipeline.yml)** - Azure DevOps pipelines
-- **[GitHub Actions](deployment/github-actions.yml)** - GitHub Actions workflows
-- **[Docker](docker/)** - Docker configurations
-- **[Netlify](deployment/netlify.config.yml)** - Netlify deployment
-- **[Vercel](deployment/vercel.config.yml)** - Vercel deployment
+- `monitoring/` - Monitoring and observability templates
+  - Metrics collection templates
+  - Alert configuration templates
+  - Dashboard templates
 
-### **🔒 Security Templates**
+### Testing Templates
 
-Security and compliance templates:
+- `testing/` - Testing and quality assurance templates
+  - Unit test templates
+  - Integration test templates
+  - Performance test templates
 
-- **[CORS Configuration](security/cors.config.yml)** - Cross-origin resource sharing
-- **[Helmet Configuration](security/helmet.config.yml)** - Security headers
-- **[HTAccess](security/htaccess.yml)** - Apache security rules
+### Documentation Templates
 
-### **📊 Monitoring Templates**
+- `documentation/` - Documentation and reporting templates
+  - API documentation templates
+  - User guide templates
+  - Technical specification templates
 
-Monitoring and observability templates:
+### Integration Templates
 
-- **[Alerts](monitoring/alert.yml)** - Alert configurations
-- **[Health Checks](monitoring/health-check.yml)** - Health check endpoints
-- **[Backup & Restore](monitoring/backup.yml)** - Backup strategies
+- `integrations/` - Third-party integration templates
+  - Webhook templates
+  - API integration templates
+  - Plugin templates
 
-### **🧪 Testing Templates**
+### Build Templates
 
-Testing and quality assurance templates:
+- `build/` - Build and compilation templates
+  - Build script templates
+  - Compilation configuration templates
+  - Artifact generation templates
 
-- **[Error Boundaries](testing/error-boundary.yml)** - Error handling
-- **[Test Setup](testing/test-setup.yml)** - Testing configurations
+### Discovery Templates
 
-### **📚 Documentation Templates**
+- `discovery/` - Code discovery and analysis templates
+  - Code scanning templates
+  - Dependency analysis templates
+  - Architecture discovery templates
 
-Documentation and content templates:
+### HTML Templates
 
-- **[HTML Layouts](html/)** - HTML documentation layouts
-- **[Platform Guides](documentation/platform_guide.md)** - Platform-specific guides
-- **[Use Case Guides](documentation/use_case_guide.md)** - Use case documentation
+- `html/` - HTML and web interface templates
+  - Web dashboard templates
+  - Report visualization templates
+  - User interface templates
 
-### **🔗 Integration Templates**
+### TypeScript Templates
 
-Integration and API templates:
+- `typescript/` - TypeScript and JavaScript templates
+  - Frontend component templates
+  - API client templates
+  - Type definition templates
 
-- **[Authentication](integrations/auth-integration.yml)** - Authentication integrations
-- **[Payment](integrations/payment-integration.yml)** - Payment system integrations
+### Reports
 
-### **⚙️ TypeScript Templates**
+- `reports/` - Reporting and analytics templates
+  - Quality metrics reports
+  - Performance reports
+  - Security reports
 
-TypeScript configuration templates:
+### QA Reports
 
-- **[Basic Config](typescript/basic-tsconfig.yml)** - Basic TypeScript configuration
-- **[React Config](typescript/react-tsconfig.yml)** - React TypeScript configuration
-- **[Vite Config](typescript/vite-tsconfig.yml)** - Vite TypeScript configuration
+- `qa_reports/` - Quality assurance reporting templates
+  - Code quality reports
+  - Test coverage reports
+  - Compliance reports
 
-## 🛠️ **Using Templates**
+## 🎯 Template Usage
 
-### **Template Selection**
+### Template Selection
 
-Templates are automatically selected based on:
+Templates are selected based on:
 
-- Platform detection results
-- Project requirements
-- Use case analysis
-- Deployment preferences
+- Platform requirements
+- Use case specifications
+- Deployment environment
+- Security requirements
+- Monitoring needs
 
-### **Template Customization**
+### Template Customization
 
-Templates can be customized through:
-
-- Environment variables
-- Configuration files
-- Custom parameters
-- Template inheritance
-
-### **Template Validation**
+All templates can be customized by:
 
-All templates are validated for:
+1. Modifying template parameters
+2. Extending base templates
+3. Creating platform-specific variants
+4. Adding custom logic and rules
 
-- Syntax correctness
-- Required parameters
-- Platform compatibility
-- Security best practices
+### Template Validation
 
-## 📋 **Template Structure**
+Templates are validated to ensure:
 
-### **Standard Template Format**
+- Proper syntax and structure
+- Required parameters are defined
+- Dependencies are satisfied
+- Security best practices are followed
 
-```yaml
-template:
-  name: "Template Name"
-  version: "1.0.0"
-  description: "Template description"
-  platform: "platform-name"
-  category: "category"
+## 📝 Template Development
 
-  parameters:
-    - name: "param1"
-      type: "string"
-      required: true
-      description: "Parameter description"
+### Creating New Templates
 
-  files:
-    - path: "file1.yml"
-      content: |
-        # Template content
-        key: value
+When creating new templates:
 
-  dependencies:
-    - "dependency1"
-    - "dependency2"
+1. Follow the established naming conventions
+2. Include comprehensive documentation
+3. Provide example usage
+4. Include parameter validation
+5. Test with multiple scenarios
 
-  validation:
-    - "rule1"
-    - "rule2"
-```
+### Template Best Practices
 
-### **Template Metadata**
+1. **Modularity**: Create reusable template components
+2. **Documentation**: Include clear usage instructions
+3. **Validation**: Validate template parameters
+4. **Testing**: Test templates with various inputs
+5. **Versioning**: Maintain template version compatibility
 
-Each template includes:
+## 🔍 Quick Reference
 
-- **Name and Version**: Template identification
-- **Description**: Purpose and usage
-- **Platform**: Target platform
-- **Category**: Template classification
-- **Parameters**: Configurable options
-- **Dependencies**: Required components
-- **Validation**: Quality checks
+- **Platform Integration**: `platforms/` directory
+- **Code Analysis**: `use-cases/` directory
+- **Infrastructure**: `deployment/` directory
+- **Security**: `security/` directory
+- **Monitoring**: `monitoring/` directory
+- **Testing**: `testing/` directory
+- **Documentation**: `documentation/` directory
+- **Integrations**: `integrations/` directory
 
-## 🔧 **Template Development**
+## 📚 Additional Resources
 
-### **Creating New Templates**
-
-1. **Template Structure**: Follow the standard format
-2. **Parameterization**: Make templates configurable
-3. **Validation**: Include validation rules
-4. **Documentation**: Provide clear documentation
-5. **Testing**: Test with different scenarios
-
-### **Template Best Practices**
-
-- **Modularity**: Keep templates focused and reusable
-- **Parameterization**: Use parameters for customization
-- **Validation**: Include comprehensive validation
-- **Documentation**: Provide clear usage instructions
-- **Testing**: Test with various configurations
-
-### **Template Categories**
-
-- **Platform-Specific**: Tailored for specific platforms
-- **Use-Case-Specific**: Designed for particular applications
-- **Generic**: Reusable across platforms
-- **Composite**: Combine multiple templates
-
-## 📊 **Template Statistics**
-
-### **Current Template Count**
-
-- **Platform Templates**: 50+ templates
-- **Use Case Templates**: 10+ templates
-- **Deployment Templates**: 15+ templates
-- **Security Templates**: 5+ templates
-- **Monitoring Templates**: 8+ templates
-- **Testing Templates**: 5+ templates
-- **Documentation Templates**: 10+ templates
-- **Integration Templates**: 5+ templates
-- **TypeScript Templates**: 8+ templates
-
-### **Platform Coverage**
-
-- **AI Platforms**: 10 platforms
-- **Cloud Platforms**: 8 platforms
-- **No-Code Platforms**: 25+ platforms
-- **Development Platforms**: 8 platforms
-
-## 🚀 **Template System Features**
-
-### **Intelligent Selection**
-
-- Automatic platform detection
-- Use case analysis
-- Requirement matching
-- Best practice recommendations
-
-### **Quality Assurance**
-
-- Template validation
-- Parameter verification
-- Dependency checking
-- Security scanning
-
-### **Customization**
-
-- Parameter-based customization
-- Template inheritance
-- Conditional logic
-- Dynamic content generation
-
-### **Integration**
-
-- CI/CD pipeline integration
-- Platform API integration
-- Monitoring integration
-- Security integration
-
----
-
-## 📝 **Template Maintenance**
-
-Templates are regularly updated to:
-
-- Support new platforms
-- Include best practices
-- Fix security issues
-- Improve usability
-- Add new features
-
-For template contributions, see the [Contributing Guide](../docs/development/contributing.md).
-
-**Last Updated**: August 2025 **Template Count**: 150+ templates **Platform Coverage**: 50+
-platforms
+- [Template Development Guide](docs/development/template-development.md)
+- [Template API Reference](docs/api/templates.md)
+- [Template Examples](examples/templates.md)
