@@ -10,6 +10,10 @@
 AutoPR Engine is a comprehensive AI-powered automation platform that transforms GitHub pull request
 workflows through intelligent analysis, issue creation, and multi-agent collaboration.
 
+> **📢 Repository Structure Update**: The repository has been reorganized for better
+> maintainability. See [Migration Guide](docs/MIGRATION_GUIDE.md) for details on the changes and how
+> to update your workflows.
+
 ---
 
 ## 🌟 **Features**
