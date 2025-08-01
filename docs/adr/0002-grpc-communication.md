@@ -6,8 +6,8 @@ Proposed
 
 ## Context
 
-We need efficient, type-safe communication between C# and Python components in our hybrid architecture. The solution
-should provide:
+We need efficient, type-safe communication between C# and Python components in our hybrid
+architecture. The solution should provide:
 
 - Low latency
 - Strong typing

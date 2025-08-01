@@ -1,11 +1,12 @@
 # Windows Development Setup for AutoPR Engine
 
-This document provides Windows-specific development setup instructions and workarounds for common issues.
+This document provides Windows-specific development setup instructions and workarounds for common
+issues.
 
 ## Known Issues with Windows Store Python
 
-The Microsoft Store version of Python has several limitations that can cause issues with development tools,
-particularly pre-commit hooks:
+The Microsoft Store version of Python has several limitations that can cause issues with development
+tools, particularly pre-commit hooks:
 
 ### Problems:
 
@@ -33,7 +34,8 @@ scripts\code_quality.bat test
 
 #### Option 2: Install Standard Python 3.13.5 (Highly Recommended)
 
-For the best development experience with Python 3.13.5, install from [python.org](<https://python.org)> instead of the Microsoft Store version:
+For the best development experience with Python 3.13.5, install from
+[python.org](<https://python.org)> instead of the Microsoft Store version:
 
 1. Uninstall Python from Microsoft Store
 2. Download **Python 3.13.5** from [python.org](<https://python.org/downloads/release/python-3135/)>
@@ -85,7 +87,6 @@ scripts\code_quality.bat check
 
 Use conventional commit messages:
 
-
 ```text
 feat: add new feature
 fix: resolve bug in component
@@ -112,17 +113,17 @@ Add these settings to your VS Code workspace (`.vscode/settings.json`):
 
 ```json
 {
-    "python.formatting.provider": "black",
-    "python.formatting.blackArgs": ["--line-length", "100"],
-    "python.sortImports.args": ["--profile", "black"],
-    "python.linting.enabled": true,
-    "python.linting.flake8Enabled": true,
-    "python.linting.mypyEnabled": true,
-    "python.linting.flake8Args": ["--max-line-length=100"],
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-        "source.organizeImports": true
-    }
+  "python.formatting.provider": "black",
+  "python.formatting.blackArgs": ["--line-length", "100"],
+  "python.sortImports.args": ["--profile", "black"],
+  "python.linting.enabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.mypyEnabled": true,
+  "python.linting.flake8Args": ["--max-line-length=100"],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  }
 }
 ```
 
@@ -209,4 +210,5 @@ If you encounter issues:
 3. Consider switching to standard Python installation
 4. Ask for help in project discussions or issues
 
-Remember: The goal is consistent, high-quality code. The specific tools are less important than maintaining standards.
+Remember: The goal is consistent, high-quality code. The specific tools are less important than
+maintaining standards.

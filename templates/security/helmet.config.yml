@@ -1,6 +1,7 @@
 name: "Helmet Security Configuration Template"
 category: "security"
-description: "Express.js Helmet security middleware configuration for enhanced web application security"
+description:
+  "Express.js Helmet security middleware configuration for enhanced web application security"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["security", "express", "helmet", "middleware", "web_security"]
@@ -10,7 +11,14 @@ template_info:
   type: "security_configuration"
   framework: "express"
   target_audience: "Node.js developers, security engineers, web developers"
-  primary_use_cases: ["Web application security", "Express.js middleware", "Security headers", "XSS protection", "CSRF protection"]
+  primary_use_cases:
+    [
+      "Web application security",
+      "Express.js middleware",
+      "Security headers",
+      "XSS protection",
+      "CSRF protection",
+    ]
 
 variables:
   content_security_policy:
@@ -52,7 +60,17 @@ variables:
   referrer_policy:
     type: "select"
     description: "Referrer policy setting"
-    options: ["no-referrer", "no-referrer-when-downgrade", "origin", "origin-when-cross-origin", "same-origin", "strict-origin", "strict-origin-when-cross-origin", "unsafe-url"]
+    options:
+      [
+        "no-referrer",
+        "no-referrer-when-downgrade",
+        "origin",
+        "origin-when-cross-origin",
+        "same-origin",
+        "strict-origin",
+        "strict-origin-when-cross-origin",
+        "unsafe-url",
+      ]
     default: "strict-origin-when-cross-origin"
     required: false
 

@@ -1,9 +1,19 @@
 name: "Backendless Advanced Backend Control"
 category: "advanced-backend"
-description: "Comprehensive backend-as-a-service platform with codeless logic, advanced data management, and full infrastructure control"
+description:
+  "Comprehensive backend-as-a-service platform with codeless logic, advanced data management, and
+  full infrastructure control"
 version: "1.0.0"
 author: "AutoPR Template System"
-tags: ["advanced-backend", "codeless-logic", "infrastructure-control", "full-stack", "database-management", "api-builder"]
+tags:
+  [
+    "advanced-backend",
+    "codeless-logic",
+    "infrastructure-control",
+    "full-stack",
+    "database-management",
+    "api-builder",
+  ]
 
 platform_info:
   name: "Backendless"
@@ -12,7 +22,14 @@ platform_info:
   founded: "2012"
   pricing_model: "Freemium with Advanced Features"
   target_audience: "Developers, technical teams, enterprises, agencies"
-  primary_use_cases: ["Full-stack applications", "Complex backends", "Enterprise systems", "API services", "Real-time applications"]
+  primary_use_cases:
+    [
+      "Full-stack applications",
+      "Complex backends",
+      "Enterprise systems",
+      "API services",
+      "Real-time applications",
+    ]
 
   key_features:
     - "Codeless backend logic development"
@@ -60,42 +77,74 @@ variables:
   application_architecture:
     type: "select"
     description: "Application architecture and complexity"
-    options: ["simple_backend", "full_stack_app", "api_service", "enterprise_system", "real_time_app"]
+    options:
+      ["simple_backend", "full_stack_app", "api_service", "enterprise_system", "real_time_app"]
     default: "full_stack_app"
     required: true
 
   data_complexity:
     type: "select"
     description: "Database and data management complexity"
-    options: ["basic_tables", "relational_data", "complex_relationships", "enterprise_schema", "real_time_data"]
+    options:
+      [
+        "basic_tables",
+        "relational_data",
+        "complex_relationships",
+        "enterprise_schema",
+        "real_time_data",
+      ]
     default: "relational_data"
     required: true
 
   business_logic_level:
     type: "select"
     description: "Business logic and workflow complexity"
-    options: ["simple_crud", "basic_workflows", "complex_logic", "advanced_automation", "enterprise_processes"]
+    options:
+      [
+        "simple_crud",
+        "basic_workflows",
+        "complex_logic",
+        "advanced_automation",
+        "enterprise_processes",
+      ]
     default: "basic_workflows"
     required: true
 
   user_management:
     type: "select"
     description: "User authentication and management approach"
-    options: ["basic_auth", "social_login", "role_based_access", "enterprise_sso", "custom_authentication"]
+    options:
+      ["basic_auth", "social_login", "role_based_access", "enterprise_sso", "custom_authentication"]
     default: "role_based_access"
     required: true
 
   real_time_features:
     type: "multi_select"
     description: "Real-time functionality requirements"
-    options: ["live_updates", "messaging", "notifications", "collaboration", "live_tracking", "real_time_analytics"]
+    options:
+      [
+        "live_updates",
+        "messaging",
+        "notifications",
+        "collaboration",
+        "live_tracking",
+        "real_time_analytics",
+      ]
     default: ["live_updates", "notifications"]
     required: false
 
   integration_needs:
     type: "multi_select"
     description: "Third-party integrations and external services"
-    options: ["payment_processing", "email_services", "sms_services", "social_media", "analytics", "cloud_storage"]
+    options:
+      [
+        "payment_processing",
+        "email_services",
+        "sms_services",
+        "social_media",
+        "analytics",
+        "cloud_storage",
+      ]
     default: ["email_services", "analytics"]
     required: false
 
@@ -109,7 +158,8 @@ variables:
   ui_approach:
     type: "select"
     description: "User interface development approach"
-    options: ["backendless_ui", "external_frontend", "mobile_sdk", "web_components", "headless_backend"]
+    options:
+      ["backendless_ui", "external_frontend", "mobile_sdk", "web_components", "headless_backend"]
     default: "backendless_ui"
     required: true
 

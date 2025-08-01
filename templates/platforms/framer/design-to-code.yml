@@ -1,5 +1,7 @@
 name: "Framer Design-to-Code Template"
-description: "Advanced design tool that generates React components with sophisticated animations and interactions"
+description:
+  "Advanced design tool that generates React components with sophisticated animations and
+  interactions"
 category: "no_code_platform"
 platforms: ["framer"]
 version: "1.0.0"
@@ -36,7 +38,8 @@ variables:
     type: "string"
     required: true
     description: "Type of project to create"
-    examples: ["portfolio", "marketing_site", "product_showcase", "interactive_prototype", "design_system"]
+    examples:
+      ["portfolio", "marketing_site", "product_showcase", "interactive_prototype", "design_system"]
 
   animation_complexity:
     type: "string"

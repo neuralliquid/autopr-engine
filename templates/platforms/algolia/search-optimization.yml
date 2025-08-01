@@ -1,6 +1,8 @@
 name: "Algolia Search Optimization Service"
 category: "search-service"
-description: "Advanced search-as-a-service platform for implementing fast, relevant, and intelligent search functionality in applications"
+description:
+  "Advanced search-as-a-service platform for implementing fast, relevant, and intelligent search
+  functionality in applications"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["search-service", "search-optimization", "instant-search", "ai-search", "search-analytics"]
@@ -12,7 +14,14 @@ platform_info:
   founded: "2012"
   pricing_model: "Usage-based with Free Tier"
   target_audience: "Developers, e-commerce sites, content platforms, SaaS applications"
-  primary_use_cases: ["E-commerce search", "Content discovery", "Site search", "Mobile app search", "Enterprise search"]
+  primary_use_cases:
+    [
+      "E-commerce search",
+      "Content discovery",
+      "Site search",
+      "Mobile app search",
+      "Enterprise search",
+    ]
 
   key_features:
     - "Instant search with sub-50ms response times"
@@ -59,7 +68,15 @@ variables:
   search_type:
     type: "select"
     description: "Primary type of search implementation"
-    options: ["e_commerce_search", "content_search", "site_search", "app_search", "enterprise_search", "media_search"]
+    options:
+      [
+        "e_commerce_search",
+        "content_search",
+        "site_search",
+        "app_search",
+        "enterprise_search",
+        "media_search",
+      ]
     default: "site_search"
     required: true
 
@@ -73,21 +90,38 @@ variables:
   search_features:
     type: "multi_select"
     description: "Search features and capabilities to implement"
-    options: ["instant_search", "faceted_filtering", "autocomplete", "typo_tolerance", "synonyms", "geo_search", "personalization"]
+    options:
+      [
+        "instant_search",
+        "faceted_filtering",
+        "autocomplete",
+        "typo_tolerance",
+        "synonyms",
+        "geo_search",
+        "personalization",
+      ]
     default: ["instant_search", "autocomplete", "typo_tolerance"]
     required: true
 
   analytics_level:
     type: "select"
     description: "Search analytics and optimization level"
-    options: ["basic_analytics", "advanced_analytics", "ab_testing", "personalization_insights", "enterprise_analytics"]
+    options:
+      [
+        "basic_analytics",
+        "advanced_analytics",
+        "ab_testing",
+        "personalization_insights",
+        "enterprise_analytics",
+      ]
     default: "advanced_analytics"
     required: true
 
   integration_platform:
     type: "select"
     description: "Platform or framework for integration"
-    options: ["react", "vue", "angular", "vanilla_js", "shopify", "wordpress", "magento", "custom_backend"]
+    options:
+      ["react", "vue", "angular", "vanilla_js", "shopify", "wordpress", "magento", "custom_backend"]
     default: "react"
     required: true
 
@@ -101,14 +135,32 @@ variables:
   content_types:
     type: "multi_select"
     description: "Types of content to be searched"
-    options: ["products", "articles", "documents", "users", "locations", "media", "events", "custom_objects"]
+    options:
+      [
+        "products",
+        "articles",
+        "documents",
+        "users",
+        "locations",
+        "media",
+        "events",
+        "custom_objects",
+      ]
     default: ["articles", "products"]
     required: true
 
   optimization_goals:
     type: "multi_select"
     description: "Search optimization goals and metrics"
-    options: ["search_speed", "relevance_improvement", "conversion_rate", "user_engagement", "click_through_rate", "zero_results_reduction"]
+    options:
+      [
+        "search_speed",
+        "relevance_improvement",
+        "conversion_rate",
+        "user_engagement",
+        "click_through_rate",
+        "zero_results_reduction",
+      ]
     default: ["search_speed", "relevance_improvement"]
     required: true
 
@@ -118,7 +170,8 @@ variants:
     variables:
       search_type: "e_commerce_search"
       data_source: "e_commerce_platform"
-      search_features: ["instant_search", "faceted_filtering", "autocomplete", "typo_tolerance", "personalization"]
+      search_features:
+        ["instant_search", "faceted_filtering", "autocomplete", "typo_tolerance", "personalization"]
       content_types: ["products"]
       optimization_goals: ["conversion_rate", "relevance_improvement", "user_engagement"]
 

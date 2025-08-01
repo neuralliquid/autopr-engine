@@ -1,5 +1,7 @@
 name: "E-commerce Store Template"
-description: "Cross-platform e-commerce application template with product management, shopping cart, and payment processing"
+description:
+  "Cross-platform e-commerce application template with product management, shopping cart, and
+  payment processing"
 category: "use_case_template"
 platforms: ["bubble", "lovable", "flutterflow", "thunkable", "horizons"]
 file_extension: "md"
@@ -82,7 +84,9 @@ variants:
     modifications:
       - line: 15
         action: "add_after"
-        content: "- Advanced sales analytics and reporting\n- Customer behavior tracking\n- Revenue and profit analysis\n- Inventory turnover metrics"
+        content:
+          "- Advanced sales analytics and reporting\n- Customer behavior tracking\n- Revenue and
+          profit analysis\n- Inventory turnover metrics"
 
   with_mobile_app:
     name: "With Mobile Application"
@@ -90,7 +94,9 @@ variants:
     modifications:
       - line: 20
         action: "add_after"
-        content: "- Native mobile app for iOS and Android\n- Push notifications for orders and promotions\n- Mobile-optimized shopping experience\n- Offline browsing capabilities"
+        content:
+          "- Native mobile app for iOS and Android\n- Push notifications for orders and
+          promotions\n- Mobile-optimized shopping experience\n- Offline browsing capabilities"
 
   with_marketplace_features:
     name: "With Marketplace Features"
@@ -98,7 +104,9 @@ variants:
     modifications:
       - line: 25
         action: "add_after"
-        content: "- Multi-vendor seller registration and management\n- Commission and fee management\n- Seller analytics and reporting\n- Vendor communication tools"
+        content:
+          "- Multi-vendor seller registration and management\n- Commission and fee management\n-
+          Seller analytics and reporting\n- Vendor communication tools"
 
 platform_implementations:
   bubble:

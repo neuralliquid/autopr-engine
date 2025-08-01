@@ -1,6 +1,7 @@
 name: "Test Setup Configuration Template"
 category: "testing"
-description: "Comprehensive test setup for React applications with Jest, Vitest, and Testing Library"
+description:
+  "Comprehensive test setup for React applications with Jest, Vitest, and Testing Library"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["testing", "jest", "vitest", "react", "testing_library"]
@@ -10,7 +11,8 @@ template_info:
   type: "testing_configuration"
   framework: "react"
   target_audience: "Frontend developers, QA engineers, testing specialists"
-  primary_use_cases: ["Unit testing", "Integration testing", "Test environment setup", "Mock configuration"]
+  primary_use_cases:
+    ["Unit testing", "Integration testing", "Test environment setup", "Mock configuration"]
 
 variables:
   testing_framework:

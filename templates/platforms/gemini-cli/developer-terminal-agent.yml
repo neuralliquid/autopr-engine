@@ -1,6 +1,8 @@
 name: "Gemini CLI Developer Agent Template"
 category: "ai_agent_builder"
-description: "Google's free open-source AI agent for terminal integration - Unmatched free usage with Gemini 2.5 Pro access"
+description:
+  "Google's free open-source AI agent for terminal integration - Unmatched free usage with Gemini
+  2.5 Pro access"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["ai_agent_builder", "terminal_integration", "developer_tools", "open_source", "free_tier"]
@@ -14,7 +16,14 @@ platform_info:
   announcement: "June 25, 2025"
   pricing_model: "Free open-source with optional paid tiers"
   target_audience: "Developers, DevOps engineers, terminal power users, automation enthusiasts"
-  primary_use_cases: ["Terminal workflow automation", "Code assistance and debugging", "File manipulation", "Command execution", "Development productivity"]
+  primary_use_cases:
+    [
+      "Terminal workflow automation",
+      "Code assistance and debugging",
+      "File manipulation",
+      "Command execution",
+      "Development productivity",
+    ]
 
   key_features:
     - "Free open-source (Apache 2.0 license) AI agent"
@@ -62,28 +71,61 @@ variables:
   primary_use_case:
     type: "select"
     description: "Primary way you'll use Gemini CLI"
-    options: ["code_assistance", "file_management", "system_administration", "automation_scripting", "debugging_troubleshooting", "research_analysis", "general_productivity"]
+    options:
+      [
+        "code_assistance",
+        "file_management",
+        "system_administration",
+        "automation_scripting",
+        "debugging_troubleshooting",
+        "research_analysis",
+        "general_productivity",
+      ]
     default: "code_assistance"
     required: true
 
   integration_level:
     type: "select"
     description: "How deeply to integrate with your development workflow"
-    options: ["basic_commands", "shell_integration", "script_automation", "workflow_integration", "ci_cd_pipeline"]
+    options:
+      [
+        "basic_commands",
+        "shell_integration",
+        "script_automation",
+        "workflow_integration",
+        "ci_cd_pipeline",
+      ]
     default: "shell_integration"
     required: true
 
   extension_preferences:
     type: "multi_select"
     description: "Extensions and integrations to enable"
-    options: ["mcp_extensions", "git_integration", "docker_support", "kubernetes_tools", "cloud_cli_tools", "database_connections", "api_testing", "file_watchers"]
+    options:
+      [
+        "mcp_extensions",
+        "git_integration",
+        "docker_support",
+        "kubernetes_tools",
+        "cloud_cli_tools",
+        "database_connections",
+        "api_testing",
+        "file_watchers",
+      ]
     default: ["git_integration", "docker_support"]
     required: false
 
   customization_level:
     type: "select"
     description: "Level of customization and personalization"
-    options: ["default_settings", "custom_prompts", "personalized_instructions", "workflow_templates", "advanced_scripting"]
+    options:
+      [
+        "default_settings",
+        "custom_prompts",
+        "personalized_instructions",
+        "workflow_templates",
+        "advanced_scripting",
+      ]
     default: "custom_prompts"
     required: true
 
@@ -104,7 +146,17 @@ variables:
   development_environment:
     type: "multi_select"
     description: "Development environments and tools you use"
-    options: ["vscode", "vim_neovim", "emacs", "jetbrains_ides", "terminal_only", "docker", "kubernetes", "cloud_shells"]
+    options:
+      [
+        "vscode",
+        "vim_neovim",
+        "emacs",
+        "jetbrains_ides",
+        "terminal_only",
+        "docker",
+        "kubernetes",
+        "cloud_shells",
+      ]
     default: ["vscode", "terminal_only"]
     required: false
 

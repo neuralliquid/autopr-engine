@@ -55,28 +55,11 @@
   "maintainer": "Tabnine",
 
   "detection": {
-    "files": [
-      ".tabnine",
-      ".tabnine_config.json",
-      ".config/TabNine"
-    ],
-    "dependencies": [
-      "tabnine-vscode",
-      "tabnine-intellij"
-    ],
-    "folder_patterns": [
-      "tabnine",
-      "-tabnine"
-    ],
-    "commit_patterns": [
-      "tabnine",
-      "tabnine config"
-    ],
-    "content_patterns": [
-      "tabnine.com",
-      "tabnine-settings",
-      "tabnine.ignore"
-    ],
+    "files": [".tabnine", ".tabnine_config.json", ".config/TabNine"],
+    "dependencies": ["tabnine-vscode", "tabnine-intellij"],
+    "folder_patterns": ["tabnine", "-tabnine"],
+    "commit_patterns": ["tabnine", "tabnine config"],
+    "content_patterns": ["tabnine.com", "tabnine-settings", "tabnine.ignore"],
     "confidence_weights": {
       "files": 0.7,
       "dependencies": 0.2,
@@ -90,10 +73,7 @@
     "primary_language": "javascript",
     "framework": "vscode",
     "deployment_targets": ["desktop"],
-    "common_files": [
-      ".tabnine_config.json",
-      ".tabnine"
-    ],
+    "common_files": [".tabnine_config.json", ".tabnine"],
     "features": [
       "ai_code_completion",
       "whole_line_suggestions",
@@ -101,9 +81,6 @@
       "natural_language_to_code",
       "team_learning"
     ],
-    "configuration_files": [
-      ".tabnine_config.json",
-      ".tabnine"
-    ]
+    "configuration_files": [".tabnine_config.json", ".tabnine"]
   }
 }

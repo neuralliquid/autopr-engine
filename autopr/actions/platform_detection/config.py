@@ -27,7 +27,7 @@ class PlatformConfigManager:
     _platforms_by_type: dict[PlatformType, list[str]] = {}
 
     # Default configuration directories
-    _BASE_CONFIG_DIR = Path(__file__).parent / "configs"
+    _BASE_CONFIG_DIR = Path(__file__).parent.parent.parent.parent / "configs" / "platforms"
     _CATEGORY_FILES = {
         "core": "core_platforms.json",
         "ai": "ai_platforms.json",
@@ -224,6 +224,19 @@ class PlatformConfigManager:
         return [
             self._platforms[pid].to_dict() for pid in self._platforms_by_category.get(category, [])
         ]
+
+    def get_ai_platforms(self) -> dict[str, dict[str, Any]]:
+        """Get all AI development platforms.
+
+        Returns:
+            A dictionary mapping platform IDs to their configurations for AI platforms
+        """
+        ai_platforms = {}
+        for platform_id, platform in self._platforms.items():
+            platform_dict = platform.to_dict()
+            if platform_dict.get("category") == "ai_development":
+                ai_platforms[platform_id] = platform_dict
+        return ai_platforms
 
     def get_platforms_by_type(self, platform_type: str) -> list[dict[str, Any]]:
         """Get all platforms of a specific type.

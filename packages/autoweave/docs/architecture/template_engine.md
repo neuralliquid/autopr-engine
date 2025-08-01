@@ -2,7 +2,8 @@
 
 ## Overview
 
-The template engine provides flexible template processing for AutoWeave, supporting both simple and complex templating scenarios.
+The template engine provides flexible template processing for AutoWeave, supporting both simple and
+complex templating scenarios.
 
 ## Core Components
 
@@ -25,7 +26,6 @@ template-package/
 ### 2. Template Metadata (template.yaml)
 
 ```yaml
-
 id: "docker-app"
 name: "Docker Application"
 version: "1.0.0"

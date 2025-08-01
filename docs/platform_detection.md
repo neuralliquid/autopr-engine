@@ -4,8 +4,8 @@ This document describes the configuration structure for platform detection in Au
 
 ## Overview
 
-The platform detection system identifies development platforms and tools used in a codebase. It supports three main
-categories of platforms:
+The platform detection system identifies development platforms and tools used in a codebase. It
+supports three main categories of platforms:
 
 1. **Core Platforms**: General development platforms and frameworks
 2. **AI Platforms**: AI development tools and services
@@ -15,7 +15,8 @@ categories of platforms:
 
 ### Category Configuration File (`*_platforms.json`)
 
-Each category (core, AI, cloud) has a main configuration file that lists all platforms in that category:
+Each category (core, AI, cloud) has a main configuration file that lists all platforms in that
+category:
 
 ```json
 {
@@ -59,36 +60,15 @@ Each platform has its own configuration file with detailed detection rules:
   "description": "Detailed platform description",
   "category": "platform_category",
   "detection": {
-    "files": [
-      ".platform_file",
-      "config/platform_config.json"
-    ],
-    "dependencies": [
-      "@platform/package",
-      "platform-package"
-    ],
-    "folder_patterns": [
-      "platform-*",
-      "*-platform"
-    ],
-    "commit_patterns": [
-      "platform",
-      "platform:setup"
-    ],
-    "content_patterns": [
-      "platform.config",
-      "platform_setting"
-    ]
+    "files": [".platform_file", "config/platform_config.json"],
+    "dependencies": ["@platform/package", "platform-package"],
+    "folder_patterns": ["platform-*", "*-platform"],
+    "commit_patterns": ["platform", "platform:setup"],
+    "content_patterns": ["platform.config", "platform_setting"]
   },
   "project_config": {
-    "features": [
-      "feature1",
-      "feature2"
-    ],
-    "configuration_files": [
-      "platform.config",
-      ".platform/settings.json"
-    ],
+    "features": ["feature1", "feature2"],
+    "configuration_files": ["platform.config", ".platform/settings.json"],
     "documentation": "https://platform.example.com/docs"
   },
   "metadata": {
@@ -107,24 +87,24 @@ Each platform has its own configuration file with detailed detection rules:
 The platform detector uses a weighted scoring system based on multiple factors:
 
 1. **File Detection** (40% weight):
-    - Looks for specific files or directories that indicate the platform
-    - Example: `.cursor` directory for Cursor IDE
+   - Looks for specific files or directories that indicate the platform
+   - Example: `.cursor` directory for Cursor IDE
 
 1. **Dependency Detection** (30% weight):
-    - Checks for platform-specific packages in dependency files
-    - Example: `@githubnext/github-copilot-cli` for GitHub Copilot
+   - Checks for platform-specific packages in dependency files
+   - Example: `@githubnext/github-copilot-cli` for GitHub Copilot
 
 1. **Folder Pattern Matching** (15% weight):
-    - Matches directory names against known patterns
-    - Example: `*-copilot` for GitHub Copilot related directories
+   - Matches directory names against known patterns
+   - Example: `*-copilot` for GitHub Copilot related directories
 
 1. **Commit Message Patterns** (10% weight):
-    - Looks for platform-related terms in commit messages
-    - Example: "Add Copilot configuration"
+   - Looks for platform-related terms in commit messages
+   - Example: "Add Copilot configuration"
 
 1. **Content Patterns** (5% weight):
-    - Searches for platform-specific strings in files
-    - Example: "github-copilot" in configuration files
+   - Searches for platform-specific strings in files
+   - Example: "github-copilot" in configuration files
 
 ## Adding a New Platform
 

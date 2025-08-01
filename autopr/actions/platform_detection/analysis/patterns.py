@@ -1,9 +1,9 @@
 """
-Pattern matching classes for file analysis.
+Pattern classes for platform detection.
 """
 
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from re import Pattern
 
@@ -26,15 +26,23 @@ class BasePattern:
 
 
 @dataclass
-class ContentPattern(BasePattern):
+class ContentPattern:
     """Pattern for matching content within files."""
 
     pattern: str | Pattern[str]
     """The regex pattern to search for in file content."""
 
+    platform_id: str
+    """ID of the platform this pattern matches."""
+
+    confidence: float = 1.0
+    """Confidence score (0.0 to 1.0) that this pattern indicates the platform."""
+
     def __post_init__(self):
         """Compile the regex pattern if it's a string."""
-        super().__post_init__()
+        if not 0.0 <= self.confidence <= 1.0:
+            msg = f"Confidence must be between 0.0 and 1.0, got {self.confidence}"
+            raise ValueError(msg)
         if isinstance(self.pattern, str):
             self._compiled = re.compile(self.pattern, re.IGNORECASE | re.MULTILINE)
         else:
@@ -46,11 +54,23 @@ class ContentPattern(BasePattern):
 
 
 @dataclass
-class FilePattern(BasePattern):
+class FilePattern:
     """Pattern for matching file names and paths."""
 
     pattern: str
     """The glob pattern to match against file names."""
+
+    platform_id: str
+    """ID of the platform this pattern matches."""
+
+    confidence: float = 1.0
+    """Confidence score (0.0 to 1.0) that this pattern indicates the platform."""
+
+    def __post_init__(self):
+        """Validate the pattern after initialization."""
+        if not 0.0 <= self.confidence <= 1.0:
+            msg = f"Confidence must be between 0.0 and 1.0, got {self.confidence}"
+            raise ValueError(msg)
 
     def matches(self, file_path: Path) -> bool:
         """Check if the pattern matches the given file path."""
@@ -60,11 +80,23 @@ class FilePattern(BasePattern):
 
 
 @dataclass
-class DirectoryPattern(BasePattern):
+class DirectoryPattern:
     """Pattern for matching directory structures."""
 
     pattern: str
     """The glob pattern to match against directory paths."""
+
+    platform_id: str
+    """ID of the platform this pattern matches."""
+
+    confidence: float = 1.0
+    """Confidence score (0.0 to 1.0) that this pattern indicates the platform."""
+
+    def __post_init__(self):
+        """Validate the pattern after initialization."""
+        if not 0.0 <= self.confidence <= 1.0:
+            msg = f"Confidence must be between 0.0 and 1.0, got {self.confidence}"
+            raise ValueError(msg)
 
     def matches(self, dir_path: Path) -> bool:
         """Check if the pattern matches the given directory path."""
@@ -74,18 +106,26 @@ class DirectoryPattern(BasePattern):
 
 
 @dataclass
-class CompositePattern(BasePattern):
+class CompositePattern:
     """Combines multiple patterns with logical operators."""
 
     patterns: list[BasePattern]
     """List of patterns to combine."""
+
+    platform_id: str
+    """ID of the platform this pattern matches."""
+
+    confidence: float = 1.0
+    """Confidence score (0.0 to 1.0) that this pattern indicates the platform."""
 
     operator: str = "and"
     """Logical operator to combine patterns ("and" or "or")."""
 
     def __post_init__(self):
         """Validate the operator."""
-        super().__post_init__()
+        if not 0.0 <= self.confidence <= 1.0:
+            msg = f"Confidence must be between 0.0 and 1.0, got {self.confidence}"
+            raise ValueError(msg)
         if self.operator not in {"and", "or"}:
             msg = f"Operator must be 'and' or 'or', got {self.operator}"
             raise ValueError(msg)

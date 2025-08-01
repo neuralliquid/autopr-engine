@@ -1,9 +1,18 @@
 name: "n8n AI Agent Builder Template"
 category: "ai_agent_builder"
-description: "#1 Best AI agent builder - Highly customizable workflows with self-hosting and advanced automation"
+description:
+  "#1 Best AI agent builder - Highly customizable workflows with self-hosting and advanced
+  automation"
 version: "1.0.0"
 author: "AutoPR Template System"
-tags: ["ai_agent_builder", "workflow_automation", "self_hosting", "open_source", "advanced_customization"]
+tags:
+  [
+    "ai_agent_builder",
+    "workflow_automation",
+    "self_hosting",
+    "open_source",
+    "advanced_customization",
+  ]
 
 platform_info:
   name: "n8n"
@@ -13,7 +22,14 @@ platform_info:
   founded: "2019"
   pricing_model: "Open-source with cloud hosting options"
   target_audience: "Developers, technical teams, businesses requiring advanced automation"
-  primary_use_cases: ["Workflow automation", "Multi-agent AI systems", "Data processing", "API integrations", "Custom business logic"]
+  primary_use_cases:
+    [
+      "Workflow automation",
+      "Multi-agent AI systems",
+      "Data processing",
+      "API integrations",
+      "Custom business logic",
+    ]
 
   key_features:
     - "Highly customizable AI workflow automation"
@@ -60,7 +76,16 @@ variables:
   automation_type:
     type: "select"
     description: "Primary type of automation workflow"
-    options: ["data_processing", "customer_service", "sales_automation", "marketing_automation", "api_integration", "multi_agent_system", "custom_workflow"]
+    options:
+      [
+        "data_processing",
+        "customer_service",
+        "sales_automation",
+        "marketing_automation",
+        "api_integration",
+        "multi_agent_system",
+        "custom_workflow",
+      ]
     default: "data_processing"
     required: true
 
@@ -74,21 +99,53 @@ variables:
   integration_services:
     type: "multi_select"
     description: "Third-party services to integrate"
-    options: ["slack", "gmail", "salesforce", "hubspot", "stripe", "shopify", "airtable", "google_sheets", "github", "jira", "trello", "discord", "webhook_endpoints"]
+    options:
+      [
+        "slack",
+        "gmail",
+        "salesforce",
+        "hubspot",
+        "stripe",
+        "shopify",
+        "airtable",
+        "google_sheets",
+        "github",
+        "jira",
+        "trello",
+        "discord",
+        "webhook_endpoints",
+      ]
     default: ["slack", "gmail", "google_sheets"]
     required: true
 
   ai_capabilities:
     type: "multi_select"
     description: "AI features to implement in workflows"
-    options: ["natural_language_processing", "sentiment_analysis", "data_classification", "content_generation", "decision_making", "predictive_analytics", "image_processing", "voice_processing"]
+    options:
+      [
+        "natural_language_processing",
+        "sentiment_analysis",
+        "data_classification",
+        "content_generation",
+        "decision_making",
+        "predictive_analytics",
+        "image_processing",
+        "voice_processing",
+      ]
     default: ["natural_language_processing", "decision_making"]
     required: false
 
   workflow_complexity:
     type: "select"
     description: "Complexity level of your automation workflows"
-    options: ["simple_triggers", "multi_step_workflows", "conditional_logic", "advanced_branching", "multi_agent_coordination"]
+    options:
+      [
+        "simple_triggers",
+        "multi_step_workflows",
+        "conditional_logic",
+        "advanced_branching",
+        "multi_agent_coordination",
+      ]
     default: "multi_step_workflows"
     required: true
 

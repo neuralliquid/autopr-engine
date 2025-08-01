@@ -19,29 +19,11 @@
   "supported_languages": ["javascript", "typescript", "python", "go", "ruby", "java"],
   "supported_frameworks": ["nextjs", "create-react-app", "vue", "nuxt", "sveltekit", "astro"],
   "detection": {
-    "files": [
-      "vercel.json",
-      "vercel.config.js",
-      ".vercelignore"
-    ],
-    "dependencies": [
-      "@vercel/node",
-      "@vercel/static",
-      "vercel"
-    ],
-    "folder_patterns": [
-      ".vercel"
-    ],
-    "commit_patterns": [
-      "vercel",
-      "deployed to vercel",
-      "vercel deployment"
-    ],
-    "content_patterns": [
-      "vercel.com",
-      "vercel app",
-      "deployed with vercel"
-    ],
+    "files": ["vercel.json", "vercel.config.js", ".vercelignore"],
+    "dependencies": ["@vercel/node", "@vercel/static", "vercel"],
+    "folder_patterns": [".vercel"],
+    "commit_patterns": ["vercel", "deployed to vercel", "vercel deployment"],
+    "content_patterns": ["vercel.com", "vercel app", "deployed with vercel"],
     "package_scripts": [],
     "confidence_weights": {
       "files": 0.35,
@@ -56,11 +38,7 @@
     "primary_language": "javascript",
     "framework": "nextjs",
     "deployment_targets": ["vercel"],
-    "common_files": [
-      "vercel.json",
-      "vercel.config.js",
-      ".vercelignore"
-    ],
+    "common_files": ["vercel.json", "vercel.config.js", ".vercelignore"],
     "features": [
       "static_sites",
       "serverless_functions",
@@ -69,11 +47,7 @@
       "preview_deployments",
       "custom_domains"
     ],
-    "configuration_files": [
-      "vercel.json",
-      "vercel.config.js",
-      ".vercel/project.json"
-    ]
+    "configuration_files": ["vercel.json", "vercel.config.js", ".vercel/project.json"]
   },
   "documentation_url": "https://vercel.com/docs",
   "setup_guide": "https://vercel.com/docs/get-started",
@@ -81,4 +55,4 @@
   "maintainer": "Vercel Inc.",
   "license": "UNLICENSED",
   "integrations": ["github", "gitlab", "bitbucket", "sentry", "datadog"]
- }
+}

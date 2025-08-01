@@ -1,5 +1,7 @@
 name: "Airtable Database Application Template"
-description: "Flexible database platform for teams with spreadsheet interface, automation, and collaboration features"
+description:
+  "Flexible database platform for teams with spreadsheet interface, automation, and collaboration
+  features"
 category: "no_code_platform"
 platforms: ["airtable"]
 version: "1.0.0"
@@ -35,7 +37,15 @@ variables:
     type: "string"
     required: true
     description: "Primary use case for the Airtable base"
-    examples: ["project_management", "crm", "content_calendar", "inventory_tracking", "event_planning", "hr_management"]
+    examples:
+      [
+        "project_management",
+        "crm",
+        "content_calendar",
+        "inventory_tracking",
+        "event_planning",
+        "hr_management",
+      ]
 
   team_size:
     type: "number"

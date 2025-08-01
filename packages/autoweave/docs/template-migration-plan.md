@@ -2,9 +2,9 @@
 
 ## Overview
 
-This document outlines the strategy and steps for migrating AutoPR's template system from the main repository to a
-dedicated template repository. The migration will improve maintainability, enable independent versioning, and simplify
-template contributions.
+This document outlines the strategy and steps for migrating AutoPR's template system from the main
+repository to a dedicated template repository. The migration will improve maintainability, enable
+independent versioning, and simplify template contributions.
 
 ## Current Template Inventory
 
@@ -189,60 +189,60 @@ autopr-templates/
 
 ## Template Categories for Migration
 
-| Category | Location | Description | Priority |
-|----------|----------|-------------|----------|
-| Docker | `templates/docker/` | Container configurations | High |
-| Deployment | `templates/deployment/` | CI/CD configurations | High |
-| Security | `templates/security/` | Security configurations | High |
-| Testing | `templates/testing/` | Test configurations | Medium |
-| Documentation | `templates/documentation/` | Documentation templates | Medium |
-| Platforms | `templates/platforms/` | Platform configurations | High |
-| Integrations | `templates/integrations/` | Third-party integrations | Medium |
-| TypeScript | `templates/typescript/` | TypeScript configurations | Low |
-| HTML | `templates/html/` | HTML templates | Low |
+| Category      | Location                   | Description               | Priority |
+| ------------- | -------------------------- | ------------------------- | -------- |
+| Docker        | `templates/docker/`        | Container configurations  | High     |
+| Deployment    | `templates/deployment/`    | CI/CD configurations      | High     |
+| Security      | `templates/security/`      | Security configurations   | High     |
+| Testing       | `templates/testing/`       | Test configurations       | Medium   |
+| Documentation | `templates/documentation/` | Documentation templates   | Medium   |
+| Platforms     | `templates/platforms/`     | Platform configurations   | High     |
+| Integrations  | `templates/integrations/`  | Third-party integrations  | Medium   |
+| TypeScript    | `templates/typescript/`    | TypeScript configurations | Low      |
+| HTML          | `templates/html/`          | HTML templates            | Low      |
 
 ## Risk Mitigation
 
 ### Technical Risks
 
 1. **Breaking Changes**
-    - Maintain backward compatibility
-    - Provide migration utilities
-    - Thorough testing
+   - Maintain backward compatibility
+   - Provide migration utilities
+   - Thorough testing
 
 1. **Performance Impact**
-    - Benchmark template loading
-    - Implement caching
-    - Profile critical paths
+   - Benchmark template loading
+   - Implement caching
+   - Profile critical paths
 
 ### Process Risks
 
 1. **Team Coordination**
-    - Clear communication plan
-    - Staged rollout
-    - Rollback procedures
+   - Clear communication plan
+   - Staged rollout
+   - Rollback procedures
 
 1. **Documentation**
-    - Keep documentation in sync
-    - Document known issues
-    - Maintain upgrade guides
+   - Keep documentation in sync
+   - Document known issues
+   - Maintain upgrade guides
 
 ## Success Metrics
 
 1. **Code Quality**
-    - 100% test coverage of new code
-    - No critical security issues
-    - Static type checking passing
+   - 100% test coverage of new code
+   - No critical security issues
+   - Static type checking passing
 
 1. **Performance**
-    - <100ms template loading time
-    - <5% increase in memory usage
-    - No regressions in application startup
+   - <100ms template loading time
+   - <5% increase in memory usage
+   - No regressions in application startup
 
 1. **Adoption**
-    - 90% template usage through new interface
-    - <5 support requests related to migration
-    - Positive community feedback
+   - 90% template usage through new interface
+   - <5 support requests related to migration
+   - Positive community feedback
 
 ## Next Steps
 
@@ -256,9 +256,9 @@ autopr-templates/
 
 ## Overview 2
 
-This document outlines the strategy and steps for migrating AutoPR's template system from the main repository to a
-dedicated template repository. The migration will improve maintainability, enable independent versioning, and simplify
-template contributions.
+This document outlines the strategy and steps for migrating AutoPR's template system from the main
+repository to a dedicated template repository. The migration will improve maintainability, enable
+independent versioning, and simplify template contributions.
 
 ## Current Template Inventory 2
 
@@ -443,60 +443,60 @@ autopr-templates/
 
 ## Template Categories for Migration 2
 
-| Category | Location | Description | Priority |
-|----------|----------|-------------|----------|
-| Docker | `templates/docker/` | Container configurations | High |
-| Deployment | `templates/deployment/` | CI/CD configurations | High |
-| Security | `templates/security/` | Security configurations | High |
-| Testing | `templates/testing/` | Test configurations | Medium |
-| Documentation | `templates/documentation/` | Documentation templates | Medium |
-| Platforms | `templates/platforms/` | Platform configurations | High |
-| Integrations | `templates/integrations/` | Third-party integrations | Medium |
-| TypeScript | `templates/typescript/` | TypeScript configurations | Low |
-| HTML | `templates/html/` | HTML templates | Low |
+| Category      | Location                   | Description               | Priority |
+| ------------- | -------------------------- | ------------------------- | -------- |
+| Docker        | `templates/docker/`        | Container configurations  | High     |
+| Deployment    | `templates/deployment/`    | CI/CD configurations      | High     |
+| Security      | `templates/security/`      | Security configurations   | High     |
+| Testing       | `templates/testing/`       | Test configurations       | Medium   |
+| Documentation | `templates/documentation/` | Documentation templates   | Medium   |
+| Platforms     | `templates/platforms/`     | Platform configurations   | High     |
+| Integrations  | `templates/integrations/`  | Third-party integrations  | Medium   |
+| TypeScript    | `templates/typescript/`    | TypeScript configurations | Low      |
+| HTML          | `templates/html/`          | HTML templates            | Low      |
 
 ## Risk Mitigation 2
 
 ### Technical Risks 2
 
 1. **Breaking Changes**
-    - Maintain backward compatibility
-    - Provide migration utilities
-    - Thorough testing
+   - Maintain backward compatibility
+   - Provide migration utilities
+   - Thorough testing
 
 1. **Performance Impact**
-    - Benchmark template loading
-    - Implement caching
-    - Profile critical paths
+   - Benchmark template loading
+   - Implement caching
+   - Profile critical paths
 
 ### Process Risks 2
 
 1. **Team Coordination**
-    - Clear communication plan
-    - Staged rollout
-    - Rollback procedures
+   - Clear communication plan
+   - Staged rollout
+   - Rollback procedures
 
 1. **Documentation**
-    - Keep documentation in sync
-    - Document known issues
-    - Maintain upgrade guides
+   - Keep documentation in sync
+   - Document known issues
+   - Maintain upgrade guides
 
 ## Success Metrics 2
 
 1. **Code Quality**
-    - 100% test coverage of new code
-    - No critical security issues
-    - Static type checking passing
+   - 100% test coverage of new code
+   - No critical security issues
+   - Static type checking passing
 
 1. **Performance**
-    - <100ms template loading time
-    - <5% increase in memory usage
-    - No regressions in application startup
+   - <100ms template loading time
+   - <5% increase in memory usage
+   - No regressions in application startup
 
 1. **Adoption**
-    - 90% template usage through new interface
-    - <5 support requests related to migration
-    - Positive community feedback
+   - 90% template usage through new interface
+   - <5 support requests related to migration
+   - Positive community feedback
 
 ## Next Steps 2
 

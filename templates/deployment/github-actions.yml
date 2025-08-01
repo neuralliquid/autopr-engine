@@ -10,7 +10,8 @@ template_info:
   type: "deployment_configuration"
   framework: "github_actions"
   target_audience: "DevOps engineers, developers, CI/CD specialists"
-  primary_use_cases: ["Continuous integration", "Automated deployment", "Testing automation", "Build pipelines"]
+  primary_use_cases:
+    ["Continuous integration", "Automated deployment", "Testing automation", "Build pipelines"]
 
 variables:
   workflow_name:

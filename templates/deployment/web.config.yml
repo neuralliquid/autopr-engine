@@ -1,6 +1,8 @@
 name: "Azure App Service Web.config"
 category: "deployment"
-description: "Azure App Service web.config for React SPA and Node.js applications with URL rewriting and security headers"
+description:
+  "Azure App Service web.config for React SPA and Node.js applications with URL rewriting and
+  security headers"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["azure", "app-service", "web.config", "deployment", "security", "spa"]
@@ -10,7 +12,8 @@ template_info:
   type: "deployment_configuration"
   framework: "React, Node.js"
   target_audience: "Azure developers, DevOps engineers"
-  primary_use_cases: ["Azure App Service deployment", "SPA routing", "Node.js hosting", "Security headers"]
+  primary_use_cases:
+    ["Azure App Service deployment", "SPA routing", "Node.js hosting", "Security headers"]
 
 variables:
   framework:
@@ -22,7 +25,8 @@ variables:
 
   enable_security_headers:
     type: "boolean"
-    description: "Enable security headers (X-Content-Type-Options, X-Frame-Options, X-XSS-Protection)"
+    description:
+      "Enable security headers (X-Content-Type-Options, X-Frame-Options, X-XSS-Protection)"
     default: true
     required: false
 

@@ -1,5 +1,7 @@
 name: "Webflow Visual Web Design Template"
-description: "Professional visual web design platform for designers and agencies with advanced styling and CMS capabilities"
+description:
+  "Professional visual web design platform for designers and agencies with advanced styling and CMS
+  capabilities"
 category: "no_code_platform"
 platforms: ["webflow"]
 version: "1.0.0"
@@ -64,7 +66,12 @@ variables:
     type: "array"
     default: ["desktop", "tablet", "mobile"]
     description: "Responsive design breakpoints to optimize for"
-    examples: [["desktop", "mobile"], ["desktop", "tablet", "mobile"], ["desktop", "tablet", "mobile", "mobile_landscape"]]
+    examples:
+      [
+        ["desktop", "mobile"],
+        ["desktop", "tablet", "mobile"],
+        ["desktop", "tablet", "mobile", "mobile_landscape"],
+      ]
 
 variants:
   portfolio_site:

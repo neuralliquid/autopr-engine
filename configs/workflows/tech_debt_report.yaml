@@ -9,7 +9,7 @@ weekly_tech_debt_report:
     - id: post_issue
       action: create_or_update_issue
       inputs:
-        title: 'Weekly Tech Debt Report'
+        title: "Weekly Tech Debt Report"
         body:
           var: report_body
-        find_label: 'tech-debt-report'
+        find_label: "tech-debt-report"

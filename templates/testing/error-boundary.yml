@@ -1,6 +1,7 @@
 name: "React Error Boundary Component Template"
 category: "testing"
-description: "Production-ready React Error Boundary component with error logging and user-friendly fallback UI"
+description:
+  "Production-ready React Error Boundary component with error logging and user-friendly fallback UI"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["testing", "react", "error_boundary", "error_handling", "production"]
@@ -10,7 +11,8 @@ template_info:
   type: "component_template"
   framework: "react"
   target_audience: "React developers, frontend engineers, production teams"
-  primary_use_cases: ["Error handling", "Production error recovery", "User experience", "Error logging"]
+  primary_use_cases:
+    ["Error handling", "Production error recovery", "User experience", "Error logging"]
 
 variables:
   component_name:

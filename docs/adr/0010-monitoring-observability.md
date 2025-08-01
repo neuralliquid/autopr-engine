@@ -6,7 +6,8 @@ Proposed
 
 ## Context
 
-AutoPR requires comprehensive monitoring to ensure reliability, performance, and quick issue resolution.
+AutoPR requires comprehensive monitoring to ensure reliability, performance, and quick issue
+resolution.
 
 ## Decision
 

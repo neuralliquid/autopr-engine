@@ -7,13 +7,13 @@ changelog_updater:
     - id: get_notes
       action: generate_release_notes
       inputs:
-        from_tag: '{{ tag_name }}'
+        from_tag: "{{ tag_name }}"
       outputs:
         release_notes: notes
     - id: update_changelog
       action: update_docs_file
       inputs:
-        filepath: 'CHANGELOG.md'
-        content: '{{ notes }}'
-        start_marker: '<!-- CHANGELOG:START -->'
-        end_marker: '<!-- CHANGELOG:END -->'
+        filepath: "CHANGELOG.md"
+        content: "{{ notes }}"
+        start_marker: "<!-- CHANGELOG:START -->"
+        end_marker: "<!-- CHANGELOG:END -->"

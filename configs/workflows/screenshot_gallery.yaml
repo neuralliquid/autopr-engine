@@ -5,13 +5,13 @@ screenshot_gallery:
     - id: take_screenshots
       action: take_screenshots
       inputs:
-        urls: ['/', '/about', '/pricing']
+        urls: ["/", "/about", "/pricing"]
       outputs:
         screenshot_paths: paths
     - id: update_gallery_doc
       action: update_docs_file
       inputs:
-        filepath: 'docs/screenshot-gallery.md'
+        filepath: "docs/screenshot-gallery.md"
         content: |
           # Screenshot Gallery
           {% for path in paths %}

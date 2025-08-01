@@ -1,5 +1,7 @@
 name: "AI-Powered Development Platform Tier Classification"
-description: "Classification of no-code, vibe coding, and AI agent builder platforms by market position, features, and target audience"
+description:
+  "Classification of no-code, vibe coding, and AI agent builder platforms by market position,
+  features, and target audience"
 category: "documentation"
 version: "2.0.0"
 last_updated: "2025-07-26"
@@ -14,8 +16,10 @@ platform_evolution:
     characteristics: ["Natural language prompts", "AI assistance", "Intent-focused development"]
 
   ai_agent_builders:
-    description: "Intelligent automation platforms with workflow orchestration and multi-agent systems"
-    characteristics: ["Workflow automation", "Multi-agent coordination", "Self-learning capabilities"]
+    description:
+      "Intelligent automation platforms with workflow orchestration and multi-agent systems"
+    characteristics:
+      ["Workflow automation", "Multi-agent coordination", "Self-learning capabilities"]
 
 category_definitions:
   no_code_platforms:
@@ -37,7 +41,9 @@ category_definitions:
 tier_definitions:
   tier_1:
     name: "Market Leaders"
-    description: "Established platforms with large user bases, comprehensive features, and strong market presence"
+    description:
+      "Established platforms with large user bases, comprehensive features, and strong market
+      presence"
     criteria:
       - "Large active user community (100k+ users)"
       - "Comprehensive feature set"
@@ -111,17 +117,25 @@ platform_classification:
 
       - name: "Google ADK"
         category: "ai_agent_builder"
-        strengths: ["Powers Google products", "Multi-agent by design", "Enterprise reliability", "Open-source"]
+        strengths:
+          [
+            "Powers Google products",
+            "Multi-agent by design",
+            "Enterprise reliability",
+            "Open-source",
+          ]
         target_audience: "Enterprise developers, AI engineers, Google Cloud customers"
 
       - name: "Gemini CLI"
         category: "ai_agent_builder"
-        strengths: ["Completely free", "Terminal integration", "Gemini 2.5 Pro access", "Developer-focused"]
+        strengths:
+          ["Completely free", "Terminal integration", "Gemini 2.5 Pro access", "Developer-focused"]
         target_audience: "Developers, DevOps engineers, terminal users"
 
       - name: "Google Opal"
         category: "vibe_coding_platform"
-        strengths: ["Natural language workflows", "Visual editor", "Google backing", "Instant sharing"]
+        strengths:
+          ["Natural language workflows", "Visual editor", "Google backing", "Instant sharing"]
         target_audience: "Creators, innovators, productivity enthusiasts, non-technical users"
 
   tier_2:
@@ -184,12 +198,24 @@ platform_classification:
 
       - name: "Microsoft Power Apps"
         category: "business_app"
-        strengths: ["Microsoft ecosystem", "enterprise features", "Dataverse integration", "professional support"]
+        strengths:
+          [
+            "Microsoft ecosystem",
+            "enterprise features",
+            "Dataverse integration",
+            "professional support",
+          ]
         target_audience: "enterprises and large businesses"
 
       - name: "WaveMaker"
         category: "enterprise"
-        strengths: ["AI code generation", "enterprise features", "single codebase deployment", "20+ years experience"]
+        strengths:
+          [
+            "AI code generation",
+            "enterprise features",
+            "single codebase deployment",
+            "20+ years experience",
+          ]
         target_audience: "enterprises and large businesses"
 
       - name: "Budibase"
@@ -199,19 +225,26 @@ platform_classification:
 
       - name: "Mendix"
         category: "enterprise"
-        strengths: ["full lifecycle management", "AI co-developer", "native mobile apps", "enterprise integrations"]
+        strengths:
+          [
+            "full lifecycle management",
+            "AI co-developer",
+            "native mobile apps",
+            "enterprise integrations",
+          ]
         target_audience: "enterprises and large businesses"
 
       - name: "Betty Blocks"
         category: "enterprise"
-        strengths: ["AI toolkit", "visual development", "enterprise integrations", "real-time collaboration"]
+        strengths:
+          ["AI toolkit", "visual development", "enterprise integrations", "real-time collaboration"]
         target_audience: "enterprises and large businesses"
 
       - name: "WeWeb"
         category: "frontend"
-        strengths: ["pixel-perfect design", "data source integrations", "PWA support", "custom CSS/JS"]
+        strengths:
+          ["pixel-perfect design", "data source integrations", "PWA support", "custom CSS/JS"]
         target_audience: "designers and developers"
-
 
   tier_3:
     platforms:
@@ -258,13 +291,15 @@ platform_classification:
 expansion_strategy:
   phase_4_tier_2:
     priority: "high"
-    platforms_to_implement: ["webflow", "adalo", "zapier", "airtable", "notion", "retool", "softr", "carrd"]
+    platforms_to_implement:
+      ["webflow", "adalo", "zapier", "airtable", "notion", "retool", "softr", "carrd"]
     timeline: "2-3 weeks"
     focus: "specialized use cases and professional features"
 
   phase_5_tier_3:
     priority: "medium"
-    platforms_to_implement: ["framer", "buildship", "supabase", "plasmic", "stacker", "bravo_studio", "draftbit", "xano"]
+    platforms_to_implement:
+      ["framer", "buildship", "supabase", "plasmic", "stacker", "bravo_studio", "draftbit", "xano"]
     timeline: "3-4 weeks"
     focus: "innovative features and emerging technologies"
 

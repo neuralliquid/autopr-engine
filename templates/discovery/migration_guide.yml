@@ -1,5 +1,6 @@
 name: "Platform Migration and Integration Guide"
-description: "Comprehensive guide for migrating between no-code platforms and integrating multiple templates"
+description:
+  "Comprehensive guide for migrating between no-code platforms and integrating multiple templates"
 version: "1.0.0"
 last_updated: "2024-01-01"
 

@@ -1,5 +1,7 @@
 name: "Retool Internal Tools Template"
-description: "Developer-focused low-code platform for building internal tools with 100+ components and full IDE capabilities"
+description:
+  "Developer-focused low-code platform for building internal tools with 100+ components and full IDE
+  capabilities"
 category: "no_code_platform"
 platforms: ["retool"]
 version: "1.0.0"
@@ -35,7 +37,8 @@ variables:
     type: "string"
     required: true
     description: "Category of internal tool to build"
-    examples: ["admin_panel", "dashboard", "crud_interface", "workflow_tool", "data_viewer", "api_frontend"]
+    examples:
+      ["admin_panel", "dashboard", "crud_interface", "workflow_tool", "data_viewer", "api_frontend"]
 
   data_complexity:
     type: "string"

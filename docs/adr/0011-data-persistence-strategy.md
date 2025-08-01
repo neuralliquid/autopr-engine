@@ -31,7 +31,6 @@ graph TD
 ### 2. Data Access Layer
 
 ```typescript
-
 interface DataStore<T> {
   get(id: string): Promise<T | null>;
   set(id: string, data: T): Promise<void>;
@@ -58,7 +57,6 @@ interface DataStore<T> {
 #### 3.3 Data Models
 
 ```typescript
-
 interface RepositoryConfig {
   id: string;
   name: string;
@@ -75,7 +73,7 @@ interface ExecutionLog {
   id: string;
   repositoryId: string;
   action: string;
-  status: 'pending' | 'running' | 'completed' | 'failed';
+  status: "pending" | "running" | "completed" | "failed";
   startedAt: Date;
   completedAt?: Date;
   metadata: Record<string, unknown>;
@@ -103,9 +101,9 @@ interface ExecutionLog {
    ```
 
 1. **Rollback Plan**
-    - Automated backups before migrations
-    - Blue/green deployment support
-    - Point-in-time recovery
+   - Automated backups before migrations
+   - Blue/green deployment support
+   - Point-in-time recovery
 
 ## Consequences
 

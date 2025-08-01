@@ -1,10 +1,9 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: ''
-labels: ''
-assignees: ''
-
+title: ""
+labels: ""
+assignees: ""
 ---
 
 ## Bug Description
@@ -43,7 +42,7 @@ A clear and concise description of what actually happened.
 
 ## Error Logs
 
-``` txt
+````txt
 Please paste any relevant error messages or logs here
 
 ```text
@@ -62,3 +61,4 @@ Add any other context about the problem here.
 - [ ] I have checked the documentation
 - [ ] I have provided all required information
 - [ ] I have removed sensitive information from logs/config
+````

@@ -1,9 +1,19 @@
 name: "Betty Blocks Enterprise No-Code Application"
 category: "enterprise"
-description: "Enterprise no-code platform for building scalable applications with AI toolkit and visual development environment"
+description:
+  "Enterprise no-code platform for building scalable applications with AI toolkit and visual
+  development environment"
 version: "1.0.0"
 author: "AutoPR Template System"
-tags: ["enterprise", "no-code", "ai-toolkit", "visual-development", "citizen-development", "workflow-automation"]
+tags:
+  [
+    "enterprise",
+    "no-code",
+    "ai-toolkit",
+    "visual-development",
+    "citizen-development",
+    "workflow-automation",
+  ]
 
 platform_info:
   name: "Betty Blocks"
@@ -12,7 +22,13 @@ platform_info:
   founded: "2012"
   pricing_model: "Subscription-based Enterprise Pricing"
   target_audience: "Enterprise organizations, IT professionals, business users"
-  primary_use_cases: ["Enterprise applications", "Workforce automation", "Digital transformation", "Process optimization"]
+  primary_use_cases:
+    [
+      "Enterprise applications",
+      "Workforce automation",
+      "Digital transformation",
+      "Process optimization",
+    ]
 
   key_features:
     - "Visual drag-and-drop development environment"
@@ -58,7 +74,15 @@ variables:
   app_category:
     type: "select"
     description: "Primary application category"
-    options: ["workforce_automation", "customer_portal", "data_management", "process_optimization", "compliance_tracking", "analytics_dashboard"]
+    options:
+      [
+        "workforce_automation",
+        "customer_portal",
+        "data_management",
+        "process_optimization",
+        "compliance_tracking",
+        "analytics_dashboard",
+      ]
     default: "workforce_automation"
     required: true
 
@@ -79,14 +103,32 @@ variables:
   ai_features:
     type: "multi_select"
     description: "AI toolkit features to implement"
-    options: ["semantic_search", "content_summarization", "entity_anonymization", "classification", "chatbot", "predictive_analytics"]
+    options:
+      [
+        "semantic_search",
+        "content_summarization",
+        "entity_anonymization",
+        "classification",
+        "chatbot",
+        "predictive_analytics",
+      ]
     default: ["semantic_search", "content_summarization"]
     required: false
 
   integration_requirements:
     type: "multi_select"
     description: "Enterprise system integrations"
-    options: ["sap", "microsoft_dynamics", "salesforce", "slack", "microsoft_365", "oracle", "workday", "servicenow"]
+    options:
+      [
+        "sap",
+        "microsoft_dynamics",
+        "salesforce",
+        "slack",
+        "microsoft_365",
+        "oracle",
+        "workday",
+        "servicenow",
+      ]
     default: ["microsoft_365", "slack"]
     required: true
 

@@ -2,15 +2,16 @@
 
 ## Overview
 
-AutoPR is built as a modular system with a clear separation of concerns across multiple packages, supporting both .NET
-and Python runtimes. This document outlines the package structure, responsibilities, and relationships between
-different components.
+AutoPR is built as a modular system with a clear separation of concerns across multiple packages,
+supporting both .NET and Python runtimes. This document outlines the package structure,
+responsibilities, and relationships between different components.
 
 ## Core Packages (NuGet/.NET)
 
 ### AutoPR.Core
 
-**NuGet**: `AutoPR.Core`**Purpose**: Core interfaces, models, and shared utilities used throughout the platform.
+**NuGet**: `AutoPR.Core`**Purpose**: Core interfaces, models, and shared utilities used throughout
+the platform.
 
 **Key Components**:
 
@@ -77,8 +78,8 @@ different components.
 
 ### @autopr/client (npm)
 
-**Package**: `@autopr/client`**Language**: TypeScript/JavaScript**Purpose**: Official TypeScript/JavaScript client for
-interacting with AutoPR services.
+**Package**: `@autopr/client`**Language**: TypeScript/JavaScript**Purpose**: Official
+TypeScript/JavaScript client for interacting with AutoPR services.
 
 **Features**:
 
@@ -134,7 +135,8 @@ myplugin/
 
 ### @autopr/plugin-github
 
-**Package**: `@autopr/plugin-github`**Type**: Integration Plugin**Purpose**: GitHub integration for AutoPR.
+**Package**: `@autopr/plugin-github`**Type**: Integration Plugin**Purpose**: GitHub integration for
+AutoPR.
 
 **Features**:
 
@@ -148,7 +150,8 @@ myplugin/
 
 ### @autopr/plugin-azure
 
-**Package**: `@autopr/plugin-azure`**Type**: Integration Plugin**Purpose**: Azure DevOps integration for AutoPR.
+**Package**: `@autopr/plugin-azure`**Type**: Integration Plugin**Purpose**: Azure DevOps integration
+for AutoPR.
 
 **Features**:
 
@@ -161,7 +164,8 @@ myplugin/
 
 ### @autopr/plugin-gitlab
 
-**Package**: `@autopr/plugin-gitlab`**Type**: Integration Plugin**Purpose**: GitLab integration for AutoPR.
+**Package**: `@autopr/plugin-gitlab`**Type**: Integration Plugin**Purpose**: GitLab integration for
+AutoPR.
 
 **Features**:
 
@@ -174,7 +178,8 @@ myplugin/
 
 ### @autopr/plugin-autoweave
 
-**Package**: `@autopr/plugin-autoweave`**Type**: Integration Plugin**Purpose**: AutoWeave integration for AutoPR.
+**Package**: `@autopr/plugin-autoweave`**Type**: Integration Plugin**Purpose**: AutoWeave
+integration for AutoPR.
 
 **Features**:
 
@@ -228,8 +233,8 @@ myplugin/
 
 #### @autoweave/templates-standard
 
-**Package**: `@autoweave/templates-standard`**Type**: Template Package**Purpose**: Standard Pull Request templates for
-common scenarios.
+**Package**: `@autoweave/templates-standard`**Type**: Template Package**Purpose**: Standard Pull
+Request templates for common scenarios.
 
 **Included Templates**:
 
@@ -243,7 +248,8 @@ common scenarios.
 
 #### @autoweave/templates-security
 
-**Package**: `@autoweave/templates-security`**Type**: Template Package**Purpose**: Security-focused PR templates and workflows.
+**Package**: `@autoweave/templates-security`**Type**: Template Package**Purpose**: Security-focused
+PR templates and workflows.
 
 **Included Templates**:
 
@@ -257,7 +263,8 @@ common scenarios.
 
 #### @autoweave/templates-ai
 
-**Package**: `@autoweave/templates-ai`**Type**: Template Package**Purpose**: AI/ML focused templates.
+**Package**: `@autoweave/templates-ai`**Type**: Template Package**Purpose**: AI/ML focused
+templates.
 
 **Included Templates**:
 
@@ -356,3 +363,4 @@ To contribute to any of the packages:
 ## License
 
 All packages are licensed under the MIT License unless otherwise specified.
+```

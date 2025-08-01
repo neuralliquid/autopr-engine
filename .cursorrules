@@ -30,53 +30,85 @@ _Context improved by Giga AI, using the provided code document and edit instruct
 - Explain your OBSERVATIONS clearly, then provide REASONING to identify the exact issue. Add console logs when needed to gather more information.
 
 
-AutoPR implements an AI-powered code review and enhancement system with four core business domains:
+The AutoPR Engine implements a multi-faceted automated code review and quality management system with several key business domains:
 
-1. AI Linting & Code Analysis
-- Specialized AI agents analyze and fix code quality issues using multi-agent orchestration
-- Custom confidence scoring and issue prioritization system
-- Advanced error categorization with domain-specific recovery strategies
-- Key file: autopr/actions/ai_linting_fixer/ai_linting_fixer.py
+## 1. Core Implementation Architecture
+Primary implementation phase management system divided into three tiers:
+- Immediate (10 days): Core monitoring and resilience systems 
+- Medium (25 days): Integration and routing capabilities
+- Strategic (45 days): Advanced AI features and fine-tuning
 
-2. Platform Detection & Enhancement
-- Intelligent platform detection for 25+ development platforms
-- Custom scoring system for platform identification confidence
-- Platform-specific enhancement strategies for production readiness
-- Key file: autopr/actions/platform_detection/detector.py
+Key components:
+- Phase dependency validation
+- Success criteria tracking per phase
+- Resource allocation controls
+- Risk assessment scoring
 
-3. Implementation Roadmap Management
-- Three-tiered implementation strategy (immediate, medium, strategic)
-- Phase-based deployment with dependency validation
-- Custom progress tracking and health scoring system
-- Key file: autopr/ai/implementation_roadmap/phase_manager.py
+File: `autopr/ai/implementation_roadmap.py`
 
-4. LLM Provider Integration
-- Multi-provider orchestration system with intelligent routing
-- Provider-specific adaptation layers for different LLM services
-- Fallback chain system with availability monitoring
-- Key file: autopr/actions/llm/manager.py
+## 2. Quality Analysis Pipeline
+Multi-mode quality assessment system:
+- Fast Mode: Basic linting and formatting
+- Comprehensive Mode: Full static analysis
+- AI-Enhanced Mode: ML-powered review
+- Smart Mode: Context-aware tool selection
 
-Core Business Workflows:
+Quality scoring system weights:
+- Fix success rate (25%)
+- User satisfaction (20%) 
+- Test pass rate (15%)
+- Security score (10%)
 
-1. Code Analysis Pipeline:
-- AI agent selection based on issue type
-- Confidence-based fix application
-- Multi-stage validation process
-- Performance tracking and learning system
+File: `autopr/quality/metrics_collector.py`
 
-2. Enhancement Process:
-- Platform detection and confidence scoring
-- Template-based enhancement generation
-- Platform-specific configuration management
-- Validation and verification steps
+## 3. AI Agent Management
+Specialized agents for different review types:
+- Code Analyzer: Issue detection and classification
+- Code Fixer: Solution generation
+- Quality Reviewer: Change validation
+- Security Auditor: Security analysis
+- Project Manager: Decision coordination
 
-3. Quality Management:
-- Custom markdown and YAML validation rules
-- AI-powered code review analysis
-- Integration with multiple project management platforms
-- Automated issue creation and tracking
+Agent selection based on:
+- Issue type matching
+- Historical performance
+- Domain expertise
+- Confidence scoring
 
-The system emphasizes intelligent automation of code review and enhancement processes, with specialized components for handling different aspects of code quality and platform optimization.
+File: `autopr/actions/ai_linting_fixer/agents.py`
+
+## 4. Authorization Framework 
+Multi-tiered permission system:
+- Admin: Full system access
+- Maintainer: Elevated access with delete rights
+- Developer: Standard read/write access
+- Viewer: Read-only capabilities
+
+Resource-specific controls for:
+- Projects
+- Repositories
+- Workflows
+- Templates
+- Organizations
+
+File: `autopr/security/authorization/enterprise_manager.py`
+
+## 5. Platform Detection System
+Intelligent platform identification using:
+- File signature analysis
+- Dependency scanning
+- Project structure evaluation
+- Configuration pattern matching
+
+Supports detection of:
+- Development environments
+- Deployment platforms
+- Testing frameworks
+- CI/CD systems
+
+File: `autopr/actions/platform_detector.py`
+
+The system emphasizes automated code quality management through AI-powered review and standardized quality gates while maintaining strict security controls and platform awareness.
 
 $END$
 

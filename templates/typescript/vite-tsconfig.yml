@@ -1,6 +1,8 @@
 name: "Vite TypeScript Configuration"
 category: "typescript"
-description: "TypeScript configuration optimized for Vite build tool with modern ES features and bundler module resolution"
+description:
+  "TypeScript configuration optimized for Vite build tool with modern ES features and bundler module
+  resolution"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["typescript", "vite", "configuration", "bundler", "modern"]

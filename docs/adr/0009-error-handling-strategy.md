@@ -6,7 +6,8 @@ Proposed
 
 ## Context
 
-AutoPR needs a consistent approach to handle errors across different components and services while providing meaningful feedback.
+AutoPR needs a consistent approach to handle errors across different components and services while
+providing meaningful feedback.
 
 ## Decision
 
@@ -15,19 +16,19 @@ We will implement a comprehensive error handling strategy with the following com
 ### Error Classification
 
 1. **Domain Errors**
-    - Business rule violations
-    - Validation failures
-    - Resource not found
+   - Business rule violations
+   - Validation failures
+   - Resource not found
 
 1. **Infrastructure Errors**
-    - Database connection issues
-    - Network timeouts
-    - External service failures
+   - Database connection issues
+   - Network timeouts
+   - External service failures
 
 1. **Security Errors**
-    - Authentication failures
-    - Authorization violations
-    - Rate limiting
+   - Authentication failures
+   - Authorization violations
+   - Rate limiting
 
 ### Error Response Format
 
@@ -60,22 +61,22 @@ We will implement a comprehensive error handling strategy with the following com
          message,
          details,
          timestamp: new Date(),
-         code: this.getErrorCode(type)
+         code: this.getErrorCode(type),
        });
      }
    }
    ```
 
 1. **Global Error Handler**
-    - Log errors with context
-    - Convert to appropriate HTTP status codes
-    - Mask sensitive information
-    - Generate error IDs for correlation
+   - Log errors with context
+   - Convert to appropriate HTTP status codes
+   - Mask sensitive information
+   - Generate error IDs for correlation
 
 1. **Retry Policies**
-    - Exponential backoff for transient errors
-    - Circuit breaker pattern
-    - Dead letter queues for failed operations
+   - Exponential backoff for transient errors
+   - Circuit breaker pattern
+   - Dead letter queues for failed operations
 
 ## Consequences
 
