@@ -11,162 +11,56 @@
     Context: [![GitHub Marketplace](<https://img.shields.io/badge/GitHub-Marketplace-blue)](https://github.com/marketplace/autopr-engine)>
   Line 14: docs/plans/IMPLEMENTATION_SUMMARY.md
     Context: > and developer experience. See [Implementation Summary](docs/plans/IMPLEMENTATION_SUMMARY.md) for
-  Line 143: docs/architecture.md
-    Context: - [**Architecture Overview**](docs/architecture.md) - System design and components
-  Line 144: docs/workflows.md
-    Context: - [**Workflow Guide**](docs/workflows.md) - Creating and customizing workflows
-  Line 145: docs/actions.md
-    Context: - [**Action Reference**](docs/actions.md) - Complete action documentation
-  Line 146: docs/integrations.md
-    Context: - [**Integration Guide**](docs/integrations.md) - Setting up external services
-  Line 150: docs/platforms/replit.md
-    Context: - [**Replit Integration**](docs/platforms/replit.md) - Prototype to production
-  Line 151: docs/integrations/axolo.md
-    Context: - [**Slack/Axolo Setup**](docs/integrations/axolo.md) - PR channel automation
-  Line 152: docs/integrations/linear.md
-    Context: - [**Linear Workflow**](docs/integrations/linear.md) - Issue management
-  Line 153: docs/deployment/azure.md
-    Context: - [**Azure Deployment**](docs/deployment/azure.md) - Cloud deployment guide
-  Line 157: docs/advanced/autogen.md
-    Context: - [**Multi-Agent AI**](docs/advanced/autogen.md) - AutoGen integration
-  Line 158: docs/advanced/memory.md
-    Context: - [**Memory Systems**](docs/advanced/memory.md) - Learning and patterns
-  Line 159: docs/advanced/custom-actions.md
-    Context: - [**Custom Actions**](docs/advanced/custom-actions.md) - Building your own
-  Line 160: docs/advanced/monitoring.md
-    Context: - [**Monitoring**](docs/advanced/monitoring.md) - Observability setup
-  Line 342: docs/integrations/slack.md
+  Line 143: docs/architecture/README.md
+    Context: - [**Architecture Overview**](docs/architecture/README.md) - System design and components
+  Line 345: docs/integrations/slack.md
     Context: - **[Slack](docs/integrations/slack.md)** - Channel automation with Axolo
-  Line 343: docs/integrations/teams.md
+  Line 346: docs/integrations/teams.md
     Context: - **[Microsoft Teams](docs/integrations/teams.md)** - Enterprise communication
-  Line 344: docs/integrations/discord.md
+  Line 347: docs/integrations/discord.md
     Context: - **[Discord](docs/integrations/discord.md)** - Community-focused teams
-  Line 345: docs/integrations/notion.md
+  Line 348: docs/integrations/notion.md
     Context: - **[Notion](docs/integrations/notion.md)** - Documentation automation
-  Line 349: docs/integrations/linear.md
+  Line 352: docs/integrations/linear.md
     Context: - **[Linear](docs/integrations/linear.md)** - Modern issue tracking
-  Line 350: docs/integrations/github.md
+  Line 353: docs/integrations/github.md
     Context: - **[GitHub Issues](docs/integrations/github.md)** - Native GitHub integration
-  Line 351: docs/integrations/jira.md
+  Line 354: docs/integrations/jira.md
     Context: - **[Jira](docs/integrations/jira.md)** - Enterprise project management
-  Line 355: docs/integrations/coderabbit.md
+  Line 358: docs/integrations/coderabbit.md
     Context: - **[CodeRabbit](docs/integrations/coderabbit.md)** - AI code review
-  Line 356: docs/integrations/copilot.md
+  Line 359: docs/integrations/copilot.md
     Context: - **[GitHub Copilot](docs/integrations/copilot.md)** - AI coding assistant
-  Line 357: docs/integrations/autogen.md
+  Line 360: docs/integrations/autogen.md
     Context: - **[AutoGen](docs/integrations/autogen.md)** - Multi-agent collaboration
-  Line 358: docs/features/platform-detection.md
+  Line 361: docs/features/platform-detection.md
     Context: - **[Platform Detection](docs/features/platform-detection.md)** - 25+ platforms
-  Line 383: CONTRIBUTING.md
+  Line 386: CONTRIBUTING.md
     Context: We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-  Line 398: <https://peps.python.org/pep-0008/
+  Line 401: <https://peps.python.org/pep-0008/
     Context: - Follow [PEP 8](<https://peps.python.org/pep-0008/)> style guidelines
-  Line 407: LICENSE
+  Line 410: LICENSE
     Context: This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-  Line 424: <https://autopr-engine.readthedocs.io
+  Line 427: <https://autopr-engine.readthedocs.io
     Context: - **Documentation**: [https://autopr-engine.readthedocs.io](<https://autopr-engine.readthedocs.io)>
 
 📁 C:\Users\smitj\repos\autopr\autopr-engine\docs\README.md:
-  Line 12: architecture/README.md
-    Context: - [Architecture Overview](architecture/README.md) - High-level system architecture
-  Line 20: adr/README.md
-    Context: - [ADR Index](adr/README.md) - All architecture decision records
-  Line 40: ../ENVIRONMENT_SETUP.md
-    Context: - [Environment Setup](../ENVIRONMENT_SETUP.md) - Complete environment configuration
-  Line 41: getting-started/installation.md
-    Context: - [Installation Guide](getting-started/installation.md) - Step-by-step installation
-  Line 42: getting-started/first-run.md
-    Context: - [First Run](getting-started/first-run.md) - Running your first analysis
-  Line 43: getting-started/configuration.md
-    Context: - [Configuration](getting-started/configuration.md) - Basic configuration setup
-  Line 49: development/setup.md
-    Context: - [Development Environment](development/setup.md) - Setting up for development
-  Line 50: development/contributing.md
-    Context: - [Contributing Guidelines](development/contributing.md) - How to contribute
-  Line 51: development/testing.md
-    Context: - [Testing Guide](development/testing.md) - Running tests and quality checks
-  Line 52: development/code-style.md
-    Context: - [Code Style](development/code-style.md) - Coding standards and conventions
-  Line 58: quality-engine/README.md
-    Context: - [Quality Engine Overview](quality-engine/README.md) - Understanding the quality engine
-  Line 59: quality-engine/ai-modes.md
-    Context: - [AI Analysis Modes](quality-engine/ai-modes.md) - Different analysis modes
-  Line 60: quality-engine/tools.md
-    Context: - [Tool Configuration](quality-engine/tools.md) - Configuring analysis tools
-  Line 61: quality-engine/custom-rules.md
-    Context: - [Custom Rules](quality-engine/custom-rules.md) - Creating custom analysis rules
-  Line 65: platform-detection/README.md
-    Context: - [Platform Detection Guide](platform-detection/README.md) - How platform detection works
-  Line 66: platform-detection/platforms.md
-    Context: - [Supported Platforms](platform-detection/platforms.md) - List of supported platforms
-  Line 67: platform-detection/custom-platforms.md
-    Context: - [Custom Platform Support](platform-detection/custom-platforms.md) - Adding new platforms
-  Line 71: security/README.md
-    Context: - [Security Overview](security/README.md) - Security framework introduction
-  Line 72: security/authentication.md
-    Context: - [Authentication](security/authentication.md) - User authentication
-  Line 73: security/authorization.md
-    Context: - [Authorization](security/authorization.md) - Access control and permissions
-  Line 74: security/zero-trust.md
-    Context: - [Zero-Trust Architecture](security/zero-trust.md) - Security principles
-  Line 80: api/README.md
-    Context: - [API Overview](api/README.md) - API documentation index
-  Line 81: api/quality-engine.md
+  Line 69: api/quality-engine.md
     Context: - [Quality Engine API](api/quality-engine.md) - Quality analysis endpoints
-  Line 82: api/platform-detection.md
+  Line 70: api/platform-detection.md
     Context: - [Platform Detection API](api/platform-detection.md) - Platform detection endpoints
-  Line 83: api/security.md
+  Line 71: api/security.md
     Context: - [Security API](api/security.md) - Authentication and authorization endpoints
-  Line 87: api/github.md
+  Line 75: api/github.md
     Context: - [GitHub Integration](api/github.md) - GitHub integration endpoints
-  Line 88: api/linear.md
+  Line 76: api/linear.md
     Context: - [Linear Integration](api/linear.md) - Linear integration endpoints
-  Line 89: api/custom-integrations.md
+  Line 77: api/custom-integrations.md
     Context: - [Custom Integrations](api/custom-integrations.md) - Building custom integrations
-  Line 95: deployment/docker.md
-    Context: - [Docker Deployment](deployment/docker.md) - Using Docker containers
-  Line 96: deployment/kubernetes.md
-    Context: - [Kubernetes Deployment](deployment/kubernetes.md) - Kubernetes deployment guide
-  Line 97: deployment/cloud.md
-    Context: - [Cloud Deployment](deployment/cloud.md) - Cloud platform deployment
-  Line 98: deployment/local.md
-    Context: - [Local Development](deployment/local.md) - Local development setup
-  Line 102: deployment/environment.md
-    Context: - [Environment Configuration](deployment/environment.md) - Environment variables
-  Line 103: deployment/database.md
-    Context: - [Database Configuration](deployment/database.md) - Database setup
-  Line 104: deployment/monitoring.md
-    Context: - [Monitoring Setup](deployment/monitoring.md) - Monitoring and logging
-  Line 142: development/architecture.md
-    Context: - [Code Organization](development/architecture.md) - Code structure and organization
-  Line 143: development/patterns.md
-    Context: - [Design Patterns](development/patterns.md) - Design patterns used
-  Line 144: development/testing-strategy.md
-    Context: - [Testing Strategy](development/testing-strategy.md) - Testing approach and tools
-  Line 148: development/tools.md
-    Context: - [Development Tools](development/tools.md) - Development and debugging tools
-  Line 149: development/quality-tools.md
-    Context: - [Quality Tools](development/quality-tools.md) - Code quality and analysis tools
-  Line 150: development/build.md
-    Context: - [Build System](development/build.md) - Build and deployment system
-  Line 164: ../examples/integrations/
+  Line 153: ../examples/integrations/
     Context: - [Integration Examples](../examples/integrations/) - Integration examples
-  Line 165: ../examples/custom-tools/
+  Line 154: ../examples/custom-tools/
     Context: - [Custom Tool Examples](../examples/custom-tools/) - Custom tool implementations
-  Line 171: support/faq.md
-    Context: - [FAQ](support/faq.md) - Frequently asked questions
-  Line 172: support/troubleshooting.md
-    Context: - [Troubleshooting](support/troubleshooting.md) - Common issues and solutions
-  Line 173: support/channels.md
-    Context: - [Support Channels](support/channels.md) - How to get help
-  Line 177: development/contributing.md
-    Context: - [Contributing Guide](development/contributing.md) - How to contribute
-  Line 178: community/code-of-conduct.md
-    Context: - [Code of Conduct](community/code-of-conduct.md) - Community guidelines
-  Line 179: development/setup.md
-    Context: - [Development Setup](development/setup.md) - Setting up for development
-  Line 187: development/contributing.md
-    Context: [Contributing Guide](development/contributing.md).
 
 📁 C:\Users\smitj\repos\autopr\autopr-engine\docs\adr\0001-hybrid-csharp-python-architecture.md:
   Line 54: 0003-plugin-system.md
