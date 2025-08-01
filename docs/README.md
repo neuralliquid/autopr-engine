@@ -9,14 +9,15 @@ review and quality management system with AI-powered analysis capabilities.
 
 ### **Core Components**
 
-- [Architecture Overview](architecture/README.md) - High-level system architecture
-- [Quality Engine](architecture/quality-engine.md) - AI-powered code analysis pipeline
-- [Security Framework](architecture/security-framework.md) - Enterprise-grade authorization system
-- [Platform Detection](architecture/platform-detection.md) - Intelligent platform identification
+- [Enhanced System Architecture](architecture/AUTOPR_ENHANCED_SYSTEM.md) - Comprehensive system
+  design
+- [Package Architecture](architecture/packages.md) - Package structure and organization
+- [Template Catalog](architecture/template_catalog.md) - Template system architecture
+- [Legacy Architecture](architecture/ARCHITECTURE_LEGACY.md) - Original architecture documentation
 
 ### **Architecture Decision Records (ADRs)**
 
-- [ADR Index](adr/README.md) - All architecture decision records
+- [ADR Directory](adr/) - All architecture decision records
 - [Hybrid C#/Python Architecture](adr/0001-hybrid-csharp-python-architecture.md)
 - [gRPC Communication](adr/0002-grpc-communication.md)
 - [Plugin System Architecture](adr/0003-plugin-system-architecture.md)
@@ -36,45 +37,35 @@ review and quality management system with AI-powered analysis capabilities.
 
 ### **Quick Start**
 
-- [Environment Setup](../ENVIRONMENT_SETUP.md) - Complete environment configuration
-- [Installation Guide](getting-started/installation.md) - Step-by-step installation
-- [First Run](getting-started/first-run.md) - Running your first analysis
-- [Configuration](getting-started/configuration.md) - Basic configuration setup
+- [Migration Guide](getting-started/MIGRATION_GUIDE.md) - Migration from previous versions
+- [Error Handler Guide](getting-started/ERROR_HANDLER_GUIDE.md) - Error handling and debugging
 
 ### **Development Setup**
 
-- [Development Environment](development/setup.md) - Setting up for development
-- [Contributing Guidelines](development/contributing.md) - How to contribute
-- [Testing Guide](development/testing.md) - Running tests and quality checks
-- [Code Style](development/code-style.md) - Coding standards and conventions
+- [Python 3.13 Upgrade](development/PYTHON_313_UPGRADE.md) - Python upgrade guide
+- [Windows Development](development/WINDOWS_DEVELOPMENT.md) - Windows development setup
+- [Code Quality](development/CODE_QUALITY.md) - Code quality standards and tools
+- [AI Linting Fixer](development/ai_linting_fixer.md) - AI-powered linting and fixing
 
 ## 📖 **User Guides**
 
 ### **Quality Engine**
 
-- [Quality Engine Overview](quality-engine/README.md) - Understanding the quality engine
-- [AI Analysis Modes](quality-engine/ai-modes.md) - Different analysis modes
-- [Tool Configuration](quality-engine/tools.md) - Configuring analysis tools
-- [Custom Rules](quality-engine/custom-rules.md) - Creating custom analysis rules
+- [AI Linting Fixer](development/ai_linting_fixer.md) - AI-powered code analysis
+- [Code Quality](development/CODE_QUALITY.md) - Code quality standards and tools
+- [Platform Detection](development/platform_detection.md) - Platform identification system
 
-### **Platform Detection**
+### **Development Tools**
 
-- [Platform Detection Guide](platform-detection/README.md) - How platform detection works
-- [Supported Platforms](platform-detection/platforms.md) - List of supported platforms
-- [Custom Platform Support](platform-detection/custom-platforms.md) - Adding new platforms
-
-### **Security Framework**
-
-- [Security Overview](security/README.md) - Security framework introduction
-- [Authentication](security/authentication.md) - User authentication
-- [Authorization](security/authorization.md) - Access control and permissions
-- [Zero-Trust Architecture](security/zero-trust.md) - Security principles
+- [Modular Refactoring](development/MODULAR_REFACTORING_SUMMARY.md) - Refactoring documentation
+- [AutoWeave Integration](development/autopr_autoweave_integration.md) - Integration guide
+- [Configuration Management](development/CONFIGURATION_EXTRACTION.md) - Configuration system
 
 ## 🔧 **API Reference**
 
 ### **Core API**
 
-- [API Overview](api/README.md) - API documentation index
+- [API Directory](api/) - API documentation index
 - [Quality Engine API](api/quality-engine.md) - Quality analysis endpoints
 - [Platform Detection API](api/platform-detection.md) - Platform detection endpoints
 - [Security API](api/security.md) - Authentication and authorization endpoints
@@ -89,16 +80,11 @@ review and quality management system with AI-powered analysis capabilities.
 
 ### **Deployment Options**
 
-- [Docker Deployment](deployment/docker.md) - Using Docker containers
-- [Kubernetes Deployment](deployment/kubernetes.md) - Kubernetes deployment guide
-- [Cloud Deployment](deployment/cloud.md) - Cloud platform deployment
-- [Local Development](deployment/local.md) - Local development setup
+- [Deployment Directory](deployment/) - Deployment guides and configurations
 
 ### **Configuration**
 
-- [Environment Configuration](deployment/environment.md) - Environment variables
-- [Database Configuration](deployment/database.md) - Database setup
-- [Monitoring Setup](deployment/monitoring.md) - Monitoring and logging
+- [Configuration Management](development/CONFIGURATION_EXTRACTION.md) - Configuration system
 
 ## 📋 **Planning & Roadmap**
 
@@ -106,30 +92,51 @@ review and quality management system with AI-powered analysis capabilities.
 
 - [Repository Structure Plan](plans/REPOSITORY_STRUCTURE_PLAN.md) - Repository organization
   improvements
+- [Enterprise Modernization Plan](plans/ENTERPRISE_MODERNIZATION_PLAN.md) - Enterprise system
+  modernization
+- [Modularization Plan](plans/modularization_plan.md) - Code modularization strategy
+- [Template Packaging Plan](plans/template-packaging-plan.md) - Template system packaging
+- [Product Roadmap](plans/ROADMAP.md) - Product development roadmap
 - [Phase 1 Quality Pipeline](plans/plan-phase1-quality-pipeline.md) - Quality engine implementation
 - [Phase 2 Security Framework](plans/plan-phase2-security-framework.md) - Security framework
   implementation
 - [Main Plan](plans/plan.md) - Overall project plan
+- [Legacy Plan](plans/PLAN_LEGACY.md) - Original project plan
 
-### **Roadmap**
+## 📊 **Analysis & Research**
 
-- [Product Roadmap](roadmap/README.md) - Product development roadmap
-- [Technical Roadmap](roadmap/technical.md) - Technical implementation roadmap
-- [Feature Timeline](roadmap/features.md) - Feature release timeline
+### **Ecosystem Analysis**
+
+- [AI Bots Ecosystem Analysis](analysis/AI_BOTS_ECOSYSTEM_ANALYSIS.md) - Comprehensive AI bots
+  ecosystem study
+- [AI Bots Ecosystem Directory](ai-bots-ecosystem/) - Detailed ecosystem documentation
 
 ## 🛠️ **Development**
 
+### **Development Guides**
+
+- [Python 3.13 Upgrade](development/PYTHON_313_UPGRADE.md) - Python upgrade guide
+- [Windows Development](development/WINDOWS_DEVELOPMENT.md) - Windows development setup
+- [Code Quality](development/CODE_QUALITY.md) - Code quality standards and tools
+- [AI Linting Fixer](development/ai_linting_fixer.md) - AI-powered linting and fixing
+- [Modular Refactoring Summary](development/MODULAR_REFACTORING_SUMMARY.md) - Refactoring
+  documentation
+- [AutoPR AutoWeave Integration](development/autopr_autoweave_integration.md) - Integration guide
+- [Configuration Extraction](development/CONFIGURATION_EXTRACTION.md) - Configuration management
+- [Platform Detection](development/platform_detection.md) - Platform detection implementation
+
 ### **Architecture**
 
-- [Code Organization](development/architecture.md) - Code structure and organization
-- [Design Patterns](development/patterns.md) - Design patterns used
-- [Testing Strategy](development/testing-strategy.md) - Testing approach and tools
+- [Enhanced System Architecture](architecture/AUTOPR_ENHANCED_SYSTEM.md) - Comprehensive system
+  design
+- [Package Architecture](architecture/packages.md) - Package structure and organization
+- [Template Catalog](architecture/template_catalog.md) - Template system architecture
 
 ### **Tools & Utilities**
 
-- [Development Tools](development/tools.md) - Development and debugging tools
-- [Quality Tools](development/quality-tools.md) - Code quality and analysis tools
-- [Build System](development/build.md) - Build and deployment system
+- [AI Linting Fixer](development/ai_linting_fixer.md) - AI-powered code analysis
+- [Code Quality](development/CODE_QUALITY.md) - Code quality standards and tools
+- [Platform Detection](development/platform_detection.md) - Platform identification system
 
 ## 📊 **Templates & Examples**
 
@@ -150,22 +157,21 @@ review and quality management system with AI-powered analysis capabilities.
 
 ### **Getting Help**
 
-- [FAQ](support/faq.md) - Frequently asked questions
-- [Troubleshooting](support/troubleshooting.md) - Common issues and solutions
-- [Support Channels](support/channels.md) - How to get help
+- [Error Handler Guide](getting-started/ERROR_HANDLER_GUIDE.md) - Error handling and debugging
+- [Windows Development](development/WINDOWS_DEVELOPMENT.md) - Windows development setup
+- [Migration Guide](getting-started/MIGRATION_GUIDE.md) - Migration from previous versions
 
 ### **Contributing**
 
-- [Contributing Guide](development/contributing.md) - How to contribute
-- [Code of Conduct](community/code-of-conduct.md) - Community guidelines
-- [Development Setup](development/setup.md) - Setting up for development
+- [Development Directory](development/) - Development guides and tools
+- [Code Quality](development/CODE_QUALITY.md) - Code quality standards
+- [AI Linting Fixer](development/ai_linting_fixer.md) - AI-powered code analysis
 
 ---
 
 ## 📝 **Documentation Maintenance**
 
 This documentation is maintained as part of the AutoPR Engine project. For questions, suggestions,
-or contributions to the documentation, please see the
-[Contributing Guide](development/contributing.md).
+or contributions to the documentation, please see the [Development Directory](development/).
 
-**Last Updated**: August 2025 **Version**: 1.0.0
+**Last Updated**: January 2025 **Version**: 1.1.0
