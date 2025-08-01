@@ -38,6 +38,7 @@ repos:
 
   # Quality Engine (disabled for pre-commit - too heavy for every commit)
   # Run manually with: python -m autopr.actions.quality_engine --mode=smart
+  # For comprehensive analysis: python -m autopr.actions.quality_engine --mode=comprehensive
   # - repo: local
   #   hooks:
   #     - id: quality-engine
