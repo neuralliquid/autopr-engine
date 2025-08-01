@@ -2,10 +2,10 @@
 
 ## Overview
 
-AutoWeave is a sophisticated templating system designed to streamline the creation, management, and deployment of code
-templates across various platforms and frameworks. This document outlines the comprehensive requirements, architecture,
-and implementation details for the AutoWeave templating system, including its modular architecture and integration with
-the AutoPR Engine.
+AutoWeave is a sophisticated templating system designed to streamline the creation, management, and
+deployment of code templates across various platforms and frameworks. This document outlines the
+comprehensive requirements, architecture, and implementation details for the AutoWeave templating
+system, including its modular architecture and integration with the AutoPR Engine.
 
 ## Problem Statement
 
@@ -15,9 +15,11 @@ The current template ecosystem faces several challenges:
 - **Inconsistency**: Varying template formats, structures, and quality standards
 - **Limited Reusability**: Difficult to share and reuse template components across projects
 - **Maintenance Overhead**: Updating templates requires changes in multiple locations
-- **Versioning Challenges**: No standardized approach to template versioning and dependency management
+- **Versioning Challenges**: No standardized approach to template versioning and dependency
+  management
 - **Documentation Gaps**: Inadequate or outdated documentation for many templates
-- **Integration Complexity**: Difficult to integrate with existing CI/CD pipelines and developer workflows
+- **Integration Complexity**: Difficult to integrate with existing CI/CD pipelines and developer
+  workflows
 
 ## Goals & Objectives
 

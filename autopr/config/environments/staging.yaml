@@ -6,7 +6,7 @@ debug: false
 
 # Monitoring settings for staging
 monitoring:
-  log_level: "DEBUG"  # More verbose logging for staging
+  log_level: "DEBUG" # More verbose logging for staging
   structured_logging: true
   enable_metrics: true
   enable_tracing: true
@@ -14,8 +14,8 @@ monitoring:
 
 # Workflow settings optimized for staging
 workflow:
-  max_concurrent: 10  # Moderate concurrency for staging
-  timeout: 300  # 5 minutes
+  max_concurrent: 10 # Moderate concurrency for staging
+  timeout: 300 # 5 minutes
   retry_attempts: 2
   retry_delay: 5
   enable_parallel_execution: true
@@ -30,7 +30,7 @@ database:
 
 # Redis settings for staging
 redis:
-  ssl: false  # May not have SSL in staging
+  ssl: false # May not have SSL in staging
   timeout: 5
   max_connections: 50
 
@@ -42,7 +42,7 @@ security:
     - "https://staging-api.autopr.dev"
   enable_csrf_protection: true
   rate_limit_per_minute: 120
-  jwt_expiry: 3600  # 1 hour
+  jwt_expiry: 3600 # 1 hour
 
 # LLM settings for staging
 llm:

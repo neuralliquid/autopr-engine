@@ -72,9 +72,9 @@ execution_config:
 
   # Success thresholds
   success_thresholds:
-    immediate: 0.8  # 80% tasks must succeed
-    medium: 0.7     # 70% tasks must succeed
-    strategic: 0.6  # 60% tasks must succeed
+    immediate: 0.8 # 80% tasks must succeed
+    medium: 0.7 # 70% tasks must succeed
+    strategic: 0.6 # 60% tasks must succeed
 
 # Rollback configuration
 rollback_config:

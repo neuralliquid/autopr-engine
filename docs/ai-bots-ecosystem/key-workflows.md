@@ -2,8 +2,8 @@
 
 ## 🔄 Complete Development Lifecycle with AI Automation
 
-Detailed workflows showing how AI tools interact throughout the development process, from PR creation to ticket
-resolution and deployment.
+Detailed workflows showing how AI tools interact throughout the development process, from PR
+creation to ticket resolution and deployment.
 
 ---
 
@@ -70,9 +70,7 @@ jobs:
 ```typescript
 // CodeRabbit identifies performance issue
 // Before:
-const users = await Promise.all(
-  userIds.map(id => fetchUser(id))
-);
+const users = await Promise.all(userIds.map((id) => fetchUser(id)));
 
 // CodeRabbit suggests:
 // "Consider using batch fetching to reduce API calls"
@@ -166,19 +164,20 @@ class LinearTicketCreator {
         ${reviewData.suggestion.description}
 
         ## Expected Benefits
-        - ${reviewData.suggestion.benefits.join('\n- ')}
+        - ${reviewData.suggestion.benefits.join("\n- ")}
 
         ## Implementation Estimate
         ${reviewData.suggestion.timeEstimate}
       `,
-      labels: ['ai-suggested', 'enhancement'],
+      labels: ["ai-suggested", "enhancement"],
       priority: this.calculatePriority(reviewData.suggestion.impact),
-      assignee: null  // Will be picked up by Charlie
+      assignee: null, // Will be picked up by Charlie
     });
 
     // Notify Charlie via Linear
-    await this.linear.addComment(ticket.id,
-      "@charlie this ticket is ready for autonomous implementation"
+    await this.linear.addComment(
+      ticket.id,
+      "@charlie this ticket is ready for autonomous implementation",
     );
 
     return ticket;
@@ -697,6 +696,6 @@ Based on workflow metrics analysis:
 
 ---
 
-*These workflows provide complete automation from code review to deployment, with AI systems handling routine tasks and
-escalating complex issues to appropriate specialists. The key is proper routing and clear handoff points between
-different AI systems.*
+_These workflows provide complete automation from code review to deployment, with AI systems
+handling routine tasks and escalating complex issues to appropriate specialists. The key is proper
+routing and clear handoff points between different AI systems._

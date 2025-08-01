@@ -64,7 +64,6 @@ module "autopr_service" {
 ### 2. CI/CD Pipeline
 
 ```yaml
-
 # .github/workflows/deploy.yml
 name: Deploy
 
@@ -72,7 +71,7 @@ on:
   push:
     branches:
       - main
-      - 'release/**'
+      - "release/**"
   workflow_dispatch:
 
 jobs:
@@ -134,19 +133,19 @@ jobs:
 ### 4. Rollback Strategy
 
 1. **Automated Rollback**
-    - Health check failures
-    - High error rates
-    - Performance degradation
+   - Health check failures
+   - High error rates
+   - Performance degradation
 
 1. **Manual Rollback**
-    - Via CI/CD pipeline
-    - Previous version promotion
-    - Database rollback if needed
+   - Via CI/CD pipeline
+   - Previous version promotion
+   - Database rollback if needed
 
 1. **Blue/Green Deployment**
-    - Zero-downtime deployments
-    - Instant rollback capability
-    - Traffic shifting between versions
+   - Zero-downtime deployments
+   - Instant rollback capability
+   - Traffic shifting between versions
 
 ## Consequences
 

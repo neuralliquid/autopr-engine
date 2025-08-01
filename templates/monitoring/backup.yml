@@ -1,6 +1,8 @@
 name: "Backup Script"
 category: "monitoring"
-description: "Bash script for automated backups of databases, files, and configurations with compression and timestamping"
+description:
+  "Bash script for automated backups of databases, files, and configurations with compression and
+  timestamping"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["backup", "bash", "database", "files", "automation", "postgresql", "mysql"]
@@ -10,7 +12,8 @@ template_info:
   type: "maintenance_script"
   framework: "Bash"
   target_audience: "DevOps engineers, system administrators"
-  primary_use_cases: ["Database backups", "File backups", "Configuration backups", "Automated maintenance"]
+  primary_use_cases:
+    ["Database backups", "File backups", "Configuration backups", "Automated maintenance"]
 
 variables:
   backup_dir:

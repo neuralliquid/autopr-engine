@@ -1,9 +1,19 @@
 name: "BuildShip Low-Code Backend Builder"
 category: "low-code-backend"
-description: "Visual low-code backend builder for creating custom APIs, workflows, and integrations with AI assistance"
+description:
+  "Visual low-code backend builder for creating custom APIs, workflows, and integrations with AI
+  assistance"
 version: "1.0.0"
 author: "AutoPR Template System"
-tags: ["low-code-backend", "visual-workflows", "api-builder", "ai-assisted", "integrations", "custom-logic"]
+tags:
+  [
+    "low-code-backend",
+    "visual-workflows",
+    "api-builder",
+    "ai-assisted",
+    "integrations",
+    "custom-logic",
+  ]
 
 platform_info:
   name: "BuildShip"
@@ -12,7 +22,14 @@ platform_info:
   founded: "2022"
   pricing_model: "Freemium with Usage-based Scaling"
   target_audience: "Developers, no-code builders, agencies, startups"
-  primary_use_cases: ["Custom APIs", "Workflow automation", "Backend logic", "Third-party integrations", "AI-powered workflows"]
+  primary_use_cases:
+    [
+      "Custom APIs",
+      "Workflow automation",
+      "Backend logic",
+      "Third-party integrations",
+      "AI-powered workflows",
+    ]
 
   key_features:
     - "Visual workflow builder for backend logic"
@@ -60,28 +77,65 @@ variables:
   workflow_type:
     type: "select"
     description: "Primary type of backend workflow"
-    options: ["api_endpoint", "data_processing", "automation_workflow", "integration_hub", "ai_workflow", "scheduled_task"]
+    options:
+      [
+        "api_endpoint",
+        "data_processing",
+        "automation_workflow",
+        "integration_hub",
+        "ai_workflow",
+        "scheduled_task",
+      ]
     default: "api_endpoint"
     required: true
 
   trigger_type:
     type: "select"
     description: "Workflow trigger mechanism"
-    options: ["http_request", "webhook", "scheduled_cron", "database_change", "file_upload", "external_event"]
+    options:
+      [
+        "http_request",
+        "webhook",
+        "scheduled_cron",
+        "database_change",
+        "file_upload",
+        "external_event",
+      ]
     default: "http_request"
     required: true
 
   data_sources:
     type: "multi_select"
     description: "Data sources and databases to integrate"
-    options: ["firebase", "supabase", "postgresql", "mongodb", "airtable", "google_sheets", "rest_api", "graphql"]
+    options:
+      [
+        "firebase",
+        "supabase",
+        "postgresql",
+        "mongodb",
+        "airtable",
+        "google_sheets",
+        "rest_api",
+        "graphql",
+      ]
     default: ["firebase", "rest_api"]
     required: true
 
   integrations:
     type: "multi_select"
     description: "Third-party services and integrations"
-    options: ["openai", "stripe", "sendgrid", "twilio", "slack", "discord", "zapier", "hubspot", "salesforce"]
+    options:
+      [
+        "openai",
+        "stripe",
+        "sendgrid",
+        "twilio",
+        "slack",
+        "discord",
+        "zapier",
+        "hubspot",
+        "salesforce",
+      ]
     default: ["openai", "sendgrid"]
     required: false
 
@@ -95,7 +149,15 @@ variables:
   ai_features:
     type: "multi_select"
     description: "AI-powered features and capabilities"
-    options: ["code_generation", "data_analysis", "content_processing", "image_analysis", "natural_language", "predictive_analytics"]
+    options:
+      [
+        "code_generation",
+        "data_analysis",
+        "content_processing",
+        "image_analysis",
+        "natural_language",
+        "predictive_analytics",
+      ]
     default: ["code_generation", "content_processing"]
     required: false
 
@@ -109,7 +171,14 @@ variables:
   security_requirements:
     type: "multi_select"
     description: "Security and authentication requirements"
-    options: ["api_authentication", "rate_limiting", "data_encryption", "user_permissions", "audit_logging"]
+    options:
+      [
+        "api_authentication",
+        "rate_limiting",
+        "data_encryption",
+        "user_permissions",
+        "audit_logging",
+      ]
     default: ["api_authentication", "rate_limiting"]
     required: true
 

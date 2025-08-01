@@ -1,9 +1,12 @@
 name: "Google Agent Development Kit (ADK) Template"
 category: "ai_agent_builder"
-description: "Google's enterprise-grade open-source framework for multi-agent system development - Powers Agentspace and Google CES"
+description:
+  "Google's enterprise-grade open-source framework for multi-agent system development - Powers
+  Agentspace and Google CES"
 version: "1.0.0"
 author: "AutoPR Template System"
-tags: ["ai_agent_builder", "multi_agent_systems", "google_cloud", "open_source", "enterprise_framework"]
+tags:
+  ["ai_agent_builder", "multi_agent_systems", "google_cloud", "open_source", "enterprise_framework"]
 
 platform_info:
   name: "Google Agent Development Kit (ADK)"
@@ -13,8 +16,16 @@ platform_info:
   founded: "2025"
   announcement: "Google Cloud NEXT 2025 (April 2025)"
   pricing_model: "Open-source with Google Cloud integration"
-  target_audience: "Enterprise developers, AI engineers, Google Cloud customers, multi-agent system architects"
-  primary_use_cases: ["Multi-agent system orchestration", "Enterprise AI automation", "Complex workflow coordination", "Agent delegation and hierarchy", "Production-ready AI applications"]
+  target_audience:
+    "Enterprise developers, AI engineers, Google Cloud customers, multi-agent system architects"
+  primary_use_cases:
+    [
+      "Multi-agent system orchestration",
+      "Enterprise AI automation",
+      "Complex workflow coordination",
+      "Agent delegation and hierarchy",
+      "Production-ready AI applications",
+    ]
 
   key_features:
     - "Open-source framework powering Google products"
@@ -61,56 +72,126 @@ variables:
   system_architecture:
     type: "select"
     description: "Architecture pattern for your agent system"
-    options: ["single_agent", "hierarchical_agents", "collaborative_agents", "specialized_agent_teams", "complex_multi_agent_orchestration"]
+    options:
+      [
+        "single_agent",
+        "hierarchical_agents",
+        "collaborative_agents",
+        "specialized_agent_teams",
+        "complex_multi_agent_orchestration",
+      ]
     default: "hierarchical_agents"
     required: true
 
   primary_models:
     type: "multi_select"
     description: "AI models to integrate in your system"
-    options: ["gemini_2_0_flash", "gemini_pro", "vertex_ai_models", "openai_gpt", "anthropic_claude", "custom_models", "local_models"]
+    options:
+      [
+        "gemini_2_0_flash",
+        "gemini_pro",
+        "vertex_ai_models",
+        "openai_gpt",
+        "anthropic_claude",
+        "custom_models",
+        "local_models",
+      ]
     default: ["gemini_2_0_flash", "vertex_ai_models"]
     required: true
 
   agent_capabilities:
     type: "multi_select"
     description: "Capabilities your agents should have"
-    options: ["natural_language_processing", "web_search", "data_analysis", "code_generation", "image_processing", "document_analysis", "api_integrations", "workflow_automation", "decision_making", "task_delegation"]
+    options:
+      [
+        "natural_language_processing",
+        "web_search",
+        "data_analysis",
+        "code_generation",
+        "image_processing",
+        "document_analysis",
+        "api_integrations",
+        "workflow_automation",
+        "decision_making",
+        "task_delegation",
+      ]
     default: ["natural_language_processing", "web_search", "task_delegation"]
     required: true
 
   deployment_environment:
     type: "select"
     description: "Where you plan to deploy your agent system"
-    options: ["google_cloud", "kubernetes", "docker_containers", "local_development", "hybrid_cloud", "multi_cloud"]
+    options:
+      [
+        "google_cloud",
+        "kubernetes",
+        "docker_containers",
+        "local_development",
+        "hybrid_cloud",
+        "multi_cloud",
+      ]
     default: "google_cloud"
     required: true
 
   interaction_modes:
     type: "multi_select"
     description: "How users will interact with your agent system"
-    options: ["cli_interface", "web_ui", "api_server", "python_api", "webhook_endpoints", "chat_interface", "voice_interface"]
+    options:
+      [
+        "cli_interface",
+        "web_ui",
+        "api_server",
+        "python_api",
+        "webhook_endpoints",
+        "chat_interface",
+        "voice_interface",
+      ]
     default: ["web_ui", "api_server"]
     required: true
 
   integration_requirements:
     type: "multi_select"
     description: "External systems to integrate with"
-    options: ["google_workspace", "salesforce", "slack", "databases", "crm_systems", "marketing_tools", "analytics_platforms", "custom_apis", "enterprise_software"]
+    options:
+      [
+        "google_workspace",
+        "salesforce",
+        "slack",
+        "databases",
+        "crm_systems",
+        "marketing_tools",
+        "analytics_platforms",
+        "custom_apis",
+        "enterprise_software",
+      ]
     default: ["google_workspace", "databases"]
     required: false
 
   scalability_needs:
     type: "select"
     description: "Expected scale and performance requirements"
-    options: ["development_prototype", "small_team", "department_scale", "enterprise_wide", "high_volume_production"]
+    options:
+      [
+        "development_prototype",
+        "small_team",
+        "department_scale",
+        "enterprise_wide",
+        "high_volume_production",
+      ]
     default: "department_scale"
     required: true
 
   evaluation_framework:
     type: "select"
     description: "Testing and evaluation approach"
-    options: ["basic_testing", "automated_evaluation", "comprehensive_testing", "production_monitoring", "custom_metrics"]
+    options:
+      [
+        "basic_testing",
+        "automated_evaluation",
+        "comprehensive_testing",
+        "production_monitoring",
+        "custom_metrics",
+      ]
     default: "automated_evaluation"
     required: true
 
@@ -119,7 +200,8 @@ variants:
     description: "Multi-agent customer service system with intelligent routing"
     variables:
       system_architecture: "specialized_agent_teams"
-      agent_capabilities: ["natural_language_processing", "web_search", "decision_making", "task_delegation"]
+      agent_capabilities:
+        ["natural_language_processing", "web_search", "decision_making", "task_delegation"]
       interaction_modes: ["web_ui", "api_server", "chat_interface"]
       integration_requirements: ["crm_systems", "slack", "databases"]
 
@@ -127,7 +209,14 @@ variants:
     description: "Large-scale enterprise automation with coordinated agent teams"
     variables:
       system_architecture: "complex_multi_agent_orchestration"
-      agent_capabilities: ["workflow_automation", "data_analysis", "api_integrations", "decision_making", "task_delegation"]
+      agent_capabilities:
+        [
+          "workflow_automation",
+          "data_analysis",
+          "api_integrations",
+          "decision_making",
+          "task_delegation",
+        ]
       deployment_environment: "kubernetes"
       scalability_needs: "enterprise_wide"
       evaluation_framework: "production_monitoring"
@@ -136,7 +225,8 @@ variants:
     description: "Collaborative research and analysis with specialized agents"
     variables:
       system_architecture: "collaborative_agents"
-      agent_capabilities: ["web_search", "document_analysis", "data_analysis", "natural_language_processing"]
+      agent_capabilities:
+        ["web_search", "document_analysis", "data_analysis", "natural_language_processing"]
       interaction_modes: ["web_ui", "python_api"]
       integration_requirements: ["databases", "analytics_platforms"]
 

@@ -1,5 +1,7 @@
 name: "Bubble Vibe Coding Template"
-description: "#2 Best vibe coding tool for complex web apps - Advanced AI-assisted coding with enterprise-grade features"
+description:
+  "#2 Best vibe coding tool for complex web apps - Advanced AI-assisted coding with enterprise-grade
+  features"
 category: "vibe_coding_platform"
 platforms: ["bubble"]
 file_extension: "md"
@@ -8,7 +10,8 @@ platform_info:
   name: "Bubble"
   type: "vibe_coding_platform"
   ranking: "#2 Best Vibe Coding Tool for Complex Web Apps (Cybernews 2025)"
-  vibe_coding_approach: "Visual vibe coding with advanced customization and enterprise-level capabilities"
+  vibe_coding_approach:
+    "Visual vibe coding with advanced customization and enterprise-level capabilities"
   pricing:
     free: "Learning and basic projects with 14-day trial"
     starter: "$29/month - Testing ideas and simple apps"
@@ -82,7 +85,9 @@ variants:
     modifications:
       - line: 25
         action: "add_after"
-        content: "- Seller registration and verification\n- Product approval workflow\n- Commission tracking\n- Seller dashboard"
+        content:
+          "- Seller registration and verification\n- Product approval workflow\n- Commission
+          tracking\n- Seller dashboard"
 
   with_social:
     name: "Social Features"
@@ -90,7 +95,8 @@ variants:
     modifications:
       - line: 30
         action: "add_after"
-        content: "- User messaging system\n- Activity feeds\n- Friend/follower system\n- Content sharing"
+        content:
+          "- User messaging system\n- Activity feeds\n- Friend/follower system\n- Content sharing"
 
 usage:
   - "MVP development for startups"
@@ -188,7 +194,8 @@ examples:
       app_type: "marketplace"
       data_structure: ["User", "Seller", "Product", "Order", "Review", "Category"]
       user_roles: ["Buyer", "Seller", "Admin"]
-      core_workflows: ["seller_registration", "product_listing", "order_processing", "review_system"]
+      core_workflows:
+        ["seller_registration", "product_listing", "order_processing", "review_system"]
     variants: ["with_payments", "with_marketplace"]
 
   project_manager:
@@ -199,5 +206,6 @@ examples:
       app_type: "business_tool"
       data_structure: ["User", "Project", "Task", "Team", "Comment", "File"]
       user_roles: ["Admin", "Project Manager", "Team Member", "Client"]
-      core_workflows: ["project_creation", "task_assignment", "progress_tracking", "team_collaboration"]
+      core_workflows:
+        ["project_creation", "task_assignment", "progress_tracking", "team_collaboration"]
     variants: ["with_social"]

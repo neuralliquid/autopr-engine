@@ -7,8 +7,8 @@
 [![License: MIT](<https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)>
 [![GitHub Marketplace](<https://img.shields.io/badge/GitHub-Marketplace-blue)](https://github.com/marketplace/autopr-engine)>
 
-AutoPR Engine is a comprehensive AI-powered automation platform that transforms GitHub pull request workflows through
-intelligent analysis, issue creation, and multi-agent collaboration.
+AutoPR Engine is a comprehensive AI-powered automation platform that transforms GitHub pull request
+workflows through intelligent analysis, issue creation, and multi-agent collaboration.
 
 ---
 
@@ -392,8 +392,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 **Support**
 
 - **Documentation**: [https://autopr-engine.readthedocs.io](<https://autopr-engine.readthedocs.io)>
-- **GitHub Issues**: [Report bugs and request features](<https://github.com/neuralliquid/autopr-engine/issues)>
-- **Discussions**: [Community discussions](<https://github.com/neuralliquid/autopr-engine/discussions)>
+- **GitHub Issues**: [Report bugs and request
+  features](<https://github.com/neuralliquid/autopr-engine/issues)>
+- **Discussions**: [Community
+  discussions](<https://github.com/neuralliquid/autopr-engine/discussions)>
 - **Email**: [support@neuralliquid.com](mailto:support@neuralliquid.com)
 
 ---

@@ -1,6 +1,8 @@
 name: "Google Opal AI Mini-Apps Template"
 category: "vibe_coding_platform"
-description: "Google's experimental no-code AI mini-app builder - Describe, create, and share AI-powered applications using natural language"
+description:
+  "Google's experimental no-code AI mini-app builder - Describe, create, and share AI-powered
+  applications using natural language"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["vibe_coding_platform", "ai_mini_apps", "no_code", "google_labs", "experimental"]
@@ -13,8 +15,16 @@ platform_info:
   founded: "2025"
   announcement: "July 24, 2025 - Google Labs"
   pricing_model: "Experimental public beta (US-only)"
-  target_audience: "Creators, innovators, productivity enthusiasts, non-technical users, rapid prototypers"
-  primary_use_cases: ["AI workflow prototyping", "Custom productivity tools", "Proof of concept development", "AI mini-app creation", "Workflow automation"]
+  target_audience:
+    "Creators, innovators, productivity enthusiasts, non-technical users, rapid prototypers"
+  primary_use_cases:
+    [
+      "AI workflow prototyping",
+      "Custom productivity tools",
+      "Proof of concept development",
+      "AI mini-app creation",
+      "Workflow automation",
+    ]
 
   key_features:
     - "No-code AI mini-app builder with natural language"
@@ -61,28 +71,66 @@ variables:
   app_category:
     type: "select"
     description: "Primary category of your mini-app"
-    options: ["productivity_tool", "content_creation", "data_analysis", "customer_service", "research_assistant", "workflow_automation", "creative_project", "educational_tool"]
+    options:
+      [
+        "productivity_tool",
+        "content_creation",
+        "data_analysis",
+        "customer_service",
+        "research_assistant",
+        "workflow_automation",
+        "creative_project",
+        "educational_tool",
+      ]
     default: "productivity_tool"
     required: true
 
   workflow_complexity:
     type: "select"
     description: "Complexity level of your workflow"
-    options: ["simple_prompt_response", "multi_step_sequence", "conditional_logic", "data_processing", "complex_automation"]
+    options:
+      [
+        "simple_prompt_response",
+        "multi_step_sequence",
+        "conditional_logic",
+        "data_processing",
+        "complex_automation",
+      ]
     default: "multi_step_sequence"
     required: true
 
   ai_capabilities:
     type: "multi_select"
     description: "AI capabilities to include in your mini-app"
-    options: ["text_generation", "content_analysis", "data_extraction", "summarization", "translation", "question_answering", "creative_writing", "code_generation", "image_analysis"]
+    options:
+      [
+        "text_generation",
+        "content_analysis",
+        "data_extraction",
+        "summarization",
+        "translation",
+        "question_answering",
+        "creative_writing",
+        "code_generation",
+        "image_analysis",
+      ]
     default: ["text_generation", "content_analysis"]
     required: true
 
   data_sources:
     type: "multi_select"
     description: "Data sources your mini-app will work with"
-    options: ["user_input", "file_uploads", "web_search", "google_services", "apis", "databases", "spreadsheets", "documents"]
+    options:
+      [
+        "user_input",
+        "file_uploads",
+        "web_search",
+        "google_services",
+        "apis",
+        "databases",
+        "spreadsheets",
+        "documents",
+      ]
     default: ["user_input", "web_search"]
     required: false
 
@@ -103,7 +151,17 @@ variables:
   integration_needs:
     type: "multi_select"
     description: "External integrations required"
-    options: ["google_workspace", "email", "calendar", "drive", "sheets", "docs", "third_party_apis", "webhooks"]
+    options:
+      [
+        "google_workspace",
+        "email",
+        "calendar",
+        "drive",
+        "sheets",
+        "docs",
+        "third_party_apis",
+        "webhooks",
+      ]
     default: ["google_workspace", "email"]
     required: false
 
@@ -121,7 +179,8 @@ variants:
     variables:
       app_category: "research_assistant"
       workflow_complexity: "complex_automation"
-      ai_capabilities: ["content_analysis", "summarization", "data_extraction", "question_answering"]
+      ai_capabilities:
+        ["content_analysis", "summarization", "data_extraction", "question_answering"]
       data_sources: ["web_search", "file_uploads", "apis"]
 
   customer_support_helper:

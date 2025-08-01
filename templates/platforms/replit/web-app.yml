@@ -1,5 +1,6 @@
 name: "Replit Collaborative Development Template"
-description: "Multi-language collaborative development platform with AI assistance and real-time collaboration"
+description:
+  "Multi-language collaborative development platform with AI assistance and real-time collaboration"
 category: "no_code_platform"
 platforms: ["replit"]
 file_extension: "md"
@@ -57,7 +58,9 @@ variants:
     modifications:
       - line: 15
         action: "add_after"
-        content: "- Database integration (SQLite, PostgreSQL, MongoDB)\n- ORM/ODM setup and configuration\n- Database migration scripts"
+        content:
+          "- Database integration (SQLite, PostgreSQL, MongoDB)\n- ORM/ODM setup and
+          configuration\n- Database migration scripts"
 
   with_ai_assistance:
     name: "With Enhanced AI Features"
@@ -65,7 +68,9 @@ variants:
     modifications:
       - line: 20
         action: "add_after"
-        content: "- AI-powered code completion\n- Automated debugging assistance\n- Code explanation and documentation\n- Refactoring suggestions"
+        content:
+          "- AI-powered code completion\n- Automated debugging assistance\n- Code explanation and
+          documentation\n- Refactoring suggestions"
 
   with_deployment:
     name: "With Production Deployment"
@@ -73,7 +78,9 @@ variants:
     modifications:
       - line: 25
         action: "add_after"
-        content: "- Production environment setup\n- Environment variable management\n- Custom domain configuration\n- SSL certificate setup"
+        content:
+          "- Production environment setup\n- Environment variable management\n- Custom domain
+          configuration\n- SSL certificate setup"
 
 usage:
   - "Rapid prototyping and MVP development"

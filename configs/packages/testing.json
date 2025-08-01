@@ -1,17 +1,10 @@
 {
-  "common": [
-    "jest",
-    "supertest"
-  ],
+  "common": ["jest", "supertest"],
   "react": [
     "@testing-library/react",
     "@testing-library/jest-dom",
     "@testing-library/user-event",
     "playwright"
   ],
-  "node": [
-    "mocha",
-    "chai",
-    "sinon"
-  ]
+  "node": ["mocha", "chai", "sinon"]
 }

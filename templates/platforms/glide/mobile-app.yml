@@ -1,5 +1,6 @@
 name: "Glide Vibe Coding Template"
-description: "#3 Best vibe coding tool for data-driven apps - Smart coding with spreadsheet-to-app conversions"
+description:
+  "#3 Best vibe coding tool for data-driven apps - Smart coding with spreadsheet-to-app conversions"
 category: "vibe_coding_platform"
 platforms: ["glide"]
 file_extension: "md"
@@ -58,7 +59,8 @@ variants:
     modifications:
       - line: 15
         action: "add_after"
-        content: "- User registration and login\n- Profile customization\n- User-specific data views"
+        content:
+          "- User registration and login\n- Profile customization\n- User-specific data views"
 
   with_submissions:
     name: "With Data Submissions"
@@ -66,7 +68,8 @@ variants:
     modifications:
       - line: 20
         action: "add_after"
-        content: "- Add new entries form\n- Edit existing data\n- Photo and file uploads\n- Data validation"
+        content:
+          "- Add new entries form\n- Edit existing data\n- Photo and file uploads\n- Data validation"
 
   with_location:
     name: "With Location Features"
@@ -74,7 +77,9 @@ variants:
     modifications:
       - line: 25
         action: "add_after"
-        content: "- GPS location tracking\n- Map integration\n- Location-based filtering\n- Check-in functionality"
+        content:
+          "- GPS location tracking\n- Map integration\n- Location-based filtering\n- Check-in
+          functionality"
 
 usage:
   - "Employee directories and contact apps"
@@ -100,7 +105,8 @@ data_structure_examples:
     features: ["Search by name/department", "Contact directly", "Office maps"]
 
   product_catalog:
-    columns: ["Product Name", "Category", "Price", "Description", "Images", "Availability", "Supplier"]
+    columns:
+      ["Product Name", "Category", "Price", "Description", "Images", "Availability", "Supplier"]
     features: ["Browse by category", "Search products", "Price filtering", "Supplier contact"]
 
   event_tracker:
@@ -166,10 +172,12 @@ examples:
       data_source: "google_sheets"
       app_category: "catalog"
       target_users: "restaurant customers"
-      key_features: ["browse_menu", "category_filter", "item_photos", "allergen_info", "order_online"]
+      key_features:
+        ["browse_menu", "category_filter", "item_photos", "allergen_info", "order_online"]
     variants: ["with_submissions"]
     data_structure:
-      columns: ["Item Name", "Category", "Price", "Description", "Photo URL", "Allergens", "Available"]
+      columns:
+        ["Item Name", "Category", "Price", "Description", "Photo URL", "Allergens", "Available"]
 
   team_directory:
     name: "Company Team Directory"

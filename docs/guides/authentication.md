@@ -2,9 +2,9 @@
 
 ## Overview
 
-The Tezos Liquidity Management platform implements a version-aware authentication system that supports both standard
-and corporate user flows. The system is built on Supabase Auth and includes route protection, social login options, and
-version-specific redirects.
+The Tezos Liquidity Management platform implements a version-aware authentication system that
+supports both standard and corporate user flows. The system is built on Supabase Auth and includes
+route protection, social login options, and version-specific redirects.
 
 ## Table of Contents
 
@@ -69,7 +69,8 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 
 ### Version-Specific Redirects
 
-The system automatically detects which version (standard/corporate) the user is using and redirects accordingly:
+The system automatically detects which version (standard/corporate) the user is using and redirects
+accordingly:
 
 - Standard users → `/standard/dashboard`
 - Corporate users → `/corporate/dashboard`
@@ -92,7 +93,7 @@ const protectedPatterns = [
   "/corporate/strategies",
   "/standard/pools",
   "/corporate/pools",
-]
+];
 ```
 
 ### Adding New Protected Routes
@@ -119,7 +120,7 @@ const publicRoutes = [
   "/auth/login",
   "/auth/register",
   "/auth/reset-password",
-]
+];
 ```
 
 ## Version-Aware Components
@@ -129,21 +130,16 @@ const publicRoutes = [
 The `VersionAwareLoginForm` component adapts its styling and behavior based on the version:
 
 ```tsx
-<VersionAwareLoginForm
-  version="corporate"
-  redirectTo="/corporate/dashboard"
-/>
+<VersionAwareLoginForm version="corporate" redirectTo="/corporate/dashboard" />
 ```
 
 ### Social Logins
 
-The `VersionAwareSocialLogins` component provides social login options with version-specific redirects:
+The `VersionAwareSocialLogins` component provides social login options with version-specific
+redirects:
 
 ```tsx
-<VersionAwareSocialLogins
-  version="standard"
-  redirectTo="/standard/dashboard"
-/>
+<VersionAwareSocialLogins version="standard" redirectTo="/standard/dashboard" />
 ```
 
 ### Register Form
@@ -151,10 +147,7 @@ The `VersionAwareSocialLogins` component provides social login options with vers
 The `VersionAwareRegisterForm` component adapts its styling and behavior based on the version:
 
 ```tsx
-<VersionAwareRegisterForm
-  version="corporate"
-  redirectTo="/corporate/dashboard"
-/>
+<VersionAwareRegisterForm version="corporate" redirectTo="/corporate/dashboard" />
 ```
 
 ## Configuration Options
@@ -165,14 +158,14 @@ The auth service accepts configuration options:
 
 ```typescript
 type AuthRedirectOptions = {
-  redirectTo?: string
-  version?: "standard" | "corporate"
-}
+  redirectTo?: string;
+  version?: "standard" | "corporate";
+};
 
 signInWithEmail(email, password, {
   version: "corporate",
-  redirectTo: "/corporate/dashboard/analytics"
-})
+  redirectTo: "/corporate/dashboard/analytics",
+});
 ```
 
 ### Protected Route Component Options
@@ -200,7 +193,8 @@ The `ProtectedRoute` component accepts a custom redirect URL:
 
 ### OAuth Callback Handling
 
-The system includes a callback handler at `/auth/callback/route.ts` that processes OAuth redirects and:
+The system includes a callback handler at `/auth/callback/route.ts` that processes OAuth redirects
+and:
 
 1. Exchanges the authorization code for a session
 2. Updates user metadata with version information
@@ -215,8 +209,8 @@ The system includes a callback handler at `/auth/callback/route.ts` that process
 
 **Symptom**: User is caught in a redirect loop between login and dashboard
 
-**Solution**: Check that the middleware is correctly identifying authenticated users. Verify that cookies are being
-properly set and read.
+**Solution**: Check that the middleware is correctly identifying authenticated users. Verify that
+cookies are being properly set and read.
 
 #### Social Login Failure
 
@@ -228,8 +222,8 @@ properly set and read.
 
 **Symptom**: Unauthenticated users can access protected routes
 
-**Solution**: Verify that the route is included in the `protectedPatterns` array and that the middleware is running on
-that route.
+**Solution**: Verify that the route is included in the `protectedPatterns` array and that the
+middleware is running on that route.
 
 #### Version-Specific Styling Not Applied
 
@@ -279,4 +273,5 @@ To add MFA support:
 - [Next.js Middleware Documentation](<https://nextjs.org/docs/advanced-features/middleware)>
 - [OAuth 2.0 Flow Explained](<https://auth0.com/docs/authorization/flows)>
 
-For further assistance, contact the development team at [support@example.com](mailto:support@example.com).
+For further assistance, contact the development team at
+[support@example.com](mailto:support@example.com).

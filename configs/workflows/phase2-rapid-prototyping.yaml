@@ -4,7 +4,12 @@ description: "Automated workflow for converting rapid prototypes to production-r
 triggers:
   - on: push
     branches: [main, develop]
-    condition: "contains(github.event.head_commit.message, 'replit') || contains(github.event.head_commit.message, 'lovable') || contains(github.event.head_commit.message, 'bolt') || contains(github.event.head_commit.message, 'same') || contains(github.event.head_commit.message, 'emergent')"
+    condition:
+      "contains(github.event.head_commit.message, 'replit') ||
+      contains(github.event.head_commit.message, 'lovable') ||
+      contains(github.event.head_commit.message, 'bolt') ||
+      contains(github.event.head_commit.message, 'same') ||
+      contains(github.event.head_commit.message, 'emergent')"
 
   - on: repository_dispatch
     event_types: [prototype-export, replit-export, lovable-export, bolt-export]

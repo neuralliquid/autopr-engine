@@ -1,11 +1,12 @@
 # Configuration and Template Extraction
 
-This document describes the systematic extraction and organization of embedded JSON and YAML configurations from the
-AutoPR engine codebase into a clean, maintainable directory structure.
+This document describes the systematic extraction and organization of embedded JSON and YAML
+configurations from the AutoPR engine codebase into a clean, maintainable directory structure.
 
 ## Overview
 
-All embedded JSON and YAML configuration data has been extracted from Python files and organized into two main directories:
+All embedded JSON and YAML configuration data has been extracted from Python files and organized
+into two main directories:
 
 - `configs/` - Reusable configuration files for platforms, packages, workflows, and triggers
 - `templates/` - File generation templates for builds, deployments, testing, and monitoring
@@ -14,7 +15,7 @@ All embedded JSON and YAML configuration data has been extracted from Python fil
 
 ### Configs/ (Reusable Configuration Files)
 
-``` text
+````text
 configs/
 ├── README.md                    # Configuration directory overview
 ├── platforms/                  # Platform-specific configurations
@@ -87,15 +88,18 @@ templates/
     ├── monitor.sh             # System monitoring script
     ├── backup.sh              # Backup script
     └── restore.sh             # Restore script
-```
+````
 
 ## Extraction Sources
 
 ### Python Files Processed
 
-1. **file_generators.py** (873 lines) - Contains JSON templates for TypeScript configs, Dockerfiles, deployment configs, monitoring and backup scripts
-2. **enhancement_strategies.py** (548 lines) - Contains build configs (Vite, Vitest), PM2 process manager config, and other template strings
-3. **platform_configs.py** (572 lines) - Contains platform definitions, package dependency lists, deployment configurations, and production checklists
+1. **file_generators.py** (873 lines) - Contains JSON templates for TypeScript configs, Dockerfiles,
+   deployment configs, monitoring and backup scripts
+2. **enhancement_strategies.py** (548 lines) - Contains build configs (Vite, Vitest), PM2 process
+   manager config, and other template strings
+3. **platform_configs.py** (572 lines) - Contains platform definitions, package dependency lists,
+   deployment configurations, and production checklists
 
 ### YAML Files Organized
 
@@ -182,5 +186,5 @@ dockerfile_content = load_template("docker", "react.dockerfile")
 tsconfig_content = load_template("typescript", "react-tsconfig.json")
 ```
 
-This extraction significantly improves the maintainability, reusability, and clarity of configuration management in the
-AutoPR engine while preserving all original functionality.
+This extraction significantly improves the maintainability, reusability, and clarity of
+configuration management in the AutoPR engine while preserving all original functionality.

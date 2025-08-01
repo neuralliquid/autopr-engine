@@ -1,5 +1,6 @@
 name: "Zapier Workflow Automation Template"
-description: "Business process automation platform connecting apps and services with no-code workflow logic"
+description:
+  "Business process automation platform connecting apps and services with no-code workflow logic"
 category: "no_code_platform"
 platforms: ["zapier"]
 version: "1.0.0"
@@ -36,7 +37,15 @@ variables:
     type: "string"
     required: true
     description: "Primary type of automation workflow"
-    examples: ["data_sync", "notification", "lead_management", "content_publishing", "task_management", "reporting"]
+    examples:
+      [
+        "data_sync",
+        "notification",
+        "lead_management",
+        "content_publishing",
+        "task_management",
+        "reporting",
+      ]
 
   trigger_app:
     type: "string"

@@ -2,14 +2,14 @@
 
 ## 🔍 Automated PR Review & Code Quality Analysis
 
-AI-powered code review bots provide instant, consistent feedback on pull requests, catching bugs, security issues, and
-style violations before human reviewers see the code.
+AI-powered code review bots provide instant, consistent feedback on pull requests, catching bugs,
+security issues, and style violations before human reviewers see the code.
 
 ---
 
 ## Tier 1 - Advanced AI Review Specialists
 
-### **1. CodeRabbit AI** ⭐⭐⭐⭐⭐ *Most Advanced*
+### **1. CodeRabbit AI** ⭐⭐⭐⭐⭐ _Most Advanced_
 
 **Pricing**: Free trial + $12/month per developer**Core Skill**: Advanced code review with learning
 capabilities**Interaction Methods**:
@@ -35,9 +35,10 @@ capabilities**Interaction Methods**:
 - Supports 30+ programming languages
 - Enterprise-grade security and compliance
 
-### **2. Korbit AI** ⭐⭐⭐⭐⭐ *AI Mentor*
+### **2. Korbit AI** ⭐⭐⭐⭐⭐ _AI Mentor_
 
-**Pricing**: Custom enterprise pricing**Core Skill**: AI mentor for code quality and developer upskilling**Interaction Methods**:
+**Pricing**: Custom enterprise pricing**Core Skill**: AI mentor for code quality and developer
+upskilling**Interaction Methods**:
 
 - GitHub PR reviews with educational explanations
 - Mentoring dashboard for skill development tracking
@@ -60,10 +61,10 @@ capabilities**Interaction Methods**:
 - Provides contextual learning opportunities
 - Tracks team skill development over time
 
-### **3. Greptile** ⭐⭐⭐⭐ *Natural Language Codebase Search*
+### **3. Greptile** ⭐⭐⭐⭐ _Natural Language Codebase Search_
 
-**Pricing**: Free tier + $50/month Pro**Core Skill**: Natural language codebase search and understanding**Language
-Support**: 500+ programming languages
+**Pricing**: Free tier + $50/month Pro**Core Skill**: Natural language codebase search and
+understanding**Language Support**: 500+ programming languages
 
 **Interaction Methods**:
 
@@ -87,8 +88,8 @@ Support**: 500+ programming languages
 
 ### **4. SonarQube/SonarCloud** ⭐⭐⭐⭐
 
-**Pricing**: Free tier + $10/month per developer (Cloud)**Core Skill**: Comprehensive code quality and security
-analysis**Interaction Methods**:
+**Pricing**: Free tier + $10/month per developer (Cloud)**Core Skill**: Comprehensive code quality
+and security analysis**Interaction Methods**:
 
 - GitHub/GitLab PR decoration with quality gates
 - IDE plugins for real-time feedback
@@ -106,7 +107,8 @@ analysis**Interaction Methods**:
 
 ### **5. DeepCode (now Snyk Code)** ⭐⭐⭐⭐
 
-**Pricing**: Free tier + $25/month per developer**Core Skill**: AI-powered security and quality analysis**Interaction Methods**:
+**Pricing**: Free tier + $25/month per developer**Core Skill**: AI-powered security and quality
+analysis**Interaction Methods**:
 
 - GitHub/GitLab PR comments for security issues
 - IDE extensions for real-time scanning
@@ -124,8 +126,8 @@ analysis**Interaction Methods**:
 
 ### **6. Codacy** ⭐⭐⭐⭐
 
-**Pricing**: Free tier + $15/month per developer**Core Skill**: Automated code review with customizable
-rules**Interaction Methods**:
+**Pricing**: Free tier + $15/month per developer**Core Skill**: Automated code review with
+customizable rules**Interaction Methods**:
 
 - GitHub/GitLab/Bitbucket PR comments
 - Dashboard for team metrics and trends
@@ -147,8 +149,8 @@ rules**Interaction Methods**:
 
 ### **7. Amazon CodeGuru Reviewer** ⭐⭐⭐⭐
 
-**Pricing**: $10 per 100 reviews + $0.50 per 1000 lines**Core Skill**: AWS-optimized code review with performance
-focus**Interaction Methods**:
+**Pricing**: $10 per 100 reviews + $0.50 per 1000 lines**Core Skill**: AWS-optimized code review
+with performance focus**Interaction Methods**:
 
 - GitHub/Bitbucket PR association
 - AWS Console for review management
@@ -166,8 +168,8 @@ focus**Interaction Methods**:
 
 ### **8. GitHub Advanced Security** ⭐⭐⭐⭐
 
-**Pricing**: $49/month per committer (GitHub Enterprise)**Core Skill**: Native GitHub security scanning and
-analysis**Interaction Methods**:
+**Pricing**: $49/month per committer (GitHub Enterprise)**Core Skill**: Native GitHub security
+scanning and analysis**Interaction Methods**:
 
 - Built-in GitHub PR checks and comments
 - Security advisory dashboard
@@ -189,8 +191,8 @@ analysis**Interaction Methods**:
 
 ### **9. GitHub Copilot Chat** ⭐⭐⭐⭐⭐
 
-**Pricing**: $10/month (Individual) + $19/month (Business)**Core Skill**: Conversational code review and
-assistance**Interaction Methods**:
+**Pricing**: $10/month (Individual) + $19/month (Business)**Core Skill**: Conversational code review
+and assistance**Interaction Methods**:
 
 - Inline IDE chat for code explanations
 - GitHub PR comment responses
@@ -277,14 +279,14 @@ jobs:
 
 ## Review Bot Comparison Matrix
 
-| Tool           | Languages | Security | Performance | Learning | Custom Rules | Price/Dev/Month |
-| -------------- | --------- | -------- | ----------- | -------- | ------------ | --------------- |
-| **CodeRabbit** | 30+       | ⭐⭐⭐⭐⭐    | ⭐⭐⭐⭐        | ⭐⭐⭐⭐⭐    | ⭐⭐⭐⭐⭐        | $12             |
-| **Korbit**     | 20+       | ⭐⭐⭐⭐     | ⭐⭐⭐⭐        | ⭐⭐⭐⭐⭐    | ⭐⭐⭐⭐         | Custom          |
-| **Greptile**   | 500+      | ⭐⭐⭐      | ⭐⭐⭐         | ⭐⭐⭐⭐     | ⭐⭐⭐          | $50             |
-| **SonarCloud** | 27        | ⭐⭐⭐⭐⭐    | ⭐⭐⭐⭐⭐       | ⭐⭐⭐      | ⭐⭐⭐⭐⭐        | $10             |
-| **Snyk Code**  | 10+       | ⭐⭐⭐⭐⭐    | ⭐⭐⭐         | ⭐⭐⭐⭐     | ⭐⭐⭐⭐         | $25             |
-| **Codacy**     | 30+       | ⭐⭐⭐⭐     | ⭐⭐⭐⭐        | ⭐⭐⭐      | ⭐⭐⭐⭐⭐        | $15             |
+| Tool           | Languages | Security   | Performance | Learning   | Custom Rules | Price/Dev/Month |
+| -------------- | --------- | ---------- | ----------- | ---------- | ------------ | --------------- |
+| **CodeRabbit** | 30+       | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐    | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐   | $12             |
+| **Korbit**     | 20+       | ⭐⭐⭐⭐   | ⭐⭐⭐⭐    | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐     | Custom          |
+| **Greptile**   | 500+      | ⭐⭐⭐     | ⭐⭐⭐      | ⭐⭐⭐⭐   | ⭐⭐⭐       | $50             |
+| **SonarCloud** | 27        | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐  | ⭐⭐⭐     | ⭐⭐⭐⭐⭐   | $10             |
+| **Snyk Code**  | 10+       | ⭐⭐⭐⭐⭐ | ⭐⭐⭐      | ⭐⭐⭐⭐   | ⭐⭐⭐⭐     | $25             |
+| **Codacy**     | 30+       | ⭐⭐⭐⭐   | ⭐⭐⭐⭐    | ⭐⭐⭐     | ⭐⭐⭐⭐⭐   | $15             |
 
 ---
 
@@ -329,5 +331,5 @@ jobs:
 
 ---
 
-*AI code review bots provide the highest ROI of any development automation tool, with 50-70% time savings and 3-5x
-improvement in bug detection rates.*
+_AI code review bots provide the highest ROI of any development automation tool, with 50-70% time
+savings and 3-5x improvement in bug detection rates._

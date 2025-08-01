@@ -31,16 +31,16 @@ We will implement a defense-in-depth security strategy with the following layers
 // Example: JWT authentication middleware
 const authenticate = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1];
+    const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
-      throw new UnauthorizedError('Authentication required');
+      throw new UnauthorizedError("Authentication required");
     }
 
     const payload = await verifyJwt(token);
     req.user = await User.findById(payload.sub);
     next();
   } catch (error) {
-    next(new UnauthorizedError('Invalid or expired token'));
+    next(new UnauthorizedError("Invalid or expired token"));
   }
 };
 ```
@@ -63,12 +63,12 @@ const authenticate = async (req: Request, res: Response, next: NextFunction) => 
 
 #### 2.2 Data Classification
 
-| Level | Description | Examples | Protection Required |
-|-------|-------------|----------|---------------------|
-| Public | Non-sensitive | Documentation, Open Source Code | None |
-| Internal | Internal use only | Configs, Non-sensitive logs | Access control |
-| Confidential | Sensitive | API keys, Tokens | Encryption at rest/transit |
-| Restricted | Highly sensitive | SSH keys, User credentials | Strict access controls, Audit logging |
+| Level        | Description       | Examples                        | Protection Required                   |
+| ------------ | ----------------- | ------------------------------- | ------------------------------------- |
+| Public       | Non-sensitive     | Documentation, Open Source Code | None                                  |
+| Internal     | Internal use only | Configs, Non-sensitive logs     | Access control                        |
+| Confidential | Sensitive         | API keys, Tokens                | Encryption at rest/transit            |
+| Restricted   | Highly sensitive  | SSH keys, User credentials      | Strict access controls, Audit logging |
 
 ### 3. Infrastructure Security
 

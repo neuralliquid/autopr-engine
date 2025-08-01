@@ -7,12 +7,6 @@
     "jsonwebtoken",
     "express-validator"
   ],
-  "react": [
-    "@types/bcryptjs",
-    "@types/jsonwebtoken"
-  ],
-  "node": [
-    "dotenv",
-    "express-session"
-  ]
+  "react": ["@types/bcryptjs", "@types/jsonwebtoken"],
+  "node": ["dotenv", "express-session"]
 }

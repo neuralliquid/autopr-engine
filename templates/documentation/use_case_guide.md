@@ -1,6 +1,6 @@
 # {{ use_case_name }} Use Case Guide
 
-> *Generated on {{ generation_date }}*
+> _Generated on {{ generation_date }}_
 
 ## Overview
 
@@ -12,7 +12,8 @@
 
 ### Complexity Level
 
-**{{ use_case_info.get('complexity', 'Medium') }}** - {{ use_case_info.get('complexity_description', 'Standard
+**{{ use_case_info.get('complexity', 'Medium') }}** -
+{{ use_case_info.get('complexity_description', 'Standard
 implementation') }}
 
 ## Key Features
@@ -25,9 +26,7 @@ implementation') }}
 
 ## Implementation Steps
 
-{% for step in implementation_steps %}
-{{ loop.index }}. {{ step }}
-{% endfor %}
+{% for step in implementation_steps %} {{ loop.index }}. {{ step }} {% endfor %}
 
 {% if configuration_options %}
 
@@ -49,11 +48,9 @@ implementation') }}
 
 - `{{ example }}`
 
-{% endfor %}
-{% endif %}
+{% endfor %} {% endif %}
 
-{% endfor %}
-{% endif %}
+{% endfor %} {% endif %}
 
 {% if recommended_platforms %}
 
@@ -63,8 +60,7 @@ implementation') }}
 
 - **{{ platform.name }}**: {{ platform.description }}
 
-{% endfor %}
-{% endif %}
+{% endfor %} {% endif %}
 
 {% if examples %}
 
@@ -78,7 +74,7 @@ implementation') }}
 
 {% if example.code %}
 
-```{{ example.language or 'yaml' }}
+````{{ example.language or 'yaml' }}
 
 {{ example.code }}
 
@@ -126,3 +122,4 @@ implementation') }}
 ---
 
 *Need help? Check our [troubleshooting guide](troubleshooting.md) or [contact support](support.md).*
+````

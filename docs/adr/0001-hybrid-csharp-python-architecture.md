@@ -6,8 +6,9 @@ Proposed
 
 ## Context
 
-AutoPR requires both high-performance code execution and advanced AI/ML capabilities. We need to balance performance,
-development velocity, and maintainability while leveraging the strengths of different technologies.
+AutoPR requires both high-performance code execution and advanced AI/ML capabilities. We need to
+balance performance, development velocity, and maintainability while leveraging the strengths of
+different technologies.
 
 ## Decision
 

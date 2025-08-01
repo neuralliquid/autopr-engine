@@ -2,8 +2,9 @@
 
 ## Overview
 
-This guide explains how to create and maintain Docker templates for the AutoPR template system. Docker templates follow
-a structured YAML + template approach that enables flexible generation of Docker-related files.
+This guide explains how to create and maintain Docker templates for the AutoPR template system.
+Docker templates follow a structured YAML + template approach that enables flexible generation of
+Docker-related files.
 
 ## Template Structure
 
@@ -14,17 +15,17 @@ Each Docker template consists of two files:
 
 ## Template Metadata (YAML)
 
-The YAML file defines metadata, variables, and configuration options for the template. Here's the complete schema with
-detailed explanations:
+The YAML file defines metadata, variables, and configuration options for the template. Here's the
+complete schema with detailed explanations:
 
 ### Required Fields
 
 ```yaml
 # Basic template information (required)
-name: "Node.js Dockerfile"  # Human-readable name
+name: "Node.js Dockerfile" # Human-readable name
 description: "Production-ready Dockerfile for Node.js applications"
-category: "docker"  # Must be 'docker' for Docker templates
-version: "1.0.0"    # Semantic version (MAJOR.MINOR.PATCH)
+category: "docker" # Must be 'docker' for Docker templates
+version: "1.0.0" # Semantic version (MAJOR.MINOR.PATCH)
 ```
 
 ### Optional Metadata
@@ -32,13 +33,13 @@ version: "1.0.0"    # Semantic version (MAJOR.MINOR.PATCH)
 ```yaml
 # Optional metadata
 author: "AutoPR Team"
-tags: ["docker", "nodejs", "production"]  # Searchable tags
+tags: ["docker", "nodejs", "production"] # Searchable tags
 
 # Template information
 template_info:
-  name: "Node.js Production Dockerfile"  # Display name in UI
-  type: "containerization"               # Template type
-  framework: "Node.js"                   # Primary framework/language
+  name: "Node.js Production Dockerfile" # Display name in UI
+  type: "containerization" # Template type
+  framework: "Node.js" # Primary framework/language
   target_audience: "DevOps engineers, developers"
   primary_use_cases:
     - "Production Node.js applications"
@@ -65,7 +66,7 @@ variables:
   base_image:
     type: "string"
     description: "Base Docker image"
-    default: "node:${node_version}-alpine"  # Reference other variables
+    default: "node:${node_version}-alpine" # Reference other variables
     required: true
 
   # Number input example
@@ -102,7 +103,7 @@ variants:
       # Replace CMD with PM2
       - line: -1
         action: "replace"
-        content: "CMD [\"pm2-runtime\", \"start\", \"ecosystem.config.js\"]"
+        content: 'CMD ["pm2-runtime", "start", "ecosystem.config.js"]'
 
   # Development variant
   development:
@@ -114,7 +115,7 @@ variants:
         content: "RUN npm install"
       - line: -1
         action: "replace"
-        content: "CMD [\"npm\", \"run\", \"dev\"]"
+        content: 'CMD ["npm", "run", "dev"]'
 ```
 
 ### Dependencies and Requirements

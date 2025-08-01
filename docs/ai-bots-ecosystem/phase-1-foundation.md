@@ -1,38 +1,18 @@
-"""
-AutoPR Action: PR Review Analyzer
-Analyzes PR reviews from CodeRabbit and other AI tools to determine next steps
-"""
+""" AutoPR Action: PR Review Analyzer Analyzes PR reviews from CodeRabbit and other AI tools to
+determine next steps """
 
-import json
-import re
-from typing import Dict, List, Any, Optional
-from pydantic import BaseModel
+import json import re from typing import Dict, List, Any, Optional from pydantic import BaseModel
 from datetime import datetime
 
-class PRReviewInputs(BaseModel):
-    pr_number: int
-    repository: str
-    review_data: Dict[str, Any]
-    severity_threshold: str = "medium"
-    auto_assign: bool = True
+class PRReviewInputs(BaseModel): pr_number: int repository: str review_data: Dict[str, Any]
+severity_threshold: str = "medium" auto_assign: bool = True
 
-class PRReviewOutputs(BaseModel):
-    analysis_summary: str
-    issues_found: List[Dict[str, Any]]
-    recommended_actions: List[str]
-    github_issues_created: List[Dict[str, Any]]
-    linear_tickets_created: List[Dict[str, Any]]
-    ai_assignments: Dict[str, str]
-    should_block_merge: bool
+class PRReviewOutputs(BaseModel): analysis_summary: str issues_found: List[Dict[str, Any]]
+recommended_actions: List[str] github_issues_created: List[Dict[str, Any]] linear_tickets_created:
+List[Dict[str, Any]] ai_assignments: Dict[str, str] should_block_merge: bool
 
-class PRReviewAnalyzer:
-    def __init__(self):
-        self.severity_levels = {
-            'critical': 4,
-            'high': 3,
-            'medium': 2,
-            'low': 1
-        }
+class PRReviewAnalyzer: def **init**(self): self.severity_levels = { 'critical': 4, 'high': 3,
+'medium': 2, 'low': 1 }
 
         self.ai_routing_rules = {
             'typescript': 'charlie',
@@ -210,11 +190,9 @@ class PRReviewAnalyzer:
         return {
             'title': f"[AI Detected] {issue['title']}",
             'body': f"""
-**Detected by**: {issue['source']}
-**PR**: #{pr_number}
-**File**: {issue['file_path']}
-**Line**: {issue['line_number']}
-**Severity**: {issue['severity']}
+
+**Detected by**: {issue['source']} **PR**: #{pr_number} **File**: {issue['file_path']} **Line**:
+{issue['line_number']} **Severity**: {issue['severity']}
 
 ## Issue Description
 
@@ -226,31 +204,21 @@ class PRReviewAnalyzer:
 
 ## AI Confidence Score
 
-{issue['confidence']:.1%}
-            """.strip(),
-            'labels': [
-                'ai-detected',
-                issue['severity'],
-                issue['type'],
-                f"source-{issue['source']}"
-            ],
-            'assignees': self._get_default_assignees(issue['type']),
-            'repository': repository
-        }
+{issue['confidence']:.1%} """.strip(), 'labels': [ 'ai-detected', issue['severity'], issue['type'],
+f"source-{issue['source']}" ], 'assignees': self.\_get_default_assignees(issue['type']),
+'repository': repository }
 
     def _create_linear_ticket(self, issue: Dict, pr_number: int) -> Dict:
         """Create Linear ticket data structure"""
         return {
             'title': f"[AI Suggested] {issue['title']}",
             'description': f"""
-**Source**: {issue['source']}
-**PR**: #{pr_number}
-**Type**: {issue['type']}
+
+**Source**: {issue['source']} **PR**: #{pr_number} **Type**: {issue['type']}
 
 ## Current Implementation
 
-File: {issue['file_path']}
-Line: {issue['line_number']}
+File: {issue['file_path']} Line: {issue['line_number']}
 
 ## Suggested Improvement
 
@@ -262,12 +230,9 @@ Line: {issue['line_number']}
 
 ## AI Confidence
 
-{issue['confidence']:.1%}
-            """.strip(),
-            'labels': ['ai-suggested', issue['type']],
-            'priority': self._map_severity_to_priority(issue['severity']),
-            'team': self._get_team_for_issue_type(issue['type'])
-        }
+{issue['confidence']:.1%} """.strip(), 'labels': ['ai-suggested', issue['type']], 'priority':
+self.\_map_severity_to_priority(issue['severity']), 'team':
+self.\_get_team_for_issue_type(issue['type']) }
 
     def _get_ai_assignment(self, issue: Dict) -> Optional[str]:
         """Get AI tool assignment for issue type"""
@@ -343,35 +308,15 @@ Line: {issue['line_number']}
 
 # Entry point for AutoPR
 
-def run(inputs_dict: dict) -> dict:
-    """AutoPR entry point"""
-    inputs = PRReviewInputs(**inputs_dict)
-    analyzer = PRReviewAnalyzer()
-    outputs = analyzer.analyze_pr_review(inputs)
-    return outputs.dict()
+def run(inputs_dict: dict) -> dict: """AutoPR entry point""" inputs =
+PRReviewInputs(\*\*inputs_dict) analyzer = PRReviewAnalyzer() outputs =
+analyzer.analyze_pr_review(inputs) return outputs.dict()
 
-if __name__ == "__main__":
-    # Test the action
-    sample_inputs = {
-        "pr_number": 123,
-        "repository": "my-org/my-repo",
-        "review_data": {
-            "coderabbit": {
-                "findings": [
-                    {
-                        "category": "typescript",
-                        "severity": "high",
-                        "title": "Missing type annotation",
-                        "description": "Function parameter lacks type annotation",
-                        "file": "src/components/User.tsx",
-                        "line": 15,
-                        "suggestion": "Add proper TypeScript interface",
-                        "confidence": 0.9
-                    }
-                ]
-            }
-        }
-    }
+if **name** == "**main**": # Test the action sample_inputs = { "pr_number": 123, "repository":
+"my-org/my-repo", "review_data": { "coderabbit": { "findings": [ { "category": "typescript",
+"severity": "high", "title": "Missing type annotation", "description": "Function parameter lacks
+type annotation", "file": "src/components/User.tsx", "line": 15, "suggestion": "Add proper
+TypeScript interface", "confidence": 0.9 } ] } } }
 
     result = run(sample_inputs)
     print(json.dumps(result, indent=2))

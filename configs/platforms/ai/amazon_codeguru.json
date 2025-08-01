@@ -51,21 +51,9 @@
     "primary_language": "",
     "framework": "",
     "deployment_targets": ["aws"],
-    "common_files": [
-      "buildspec.yml",
-      "appspec.yml",
-      "template.yaml"
-    ],
-    "features": [
-      "code_review",
-      "performance_optimization",
-      "aws_integration"
-    ],
-    "configuration_files": [
-      "buildspec.yml",
-      "appspec.yml",
-      "template.yaml"
-    ]
+    "common_files": ["buildspec.yml", "appspec.yml", "template.yaml"],
+    "features": ["code_review", "performance_optimization", "aws_integration"],
+    "configuration_files": ["buildspec.yml", "appspec.yml", "template.yaml"]
   },
 
   "metadata": {

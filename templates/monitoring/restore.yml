@@ -1,6 +1,8 @@
 name: "Restore Script"
 category: "monitoring"
-description: "Bash script for restoring databases, files, and configurations from backup files with validation and safety checks"
+description:
+  "Bash script for restoring databases, files, and configurations from backup files with validation
+  and safety checks"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["restore", "bash", "database", "files", "recovery", "postgresql", "mysql"]
@@ -10,7 +12,8 @@ template_info:
   type: "maintenance_script"
   framework: "Bash"
   target_audience: "DevOps engineers, system administrators"
-  primary_use_cases: ["Database restoration", "File recovery", "Disaster recovery", "System maintenance"]
+  primary_use_cases:
+    ["Database restoration", "File recovery", "Disaster recovery", "System maintenance"]
 
 variables:
   database_type:

@@ -17,7 +17,16 @@
   "vendor": "Anthropic",
   "website": "https://www.anthropic.com/claude",
   "pricing_model": "paid",
-  "supported_languages": ["python", "javascript", "typescript", "go", "java", "c++", "rust", "ruby"],
+  "supported_languages": [
+    "python",
+    "javascript",
+    "typescript",
+    "go",
+    "java",
+    "c++",
+    "rust",
+    "ruby"
+  ],
   "tags": ["ai_assistant", "code_generation", "documentation", "code_review"],
   "documentation_url": "https://docs.anthropic.com/claude",
   "setup_guide": "https://docs.anthropic.com/claude/docs/getting-started-with-claude",
@@ -29,11 +38,7 @@
     "dependencies": ["@anthropic-ai/sdk", "anthropic"],
     "folder_patterns": ["claude-", "-claude"],
     "commit_patterns": ["claude", "anthropic", "claude dev"],
-    "content_patterns": [
-      "anthropic.com/api",
-      "ANTHROPIC_API_KEY",
-      "claude-dev"
-    ],
+    "content_patterns": ["anthropic.com/api", "ANTHROPIC_API_KEY", "claude-dev"],
     "confidence_weights": {
       "files": 0.4,
       "dependencies": 0.3,
@@ -55,9 +60,6 @@
       "code_review",
       "pair_programming"
     ],
-    "configuration_files": [
-      "claude.json",
-      ".claude/config.json"
-    ]
+    "configuration_files": ["claude.json", ".claude/config.json"]
   }
 }

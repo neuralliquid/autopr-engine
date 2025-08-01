@@ -1,6 +1,8 @@
 name: "Xano Backend-as-a-Service"
 category: "backend-service"
-description: "No-code backend platform providing scalable APIs, databases, and business logic for modern applications"
+description:
+  "No-code backend platform providing scalable APIs, databases, and business logic for modern
+  applications"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["backend-service", "api-builder", "database", "scalable", "no-code-backend", "relational-db"]
@@ -12,7 +14,8 @@ platform_info:
   founded: "2019"
   pricing_model: "Usage-based with Free Tier"
   target_audience: "Frontend developers, no-code builders, agencies, startups"
-  primary_use_cases: ["API backends", "Database management", "Business logic", "User authentication", "File storage"]
+  primary_use_cases:
+    ["API backends", "Database management", "Business logic", "User authentication", "File storage"]
 
   key_features:
     - "Visual API builder with no-code logic"
@@ -59,7 +62,16 @@ variables:
   application_type:
     type: "select"
     description: "Type of application backend"
-    options: ["web_app", "mobile_app", "saas_platform", "e_commerce", "marketplace", "social_platform", "internal_tool"]
+    options:
+      [
+        "web_app",
+        "mobile_app",
+        "saas_platform",
+        "e_commerce",
+        "marketplace",
+        "social_platform",
+        "internal_tool",
+      ]
     default: "web_app"
     required: true
 
@@ -73,28 +85,47 @@ variables:
   authentication_method:
     type: "select"
     description: "User authentication and authorization approach"
-    options: ["email_password", "social_login", "magic_links", "jwt_tokens", "oauth_integration", "custom_auth"]
+    options:
+      [
+        "email_password",
+        "social_login",
+        "magic_links",
+        "jwt_tokens",
+        "oauth_integration",
+        "custom_auth",
+      ]
     default: "email_password"
     required: true
 
   api_features:
     type: "multi_select"
     description: "API features and capabilities needed"
-    options: ["crud_operations", "search_filtering", "file_uploads", "real_time_updates", "webhooks", "third_party_apis", "payment_processing"]
+    options:
+      [
+        "crud_operations",
+        "search_filtering",
+        "file_uploads",
+        "real_time_updates",
+        "webhooks",
+        "third_party_apis",
+        "payment_processing",
+      ]
     default: ["crud_operations", "search_filtering", "file_uploads"]
     required: true
 
   integrations:
     type: "multi_select"
     description: "Third-party service integrations"
-    options: ["stripe", "sendgrid", "twilio", "aws_s3", "cloudinary", "zapier", "slack", "mailchimp"]
+    options:
+      ["stripe", "sendgrid", "twilio", "aws_s3", "cloudinary", "zapier", "slack", "mailchimp"]
     default: ["stripe", "sendgrid"]
     required: false
 
   frontend_platform:
     type: "select"
     description: "Primary frontend platform to connect with"
-    options: ["weweb", "bubble", "react", "vue", "angular", "flutter", "react_native", "custom_frontend"]
+    options:
+      ["weweb", "bubble", "react", "vue", "angular", "flutter", "react_native", "custom_frontend"]
     default: "weweb"
     required: true
 
@@ -108,7 +139,14 @@ variables:
   business_logic_complexity:
     type: "select"
     description: "Business logic and workflow complexity"
-    options: ["simple_crud", "basic_workflows", "complex_logic", "advanced_automation", "enterprise_workflows"]
+    options:
+      [
+        "simple_crud",
+        "basic_workflows",
+        "complex_logic",
+        "advanced_automation",
+        "enterprise_workflows",
+      ]
     default: "basic_workflows"
     required: true
 
@@ -118,7 +156,8 @@ variants:
     variables:
       application_type: "e_commerce"
       database_complexity: "complex_relationships"
-      api_features: ["crud_operations", "search_filtering", "file_uploads", "payment_processing", "webhooks"]
+      api_features:
+        ["crud_operations", "search_filtering", "file_uploads", "payment_processing", "webhooks"]
       integrations: ["stripe", "sendgrid", "aws_s3"]
       business_logic_complexity: "complex_logic"
 
@@ -138,7 +177,14 @@ variants:
       application_type: "marketplace"
       database_complexity: "complex_relationships"
       authentication_method: "social_login"
-      api_features: ["crud_operations", "search_filtering", "file_uploads", "payment_processing", "real_time_updates"]
+      api_features:
+        [
+          "crud_operations",
+          "search_filtering",
+          "file_uploads",
+          "payment_processing",
+          "real_time_updates",
+        ]
       integrations: ["stripe", "twilio", "cloudinary"]
       business_logic_complexity: "advanced_automation"
 

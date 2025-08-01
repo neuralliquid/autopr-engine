@@ -1,6 +1,8 @@
 name: "Basic TypeScript Configuration"
 category: "typescript"
-description: "Basic TypeScript configuration for general Node.js and web projects with common settings and flexibility"
+description:
+  "Basic TypeScript configuration for general Node.js and web projects with common settings and
+  flexibility"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["typescript", "basic", "configuration", "node", "general"]
@@ -10,7 +12,8 @@ template_info:
   type: "typescript_configuration"
   framework: "General"
   target_audience: "TypeScript developers, Node.js developers"
-  primary_use_cases: ["Node.js projects", "General TypeScript projects", "Backend APIs", "CLI tools"]
+  primary_use_cases:
+    ["Node.js projects", "General TypeScript projects", "Backend APIs", "CLI tools"]
 
 variables:
   target:

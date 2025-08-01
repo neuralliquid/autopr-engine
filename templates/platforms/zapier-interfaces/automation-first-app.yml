@@ -1,9 +1,19 @@
 name: "Zapier Interfaces Automation-First Application"
 category: "automation-first"
-description: "Automation-first no-code platform for creating apps with AI orchestration and seamless integration with thousands of external services"
+description:
+  "Automation-first no-code platform for creating apps with AI orchestration and seamless
+  integration with thousands of external services"
 version: "1.0.0"
 author: "AutoPR Template System"
-tags: ["automation-first", "ai-orchestration", "integrations", "workflows", "business-processes", "zapier"]
+tags:
+  [
+    "automation-first",
+    "ai-orchestration",
+    "integrations",
+    "workflows",
+    "business-processes",
+    "zapier",
+  ]
 
 platform_info:
   name: "Zapier Interfaces"
@@ -12,7 +22,14 @@ platform_info:
   founded: "2023"
   pricing_model: "Freemium with Automation Focus"
   target_audience: "Business users, process automators, teams needing connected workflows"
-  primary_use_cases: ["Business process hubs", "Client portals", "Lead capture forms", "Internal dashboards", "Workflow management"]
+  primary_use_cases:
+    [
+      "Business process hubs",
+      "Client portals",
+      "Lead capture forms",
+      "Internal dashboards",
+      "Workflow management",
+    ]
 
   key_features:
     - "Automation-first design philosophy"
@@ -59,14 +76,30 @@ variables:
   interface_type:
     type: "select"
     description: "Primary type of interface to build"
-    options: ["business_hub", "client_portal", "lead_capture", "internal_dashboard", "project_tracker", "crm_system"]
+    options:
+      [
+        "business_hub",
+        "client_portal",
+        "lead_capture",
+        "internal_dashboard",
+        "project_tracker",
+        "crm_system",
+      ]
     default: "business_hub"
     required: true
 
   automation_focus:
     type: "select"
     description: "Primary automation and workflow focus"
-    options: ["lead_management", "customer_support", "project_management", "sales_process", "hr_workflows", "marketing_automation"]
+    options:
+      [
+        "lead_management",
+        "customer_support",
+        "project_management",
+        "sales_process",
+        "hr_workflows",
+        "marketing_automation",
+      ]
     default: "lead_management"
     required: true
 
@@ -80,28 +113,62 @@ variables:
   key_integrations:
     type: "multi_select"
     description: "Key app integrations for automation workflows"
-    options: ["gmail", "slack", "hubspot", "salesforce", "trello", "asana", "stripe", "mailchimp", "google_calendar", "zoom"]
+    options:
+      [
+        "gmail",
+        "slack",
+        "hubspot",
+        "salesforce",
+        "trello",
+        "asana",
+        "stripe",
+        "mailchimp",
+        "google_calendar",
+        "zoom",
+      ]
     default: ["gmail", "slack", "stripe"]
     required: true
 
   ai_features:
     type: "multi_select"
     description: "AI and intelligent automation features"
-    options: ["ai_chatbot", "smart_routing", "content_generation", "sentiment_analysis", "predictive_workflows", "intelligent_categorization"]
+    options:
+      [
+        "ai_chatbot",
+        "smart_routing",
+        "content_generation",
+        "sentiment_analysis",
+        "predictive_workflows",
+        "intelligent_categorization",
+      ]
     default: ["ai_chatbot", "smart_routing"]
     required: false
 
   user_access:
     type: "select"
     description: "User access and permission model"
-    options: ["public_access", "password_protected", "user_accounts", "team_permissions", "role_based_access"]
+    options:
+      [
+        "public_access",
+        "password_protected",
+        "user_accounts",
+        "team_permissions",
+        "role_based_access",
+      ]
     default: "password_protected"
     required: true
 
   workflow_complexity:
     type: "select"
     description: "Complexity level of automation workflows"
-    options: ["simple_triggers", "multi_step_workflows", "conditional_logic", "advanced_branching", "enterprise_workflows"]
+    options:
+      [
+        "simple_triggers",
+        "multi_step_workflows",
+        "conditional_logic",
+        "advanced_branching",
+        "enterprise_workflows",
+      ]
     default: "multi_step_workflows"
     required: true
 

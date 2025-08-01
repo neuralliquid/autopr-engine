@@ -1,6 +1,8 @@
 name: "Netlify Deployment Configuration"
 category: "deployment"
-description: "Netlify deployment configuration with build settings, redirects, headers, and environment variables for SPAs and static sites"
+description:
+  "Netlify deployment configuration with build settings, redirects, headers, and environment
+  variables for SPAs and static sites"
 version: "1.0.0"
 author: "AutoPR Template System"
 tags: ["netlify", "deployment", "spa", "static-site", "redirects", "headers"]
@@ -10,7 +12,8 @@ template_info:
   type: "deployment_configuration"
   framework: "React, Vue, Angular, Static"
   target_audience: "Frontend developers, JAMstack developers"
-  primary_use_cases: ["Static site deployment", "SPA hosting", "JAMstack applications", "Form handling"]
+  primary_use_cases:
+    ["Static site deployment", "SPA hosting", "JAMstack applications", "Form handling"]
 
 variables:
   build_command:
@@ -39,7 +42,8 @@ variables:
 
   security_headers:
     type: "boolean"
-    description: "Enable security headers (X-Frame-Options, X-XSS-Protection, X-Content-Type-Options)"
+    description:
+      "Enable security headers (X-Frame-Options, X-XSS-Protection, X-Content-Type-Options)"
     default: true
     required: false
 
