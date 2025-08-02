@@ -94,7 +94,9 @@ class AuthorizationMiddleware:
 
         return [role.strip() for role in roles if role.strip()]
 
-    def require_permission(self, resource_type: str, action: str, resource_id_param: str = "id") -> Any:
+    def require_permission(
+        self, resource_type: str, action: str, resource_id_param: str = "id"
+    ) -> Any:
         """Decorator for route-level authorization"""
 
         def decorator(func):

@@ -38,7 +38,7 @@ class ContinueProductionMonitoring:
         user_id: str,
         response_time: float,
         cost: float,
-    ):
+    ) -> None:
         """Monitor individual request"""
 
         with self.tracer.start_as_current_span("continue_request") as span:
@@ -126,7 +126,7 @@ class ContinueProductionMonitoring:
 
 
 # Example usage and monitoring setup
-async def main():
+async def main() -> None:
     monitor = ContinueProductionMonitoring(
         connection_string="InstrumentationKey=your-key;IngestionEndpoint=https://swedencentral-1.in.applicationinsights.azure.com/"
     )

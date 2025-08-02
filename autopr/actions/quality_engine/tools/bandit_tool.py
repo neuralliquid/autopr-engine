@@ -52,7 +52,8 @@ class BanditTool(Tool):
         try:
             # The JSON output contains a 'results' key.
             output = json.loads(stdout)
-            return output.get("results", [])
+            results = output.get("results", [])
+            return results
         except json.JSONDecodeError:
             print(f"Failed to parse bandit output: {stdout.decode()}")
             return [{"error": "Failed to parse bandit JSON output"}]

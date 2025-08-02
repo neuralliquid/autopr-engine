@@ -8,6 +8,7 @@ with the AI linting fixer for comprehensive error tracking and display.
 
 import sys
 from pathlib import Path
+from typing import Any
 
 # Add the project root to the path
 project_root = Path(__file__).parent.parent
@@ -33,10 +34,10 @@ def setup_error_handler() -> None:
     error_handler = ErrorHandler(display_config)
 
     # Register custom error callbacks
-    def on_error_callback(error_info):
+    def on_error_callback(error_info: Any) -> None:
         """Custom callback for when errors occur."""
 
-    def on_recovery_callback(error_info, strategy):
+    def on_recovery_callback(error_info: Any, strategy: Any) -> None:
         """Custom callback for recovery attempts."""
 
     error_handler.register_error_callback(on_error_callback)
@@ -45,7 +46,7 @@ def setup_error_handler() -> None:
     return error_handler
 
 
-def demonstrate_error_handler_integration():
+def demonstrate_error_handler_integration() -> None:
     """Demonstrate how to integrate error handler with AI linting fixer."""
 
     # Set up error handler

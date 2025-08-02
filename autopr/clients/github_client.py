@@ -74,7 +74,6 @@ class GitHubConfig:
 
 # Type variable for JSON-serializable data
 JSONType = Union[dict[str, Any], list[Any], str, int, float, bool, None]
-T = TypeVar("T", bound=JSONType)
 
 
 class GitHubClient:
@@ -123,7 +122,10 @@ class GitHubClient:
             Time to sleep in seconds
         """
         jitter = random.uniform(0, 0.1)  # Add up to 10% jitter  # - Used for backoff, not security
-        return min((2**attempt) * self.config.backoff_factor * (1 + jitter), 60)  # Max 60 seconds
+        backoff_time = min(
+            (2**attempt) * self.config.backoff_factor * (1 + jitter), 60
+        )  # Max 60 seconds
+        return float(backoff_time)
 
     async def _handle_rate_limit(self, response: ClientResponse) -> None:
         """Update rate limit information from response headers.
@@ -352,6 +354,7 @@ class GitHubClient:
 
     async def __aenter__(self) -> "GitHubClient":
         """Async context manager entry."""
+        await self._get_session()
         return self
 
     async def __aexit__(

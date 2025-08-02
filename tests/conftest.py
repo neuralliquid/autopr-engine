@@ -1,16 +1,16 @@
 """Configuration and fixtures for pytest."""
 
 import asyncio
-from collections.abc import AsyncGenerator, Generator
 import os
+from collections.abc import AsyncGenerator, Generator
 
-from aiohttp import ClientSession
 import pytest
 import pytest_asyncio
+from aiohttp import ClientSession
 
 
 @pytest.fixture(scope="session")
-def event_loop() -> Generator[asyncio.AbstractEventLoop]:
+def event_loop() -> Generator[asyncio.AbstractEventLoop, None, None]:
     """
     Create an instance of the default event loop for the test session.
 
@@ -27,7 +27,7 @@ def event_loop() -> Generator[asyncio.AbstractEventLoop]:
 
 
 @pytest_asyncio.fixture
-async def http_session() -> AsyncGenerator[ClientSession]:
+async def http_session() -> AsyncGenerator[ClientSession, None]:
     """
     Create and provide an aiohttp ClientSession for testing.
 

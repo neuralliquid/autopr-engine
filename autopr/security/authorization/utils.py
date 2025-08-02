@@ -20,7 +20,7 @@ def get_authorization_manager(
     cache_ttl_seconds: int = 300,
     enable_audit: bool = True,
     audit_log_file: str | None = None,
-):
+) -> Any:
     """
     Get global authorization manager instance with appropriate capabilities.
 
@@ -69,7 +69,7 @@ def get_authorization_manager(
     return _auth_manager
 
 
-def get_access_logger():
+def get_access_logger() -> AuthorizationAuditLogger:
     """Get global access logger instance."""
     global _access_logger
     if _access_logger is None:
@@ -139,7 +139,7 @@ def authorize_request(
     resource_type: str,
     resource_id: str,
     action: str,
-    additional_context: dict[str, Any] = None,
+    additional_context: dict[str, Any] | None = None,
 ) -> bool:
     """Convenience function for authorization checks."""
     auth_manager = get_authorization_manager()
@@ -152,13 +152,13 @@ def authorize_request(
         resource_type=ResourceType(resource_type),
         resource_id=resource_id,
         action=Permission(action),
-        additional_context=additional_context,
+        additional_context=additional_context or {},
     )
 
     granted = auth_manager.authorize(context)
     access_logger.log_authorization_check(context, granted)
 
-    return granted
+    return bool(granted)
 
 
 def validate_permission_hierarchy(permissions: list[str]) -> bool:
@@ -236,7 +236,7 @@ def check_permission_conflicts(permissions: list[str]) -> list[str]:
 
 
 def generate_permission_matrix(
-    users: list[str], resources: list[str], auth_manager
+    users: list[str], resources: list[str], auth_manager: Any
 ) -> dict[str, Any]:
     """Generate a permission matrix for analysis."""
     matrix = {

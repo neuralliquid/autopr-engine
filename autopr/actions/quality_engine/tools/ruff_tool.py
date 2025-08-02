@@ -46,7 +46,7 @@ class RuffTool(Tool):
 
         try:
             issues = json.loads(stdout)
-            return issues
+            return list(issues) if isinstance(issues, list) else [issues]
         except json.JSONDecodeError:
             print(f"Failed to parse ruff output: {stdout.decode()}")
             return [{"error": "Failed to parse ruff JSON output"}]
