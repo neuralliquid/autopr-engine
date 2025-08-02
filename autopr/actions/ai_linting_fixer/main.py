@@ -5,8 +5,8 @@ This is the core module that orchestrates all the modular components
 to provide AI-powered linting fixes. Much cleaner and focused!
 """
 
-from datetime import datetime
 import logging
+from datetime import datetime
 from typing import Any
 
 # Configure logging to suppress verbose provider warnings
@@ -167,7 +167,7 @@ class AILintingFixer(WorkflowIntegrationMixin):
 
         return issues
 
-    def select_specialized_agent(self, issues: list[LintingIssue]):
+    def select_specialized_agent(self, issues: list[LintingIssue]) -> Any:
         """Select the most appropriate specialized agent for a batch of issues."""
         if not issues:
             return self.agent_manager.get_agent_by_type(AgentType.GENERAL_FIXER)
@@ -187,7 +187,7 @@ class AILintingFixer(WorkflowIntegrationMixin):
 
     def apply_agent_fix(
         self,
-        agent,
+        agent: Any,
         file_path: str,
         issues: list[LintingIssue],
         use_safe_ops: bool = True,
@@ -248,7 +248,7 @@ class AILintingFixer(WorkflowIntegrationMixin):
         self,
         file_path: str,
         file_content: str,
-        agent,
+        agent: Any,
         issues: list[LintingIssue],
         use_safe_ops: bool,
     ) -> dict[str, Any]:
@@ -559,7 +559,7 @@ class AILintingFixer(WorkflowIntegrationMixin):
 
         return random.random() < effective_success_rate  # - Used for simulation, not security
 
-    def close(self):
+    def close(self) -> None:
         """Clean up resources."""
         self.metrics.end_session()
 
@@ -789,7 +789,7 @@ def ai_linting_fixer(inputs: AILintingFixerInputs) -> AILintingFixerOutputs:
 
 
 # Legacy compatibility functions
-def print_feature_status():
+def print_feature_status() -> None:
     """Print feature status (legacy compatibility)."""
     from .display import print_feature_status as display_print_feature_status
 
@@ -822,7 +822,7 @@ def print_feature_status():
     display_print_feature_status(features)
 
 
-def display_provider_status(quiet: bool = False):
+def display_provider_status(quiet: bool = False) -> None:
     """Display LLM provider status (legacy compatibility)."""
     from .display import display_provider_status as display_show_provider_status
 
