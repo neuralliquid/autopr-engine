@@ -2,6 +2,8 @@
 Authorization middleware for web framework integration.
 """
 
+from typing import Any
+
 import structlog
 
 from .managers import EnterpriseAuthorizationManager
@@ -17,7 +19,7 @@ class AuthorizationMiddleware:
         self.auth_manager = auth_manager
 
     def check_authorization(
-        self, request, resource_type: str, resource_id: str, action: str
+        self, request: Any, resource_type: str, resource_id: str, action: str
     ) -> bool:
         """Check authorization for web requests"""
         try:
@@ -44,7 +46,7 @@ class AuthorizationMiddleware:
             logger.error("Authorization middleware error", error=str(e))
             return False
 
-    def _extract_user_id(self, request) -> str | None:
+    def _extract_user_id(self, request: Any) -> str | None:
         """Extract user ID from request - implement based on your auth system"""
         # Try multiple common patterns for user identification
         if hasattr(request, "user") and hasattr(request.user, "id"):
@@ -67,7 +69,7 @@ class AuthorizationMiddleware:
 
         return None
 
-    def _extract_user_roles(self, request) -> list[str]:
+    def _extract_user_roles(self, request: Any) -> list[str]:
         """Extract user roles from request - implement based on your auth system"""
         roles = []
 
@@ -92,7 +94,7 @@ class AuthorizationMiddleware:
 
         return [role.strip() for role in roles if role.strip()]
 
-    def require_permission(self, resource_type: str, action: str, resource_id_param: str = "id"):
+    def require_permission(self, resource_type: str, action: str, resource_id_param: str = "id") -> Any:
         """Decorator for route-level authorization"""
 
         def decorator(func):
